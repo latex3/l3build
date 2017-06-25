@@ -24,8 +24,8 @@ tlmgr install luatex
 
 # Required to build plain and LaTeX formats:
 # TeX90 plain for unpacking, pdfLaTeX, LuaLaTeX and XeTeX for tests
-tlmgr install cm etex knuth-lib latex-bin tex tex-ini-files unicode-data \
-  xetex
+tlmgr install cm etex  etex-pkg knuth-lib latex-bin tex tex-ini-files \
+  unicode-data xetex
   
 # Additional requirements for (u)pLaTeX, done with no dependencies to
 # avoid large font payloads
