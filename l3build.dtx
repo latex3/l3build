@@ -98,7 +98,7 @@
 \luavarset{dviext} {".dvi"} {Extension of DVI files.}
 \luavarset{lvtext} {".lvt"} {Extension of test files.}
 \luavarset{tlgext} {".tlg"} {Extension of test file output.}
-\luavarset{lvtext} {".lve"} {Extension of auto-generating test file output.}
+\luavarset{lveext} {".lve"} {Extension of auto-generating test file output.}
 \luavarset{logext} {".log"} {Extension of checking output, before processing it into a \texttt{.tlg}.}
 \luavarset{pdfext} {".pdf"} {Extension of PDF file for checking and saving.}
 \luavarset{psext}  {".ps"}  {Extension of PostScript files.}
@@ -108,7 +108,7 @@
 \luavarset{unpackdeps}  {\{~\}} {\dots for unpacking.}
 \luavarseparator
 \luavarset{checkengines}{\{"pdftex", "xetex", "luatex"\}} {Engines to check with \texttt{check} by default.}
-\luavarset{stdengine}    {"pdtex"} {Engine to generate \texttt{.tlg} file from.}
+\luavarset{stdengine}    {"pdftex"} {Engine to generate \texttt{.tlg} file from.}
 \luavarset{checkformat}  {"latex"} {Format to use for tests.}
 \luavarseparator
 \luavarset{typesetexe} {"pdflatex"} {Executable for compiling \texttt{doc(s)}.}
@@ -443,7 +443,7 @@
 %
 % Source files specified in \var{sourcefiles} and \var{typesetsourcefiles}
 % are unpacked before the typesetting takes place. (In most cases
-% \var{typesetsourcefiles} will be mepty, but may be used where there are
+% \var{typesetsourcefiles} will be empty, but may be used where there are
 % files to unpack \emph{only} for typesetting.)
 %
 % If \var{typesetsearch} is \code{true} (default), standard \texttt{texmf} search trees are used in the typesetting compilation. If set to false, \emph{all} necessary files for compilation must be included in the |build/local| sandbox.
@@ -1256,7 +1256,7 @@
 %   error level.
 % \end{function}
 %
-% \begin{function}{spltpath()}
+% \begin{function}{splitpath()}
 %   \begin{syntax}
 %     |splitpath(|\meta{file}|)|
 %   \end{syntax}
@@ -1290,7 +1290,7 @@
 %
 % \begin{variable}{os_null}
 %   The location to redirect commands which should produce no output
-%   at the terminal: almost always used preded by |>|, \emph{e.g.}
+%   at the terminal: almost always used preceded by |>|, \emph{e.g.}
 %   \begin{verbatim}
 %     os.execute("tex " .. file .. " > " .. os_null)
 %   \end{verbatim}
