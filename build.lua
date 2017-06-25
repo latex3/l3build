@@ -6,14 +6,14 @@
 module = "l3build"
 bundle = ""
 
--- Location of main directory: use Unix-style path separators
-maindir = ".."
-
 -- Non-standard settings
 checkdeps    = { }
+checkengines = {"pdftex", "xetex", "luatex", "ptex", "uptex"}
 cleanfiles   = {"*.pdf", "*.tex", "*.zip"}
 installfiles = {"l3build.lua", "regression-test.tex"}
+packtdszip   = true
 sourcefiles  = {"*.dtx", "l3build.lua", "*.ins"}
+typesetcmds  = "\\AtBeginDocument{\\DisableImplementation}"
 unpackdeps   = { }
 versionfiles = {"*.dtx", "*.md", "l3build.lua"}
 
@@ -37,9 +37,5 @@ function setversion_update_line(line, date, version)
   return line
 end
 
--- Load the common build code: this is the one place that a path needs to be
--- hard-coded
--- As the build system is 'self-contained' there is no module set up here: just
---load the file in a similar way to a TeX \input
-dofile (maindir .. "/build-config.lua")
-dofile (maindir .. "/l3build/l3build.lua")
+-- Load l3build itself: truly self-contained so no kpsewhich() here
+dofile("./l3build.lua")
