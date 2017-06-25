@@ -77,3 +77,17 @@ function l3utils.colour(key, force)
     colours['reset']) .. 'm') or ''
 end
 
+--- Returns a string enclosed in a colour scheme.
+-- This function returns a string enclosed in a colour scheme based on the
+-- provided key. If the script is running on Windows, there will be no coloured
+-- output, unless an optional flag is set to override this behaviour.
+-- @param key the colour key.
+-- @param text the string to be enclosed.
+-- @param force a logic value to force the colour scheme regardless of the
+-- underlying operating system.
+function l3utils.coloured(key, text, force)
+  force = force or false
+  return l3utils.colour(key, force) ..
+    text .. l3utils.colour('reset', force)
+end
+
