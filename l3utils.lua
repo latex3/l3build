@@ -25,6 +25,19 @@ for those people who are interested.
 -- the LaTeX3 utils namespace
 local l3utils = {}
 
+--- Ensures the variable holds any value or falls back to a default value.
+-- This function might sound like a bit verbose, but it is added as a means to
+-- add a semantic layer to the existing code. The name implies the function
+-- behaviour, thus helping comprehension.
+-- @param value the variable value to be checked.
+-- @param default the default value to be returned in case the variable does
+-- not hold any value.
+-- @return the existing value variable if it holds any value or a predefined
+-- value.
+function l3utils.ensure(value, default)
+  return value or default
+end
+
 --- Checks if the script is running on a Windows machine.
 -- This function checks if Windows is the underlying operating system
 -- by inspecting the path separator. The occurrence of '\' indicates a
@@ -51,7 +64,7 @@ end
 -- @return a string containing the colour scheme for Unix-like
 -- terminals, or an empty string in case of Windows (can be overriden).
 function l3utils.colour(key, force)
-  force = force or false
+  force = l3utils.ensure(force, false)
   local colours = {
     default      = '39',
     black        = '30',
@@ -72,9 +85,8 @@ function l3utils.colour(key, force)
     white        = '97',
     reset        = '00'
   }
-  return ((not l3utils.windows() or force) and
-    '\027[00;' .. (colours[key] or
-    colours['reset']) .. 'm') or ''
+  return ((not l3utils.windows() or force) and '\027[00;' ..
+  l3utils.ensure(colours[key], colours['reset']) .. 'm') or ''
 end
 
 --- Returns a string enclosed in a colour scheme.
@@ -85,8 +97,10 @@ end
 -- @param text the string to be enclosed.
 -- @param force a logic value to force the colour scheme regardless of the
 -- underlying operating system.
+-- @return the string enclosed in a colour scheme if the operating system is
+-- not Windows, or a non-coloured output otherwise (can be overriden).
 function l3utils.coloured(key, text, force)
-  force = force or false
+  force = l3utils.ensure(force, false)
   return l3utils.colour(key, force) ..
     text .. l3utils.colour('reset', force)
 end
