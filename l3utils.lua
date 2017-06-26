@@ -45,7 +45,7 @@ end
 -- @return a logic value indicating whether the script is running on a
 -- Windows machine.
 function l3utils.windows()
-  return package.config:sub(1,1) == '\\'
+  return package.config:sub(1, 1) == '\\'
 end
 
 --- Calculates the colour scheme for Unix-like terminals.
@@ -103,5 +103,71 @@ function l3utils.coloured(key, text, force)
   force = l3utils.ensure(force, false)
   return l3utils.colour(key, force) ..
     text .. l3utils.colour('reset', force)
+end
+
+--- Gets the linebreak symbol.
+-- This function gets the linebreak symbol based on the underlying
+-- operating system. It was written to be as much platform-independent as
+-- possible.
+-- @return the linebreak symbol (potentially '\n').
+function l3utils.linebreak()
+  return package.config:sub(2, 2)
+end
+
+--- Wraps a string into a sequence of lines according to a specified
+--- width.
+-- This function takes a string and splits it into a sequence of lines,
+-- separated by the default linebreak symbol (potentially '\n'). Lines
+-- are broken at spaces. The logic behind this function aims at handling
+-- coloured sentences as well, but it was not tested enough. Note that
+-- Lua has some issues handling Unicode strings, so this function is
+-- still marked as experimental.
+-- @param text the text to be wrapped, may include coloured parts.
+-- @param width a nonzero, positive integer representing the number of
+-- colums to be displayed (in general, a sensible value would be lower
+-- than 80 columns).
+-- @return the wrapped string.
+function l3utils.wrap(text, width)
+  local wrapped, colour, lb = '', '', l3utils.linebreak()
+  local checkpoint, counter = 1, 1
+  local closed, reset = true, '\027[00;00m'
+
+  local peek = function(t)
+    local _, b, c = string.find(t, '^(\027%[00;%d%dm)')
+    b = l3utils.ensure(b, 0)
+    return string.sub(t, b + 1, b + 1), c, string.sub(t, b + 2)
+  end
+
+  while #text ~= 0 do
+
+    local a, b, c = peek(text)
+    text = c
+
+    if b then
+      colour = b
+      closed = not closed
+    end
+
+    wrapped = wrapped .. l3utils.ensure(b, '') .. a
+
+    if string.byte(a) ~= 195 then
+      counter = counter + 1
+    end
+
+    if a == ' ' then
+      checkpoint = #wrapped
+    end
+
+    if counter >= width then
+      wrapped = string.sub(wrapped, 1, checkpoint) ..
+      ((not closed and reset) or '') .. lb ..
+      ((not closed and colour) or '') ..
+      string.sub(wrapped, checkpoint + 1)
+      counter = 0
+    end
+
+  end
+
+  return wrapped
 end
 
