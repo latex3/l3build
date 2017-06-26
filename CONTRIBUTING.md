@@ -39,3 +39,10 @@ which come about as `l3build`'s focus is testing and building LaTeX packages:
   directly available in a TeX system or as standard in the supported
   systems (Windows, MacOS, Linux): the exception is `zip`, which is
   required for sending releases to CTAN and which isn't standard on Windows
+
+If you are submitting a pull request, notice that
+
+- We use Travis-CI for (light) testing so add `[ci skip]` to documentation-only
+  commit messages
+- We favour a single linear history so will rebase agreed pull requests on to
+  the `master` branch
