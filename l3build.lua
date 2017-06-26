@@ -1390,6 +1390,8 @@ function runtest(name, engine, hide, ext, makepdf)
         .. os_concat ..
       os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
         .. os_concat ..
+      os_setenv .. " FORCE_SOURCE_DATE=1"
+        .. os_concat ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
