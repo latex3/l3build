@@ -22,6 +22,18 @@ for those people who are interested.
 
 --]]
 
+--[[
+
+Documentation can be generated with:
+$ ldoc -f markdown l3utils.lua
+
+--]]
+
+--- Provides utility functions for the `l3build` testing and building
+--- system.
+-- The `l3utils` module provides utility functions for `l3build`. Note
+-- that functions are available through a namespace.
+
 -- the LaTeX3 utils namespace
 local l3utils = {}
 
@@ -32,7 +44,7 @@ local l3utils = {}
 -- @param value the variable value to be checked.
 -- @param default the default value to be returned in case the variable does
 -- not hold any value.
--- @return the existing value variable if it holds any value or a predefined
+-- @return The existing value variable if it holds any value or a predefined
 -- value.
 function l3utils.ensure(value, default)
   return value or default
@@ -40,9 +52,9 @@ end
 
 --- Checks if the script is running on a Windows machine.
 -- This function checks if Windows is the underlying operating system
--- by inspecting the path separator. The occurrence of '\' indicates a
+-- by inspecting the path separator. The occurrence of `\` indicates a
 -- Windows machine.
--- @return a logic value indicating whether the script is running on a
+-- @return A logic value indicating whether the script is running on a
 -- Windows machine.
 function l3utils.windows()
   return package.config:sub(1, 1) == '\\'
@@ -61,7 +73,7 @@ end
 -- reset key to restore the defaults.
 -- @param force a logic flag indicating if the colour scheme should be
 -- returned regardless of the underlying operational system.
--- @return a string containing the colour scheme for Unix-like
+-- @return A string containing the colour scheme for Unix-like
 -- terminals, or an empty string in case of Windows (can be overriden).
 function l3utils.colour(key, force)
   force = l3utils.ensure(force, false)
@@ -97,7 +109,7 @@ end
 -- @param text the string to be enclosed.
 -- @param force a logic value to force the colour scheme regardless of the
 -- underlying operating system.
--- @return the string enclosed in a colour scheme if the operating system is
+-- @return The string enclosed in a colour scheme if the operating system is
 -- not Windows, or a non-coloured output otherwise (can be overriden).
 function l3utils.coloured(key, text, force)
   force = l3utils.ensure(force, false)
@@ -109,7 +121,7 @@ end
 -- This function gets the linebreak symbol based on the underlying
 -- operating system. It was written to be as much platform-independent as
 -- possible.
--- @return the linebreak symbol (potentially '\n').
+-- @return The linebreak symbol (potentially `\n`).
 function l3utils.linebreak()
   return package.config:sub(2, 2)
 end
@@ -117,7 +129,7 @@ end
 --- Wraps a string into a sequence of lines according to a specified
 --- width.
 -- This function takes a string and splits it into a sequence of lines,
--- separated by the default linebreak symbol (potentially '\n'). Lines
+-- separated by the default linebreak symbol (potentially `\n`). Lines
 -- are broken at spaces. The logic behind this function aims at handling
 -- coloured sentences as well, but it was not tested enough. Note that
 -- Lua has some issues handling Unicode strings, so this function is
@@ -126,7 +138,7 @@ end
 -- @param width a nonzero, positive integer representing the number of
 -- colums to be displayed (in general, a sensible value would be lower
 -- than 80 columns).
--- @return the wrapped string.
+-- @return The wrapped string.
 function l3utils.wrap(text, width)
   local wrapped, colour, lb = '', '', l3utils.linebreak()
   local checkpoint, counter = 1, 1
