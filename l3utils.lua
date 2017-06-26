@@ -171,3 +171,5 @@ function l3utils.wrap(text, width)
   return wrapped
 end
 
+-- export module
+return l3utils
