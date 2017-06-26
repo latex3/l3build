@@ -4,7 +4,7 @@ collected together a few pointers to help things along.
 
 ## Bugs
 
-Please log bugs using the [issues](https://github.com/latex3/l3build/issues]
+Please log bugs using the [issues](https://github.com/latex3/l3build/issues)
 system on GitHub, and choose the 'bug' label. Handy information that you might
 include, depending on the nature of the issue, includes
 
