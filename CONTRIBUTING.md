@@ -37,8 +37,9 @@ which come about as `l3build`'s focus is testing and building LaTeX packages:
   and generated from `l3build.dtx`
 - As far as possible, everything is done within `l3build` itself or tools
   directly available in a TeX system or as standard in the supported
-  systems (Windows, MacOS, Linux): the exception is `zip`, which is
-  required for sending releases to CTAN and which isn't standard on Windows
+  systems (Windows, MacOS, Linux)
+- The `l3build` interfaces should be platform-agnostic (though it may be
+  necessary of course to branch inside particular functions)
 
 If you are submitting a pull request, notice that
 
