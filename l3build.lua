@@ -40,9 +40,16 @@ bundle = bundle or ""
 if module == "" and bundle == "" then
   if string.match(arg[0], "l3build%.lua$") then
     print(
-      "\n"
-        .. "Error: Call l3build using a configuration file, not directly.\n"
+      "\n" ..
+      "l3build: A testing and building system for LaTeX\n\n" ..
+      "Release " .. release_date
     )
+    if arg[1] and not string.match(arg[1], "version") then
+      print(
+        "\n"
+          .. "Error: Call l3build using a configuration file, not directly.\n"
+      )
+    end
   else
     print(
       "\n"
@@ -2212,8 +2219,9 @@ end
 
 function version()
   print(
-    "\n"
-    .. "l3build Release " .. gsub(release_date, "/", "-") .. "\n"
+    "\n" ..
+    "l3build: A testing and building system for LaTeX\n\n" ..
+    "Release " .. release_date
   )
 end
 

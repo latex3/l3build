@@ -8,7 +8,7 @@ Please log bugs using the [issues](https://github.com/latex3/l3build/issues)
 system on GitHub, and choose the 'bug' label. Handy information that you might
 include, depending on the nature of the issue, includes
 
-- Your version of `l3build` (`texlua build.lua version`)
+- Your version of `l3build` (`texlua l3build.lua version`)
 - Your TeX system details (for example 'TeX Live 2017')
 - Your operating system
 - The contents of your `build.lua` file
