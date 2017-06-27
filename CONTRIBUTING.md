@@ -47,3 +47,5 @@ If you are submitting a pull request, notice that
   commit messages
 - We favour a single linear history so will rebase agreed pull requests on to
   the `master` branch
+- Where a commit fixes or closes an issue, please include this information
+  in the first line of the commit message
