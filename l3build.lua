@@ -159,6 +159,14 @@ bibtexopts    = bibtexopts    or "-W"
 makeindexexe  = makeindexexe  or "makeindex"
 makeindexopts = makeindexopts or ""
 
+-- Forcing epoch
+if forcecheckepoch == nil then
+  forcecheckepoch = true
+end
+if forcedocepoch == nil then
+  forcedocepoch = true
+end
+
 -- Other required settings
 asciiengines = asciiengines or {"pdftex"}
 checkruns    = checkruns    or 1
@@ -1393,13 +1401,18 @@ function runtest(name, engine, hide, ext, makepdf)
       -- Avoid spurious output from (u)pTeX
       os_setenv .. " GUESS_INPUT_KANJI_ENCODING=0"
         .. os_concat ..
-      -- Fix the time of the run
-      os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
-        .. os_concat ..
-      os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
-        .. os_concat ..
-      os_setenv .. " FORCE_SOURCE_DATE=1"
-        .. os_concat ..
+      (
+        forcecheckepoch and
+          (
+            os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
+              .. os_concat ..
+            os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
+              .. os_concat ..
+            os_setenv .. " FORCE_SOURCE_DATE=1"
+              .. os_concat
+          )
+        or ""
+      ) ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
@@ -1497,7 +1510,19 @@ function runtool(subdir, dir, envvar, command)
   return(
     run(
       typesetdir .. "/" .. subdir,
-      os_setenv .. " " .. envvar .. "=." .. os_pathsep
+        (
+          forcedocepoch and
+            (
+              os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
+               .. os_concat ..
+              os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
+                .. os_concat ..
+              os_setenv .. " FORCE_SOURCE_DATE=1"
+                .. os_concat
+            )
+          or ""
+        ) ..
+        os_setenv .. " " .. envvar .. "=." .. os_pathsep
         .. abspath(localdir) .. os_pathsep
         .. abspath(dir .. "/" .. subdir)
         .. (typesetsearch and os_pathsep or "") ..
