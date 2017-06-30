@@ -776,6 +776,9 @@
 % \cs{TESTEXP} surrounds its contents with \cs{TYPE} and formatting to match \cs{TEST}; this can be used as a shorthand to test expandable commands.
 % \item
 % TODO: would a \cs{TESTFEXP} command (based on \cs{romannumeral} expansion) be useful as well?
+% \item
+% \cs{BEGINTEST}\marg{title} \dots \cs{ENDTEST} is an environment form of
+% \cs{TEST}, allowing verbatim material, \emph{etc.} to appear.
 % \end{itemize}
 % An example of some of these commands is shown following.
 % \begin{Verbatim}
@@ -1503,7 +1506,18 @@
 % \end{macro}
 %
 % \begin{macro}
-%   {\SEPARATOR, \TEST, \TESTEXP, \TRUE, \FALSE, \YES, \NO, \NEWLINE}
+%   {
+%     \SEPARATOR,
+%     \BEGINTEST,
+%     \ENDTEST,
+%     \TEST,
+%     \TESTEXP,
+%     \TRUE,
+%     \FALSE,
+%     \YES,
+%     \NO,
+%     \NEWLINE
+%   }
 %   We are not starved for space in the log file output, so let's make it as
 %   verbose as is useful when reading the |.diff|'s.
 %    \begin{macrocode}
@@ -1512,30 +1526,29 @@
     ============================================================%
   }%
 }
-\long\def\TEST#1#2{%
+\protected\long\def\BEGINTEST#1{%
   \global\advance\gTESTint by 1 %
   \SEPARATOR
   \LONGTYPEOUT{TEST \the\gTESTint: \detokenize{#1}}%
   \SEPARATOR
   \begingroup
     \let\TYPE\LONGTYPEOUT
-    #2%
+
+}
+\protected\long\def\ENDTEST{%
   \endgroup
   \SEPARATOR
   \LONGTYPEOUT{}%
 }
+\long\def\TEST#1#2{%
+  \BEGINTEST{#1}%
+  #2%
+  \ENDTEST
+}
 \long\def\TESTEXP#1#2{%
-  \global\advance\gTESTint by 1 %
-  \SEPARATOR
-  \LONGTYPEOUT{%
-    TEST \the\gTESTint: \detokenize{#1}}%
-  \SEPARATOR
-  \begingroup
-    \long\def\TYPE##1{##1}%
-    \LONGTYPEOUT{#2}%
-  \endgroup
-  \SEPARATOR
-  \LONGTYPEOUT{}%
+  \BEGINTEST{#1}%
+  \LONGTYPEOUT{#2}%
+  \ENDTEST
 }
 \def \TRUE  {\TYPE{TRUE}}
 \def \FALSE {\TYPE{FALSE}}
