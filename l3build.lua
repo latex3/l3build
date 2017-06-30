@@ -680,7 +680,7 @@ end
 --
 
 -- Do some subtarget for all modules in a bundle
-local function allmodules(target)
+function call(dirs, target)
   local date = ""
   if optdate then
     date = " --date=" .. optdate[1]
@@ -693,7 +693,7 @@ local function allmodules(target)
   if optrelease then
     release = " --release=" .. optrelease[1]
   end
-  for _,i in ipairs(modules) do
+  for _,i in ipairs(dirs) do
     print(
       "Running script " .. scriptname .. " with target \"" .. target
         .. "\" for module "
@@ -1749,7 +1749,7 @@ function clean()
 end
 
 function bundleclean()
-  local errorlevel = allmodules("clean")
+  local errorlevel = call(modules, "clean")
   for _,i in ipairs(cleanfiles) do
     errorlevel = rm(".", i) + errorlevel
   end
@@ -1833,7 +1833,7 @@ function ctan(standalone)
     errorlevel = check()
     bundle = module
   else
-    errorlevel = allmodules("bundlecheck")
+    errorlevel = call(modules, "bundlecheck")
   end
   if errorlevel == 0 then
     rmdir(ctandir)
@@ -1843,7 +1843,7 @@ function ctan(standalone)
     if standalone then
       errorlevel = bundlectan()
     else
-      errorlevel = allmodules("bundlectan")
+      errorlevel = call(modules, "bundlectan")
     end
   else
     print("\n====================")
@@ -2237,28 +2237,28 @@ function stdmain(target, files)
     -- Detect all of the modules
     modules = modules or listmodules()
     if target == "doc" then
-      errorlevel = allmodules("doc")
+      errorlevel = call(modules, "doc")
     elseif target == "check" then
-      errorlevel = allmodules("bundlecheck")
+      errorlevel = call(modules, "bundlecheck")
       if errorlevel ~=0 then
         print("There were errors: checks halted!\n")
       end
     elseif target == "clean" then
       errorlevel = bundleclean()
     elseif target == "cmdcheck" and next(cmdchkfiles) ~= nil then
-      errorlevel = allmodules("cmdcheck")
+      errorlevel = call(modules, "cmdcheck")
     elseif target == "ctan" then
       errorlevel = ctan()
     elseif target == "install" then
-      errorlevel = allmodules("install")
+      errorlevel = call(modules, "install")
     elseif target == "setversion" then
-      errorlevel = allmodules("setversion")
+      errorlevel = call(modules, "setversion")
       -- Deal with any files in the bundle dir itself
       if errorlevel == 0 then
         errorlevel = setversion()
       end
     elseif target == "unpack" then
-      errorlevel = allmodules("bundleunpack")
+      errorlevel = call(modules, "bundleunpack")
     elseif target == "version" then
       version()
     else

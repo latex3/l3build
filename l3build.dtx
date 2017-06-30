@@ -1317,6 +1317,17 @@
 %   used inside |os.execute| (it does not terminate).
 % \end{variable}
 %
+% \subsection{Components of \texttt{l3build}}
+%
+% \begin{function}{call()}
+%   \begin{syntax}
+%     |call(|\meta{dirs}, \meta{target}|)|
+%   \end{syntax}
+%   Runs the \texttt{l3build} \meta{target} (a string) for each directory in the
+%   \meta{dirs} (a table). This will pass command line options for the parent
+%   script to the child processes.
+% \end{function}
+%
 % \end{documentation}
 %
 % \begin{implementation}
