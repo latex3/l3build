@@ -681,17 +681,9 @@ end
 
 -- Do some subtarget for all modules in a bundle
 function call(dirs, target)
-  local date = ""
-  if optdate then
-    date = " --date=" .. optdate[1]
-  end
-  local engines = ""
-  if optengines then
-    engines = " --engine=" .. concat(optengines, ",")
-  end
-  local release = ""
-  if optrelease then
-    release = " --release=" .. optrelease[1]
+  local s = ""
+  for i = 2, #arg do
+    s = s .. " " .. arg[i]
   end
   for _,i in ipairs(dirs) do
     print(
@@ -701,13 +693,7 @@ function call(dirs, target)
     )
     local errorlevel = run(
       i,
-      "texlua " .. scriptname .. " " .. target
-        .. (opthalt and " -H" or "")
-        .. date
-        .. engines
-        .. (optpdf and " -p" or "")
-        .. (optquiet and " -q" or "")
-        .. release
+      "texlua " .. scriptname .. " " .. target .. s
     )
     if errorlevel ~= 0 then
       return errorlevel
