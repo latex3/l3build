@@ -920,6 +920,22 @@
 %   \label{fig:box-log}
 % \end{figure}
 %
+% \subsection{Testing entire pages}
+%
+% There may be occasions where creating entire test pages is necessary
+% to observe the test output required. That is best achieved by applying
+% \cs{showoutput} and forcing a complete page to be produced, for example
+% \begin{Verbatim}[frame=single,fontsize=\small]
+% \input{regression-test.tex}
+% \documentclass{article}
+% \usepackage{expl3}
+% \START
+% \showoutput
+% % Test content here
+% \vfil\break
+% \END
+% \end{Verbatim}
+%
 % \subsection{Additional test tasks}
 %
 % A standard test will run the file \texttt{\meta{name}.lvt} using one
