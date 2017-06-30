@@ -352,7 +352,9 @@
 % Checks only the test \texttt{\meta{name(s)}.lvt}.
 % All engines specified by \var{checkengines} are tested unless the command
 % line option \texttt{--engine} (or \texttt{-e}) has been given to limit
-% testing to a single engine.
+% testing to a single engine. Normally testing is preceded by unpacking
+% source files and copying the result plus any additional support to the
+% test directory: this may be skipped using the \texttt{-s} option.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{check -p}
