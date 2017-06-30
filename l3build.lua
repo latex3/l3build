@@ -212,6 +212,7 @@ local execute          = os.execute
 local exit             = os.exit
 local getenv           = os.getenv
 local os_remove        = os.remove
+local os_time          = os.time
 local os_type          = os.type
 local luatex_revision  = status.luatex_revision
 local luatex_version   = status.luatex_version
@@ -237,6 +238,7 @@ local function argparse()
     {
       date                = "date"       ,
       engine              = "engine"     ,
+      epoch               = "epoch"      ,
       ["halt-on-error"]   = "halt"       ,
       ["halt-on-failure"] = "halt"       ,
       help                = "help"       ,
@@ -249,6 +251,7 @@ local function argparse()
     {
       d = "date"       ,
       e = "engine"     ,
+      E = "epoch"      ,
       h = "help"       ,
       H = "halt"       ,
       p = "pdf"        ,
@@ -260,6 +263,7 @@ local function argparse()
     {
       date        = true ,
       engine      = true ,
+      epoch       = true ,
       halt        = false,
       help        = false,
       pdf         = false,
@@ -372,6 +376,7 @@ options = argparse()
 
 local optdate    = options["date"]
 local optengines = options["engine"]
+local optepoch   = options["epoch"]
 local opthalt    = options["halt"]
 local optpdf     = options["pdf"]
 local optquiet   = options["quiet"]
@@ -389,6 +394,27 @@ if optengines then
       print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!\n")
       exit(1)
     end
+  end
+end
+
+-- Tidy up the epoch setting
+-- Force an epoch if set at the command line
+if optepoch then
+  epoch           = optepoch[1]
+  forcecheckepoch = true
+  forcedocepoch   = true
+end
+-- If given as an ISO date, turn into an epoch number
+do
+  local y, m, d = match(epoch, "^(%d%d%d%d)-(%d%d)-(%d%d)$")
+  if y then
+    epoch =
+      os_time({year = y, month = m, day = d, hour = 0, sec = 0, isdst = nil}) -
+      os_time({year = 1970, month = 1, day = 1, hour = 0, sec = 0, isdst = nil})
+  elseif match(epoch, "^%d+$") then
+    epoch = tonumber(epoch)
+  else
+    epoch = 0
   end
 end
 
@@ -1672,6 +1698,7 @@ function help()
   print("Valid options are:")
   print("   --date|-d           Sets the date to insert into sources")
   print("   --engine|-e         Sets the engine to use for running test")
+  print("   --epoch|-E          Sets the epoch for tests and typesetting")
   print("   --halt-on-error|-H  Stops running tests after the first failure")
   print("   --pdf|-p            Check/save PDF files")
   print("   --quiet|-q          Suppresses TeX output when unpacking")
