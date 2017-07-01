@@ -15,4 +15,14 @@
   \show\y
 }
 
-\END
+\newpage
+
+\showoutput
+
+\BEGINTEST{Enviornment test}
+  \begin{verbatim}
+    #$%&
+  \end{verbatim}
+\ENDTEST
+
+\end{document}
