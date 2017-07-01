@@ -234,7 +234,7 @@ local function argparse()
       help                = "help"       ,
       pdf                 = "pdf"        ,
       quiet               = "quiet"      ,
-      ["skip-test-setup"] = "skip"       ,
+      rerun               = "rerun"      ,
       testfiledir         = "testfiledir",
       version             = "version"
     }
@@ -246,7 +246,7 @@ local function argparse()
       H = "halt"       ,
       p = "pdf"        ,
       q = "quiet"      ,
-      s = "skip"       ,
+      r = "rerun"      ,
       t = "testfiledir",
       v = "version"
     }
@@ -258,7 +258,7 @@ local function argparse()
       help        = false,
       pdf         = false,
       quiet       = false,
-      skip        = false,
+      rerun       = false,
       testfiledir = true ,
       version     = true
     }
@@ -370,7 +370,7 @@ local optengines = options["engine"]
 local opthalt    = options["halt"]
 local optpdf     = options["pdf"]
 local optquiet   = options["quiet"]
-local optskip    = options["skip"]
+local optrerun   = options["rerun"]
 local optversion = options["version"]
 
 -- Convert a file glob into a pattern for use by e.g. string.gub
@@ -1639,7 +1639,7 @@ function help()
   print("   --halt-on-error|-H  Stops running tests after the first failure")
   print("   --pdf|-p            Check/save PDF files")
   print("   --quiet|-q          Suppresses TeX output when unpacking")
-  print("   --skip-test-setup|-s Runs tests without any unpacking, etc.")
+  print("   --rerun|-r          Runs tests without any unpacking, etc.")
   print("   --testfiledir|-t    Selects the specified testfile location")
   print("   --version|-v        Sets the version to insert into sources")
   print("")
@@ -1649,7 +1649,7 @@ end
 function check(names)
   local errorlevel = 0
   if testfiledir ~= "" and direxists(testfiledir) then
-    if not optskip then
+    if not optrerun then
       checkinit()
     end
     local hide = true
