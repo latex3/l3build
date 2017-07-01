@@ -306,9 +306,9 @@
 % \item \texttt{--pdf} (\texttt{-p}) Test PDF file against a reference
 %   version rather than using a log comparison
 % \item \texttt{--quiet} (\texttt{-q}) Suppresses output from unpacking
-% \item \texttt{--release} (\texttt{-r}) Release string to use when setting
-%   version data
 % \item \texttt{--textfiledir} (\texttt{-t}) Select a specific set of tests
+% \item \texttt{--version} (\texttt{-v}) Version string to use when setting
+%   version data
 % \end{itemize}
 %
 % \begin{buildcmd}{check}
@@ -480,7 +480,7 @@
 % \begin{buildcmd}{setversion}
 % Modifies the content of files specified by |versionfiles| to allow
 % automatic updating of the file date and version. The latter are
-% specified using the |-d| and |-r| command line options and if not
+% specified using the |-d| and |-v| command line options and if not
 % given will default to the current date in ISO format (YYYY-MM-DD) and |-1|,
 % respectively. As detailed below, the standard set up has no search pattern
 % defined for this target and so no action will be taken \emph{unless}
@@ -1053,7 +1053,7 @@
 % a suitable function might read as shown in Figure~\ref{fig:update-line}.
 % \begin{figure}
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
-%     function setversion_update_line(line, date, release)
+%     function setversion_update_line(line, date, version)
 %       -- No real regex so do it one type at a time
 %       for _,i in pairs({"Class", "File", "Package"}) do
 %         if string.match(
@@ -1063,7 +1063,7 @@
 %           line = string.gsub(line, "%[%d%d%d%d/%d%d/%d%d", "["
 %             .. string.gsub(date, "%-", "/")
 %           line = string.gsub(
-%             line, "(%[%d%d%d%d/%d%d/%d%d) [^ ]*", "%1 " .. release
+%             line, "(%[%d%d%d%d/%d%d/%d%d) [^ ]*", "%1 " .. version
 %           )
 %           break
 %         end
@@ -1156,8 +1156,8 @@
 %       \var{help}        & Boolean \\
 %       \var{pdf}         & Boolean \\
 %       \var{quiet}       & Boolean \\
-%       \var{release}     & String  \\
 %       \var{testfiledir} & String  \\
+%       \var{version}     & String  \\
 %     \bottomrule
 %     \end{tabular}
 %   \end{center}

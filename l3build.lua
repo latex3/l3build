@@ -234,8 +234,8 @@ local function argparse()
       help                = "help"       ,
       pdf                 = "pdf"        ,
       quiet               = "quiet"      ,
-      release             = "release"    ,
-      testfiledir         = "testfiledir"
+      testfiledir         = "testfiledir",
+      version             = "version"
     }
   local short_options =
     {
@@ -245,8 +245,8 @@ local function argparse()
       H = "halt"       ,
       p = "pdf"        ,
       q = "quiet"      ,
-      r = "release"    ,
-      t = "testfiledir"
+      t = "testfiledir",
+      v = "version"
     }
   local option_args =
     {
@@ -256,8 +256,8 @@ local function argparse()
       help        = false,
       pdf         = false,
       quiet       = false,
-      release     = true,
-      testfiledir = true
+      testfiledir = true ,
+      version     = true
     }
   local args = args
   -- arg[1] is a special case: must be a command or "-h"/"--help"
@@ -367,7 +367,7 @@ local optengines = options["engine"]
 local opthalt    = options["halt"]
 local optpdf     = options["pdf"]
 local optquiet   = options["quiet"]
-local optrelease = options["release"]
+local optversion = options["version"]
 
 -- Convert a file glob into a pattern for use by e.g. string.gub
 -- Based on https://github.com/davidm/lua-glob-pattern
@@ -1635,8 +1635,8 @@ function help()
   print("   --halt-on-error|-H  Stops running tests after the first failure")
   print("   --pdf|-p            Check/save PDF files")
   print("   --quiet|-q          Suppresses TeX output when unpacking")
-  print("   --release|-r        Sets the release to insert into sources")
   print("   --testfiledir|-t    Selects the specified testfile location")
+  print("   --version|-v        Sets the version to insert into sources")
   print("")
   print("See l3build.pdf for further details.")
 end
@@ -2020,7 +2020,7 @@ end
 -- Provide some standard search-and-replace functions
 if versionform ~= "" and not setversion_update_line then
   if versionform == "ProvidesPackage" then
-    function setversion_update_line(line, date, release)
+    function setversion_update_line(line, date, version)
       -- No real regex so do it one type at a time
       for _,i in pairs({"Class", "File", "Package"}) do
         if match(
@@ -2030,7 +2030,7 @@ if versionform ~= "" and not setversion_update_line then
           line = gsub(line, "%[%d%d%d%d/%d%d/%d%d", "["
             .. gsub(date, "%-", "/"))
           line = gsub(
-            line, "(%[%d%d%d%d/%d%d/%d%d) [^ ]*", "%1 " .. release
+            line, "(%[%d%d%d%d/%d%d/%d%d) [^ ]*", "%1 " .. version
           )
           break
         end
@@ -2038,7 +2038,7 @@ if versionform ~= "" and not setversion_update_line then
       return line
     end
   elseif versionform == "ProvidesExplPackage" then
-    function setversion_update_line(line, date, release)
+    function setversion_update_line(line, date, version)
       -- No real regex so do it one type at a time
       for _,i in pairs({"Class", "File", "Package"}) do
         if match(
@@ -2048,7 +2048,7 @@ if versionform ~= "" and not setversion_update_line then
           line = gsub(
             line,
             "{%d%d%d%d/%d%d/%d%d}( *){[^}]*}",
-            "{" .. gsub(date, "%-", "/") .. "}%1{" .. release .. "}"
+            "{" .. gsub(date, "%-", "/") .. "}%1{" .. version .. "}"
           )
           break
         end
@@ -2056,22 +2056,22 @@ if versionform ~= "" and not setversion_update_line then
       return line
     end
   elseif versionform == "filename" then
-    function setversion_update_line(line, date, release)
+    function setversion_update_line(line, date, version)
       if match(line, "^\\def\\filedate{%d%d%d%d/%d%d/%d%d}$") then
         line = "\\def\\filedate{" .. gsub(date, "%-", "/") .. "}"
       end
       if match(line, "^\\def\\fileversion{[^}]+}$") then
-        line = "\\def\\fileversion{" .. release .. "}"
+        line = "\\def\\fileversion{" .. version .. "}"
       end
       return line
     end
   elseif versionform == "ExplFileDate" then
-    function setversion_update_line(line, date, release)
+    function setversion_update_line(line, date, version)
       if match(line, "^\\def\\ExplFileDate{%d%d%d%d/%d%d/%d%d}$") then
         line = "\\def\\ExplFileDate{" .. gsub(date, "%-", "/") .. "}"
       end
       if match(line, "^\\def\\ExplFileVersion{[^}]+}$") then
-        line = "\\def\\ExplFileVersion{" .. release .. "}"
+        line = "\\def\\ExplFileVersion{" .. version .. "}"
       end
       return line
     end
@@ -2079,16 +2079,16 @@ if versionform ~= "" and not setversion_update_line then
 end
 
 -- Used to actually carry out search-and-replace
-setversion_update_line = setversion_update_line or function(line, date, release)
+setversion_update_line = setversion_update_line or function(line, date, version)
   return line
 end
 
 function setversion(dir)
-  local function rewrite(dir, file, date, release)
+  local function rewrite(dir, file, date, version)
     local changed = false
     local result = ""
     for line in lines(dir .. "/" .. file) do
-      local newline = setversion_update_line(line, date, release)
+      local newline = setversion_update_line(line, date, version)
       if newline ~= line then
         line = newline
         changed = true
@@ -2116,14 +2116,14 @@ function setversion(dir)
   if optdate then
     date = optdate[1] or date
   end
-  local release = -1
-  if optrelease then
-    release = optrelease[1] or release
+  local version = -1
+  if optversion then
+    version = optversion[1] or version
   end
   local dir = dir or "."
   for _,i in pairs(versionfiles) do
     for _,j in pairs(filelist(dir, i)) do
-      rewrite(dir, j, date, release)
+      rewrite(dir, j, date, version)
     end
   end
   return 0
