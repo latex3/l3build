@@ -15,7 +15,6 @@ l. ...}
 ============================================================
 TEST 2: Enviornment test
 ============================================================
-(load luc: ../lmmono10-regular.luc)
 ============================================================
 Completed box being shipped out [1]
 \vbox(578.15999+0.0)x469.75499, direction TLT
@@ -26,36 +25,62 @@ Completed box being shipped out [1]
 ...\hbox(0.0+0.0)x469.75499, direction TLT
 ..\glue 0.0
 ..\glue(\lineskip) 0.0
-..\vbox(578.15999+0.0)x469.75499, glue set 544.15997fil, direction TLT
+..\vbox(578.15999+0.0)x469.75499, glue set 532.15997fil, direction TLT
 ...\glue(\topskip) 3.06
-...\hbox(6.94+0.11)x469.75499, glue set 399.72498fil, direction TLT
+...\hbox(6.94+0.83)x469.75499, glue set 427.755fil, direction TLT
 ....\localpar
 .....\localinterlinepenalty=0
 .....\localbrokenpenalty=0
 .....\localleftbox=null
 .....\localrightbox=null
-....\hbox(0.0+0.0)x20.0, direction TLT
-....\TU/lmr/m/n/10 H
-....\TU/lmr/m/n/10 e
-....\TU/lmr/m/n/10 l
-....\TU/lmr/m/n/10 l
-....\TU/lmr/m/n/10 o
-....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
-....\TU/lmr/m/n/10 w
-....\kern -0.28
-....\TU/lmr/m/n/10 o
-....\TU/lmr/m/n/10 r
-....\TU/lmr/m/n/10 l
-....\TU/lmr/m/n/10 d
+....\hbox(0.0+0.0)x0.0, direction TLT
+.....\glue 0.0
+.....\glue 0.0
+.....\glue 0.0
+.....\hbox(0.0+0.0)x0.0, direction TLT
+.....\glue 0.0
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\TU/lmtt/m/n/10 #
+....\TU/lmtt/m/n/10 $
+....\TU/lmtt/m/n/10 %
+....\TU/lmtt/m/n/10 &
+....\hbox(0.0+0.0)x0.0, direction TLT
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
+...\penalty 0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 11.17
+...\hbox(0.0+0.0)x469.75499, glue set 464.505fil, direction TLT
+....\localpar
+.....\localinterlinepenalty=0
+.....\localbrokenpenalty=0
+.....\localleftbox=null
+.....\localrightbox=null
+....\hbox(0.0+0.0)x0.0, direction TLT
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\hbox(0.0+0.0)x0.0, direction TLT
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\penalty 0
+...\glue 0.0
 ...\penalty 0
 ...\glue 0.0 plus 1.0
 ...\glue 0.0 plus -1.0
 ...\glue 0.0 plus 1.0
 ...\glue(\parskip) 0.0
-...\glue(\baselineskip) 4.95
+...\glue(\baselineskip) 5.06
 ...\hbox(6.94+0.83)x469.75499, glue set 427.755fil, direction TLT
 ....\localpar
 .....\localinterlinepenalty=0
