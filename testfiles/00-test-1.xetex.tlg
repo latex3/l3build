@@ -25,8 +25,22 @@ Completed box being shipped out [1]
 ...\hbox(0.0+0.0)x469.75499
 ..\glue 0.0
 ..\glue(\lineskip) 0.0
-..\vbox(578.15999+0.0)x469.75499, glue set 556.15999fil
+..\vbox(578.15999+0.0)x469.75499, glue set 544.15999fil
 ...\glue(\topskip) 3.06
+...\hbox(6.94+0.10999)x469.75499, glue set 399.72499fil
+....\hbox(0.0+0.0)x20.0
+....\TU/lmr/m/n/10 Hello
+....\glue 3.33 plus 1.665 minus 1.11
+....\TU/lmr/m/n/10 world
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\glue 0.0 plus 1.0
+...\glue 0.0 plus -1.0
+...\glue 0.0 plus 1.0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 4.95001
 ...\hbox(6.94+0.82999)x469.75499, glue set 427.75499fil
 ....\hbox(0.0+0.0)x0.0
 .....\glue 0.0

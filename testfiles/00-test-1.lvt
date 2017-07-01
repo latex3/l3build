@@ -19,6 +19,11 @@
 
 \showoutput
 
+\OMIT
+  % Force font loading
+  Hello world
+\TIMO
+
 \BEGINTEST{Enviornment test}
   \begin{verbatim}
     #$%&

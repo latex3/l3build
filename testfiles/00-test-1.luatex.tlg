@@ -26,8 +26,36 @@ Completed box being shipped out [1]
 ...\hbox(0.0+0.0)x469.75499, direction TLT
 ..\glue 0.0
 ..\glue(\lineskip) 0.0
-..\vbox(578.15999+0.0)x469.75499, glue set 556.15997fil, direction TLT
+..\vbox(578.15999+0.0)x469.75499, glue set 544.15997fil, direction TLT
 ...\glue(\topskip) 3.06
+...\hbox(6.94+0.11)x469.75499, glue set 399.72498fil, direction TLT
+....\localpar
+.....\localinterlinepenalty=0
+.....\localbrokenpenalty=0
+.....\localleftbox=null
+.....\localrightbox=null
+....\hbox(0.0+0.0)x20.0, direction TLT
+....\TU/lmr/m/n/10 H
+....\TU/lmr/m/n/10 e
+....\TU/lmr/m/n/10 l
+....\TU/lmr/m/n/10 l
+....\TU/lmr/m/n/10 o
+....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
+....\TU/lmr/m/n/10 w
+....\kern -0.28
+....\TU/lmr/m/n/10 o
+....\TU/lmr/m/n/10 r
+....\TU/lmr/m/n/10 l
+....\TU/lmr/m/n/10 d
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\glue 0.0 plus 1.0
+...\glue 0.0 plus -1.0
+...\glue 0.0 plus 1.0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 4.95
 ...\hbox(6.94+0.83)x469.75499, glue set 427.755fil, direction TLT
 ....\localpar
 .....\localinterlinepenalty=0
