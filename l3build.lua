@@ -369,6 +369,21 @@ local optpdf     = options["pdf"]
 local optquiet   = options["quiet"]
 local optversion = options["version"]
 
+-- Sanity check
+if optengines then
+   -- Make a lookup table
+   local t = { }
+  for _, engine in pairs(checkengines) do
+    t[engine] = true
+  end
+  for _, engine in pairs(optengines) do
+    if not t[engine] then
+      print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!\n")
+      exit(1)
+    end
+  end
+end
+
 -- Convert a file glob into a pattern for use by e.g. string.gub
 -- Based on https://github.com/davidm/lua-glob-pattern
 -- Simplified substantially: "[...]" syntax not supported as is not
