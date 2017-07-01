@@ -1532,19 +1532,19 @@ function runtool(subdir, dir, envvar, command)
   return(
     run(
       typesetdir .. "/" .. subdir,
-        os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
-          .. os_concat ..
-        os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES="
-          .. (forcedocepoch and "1" or "0")
-          .. os_concat ..
-        os_setenv .. " FORCE_SOURCE_DATE="
-          .. (forcedocepoch and "1" or "0")
-          .. os_concat ..
-        os_setenv .. " " .. envvar .. "=." .. os_pathsep
+      os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
+        .. os_concat ..
+      os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES="
+        .. (forcedocepoch and "1" or "0")
+        .. os_concat ..
+      os_setenv .. " FORCE_SOURCE_DATE="
+        .. (forcedocepoch and "1" or "0")
+        .. os_concat ..
+      os_setenv .. " " .. envvar .. "=." .. os_pathsep
         .. abspath(localdir) .. os_pathsep
         .. abspath(dir .. "/" .. subdir)
-        .. (typesetsearch and os_pathsep or "") ..
-      os_concat ..
+        .. (typesetsearch and os_pathsep or "")
+        .. os_concat ..
       command
     )
   )
