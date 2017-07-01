@@ -378,7 +378,12 @@ if optengines then
   end
   for _, engine in pairs(optengines) do
     if not t[engine] then
-      print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!\n")
+      print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!")
+      print("\n  Valid values are:")
+      for _, engine in ipairs(checkengines) do
+        print("  - " .. engine)
+      end
+      print("")
       exit(1)
     end
   end
