@@ -229,6 +229,7 @@ local function argparse()
     {
       date                = "date"       ,
       engine              = "engine"     ,
+      force               = "force"      ,
       ["halt-on-error"]   = "halt"       ,
       ["halt-on-failure"] = "halt"       ,
       help                = "help"       ,
@@ -241,6 +242,7 @@ local function argparse()
     {
       d = "date"       ,
       e = "engine"     ,
+      f = "force"      ,
       h = "help"       ,
       H = "halt"       ,
       p = "pdf"        ,
@@ -252,6 +254,7 @@ local function argparse()
     {
       date        = true ,
       engine      = true ,
+      force       = false,
       halt        = false,
       help        = false,
       pdf         = false,
@@ -364,13 +367,14 @@ options = argparse()
 
 local optdate    = options["date"]
 local optengines = options["engine"]
+local optforce   = options["force"]
 local opthalt    = options["halt"]
 local optpdf     = options["pdf"]
 local optquiet   = options["quiet"]
 local optversion = options["version"]
 
 -- Sanity check
-if optengines then
+if optengines and not optforce then
    -- Make a lookup table
    local t = { }
   for _, engine in pairs(checkengines) do
@@ -1652,6 +1656,7 @@ function help()
   print("Valid options are:")
   print("   --date|-d           Sets the date to insert into sources")
   print("   --engine|-e         Sets the engine to use for running test")
+  print("   --force|-f          Force tests to run if engine is not set up")
   print("   --halt-on-error|-H  Stops running tests after the first failure")
   print("   --pdf|-p            Check/save PDF files")
   print("   --quiet|-q          Suppresses TeX output when unpacking")
