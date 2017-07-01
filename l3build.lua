@@ -235,6 +235,7 @@ local function argparse()
       help                = "help"       ,
       pdf                 = "pdf"        ,
       quiet               = "quiet"      ,
+      rerun               = "rerun"      ,
       testfiledir         = "testfiledir",
       version             = "version"
     }
@@ -247,6 +248,7 @@ local function argparse()
       H = "halt"       ,
       p = "pdf"        ,
       q = "quiet"      ,
+      r = "rerun"      ,
       t = "testfiledir",
       v = "version"
     }
@@ -259,6 +261,7 @@ local function argparse()
       help        = false,
       pdf         = false,
       quiet       = false,
+      rerun       = false,
       testfiledir = true ,
       version     = true
     }
@@ -371,6 +374,7 @@ local optforce   = options["force"]
 local opthalt    = options["halt"]
 local optpdf     = options["pdf"]
 local optquiet   = options["quiet"]
+local optrerun   = options["rerun"]
 local optversion = options["version"]
 
 -- Sanity check
@@ -1660,6 +1664,7 @@ function help()
   print("   --halt-on-error|-H  Stops running tests after the first failure")
   print("   --pdf|-p            Check/save PDF files")
   print("   --quiet|-q          Suppresses TeX output when unpacking")
+  print("   --rerun|-r          Runs tests without any unpacking, etc.")
   print("   --testfiledir|-t    Selects the specified testfile location")
   print("   --version|-v        Sets the version to insert into sources")
   print("")
@@ -1669,7 +1674,9 @@ end
 function check(names)
   local errorlevel = 0
   if testfiledir ~= "" and direxists(testfiledir) then
-    checkinit()
+    if not optrerun then
+      checkinit()
+    end
     local hide = true
     if names and next(names) then
       hide = false
