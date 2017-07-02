@@ -159,6 +159,14 @@ bibtexopts    = bibtexopts    or "-W"
 makeindexexe  = makeindexexe  or "makeindex"
 makeindexopts = makeindexopts or ""
 
+-- Forcing epoch
+if forcecheckepoch == nil then
+  forcecheckepoch = true
+end
+if forcedocepoch == nil then
+  forcedocepoch = true
+end
+
 -- Other required settings
 asciiengines = asciiengines or {"pdftex"}
 checkruns    = checkruns    or 1
@@ -204,6 +212,7 @@ local execute          = os.execute
 local exit             = os.exit
 local getenv           = os.getenv
 local os_remove        = os.remove
+local os_time          = os.time
 local os_type          = os.type
 local luatex_revision  = status.luatex_revision
 local luatex_version   = status.luatex_version
@@ -229,6 +238,7 @@ local function argparse()
     {
       date                = "date"       ,
       engine              = "engine"     ,
+      epoch               = "epoch"      ,
       force               = "force"      ,
       ["halt-on-error"]   = "halt"       ,
       ["halt-on-failure"] = "halt"       ,
@@ -243,6 +253,7 @@ local function argparse()
     {
       d = "date"       ,
       e = "engine"     ,
+      E = "epoch"      ,
       f = "force"      ,
       h = "help"       ,
       H = "halt"       ,
@@ -256,6 +267,7 @@ local function argparse()
     {
       date        = true ,
       engine      = true ,
+      epoch       = true ,
       force       = false,
       halt        = false,
       help        = false,
@@ -370,6 +382,7 @@ options = argparse()
 
 local optdate    = options["date"]
 local optengines = options["engine"]
+local optepoch   = options["epoch"]
 local optforce   = options["force"]
 local opthalt    = options["halt"]
 local optpdf     = options["pdf"]
@@ -394,6 +407,27 @@ if optengines and not optforce then
       print("")
       exit(1)
     end
+  end
+end
+
+-- Tidy up the epoch setting
+-- Force an epoch if set at the command line
+if optepoch then
+  epoch           = optepoch[1]
+  forcecheckepoch = true
+  forcedocepoch   = true
+end
+-- If given as an ISO date, turn into an epoch number
+do
+  local y, m, d = match(epoch, "^(%d%d%d%d)-(%d%d)-(%d%d)$")
+  if y then
+    epoch =
+      os_time({year = y, month = m, day = d, hour = 0, sec = 0, isdst = nil}) -
+      os_time({year = 1970, month = 1, day = 1, hour = 0, sec = 0, isdst = nil})
+  elseif match(epoch, "^%d+$") then
+    epoch = tonumber(epoch)
+  else
+    epoch = 0
   end
 end
 
@@ -1406,12 +1440,13 @@ function runtest(name, engine, hide, ext, makepdf)
       -- Avoid spurious output from (u)pTeX
       os_setenv .. " GUESS_INPUT_KANJI_ENCODING=0"
         .. os_concat ..
-      -- Fix the time of the run
       os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
         .. os_concat ..
-      os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
+      os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES="
+        .. (forcecheckepoch and "1" or "0")
         .. os_concat ..
-      os_setenv .. " FORCE_SOURCE_DATE=1"
+      os_setenv .. " FORCE_SOURCE_DATE="
+        .. (forcecheckepoch and "1" or "0")
         .. os_concat ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
@@ -1510,11 +1545,19 @@ function runtool(subdir, dir, envvar, command)
   return(
     run(
       typesetdir .. "/" .. subdir,
+      os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
+        .. os_concat ..
+      os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES="
+        .. (forcedocepoch and "1" or "0")
+        .. os_concat ..
+      os_setenv .. " FORCE_SOURCE_DATE="
+        .. (forcedocepoch and "1" or "0")
+        .. os_concat ..
       os_setenv .. " " .. envvar .. "=." .. os_pathsep
         .. abspath(localdir) .. os_pathsep
         .. abspath(dir .. "/" .. subdir)
-        .. (typesetsearch and os_pathsep or "") ..
-      os_concat ..
+        .. (typesetsearch and os_pathsep or "")
+        .. os_concat ..
       command
     )
   )
@@ -1660,6 +1703,7 @@ function help()
   print("Valid options are:")
   print("   --date|-d           Sets the date to insert into sources")
   print("   --engine|-e         Sets the engine to use for running test")
+  print("   --epoch|-E          Sets the epoch for tests and typesetting")
   print("   --force|-f          Force tests to run if engine is not set up")
   print("   --halt-on-error|-H  Stops running tests after the first failure")
   print("   --pdf|-p            Check/save PDF files")

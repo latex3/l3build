@@ -136,6 +136,9 @@
 \luavarset{makeindexexe} {"makeindex"}{MakeIndex executable}
 \luavarset{makeindexopts}{""}         {MakeIndex options}
 \luavarseparator
+\luavarset{forcecheckepoch}{"true"}    {Force epoch when running tests}
+\luavarset{forcedocepoch}  {"false"}   {Force epoch when typesetting}
+\luavarseparator
 \luavarset{asciiengines}{\{"pdftex"\}}{Engines which should log as sure ASCII}
 \luavarset{checkruns}   {1}           {How many times to run a check file before comparing the log.}
 \luavarset{epoch}       {1463734800}  {Epoch (Unix date) to set for test runs.}
@@ -965,6 +968,18 @@
 %   \caption{Example \texttt{runtest_tasks} function.}
 %   \label{fig:test-tasks}
 % \end{figure}
+%
+% \subsection{Epoch setting}
+%
+% To produce predictable output when suing dates, the test system offers the
+% ability to set the epoch to a known value. The \luavar{epoch} variable may
+% be given as a raw value (a simple integer) or as a date in ISO format.
+% The two flags \luavar{forcecheckepoch} and \luavar{forcedocepoch} then
+% determine whether this is applied in testing and typesetting, respectively.
+%
+% The epoch may also be given as a command line option, |-E|, which again
+% takes either a date or raw epoch. When given, this will automatically
+% activate forcing of the epoch in both testing and typesetting.
 %
 % \section{Alternative test formats}
 %
