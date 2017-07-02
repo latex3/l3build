@@ -1440,14 +1440,7 @@ function runtest(name, engine, hide, ext, makepdf)
       -- Avoid spurious output from (u)pTeX
       os_setenv .. " GUESS_INPUT_KANJI_ENCODING=0"
         .. os_concat ..
-      os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
-        .. os_concat ..
-      os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES="
-        .. (forcecheckepoch and "1" or "0")
-        .. os_concat ..
-      os_setenv .. " FORCE_SOURCE_DATE="
-        .. (forcecheckepoch and "1" or "0")
-        .. os_concat ..
+      (forcecheckepoch and setepoch() or "") ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
@@ -1486,16 +1479,14 @@ function dvitopdf(name, dir, engine, hide)
   if match(engine, "^u?ptex$") then
     run(
       dir,
-      os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
-        .. os_concat ..
+      (forcecheckepoch and setepoch() or "") ..
      "dvipdfmx  " .. name .. dviext
        .. (hide and (" > " .. os_null) or "")
     )
   else
     run(
       dir,
-      os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
-        .. os_concat ..
+      (forcecheckepoch and setepoch() or "") ..
      "dvips " .. name .. dviext
        .. (hide and (" > " .. os_null) or "")
        .. os_concat ..
@@ -1503,6 +1494,16 @@ function dvitopdf(name, dir, engine, hide)
         .. (hide and (" > " .. os_null) or "")
     )
   end
+end
+
+local function setepoch()
+  return
+    os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
+      .. os_concat ..
+    os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
+      .. os_concat ..
+    os_setenv .. " FORCE_SOURCE_DATE=1"
+      .. os_concat
 end
 
 -- Split a path into file and directory component
@@ -1545,14 +1546,7 @@ function runtool(subdir, dir, envvar, command)
   return(
     run(
       typesetdir .. "/" .. subdir,
-      os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
-        .. os_concat ..
-      os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES="
-        .. (forcedocepoch and "1" or "0")
-        .. os_concat ..
-      os_setenv .. " FORCE_SOURCE_DATE="
-        .. (forcedocepoch and "1" or "0")
-        .. os_concat ..
+      (forcedocepoch and setepoch() or "") ..
       os_setenv .. " " .. envvar .. "=." .. os_pathsep
         .. abspath(localdir) .. os_pathsep
         .. abspath(dir .. "/" .. subdir)
