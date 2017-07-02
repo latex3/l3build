@@ -1226,6 +1226,16 @@ function listmodules()
   return modules
 end
 
+local function setepoch()
+  return
+    os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
+      .. os_concat ..
+    os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
+      .. os_concat ..
+    os_setenv .. " FORCE_SOURCE_DATE=1"
+      .. os_concat
+end
+
 -- Run one test which may have multiple engine-dependent comparisons
 -- Should create a difference file for each failed test
 function runcheck(name, hide)
@@ -1494,16 +1504,6 @@ function dvitopdf(name, dir, engine, hide)
         .. (hide and (" > " .. os_null) or "")
     )
   end
-end
-
-local function setepoch()
-  return
-    os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
-      .. os_concat ..
-    os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
-      .. os_concat ..
-    os_setenv .. " FORCE_SOURCE_DATE=1"
-      .. os_concat
 end
 
 -- Split a path into file and directory component
