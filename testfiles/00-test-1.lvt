@@ -21,7 +21,9 @@
 
 \OMIT
   % Force font loading
-  Hello world
+  \begin{verbatim}
+    #$%&
+  \end{verbatim}
 \TIMO
 
 \BEGINTEST{Enviornment test}

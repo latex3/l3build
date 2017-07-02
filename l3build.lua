@@ -23,7 +23,7 @@ for those people who are interested.
 --]]
 
 -- Version information
-release_date = "2017/06/25"
+release_date = "2017/07/01"
 
 -- "module" is a deprecated function in Lua 5.2: as we want the name
 -- for other purposes, and it should eventually be 'free', simply
@@ -239,11 +239,13 @@ local function argparse()
       date                = "date"       ,
       engine              = "engine"     ,
       epoch               = "epoch"      ,
+      force               = "force"      ,
       ["halt-on-error"]   = "halt"       ,
       ["halt-on-failure"] = "halt"       ,
       help                = "help"       ,
       pdf                 = "pdf"        ,
       quiet               = "quiet"      ,
+      rerun               = "rerun"      ,
       testfiledir         = "testfiledir",
       version             = "version"
     }
@@ -252,10 +254,12 @@ local function argparse()
       d = "date"       ,
       e = "engine"     ,
       E = "epoch"      ,
+      f = "force"      ,
       h = "help"       ,
       H = "halt"       ,
       p = "pdf"        ,
       q = "quiet"      ,
+      r = "rerun"      ,
       t = "testfiledir",
       v = "version"
     }
@@ -264,10 +268,12 @@ local function argparse()
       date        = true ,
       engine      = true ,
       epoch       = true ,
+      force       = false,
       halt        = false,
       help        = false,
       pdf         = false,
       quiet       = false,
+      rerun       = false,
       testfiledir = true ,
       version     = true
     }
@@ -377,13 +383,15 @@ options = argparse()
 local optdate    = options["date"]
 local optengines = options["engine"]
 local optepoch   = options["epoch"]
+local optforce   = options["force"]
 local opthalt    = options["halt"]
 local optpdf     = options["pdf"]
 local optquiet   = options["quiet"]
+local optrerun   = options["rerun"]
 local optversion = options["version"]
 
 -- Sanity check
-if optengines then
+if optengines and not optforce then
    -- Make a lookup table
    local t = { }
   for _, engine in pairs(checkengines) do
@@ -391,7 +399,12 @@ if optengines then
   end
   for _, engine in pairs(optengines) do
     if not t[engine] then
-      print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!\n")
+      print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!")
+      print("\n  Valid values are:")
+      for _, engine in ipairs(checkengines) do
+        print("  - " .. engine)
+      end
+      print("")
       exit(1)
     end
   end
@@ -1691,9 +1704,11 @@ function help()
   print("   --date|-d           Sets the date to insert into sources")
   print("   --engine|-e         Sets the engine to use for running test")
   print("   --epoch|-E          Sets the epoch for tests and typesetting")
+  print("   --force|-f          Force tests to run if engine is not set up")
   print("   --halt-on-error|-H  Stops running tests after the first failure")
   print("   --pdf|-p            Check/save PDF files")
   print("   --quiet|-q          Suppresses TeX output when unpacking")
+  print("   --rerun|-r          Runs tests without any unpacking, etc.")
   print("   --testfiledir|-t    Selects the specified testfile location")
   print("   --version|-v        Sets the version to insert into sources")
   print("")
@@ -1703,7 +1718,9 @@ end
 function check(names)
   local errorlevel = 0
   if testfiledir ~= "" and direxists(testfiledir) then
-    checkinit()
+    if not optrerun then
+      checkinit()
+    end
     local hide = true
     if names and next(names) then
       hide = false
