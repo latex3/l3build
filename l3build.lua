@@ -237,69 +237,69 @@ local option_list =
   {
     date =
       {
-        args  = true,
         desc  = "Sets the date to insert into sources",
-        short = "d"
+        short = "d",
+        type  = "string"
       },
     engine =
       {
-        args  = true,
         desc  = "Sets the engine to use for running test",
-        short = "e"
+        short = "e",
+        type  = "table"
       },
     epoch =
       {
-        args  = true,
         desc  = "Sets the epoch for tests and typesetting",
-        short = "E"
+        short = "E",
+        type  = "string"
       },
     force =
       {
-        args  = false,
         desc  = "Force tests to run if engine is not set up",
-        short = "f"
+        short = "f",
+        type  = "boolean"
       },
     halt =
       {
-        args  = false,
         desc  = "Stops running tests after the first failure",
         long  = "halt-on-error",
-        short = "H"
+        short = "H",
+        type  = "boolean"
       },
     help =
       {
-        args  = false,
-        short = "h"
+        short = "h",
+        type  = "boolean"
       },
     pdf =
       {
-        args  = false,
         desc  = "Check/save PDF files",
-        short = "p"
+        short = "p",
+        type  = "boolean"
       },
     quiet =
       {
-        args  = false,
         desc  = "Suppresses TeX output when unpacking",
-        short = "q"
+        short = "q",
+        type  = "boolean"
       },
     rerun =
       {
-        args  = false,
         desc  = "Suppresses TeX output when unpacking",
         short = "q",
+        type  = "boolean"
       },
     testfiledir =
       {
-        args  = true,
         desc  = "Selects the specified testfile location",
-        short = "t"
+        short = "t",
+        type  = "table"
       },
     version =
       {
-        args  = true,
         desc  = "Sets the version to insert into sources",
-        short = "v"
+        short = "v",
+        type  = "string"
       },
   }
 
@@ -382,7 +382,13 @@ local function argparse()
       local optname = opts[opt]
       if optname then
         -- Tidy up arguments
-        if option_list[optname]["args"] then
+        if option_list[optname]["type"] == "boolean" then
+          if optarg then
+            local opt = "-" .. (match(a, "^%-%-") and "-" or "") .. opt
+            stderr:write("Value not allowed for option " .. opt .."\n")
+            return {"help"}
+          end
+        else
          if not optarg then
           optarg = arg[i + 1]
           if not optarg then
@@ -391,12 +397,6 @@ local function argparse()
           end
           i = i + 1
          end
-        else
-          if optarg then
-            local opt = "-" .. (match(a, "^%-%-") and "-" or "") .. opt
-            stderr:write("Value not allowed for option " .. opt .."\n")
-            return {"help"}
-          end
         end
       else
         stderr:write("Unknown option " .. a .."\n")
@@ -786,7 +786,7 @@ function call(dirs, target, opts)
       local t = option_list[k] or { }
       k = t["long"] or k
       local arg = ""
-      if t["args"] then
+      if t["type"] ~= "boolean" then
         for _,a in pairs(v) do
           if arg == "" then
             arg = "=" .. a -- Add the initial "=" here
