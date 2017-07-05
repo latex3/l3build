@@ -259,10 +259,9 @@ local option_list =
         short = "f",
         type  = "boolean"
       },
-    halt =
+    ["halt-on-error"] =
       {
         desc  = "Stops running tests after the first failure",
-        long  = "halt-on-error",
         short = "H",
         type  = "boolean"
       },
@@ -313,11 +312,7 @@ local function argparse()
   -- Turn long/short options into two lookup tables
   for k,v in pairs(option_list) do
     short_options[v["short"]] = k
-    if v["long"] then
-      long_options[v["long"]] = k
-    else
-      long_options[k] = k
-    end
+    long_options[k] = k
   end
   local args = args
   -- arg[1] is a special case: must be a command or "-h"/"--help"
@@ -788,7 +783,6 @@ function call(dirs, target, opts)
   for k,v in pairs(opts) do
     if k ~= "files" and k ~= "target" then -- Special cases
       local t = option_list[k] or { }
-      k = t["long"] or k
       local arg = ""
       if t["type"] == "string" then
         arg = arg .. "=" .. v
@@ -1322,7 +1316,7 @@ function runcheck(name, hide)
     else
       errlevel = compare_tlg(name, engine)
     end
-    if errlevel ~= 0 and options["halt"] then
+    if errlevel ~= 0 and options["halt-on-error"] then
       showfaileddiff()
       if errlevel ~= 0 then
         return 1
@@ -1760,7 +1754,6 @@ function help()
   print("Valid options are:")
   local longest = 0
   for k,v in pairs(option_list) do
-    k = v["long"] or k
     if len(k) > longest then
       longest = len(k)
     end
@@ -1773,7 +1766,6 @@ function help()
   sort(t)
   for _,k in ipairs(t) do
     local opt = option_list[k]
-    key = option_list[k]["long"] or k
     local filler = rep(" ", longest - len(k))
     if opt["desc"] then -- Skip --help as it has no desc
       print(
@@ -1817,7 +1809,7 @@ function check(names)
       local errlevel = runcheck(name, hide)
       -- Return value must be 1 not errlevel
       if errlevel ~= 0 then
-        if options["halt"] then
+        if options["halt-on-error"] then
           return 1
         else
           errorlevel = 1
