@@ -774,10 +774,31 @@ end
 --
 
 -- Do some subtarget for all modules in a bundle
-function call(dirs, target)
+function call(dirs, target, opts)
+  -- Turn the option table into a string
+  local opts = opts or options
   local s = ""
-  for i = 2, #arg do
-    s = s .. " " .. arg[i]
+  for k,v in pairs(opts) do
+    if k ~= "files" and k ~= "target" then -- Special cases
+      local t = option_list[k] or { }
+      k = t["long"] or k
+      local arg = ""
+      if t["args"] then
+        for _,a in pairs(v) do
+          if arg == "" then
+            arg = "=" .. a -- Add the initial "=" here
+          else
+            arg = arg .. "," .. a
+          end
+        end
+      end
+      s = s .. " --" .. k .. arg
+    end
+  end
+  if opts["files"] then
+    for _,v in pairs(opts["files"]) do
+      s = s .. " " .. v
+    end
   end
   for _,i in ipairs(dirs) do
     print(
