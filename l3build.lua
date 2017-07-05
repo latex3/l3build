@@ -214,6 +214,7 @@ local getenv           = os.getenv
 local os_remove        = os.remove
 local os_time          = os.time
 local os_type          = os.type
+local len              = string.len
 local luatex_revision  = status.luatex_revision
 local luatex_version   = status.luatex_version
 local char             = string.char
@@ -223,6 +224,8 @@ local gmatch           = string.gmatch
 local gsub             = string.gsub
 local len              = string.len
 local match            = string.match
+local rep              = string.rep
+local sort             = table.sort
 local sub              = string.sub
 local concat           = table.concat
 local insert           = table.insert
@@ -232,22 +235,72 @@ local utf8_char        = unicode.utf8.char
 
 local option_list =
   {
-    date       = {short = "d", args = true} ,
-    engine     = {short = "e", args = true} ,
-    epoch      = {short = "E", args = true} ,
-    force      = {short = "f", args = false},
-    halt       =
+    date =
       {
-        short = "H"            ,
-        args  = false          ,
-        long  = "halt-on-error"
+        args  = true,
+        desc  = "Sets the date to insert into sources",
+        short = "d",
       },
-    help        = {short = "h", args = false},
-    pdf         = {short = "p", args = false},
-    quiet       = {short = "q", args = false},
-    rerun       = {short = "r", args = false},
-    testfiledir = {short = "h", args = false},
-    version     = {short = "v", args = true}
+    engine =
+      {
+        args  = true,
+        desc  = "Sets the engine to use for running test",
+        short = "e",
+      },
+    epoch =
+      {
+        args  = true,
+        desc  = "Sets the epoch for tests and typesetting",
+        short = "E",
+      },
+    force =
+      {
+        args  = false,
+        desc  = "Force tests to run if engine is not set up",
+        short = "f",
+      },
+    halt =
+      {
+        args  = false,
+        desc  = "Stops running tests after the first failure",
+        long  = "halt-on-error",
+        short = "H",
+      },
+    help =
+      {
+        args  = false,
+        short = "h",
+      },
+    pdf =
+      {
+        args  = false,
+        desc  = "Check/save PDF files",
+        short = "p",
+      },
+    quiet =
+      {
+        args  = false,
+        desc  = "Suppresses TeX output when unpacking",
+        short = "q",
+      },
+    rerun =
+      {
+        args  = false,
+        desc  = "Suppresses TeX output when unpacking",
+        short = "q",
+      },
+    testfiledir =
+      {
+        args  = true,
+        desc  = "Selects the specified testfile location",
+        short = "t",
+      },
+    version =
+      {
+        args  = true,
+        desc  = "Sets the version to insert into sources",
+        short = "v",
+      },
   }
 
 -- This is done as a function (rather than do ... end) as it allows early
@@ -1674,16 +1727,29 @@ function help()
   print("   setversion Update version information in sources")
   print("")
   print("Valid options are:")
-  print("   --date|-d           Sets the date to insert into sources")
-  print("   --engine|-e         Sets the engine to use for running test")
-  print("   --epoch|-E          Sets the epoch for tests and typesetting")
-  print("   --force|-f          Force tests to run if engine is not set up")
-  print("   --halt-on-error|-H  Stops running tests after the first failure")
-  print("   --pdf|-p            Check/save PDF files")
-  print("   --quiet|-q          Suppresses TeX output when unpacking")
-  print("   --rerun|-r          Runs tests without any unpacking, etc.")
-  print("   --testfiledir|-t    Selects the specified testfile location")
-  print("   --version|-v        Sets the version to insert into sources")
+  local longest = 0
+  for k,v in pairs(option_list) do
+    k = v["long"] or k
+    if len(k) > longest then
+      longest = len(k)
+    end
+  end
+  -- Sort the options
+  local t = { }
+  for k,_ in pairs(option_list) do
+    insert(t, k)
+  end
+  sort(t)
+  for _,k in ipairs(t) do
+    local opt = option_list[k]
+    key = option_list[k]["long"] or k
+    local filler = rep(" ", longest - len(k))
+    if opt["desc"] then -- Skip --help as it has no desc
+      print(
+        "   --" .. k .. "|-" .. opt["short"] .. filler .. opt["desc"]
+      )
+    end
+  end
   print("")
   print("See l3build.pdf for further details.")
 end
