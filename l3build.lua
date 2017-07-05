@@ -229,54 +229,43 @@ local insert           = table.insert
 local utf8_char        = unicode.utf8.char
 
 -- Parse command line options
+
+local option_list =
+  {
+    date       = {short = "d", args = true} ,
+    engine     = {short = "e", args = true} ,
+    epoch      = {short = "E", args = true} ,
+    force      = {short = "f", args = false},
+    halt       =
+      {
+        short = "H"            ,
+        args  = false          ,
+        long  = "halt-on-error"
+      },
+    help        = {short = "h", args = false},
+    pdf         = {short = "p", args = false},
+    quiet       = {short = "q", args = false},
+    rerun       = {short = "r", args = false},
+    testfiledir = {short = "h", args = false},
+    version     = {short = "v", args = true}
+  }
+
 -- This is done as a function (rather than do ... end) as it allows early
 -- termination (break)
 local function argparse()
   local result = { }
   local files  = { }
-  local long_options =
-    {
-      date                = "date"       ,
-      engine              = "engine"     ,
-      epoch               = "epoch"      ,
-      force               = "force"      ,
-      ["halt-on-error"]   = "halt"       ,
-      ["halt-on-failure"] = "halt"       ,
-      help                = "help"       ,
-      pdf                 = "pdf"        ,
-      quiet               = "quiet"      ,
-      rerun               = "rerun"      ,
-      testfiledir         = "testfiledir",
-      version             = "version"
-    }
-  local short_options =
-    {
-      d = "date"       ,
-      e = "engine"     ,
-      E = "epoch"      ,
-      f = "force"      ,
-      h = "help"       ,
-      H = "halt"       ,
-      p = "pdf"        ,
-      q = "quiet"      ,
-      r = "rerun"      ,
-      t = "testfiledir",
-      v = "version"
-    }
-  local option_args =
-    {
-      date        = true ,
-      engine      = true ,
-      epoch       = true ,
-      force       = false,
-      halt        = false,
-      help        = false,
-      pdf         = false,
-      quiet       = false,
-      rerun       = false,
-      testfiledir = true ,
-      version     = true
-    }
+  local long_options =  { }
+  local short_options = { }
+  -- Turn long/short options into two lookup tables
+  for k,v in pairs(option_list) do
+    short_options[v["short"]] = k
+    if v["long"] then
+      long_options[v["long"]] = k
+    else
+      long_options[k] = k
+    end
+  end
   local args = args
   -- arg[1] is a special case: must be a command or "-h"/"--help"
   -- Deal with this by assuming help and storing only apparently-valid
@@ -339,7 +328,7 @@ local function argparse()
       -- if required
       local optname = opts[opt]
       if optname then
-        local reqarg = option_args[optname]
+        local reqarg = option_list[optname]["args"]
         -- Tidy up arguments
         if reqarg and not optarg then
           optarg = arg[i + 1]
