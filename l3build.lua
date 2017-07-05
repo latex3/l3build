@@ -285,7 +285,7 @@ local option_list =
     rerun =
       {
         desc  = "Suppresses TeX output when unpacking",
-        short = "q",
+        short = "r",
         type  = "boolean"
       },
     testfiledir =
