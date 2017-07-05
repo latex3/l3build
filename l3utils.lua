@@ -183,5 +183,151 @@ function l3utils.wrap(text, width)
   return wrapped
 end
 
+--- Resolves an option key based on the CLI configuration table to a
+--- normalized reference.
+-- This function takes an option key in its short or long form and
+-- returns the long form. If the option key does not exist in the CLI
+-- configuration table, a nil value is returned.
+-- @param key The option key without the dash prefix.
+-- @param configuration The CLI configuration table.
+-- @return The long form of the provided option key as a normalized
+-- reference, or a nil value if the key does not exist in the CLI
+-- configuration table.
+function l3utils.keyresolve(key, configuration)
+  for _, v in ipairs(configuration) do
+    if v['short'] == key or v['long'] == key then
+      return v['long']
+    end
+  end
+  return nil
+end
+
+--- Checks if the provided option key has arguments and, if any, the
+--- minimum and maximum values defined in the CLI configuration table.
+-- This function takes an option key and checks if such option is
+-- expected to take arguments. If so, the minimum an maximum values
+-- are returned, or a nil value otherwise. Values are set in the CLI
+-- configuration table.
+-- @param key The option key without the dash prefix.
+-- @param configuration The CLI configuration table.
+-- @return The minimum an maximum values in case the option is expected
+-- to take arguments, or a nil value otherwise, based on the CLI
+-- configuration table.
+function l3utils.parametercheck(key, configuration)
+  for _, v in ipairs(configuration) do
+    if v['long'] == key then
+      if v['parameters'] then
+        return l3utils.ensure(v['parameters']['min'], 1),
+               l3utils.ensure(v['parameters']['max'], 1)
+      else
+        return nil
+      end
+    end
+  end
+end
+
+--- Checks if the option key can take more arguments, if any.
+-- This function takes an option key, the CLI configuration table and
+-- the current list of elements, and checks if the option can take more
+-- elements. If so, the key is kept unchanged and it is returned as is,
+-- or an `unpaired` value is returned.
+-- @param key The option key.
+-- @param configuration The CLI configuration table.
+-- @param list The current list of elements referring to the provided
+-- option key.
+-- @return The unchanged key if the current list of elements can take
+-- another element, or the `unpaired` key, indicating that the exceeding
+-- arguments must be in the generic list.
+function l3utils.keycheck(key, configuration, list)
+  if key == 'unpaired' then
+    return key
+  else
+      local min, max = l3utils.parametercheck(key, configuration)
+    if min then
+      if #list < max then
+        return key
+      else
+         return 'unpaired'
+      end
+    else
+      return 'unpaired'
+    end
+  end
+end
+
+--- Classifies a list containing the actual command line arguments against
+--- a CLI configuration table.
+-- This function takes a list of elements representing the actual command
+-- line arguments and classifies it according to a CLI configuration
+-- table.
+-- @param List containing the arguments.
+-- @param configuration The CLI table configuration.
+-- @return Table containing the options and their corresponding
+-- arguments, if any. The `unpaired` option represents arguments without
+  -- associated options.
+-- @return Table containing the unknown flags.
+function l3utils.classify(arguments, configuration)
+  local result, key, err = { unpaired = {} }, 'unpaired', {}
+  local a, b
+  for _, argument in ipairs(arguments) do
+
+    a, _, b = string.find(argument, '^%-%-(%w.*)$')
+
+    if a then
+      key = l3utils.keyresolve(b, configuration)
+
+      if not key then
+        table.insert(err, b)
+        key = 'unpaired'
+      end
+
+      result[key] = l3utils.ensure(result[key], {})
+      key = l3utils.keycheck(key, configuration, result[key])
+    else
+      a, _, b = string.find(argument, '^%-(%w.*)$')
+
+      if a then
+        key = l3utils.keyresolve(b, configuration)
+        if not key then
+          table.insert(err, b)
+          key = 'unpaired'
+        end
+        result[key] = l3utils.ensure(result[key], {})
+        key = l3utils.keycheck(key, configuration, result[key])
+      else
+        key = l3utils.keycheck(key, configuration, result[key])
+        table.insert(result[key], argument)
+      end
+
+    end
+
+  end
+  return result, err
+end
+
+--- Provides a friendly representation of table elements.
+-- This function provides a pretty printing feature for representing
+-- table elements. If a value different other than `table` is provided,
+-- its string representation is returned instead.
+-- @param t The element to be printed, potentially a table.
+-- @return A textual representation of the element.
+function l3utils.prettyprint(t)
+  if type(t) ~= 'table' then
+    return tostring(t)
+  end
+
+  local f = t[1] and ipairs or pairs
+  local result = '{'
+  local comma = ''
+
+  for k, v in f(t) do
+    result = result .. comma .. ' ' .. tostring(k) ..
+             ' --> ' .. l3utils.prettyprint(v)
+    comma = ','
+  end
+
+  return result .. ' }'
+end
+
 -- export module
 return l3utils
