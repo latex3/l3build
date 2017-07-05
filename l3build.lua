@@ -239,49 +239,49 @@ local option_list =
       {
         args  = true,
         desc  = "Sets the date to insert into sources",
-        short = "d",
+        short = "d"
       },
     engine =
       {
         args  = true,
         desc  = "Sets the engine to use for running test",
-        short = "e",
+        short = "e"
       },
     epoch =
       {
         args  = true,
         desc  = "Sets the epoch for tests and typesetting",
-        short = "E",
+        short = "E"
       },
     force =
       {
         args  = false,
         desc  = "Force tests to run if engine is not set up",
-        short = "f",
+        short = "f"
       },
     halt =
       {
         args  = false,
         desc  = "Stops running tests after the first failure",
         long  = "halt-on-error",
-        short = "H",
+        short = "H"
       },
     help =
       {
         args  = false,
-        short = "h",
+        short = "h"
       },
     pdf =
       {
         args  = false,
         desc  = "Check/save PDF files",
-        short = "p",
+        short = "p"
       },
     quiet =
       {
         args  = false,
         desc  = "Suppresses TeX output when unpacking",
-        short = "q",
+        short = "q"
       },
     rerun =
       {
@@ -293,13 +293,13 @@ local option_list =
       {
         args  = true,
         desc  = "Selects the specified testfile location",
-        short = "t",
+        short = "t"
       },
     version =
       {
         args  = true,
         desc  = "Sets the version to insert into sources",
-        short = "v",
+        short = "v"
       },
   }
 
