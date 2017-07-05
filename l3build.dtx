@@ -16,7 +16,7 @@
 %
 % The development version of the bundle can be found at
 %
-%    https://github.com/latex3/latex3
+%    https://github.com/latex3/l3build
 %
 % for those people who are interested.
 %
@@ -98,7 +98,7 @@
 \luavarset{dviext} {".dvi"} {Extension of DVI files.}
 \luavarset{lvtext} {".lvt"} {Extension of test files.}
 \luavarset{tlgext} {".tlg"} {Extension of test file output.}
-\luavarset{lvtext} {".lve"} {Extension of auto-generating test file output.}
+\luavarset{lveext} {".lve"} {Extension of auto-generating test file output.}
 \luavarset{logext} {".log"} {Extension of checking output, before processing it into a \texttt{.tlg}.}
 \luavarset{pdfext} {".pdf"} {Extension of PDF file for checking and saving.}
 \luavarset{psext}  {".ps"}  {Extension of PostScript files.}
@@ -108,7 +108,7 @@
 \luavarset{unpackdeps}  {\{~\}} {\dots for unpacking.}
 \luavarseparator
 \luavarset{checkengines}{\{"pdftex", "xetex", "luatex"\}} {Engines to check with \texttt{check} by default.}
-\luavarset{stdengine}    {"pdtex"} {Engine to generate \texttt{.tlg} file from.}
+\luavarset{stdengine}    {"pdftex"} {Engine to generate \texttt{.tlg} file from.}
 \luavarset{checkformat}  {"latex"} {Format to use for tests.}
 \luavarseparator
 \luavarset{typesetexe} {"pdflatex"} {Executable for compiling \texttt{doc(s)}.}
@@ -135,6 +135,9 @@
 \luavarset{bibtexopts}   {"-W"}       {\BibTeX{} options}
 \luavarset{makeindexexe} {"makeindex"}{MakeIndex executable}
 \luavarset{makeindexopts}{""}         {MakeIndex options}
+\luavarseparator
+\luavarset{forcecheckepoch}{"true"}    {Force epoch when running tests}
+\luavarset{forcedocepoch}  {"false"}   {Force epoch when typesetting}
 \luavarseparator
 \luavarset{asciiengines}{\{"pdftex"\}}{Engines which should log as sure ASCII}
 \luavarset{checkruns}   {1}           {How many times to run a check file before comparing the log.}
@@ -203,7 +206,7 @@
 %    }^^A
 % }
 %
-% \date{Released 2017/06/25}
+% \date{Released 2017/07/01}
 %
 % \maketitle
 % \tableofcontents
@@ -300,15 +303,18 @@
 %   data
 % \item \texttt{--engine} (\texttt{-e}) Sets the engine to use for
 %   testing
+% \item \texttt{--force} (\texttt{-f}) Force checks to run even if sanity
+%   checks fail, \emph{e.g.}~when \texttt{--engine} is not given in
+%   \luavar{checkengines}
 % \item \texttt{--halt-on-error} (\texttt{-H}) Specifies that checks
 %   should stop as soon as possible, rather than running all requested
 %   tests; the difference file is printed in the terminal directly in the case of failure
 % \item \texttt{--pdf} (\texttt{-p}) Test PDF file against a reference
 %   version rather than using a log comparison
 % \item \texttt{--quiet} (\texttt{-q}) Suppresses output from unpacking
-% \item \texttt{--release} (\texttt{-r}) Release string to use when setting
-%   version data
 % \item \texttt{--textfiledir} (\texttt{-t}) Select a specific set of tests
+% \item \texttt{--version} (\texttt{-v}) Version string to use when setting
+%   version data
 % \end{itemize}
 %
 % \begin{buildcmd}{check}
@@ -352,7 +358,9 @@
 % Checks only the test \texttt{\meta{name(s)}.lvt}.
 % All engines specified by \var{checkengines} are tested unless the command
 % line option \texttt{--engine} (or \texttt{-e}) has been given to limit
-% testing to a single engine.
+% testing to a single engine. Normally testing is preceded by unpacking
+% source files and copying the result plus any additional support to the
+% test directory: this may be skipped using the \texttt{-s} option.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{check -p}
@@ -443,7 +451,7 @@
 %
 % Source files specified in \var{sourcefiles} and \var{typesetsourcefiles}
 % are unpacked before the typesetting takes place. (In most cases
-% \var{typesetsourcefiles} will be mepty, but may be used where there are
+% \var{typesetsourcefiles} will be empty, but may be used where there are
 % files to unpack \emph{only} for typesetting.)
 %
 % If \var{typesetsearch} is \code{true} (default), standard \texttt{texmf} search trees are used in the typesetting compilation. If set to false, \emph{all} necessary files for compilation must be included in the |build/local| sandbox.
@@ -480,7 +488,7 @@
 % \begin{buildcmd}{setversion}
 % Modifies the content of files specified by |versionfiles| to allow
 % automatic updating of the file date and version. The latter are
-% specified using the |-d| and |-r| command line options and if not
+% specified using the |-d| and |-v| command line options and if not
 % given will default to the current date in ISO format (YYYY-MM-DD) and |-1|,
 % respectively. As detailed below, the standard set up has no search pattern
 % defined for this target and so no action will be taken \emph{unless}
@@ -776,6 +784,9 @@
 % \cs{TESTEXP} surrounds its contents with \cs{TYPE} and formatting to match \cs{TEST}; this can be used as a shorthand to test expandable commands.
 % \item
 % TODO: would a \cs{TESTFEXP} command (based on \cs{romannumeral} expansion) be useful as well?
+% \item
+% \cs{BEGINTEST}\marg{title} \dots \cs{ENDTEST} is an environment form of
+% \cs{TEST}, allowing verbatim material, \emph{etc.} to appear.
 % \end{itemize}
 % An example of some of these commands is shown following.
 % \begin{Verbatim}
@@ -917,6 +928,22 @@
 %   \label{fig:box-log}
 % \end{figure}
 %
+% \subsection{Testing entire pages}
+%
+% There may be occasions where creating entire test pages is necessary
+% to observe the test output required. That is best achieved by applying
+% \cs{showoutput} and forcing a complete page to be produced, for example
+% \begin{Verbatim}[frame=single,fontsize=\small]
+% \input{regression-test.tex}
+% \documentclass{article}
+% \usepackage{expl3}
+% \START
+% \showoutput
+% % Test content here
+% \vfil\break
+% \END
+% \end{Verbatim}
+%
 % \subsection{Additional test tasks}
 %
 % A standard test will run the file \texttt{\meta{name}.lvt} using one
@@ -941,6 +968,18 @@
 %   \caption{Example \texttt{runtest_tasks} function.}
 %   \label{fig:test-tasks}
 % \end{figure}
+%
+% \subsection{Epoch setting}
+%
+% To produce predictable output when suing dates, the test system offers the
+% ability to set the epoch to a known value. The \luavar{epoch} variable may
+% be given as a raw value (a simple integer) or as a date in ISO format.
+% The two flags \luavar{forcecheckepoch} and \luavar{forcedocepoch} then
+% determine whether this is applied in testing and typesetting, respectively.
+%
+% The epoch may also be given as a command line option, |-E|, which again
+% takes either a date or raw epoch. When given, this will automatically
+% activate forcing of the epoch in both testing and typesetting.
 %
 % \section{Alternative test formats}
 %
@@ -1034,7 +1073,7 @@
 % a suitable function might read as shown in Figure~\ref{fig:update-line}.
 % \begin{figure}
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
-%     function setversion_update_line(line, date, release)
+%     function setversion_update_line(line, date, version)
 %       -- No real regex so do it one type at a time
 %       for _,i in pairs({"Class", "File", "Package"}) do
 %         if string.match(
@@ -1044,7 +1083,7 @@
 %           line = string.gsub(line, "%[%d%d%d%d/%d%d/%d%d", "["
 %             .. string.gsub(date, "%-", "/")
 %           line = string.gsub(
-%             line, "(%[%d%d%d%d/%d%d/%d%d) [^ ]*", "%1 " .. release
+%             line, "(%[%d%d%d%d/%d%d/%d%d) [^ ]*", "%1 " .. version
 %           )
 %           break
 %         end
@@ -1133,12 +1172,14 @@
 %       \var{date}        & String  \\
 %       \var{engine}      & Table   \\
 %       \var{files}       & Table   \\
+%       \var{force}       & Boolean \\
 %       \var{halt}        & Boolean \\
 %       \var{help}        & Boolean \\
 %       \var{pdf}         & Boolean \\
 %       \var{quiet}       & Boolean \\
-%       \var{release}     & String  \\
-%       \var{testfiledir} & String  \\
+%       \var{rerun}       & Boolean \\
+%       \var{testfiledir} & Table   \\
+%       \var{version}     & String  \\
 %     \bottomrule
 %     \end{tabular}
 %   \end{center}
@@ -1256,7 +1297,7 @@
 %   error level.
 % \end{function}
 %
-% \begin{function}{spltpath()}
+% \begin{function}{splitpath()}
 %   \begin{syntax}
 %     |splitpath(|\meta{file}|)|
 %   \end{syntax}
@@ -1290,7 +1331,7 @@
 %
 % \begin{variable}{os_null}
 %   The location to redirect commands which should produce no output
-%   at the terminal: almost always used preded by |>|, \emph{e.g.}
+%   at the terminal: almost always used preceded by |>|, \emph{e.g.}
 %   \begin{verbatim}
 %     os.execute("tex " .. file .. " > " .. os_null)
 %   \end{verbatim}
@@ -1316,6 +1357,20 @@
 %   character |y|: this is useful as the Unix |yes| command cannot be
 %   used inside |os.execute| (it does not terminate).
 % \end{variable}
+%
+% \subsection{Components of \texttt{l3build}}
+%
+% \begin{function}{call()}
+%   \begin{syntax}
+%     |call(|\meta{dirs}, \meta{target}, \oarg{options}|)|
+%   \end{syntax}
+%   Runs the \texttt{l3build} \meta{target} (a string) for each directory in the
+%   \meta{dirs} (a table). This will pass command line options for the parent
+%   script to the child processes. The \meta{options} table should take the
+%   same form as the global \luavar{options}, described above. If it is
+%   absent then the global list is used. Note that any entry for the
+%   |target| in this table is ignored.
+% \end{function}
 %
 % \end{documentation}
 %
@@ -1492,7 +1547,18 @@
 % \end{macro}
 %
 % \begin{macro}
-%   {\SEPARATOR, \TEST, \TESTEXP, \TRUE, \FALSE, \YES, \NO, \NEWLINE}
+%   {
+%     \SEPARATOR,
+%     \BEGINTEST,
+%     \ENDTEST,
+%     \TEST,
+%     \TESTEXP,
+%     \TRUE,
+%     \FALSE,
+%     \YES,
+%     \NO,
+%     \NEWLINE
+%   }
 %   We are not starved for space in the log file output, so let's make it as
 %   verbose as is useful when reading the |.diff|'s.
 %    \begin{macrocode}
@@ -1501,30 +1567,29 @@
     ============================================================%
   }%
 }
-\long\def\TEST#1#2{%
+\protected\long\def\BEGINTEST#1{%
   \global\advance\gTESTint by 1 %
   \SEPARATOR
   \LONGTYPEOUT{TEST \the\gTESTint: \detokenize{#1}}%
   \SEPARATOR
   \begingroup
     \let\TYPE\LONGTYPEOUT
-    #2%
+
+}
+\protected\long\def\ENDTEST{%
   \endgroup
   \SEPARATOR
   \LONGTYPEOUT{}%
 }
+\long\def\TEST#1#2{%
+  \BEGINTEST{#1}%
+  #2%
+  \ENDTEST
+}
 \long\def\TESTEXP#1#2{%
-  \global\advance\gTESTint by 1 %
-  \SEPARATOR
-  \LONGTYPEOUT{%
-    TEST \the\gTESTint: \detokenize{#1}}%
-  \SEPARATOR
-  \begingroup
-    \long\def\TYPE##1{##1}%
-    \LONGTYPEOUT{#2}%
-  \endgroup
-  \SEPARATOR
-  \LONGTYPEOUT{}%
+  \BEGINTEST{#1}%
+  \LONGTYPEOUT{#2}%
+  \ENDTEST
 }
 \def \TRUE  {\TYPE{TRUE}}
 \def \FALSE {\TYPE{FALSE}}

@@ -15,4 +15,21 @@
   \show\y
 }
 
-\END
+\newpage
+
+\showoutput
+
+\OMIT
+  % Force font loading
+  \begin{verbatim}
+    #$%&
+  \end{verbatim}
+\TIMO
+
+\BEGINTEST{Enviornment test}
+  \begin{verbatim}
+    #$%&
+  \end{verbatim}
+\ENDTEST
+
+\end{document}

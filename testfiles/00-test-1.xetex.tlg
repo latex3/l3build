@@ -26,8 +26,8 @@ Completed box being shipped out [1]
 ..\glue 0.0
 ..\glue(\lineskip) 0.0
 ..\vbox(578.15999+0.0)x469.75499, glue set 532.15999fil
-...\glue(\topskip) 3.05556
-...\hbox(6.94444+0.83333)x469.75499, glue set 427.75536fil
+...\glue(\topskip) 3.06
+...\hbox(6.94+0.82999)x469.75499, glue set 427.75499fil
 ....\hbox(0.0+0.0)x0.0
 .....\glue 0.0
 .....\glue 0.0
@@ -35,28 +35,25 @@ Completed box being shipped out [1]
 .....\hbox(0.0+0.0)x0.0
 .....\glue 0.0
 ....\penalty 10000
-....\glue 5.24995
+....\glue 5.25
 ....\penalty 10000
-....\glue 5.24995
+....\glue 5.25
 ....\penalty 10000
-....\glue 5.24995
+....\glue 5.25
 ....\penalty 10000
-....\glue 5.24995
-....\OT1/cmtt/m/n/10 #
-....\OT1/cmtt/m/n/10 $
-....\OT1/cmtt/m/n/10 %
-....\OT1/cmtt/m/n/10 &
+....\glue 5.25
+....\TU/lmtt/m/n/10 #$%&
 ....\hbox(0.0+0.0)x0.0
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
 ...\penalty 0
 ...\glue(\parskip) 0.0
-...\glue(\baselineskip) 11.16667
-...\hbox(0.0+0.0)x469.75499, glue set 464.50504fil
+...\glue(\baselineskip) 11.17001
+...\hbox(0.0+0.0)x469.75499, glue set 464.50499fil
 ....\hbox(0.0+0.0)x0.0
 ....\penalty 10000
-....\glue 5.24995
+....\glue 5.25
 ....\penalty 10000
 ....\hbox(0.0+0.0)x0.0
 ....\penalty 10000
@@ -70,8 +67,8 @@ Completed box being shipped out [1]
 ...\glue 0.0 plus -1.0
 ...\glue 0.0 plus 1.0
 ...\glue(\parskip) 0.0
-...\glue(\baselineskip) 5.05556
-...\hbox(6.94444+0.83333)x469.75499, glue set 427.75536fil
+...\glue(\baselineskip) 5.06
+...\hbox(6.94+0.82999)x469.75499, glue set 427.75499fil
 ....\hbox(0.0+0.0)x0.0
 .....\glue 0.0
 .....\glue 0.0
@@ -79,28 +76,25 @@ Completed box being shipped out [1]
 .....\hbox(0.0+0.0)x0.0
 .....\glue 0.0
 ....\penalty 10000
-....\glue 5.24995
+....\glue 5.25
 ....\penalty 10000
-....\glue 5.24995
+....\glue 5.25
 ....\penalty 10000
-....\glue 5.24995
+....\glue 5.25
 ....\penalty 10000
-....\glue 5.24995
-....\OT1/cmtt/m/n/10 #
-....\OT1/cmtt/m/n/10 $
-....\OT1/cmtt/m/n/10 %
-....\OT1/cmtt/m/n/10 &
+....\glue 5.25
+....\TU/lmtt/m/n/10 #$%&
 ....\hbox(0.0+0.0)x0.0
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
 ...\penalty 0
 ...\glue(\parskip) 0.0
-...\glue(\baselineskip) 11.16667
-...\hbox(0.0+0.0)x469.75499, glue set 464.50504fil
+...\glue(\baselineskip) 11.17001
+...\hbox(0.0+0.0)x469.75499, glue set 464.50499fil
 ....\hbox(0.0+0.0)x0.0
 ....\penalty 10000
-....\glue 5.24995
+....\glue 5.25
 ....\penalty 10000
 ....\hbox(0.0+0.0)x0.0
 ....\penalty 10000

@@ -16,14 +16,14 @@ and all files in that bundle must be distributed together.
 
 The development version of the bundle can be found at
 
-   https://github.com/latex3/latex3
+   https://github.com/latex3/l3build
 
 for those people who are interested.
 
 --]]
 
 -- Version information
-release_date = "2017/06/25"
+release_date = "2017/07/01"
 
 -- "module" is a deprecated function in Lua 5.2: as we want the name
 -- for other purposes, and it should eventually be 'free', simply
@@ -40,9 +40,16 @@ bundle = bundle or ""
 if module == "" and bundle == "" then
   if string.match(arg[0], "l3build%.lua$") then
     print(
-      "\n"
-        .. "Error: Call l3build using a configuration file, not directly.\n"
+      "\n" ..
+      "l3build: A testing and building system for LaTeX\n\n" ..
+      "Release " .. release_date
     )
+    if arg[1] and not string.match(arg[1], "version") then
+      print(
+        "\n"
+          .. "Error: Call l3build using a configuration file, not directly.\n"
+      )
+    end
   else
     print(
       "\n"
@@ -152,6 +159,14 @@ bibtexopts    = bibtexopts    or "-W"
 makeindexexe  = makeindexexe  or "makeindex"
 makeindexopts = makeindexopts or ""
 
+-- Forcing epoch
+if forcecheckepoch == nil then
+  forcecheckepoch = true
+end
+if forcedocepoch == nil then
+  forcedocepoch = true
+end
+
 -- Other required settings
 asciiengines = asciiengines or {"pdftex"}
 checkruns    = checkruns    or 1
@@ -197,7 +212,9 @@ local execute          = os.execute
 local exit             = os.exit
 local getenv           = os.getenv
 local os_remove        = os.remove
+local os_time          = os.time
 local os_type          = os.type
+local len              = string.len
 local luatex_revision  = status.luatex_revision
 local luatex_version   = status.luatex_version
 local char             = string.char
@@ -207,51 +224,96 @@ local gmatch           = string.gmatch
 local gsub             = string.gsub
 local len              = string.len
 local match            = string.match
+local rep              = string.rep
+local sort             = table.sort
 local sub              = string.sub
 local concat           = table.concat
 local insert           = table.insert
 local utf8_char        = unicode.utf8.char
 
 -- Parse command line options
+
+local option_list =
+  {
+    date =
+      {
+        desc  = "Sets the date to insert into sources",
+        short = "d",
+        type  = "string"
+      },
+    engine =
+      {
+        desc  = "Sets the engine to use for running test",
+        short = "e",
+        type  = "table"
+      },
+    epoch =
+      {
+        desc  = "Sets the epoch for tests and typesetting",
+        short = "E",
+        type  = "string"
+      },
+    force =
+      {
+        desc  = "Force tests to run if engine is not set up",
+        short = "f",
+        type  = "boolean"
+      },
+    ["halt-on-error"] =
+      {
+        desc  = "Stops running tests after the first failure",
+        short = "H",
+        type  = "boolean"
+      },
+    help =
+      {
+        short = "h",
+        type  = "boolean"
+      },
+    pdf =
+      {
+        desc  = "Check/save PDF files",
+        short = "p",
+        type  = "boolean"
+      },
+    quiet =
+      {
+        desc  = "Suppresses TeX output when unpacking",
+        short = "q",
+        type  = "boolean"
+      },
+    rerun =
+      {
+        desc  = "Suppresses TeX output when unpacking",
+        short = "q",
+        type  = "boolean"
+      },
+    testfiledir =
+      {
+        desc  = "Selects the specified testfile location",
+        short = "t",
+        type  = "table"
+      },
+    version =
+      {
+        desc  = "Sets the version to insert into sources",
+        short = "v",
+        type  = "string"
+      },
+  }
+
 -- This is done as a function (rather than do ... end) as it allows early
 -- termination (break)
 local function argparse()
   local result = { }
   local files  = { }
-  local long_options =
-    {
-      date                = "date"       ,
-      engine              = "engine"     ,
-      ["halt-on-error"]   = "halt"       ,
-      ["halt-on-failure"] = "halt"       ,
-      help                = "help"       ,
-      pdf                 = "pdf"        ,
-      quiet               = "quiet"      ,
-      release             = "release"    ,
-      testfiledir         = "testfiledir"
-    }
-  local short_options =
-    {
-      d = "date"       ,
-      e = "engine"     ,
-      h = "help"       ,
-      H = "halt"       ,
-      p = "pdf"        ,
-      q = "quiet"      ,
-      r = "release"    ,
-      t = "testfiledir"
-    }
-  local option_args =
-    {
-      date        = true ,
-      engine      = true ,
-      halt        = false,
-      help        = false,
-      pdf         = false,
-      quiet       = false,
-      release     = true,
-      testfiledir = true
-    }
+  local long_options =  { }
+  local short_options = { }
+  -- Turn long/short options into two lookup tables
+  for k,v in pairs(option_list) do
+    short_options[v["short"]] = k
+    long_options[k] = k
+  end
   local args = args
   -- arg[1] is a special case: must be a command or "-h"/"--help"
   -- Deal with this by assuming help and storing only apparently-valid
@@ -314,19 +376,22 @@ local function argparse()
       -- if required
       local optname = opts[opt]
       if optname then
-        local reqarg = option_args[optname]
         -- Tidy up arguments
-        if reqarg and not optarg then
+        if option_list[optname]["type"] == "boolean" then
+          if optarg then
+            local opt = "-" .. (match(a, "^%-%-") and "-" or "") .. opt
+            stderr:write("Value not allowed for option " .. opt .."\n")
+            return {"help"}
+          end
+        else
+         if not optarg then
           optarg = arg[i + 1]
           if not optarg then
             stderr:write("Missing value for option " .. a .."\n")
             return {"help"}
           end
           i = i + 1
-        end
-        if not reqarg and optarg then
-          stderr:write("Value not allowed for option " .. a .."\n")
-          return {"help"}
+         end
         end
       else
         stderr:write("Unknown option " .. a .."\n")
@@ -334,11 +399,15 @@ local function argparse()
       end
       -- Store the result
       if optarg then
-        local opts = result[optname] or { }
-        for hit in gmatch(optarg, "([^,%s]+)") do
-          insert(opts, hit)
+        if option_list[optname]["type"] == "string" then
+          result[optname] = optarg
+        else
+          local opts = result[optname] or { }
+          for hit in gmatch(optarg, "([^,%s]+)") do
+            insert(opts, hit)
+          end
+          result[optname] = opts
         end
-        result[optname] = opts
       else
         result[optname] = true
       end
@@ -355,12 +424,46 @@ end
 
 options = argparse()
 
-local optdate    = options["date"]
-local optengines = options["engine"]
-local opthalt    = options["halt"]
-local optpdf     = options["pdf"]
-local optquiet   = options["quiet"]
-local optrelease = options["release"]
+-- Sanity check
+if options["engine"] and not options["force"] then
+   -- Make a lookup table
+   local t = { }
+  for _, engine in pairs(checkengines) do
+    t[engine] = true
+  end
+  for _, engine in pairs(options["engine"]) do
+    if not t[engine] then
+      print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!")
+      print("\n  Valid values are:")
+      for _, engine in ipairs(checkengines) do
+        print("  - " .. engine)
+      end
+      print("")
+      exit(1)
+    end
+  end
+end
+
+-- Tidy up the epoch setting
+-- Force an epoch if set at the command line
+if options["epoch"] then
+  epoch           = options["epoch"]
+  forcecheckepoch = true
+  forcedocepoch   = true
+end
+-- If given as an ISO date, turn into an epoch number
+do
+  local y, m, d = match(epoch, "^(%d%d%d%d)-(%d%d)-(%d%d)$")
+  if y then
+    epoch =
+      os_time({year = y, month = m, day = d, hour = 0, sec = 0, isdst = nil}) -
+      os_time({year = 1970, month = 1, day = 1, hour = 0, sec = 0, isdst = nil})
+  elseif match(epoch, "^%d+$") then
+    epoch = tonumber(epoch)
+  else
+    epoch = 0
+  end
+end
 
 -- Convert a file glob into a pattern for use by e.g. string.gub
 -- Based on https://github.com/davidm/lua-glob-pattern
@@ -673,20 +776,35 @@ end
 --
 
 -- Do some subtarget for all modules in a bundle
-local function allmodules(target)
-  local date = ""
-  if optdate then
-    date = " --date=" .. optdate[1]
+function call(dirs, target, opts)
+  -- Turn the option table into a string
+  local opts = opts or options
+  local s = ""
+  for k,v in pairs(opts) do
+    if k ~= "files" and k ~= "target" then -- Special cases
+      local t = option_list[k] or { }
+      local arg = ""
+      if t["type"] == "string" then
+        arg = arg .. "=" .. v
+      end
+      if t["type"] == "table" then
+        for _,a in pairs(v) do
+          if arg == "" then
+            arg = "=" .. a -- Add the initial "=" here
+          else
+            arg = arg .. "," .. a
+          end
+        end
+      end
+      s = s .. " --" .. k .. arg
+    end
   end
-  local engines = ""
-  if optengines then
-    engines = " --engine=" .. concat(optengines, ",")
+  if opts["files"] then
+    for _,v in pairs(opts["files"]) do
+      s = s .. " " .. v
+    end
   end
-  local release = ""
-  if optrelease then
-    release = " --release=" .. optrelease[1]
-  end
-  for _,i in ipairs(modules) do
+  for _,i in ipairs(dirs) do
     print(
       "Running script " .. scriptname .. " with target \"" .. target
         .. "\" for module "
@@ -694,13 +812,7 @@ local function allmodules(target)
     )
     local errorlevel = run(
       i,
-      "texlua " .. scriptname .. " " .. target
-        .. (opthalt and " -H" or "")
-        .. date
-        .. engines
-        .. (optpdf and " -p" or "")
-        .. (optquiet and " -q" or "")
-        .. release
+      "texlua " .. scriptname .. " " .. target .. s
     )
     if errorlevel ~= 0 then
       return errorlevel
@@ -1171,12 +1283,22 @@ function listmodules()
   return modules
 end
 
+local function setepoch()
+  return
+    os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
+      .. os_concat ..
+    os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
+      .. os_concat ..
+    os_setenv .. " FORCE_SOURCE_DATE=1"
+      .. os_concat
+end
+
 -- Run one test which may have multiple engine-dependent comparisons
 -- Should create a difference file for each failed test
 function runcheck(name, hide)
   local checkengines = checkengines
-  if optengines then
-    checkengines = optengines
+  if options["engine"] then
+    checkengines = options["engine"]
   end
   local errorlevel = 0
   for _,i in ipairs(checkengines) do
@@ -1194,7 +1316,7 @@ function runcheck(name, hide)
     else
       errlevel = compare_tlg(name, engine)
     end
-    if errlevel ~= 0 and opthalt then
+    if errlevel ~= 0 and options["halt-on-error"] then
       showfaileddiff()
       if errlevel ~= 0 then
         return 1
@@ -1385,11 +1507,7 @@ function runtest(name, engine, hide, ext, makepdf)
       -- Avoid spurious output from (u)pTeX
       os_setenv .. " GUESS_INPUT_KANJI_ENCODING=0"
         .. os_concat ..
-      -- Fix the time of the run
-      os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
-        .. os_concat ..
-      os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
-        .. os_concat ..
+      (forcecheckepoch and setepoch() or "") ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
@@ -1428,16 +1546,14 @@ function dvitopdf(name, dir, engine, hide)
   if match(engine, "^u?ptex$") then
     run(
       dir,
-      os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
-        .. os_concat ..
+      (forcecheckepoch and setepoch() or "") ..
      "dvipdfmx  " .. name .. dviext
        .. (hide and (" > " .. os_null) or "")
     )
   else
     run(
       dir,
-      os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
-        .. os_concat ..
+      (forcecheckepoch and setepoch() or "") ..
      "dvips " .. name .. dviext
        .. (hide and (" > " .. os_null) or "")
        .. os_concat ..
@@ -1487,11 +1603,12 @@ function runtool(subdir, dir, envvar, command)
   return(
     run(
       typesetdir .. "/" .. subdir,
+      (forcedocepoch and setepoch() or "") ..
       os_setenv .. " " .. envvar .. "=." .. os_pathsep
         .. abspath(localdir) .. os_pathsep
         .. abspath(dir .. "/" .. subdir)
-        .. (typesetsearch and os_pathsep or "") ..
-      os_concat ..
+        .. (typesetsearch and os_pathsep or "")
+        .. os_concat ..
       command
     )
   )
@@ -1635,13 +1752,27 @@ function help()
   print("   setversion Update version information in sources")
   print("")
   print("Valid options are:")
-  print("   --date|-d           Sets the date to insert into sources")
-  print("   --engine|-e         Sets the engine to use for running test")
-  print("   --halt-on-error|-H  Stops running tests after the first failure")
-  print("   --pdf|-p            Check/save PDF files")
-  print("   --quiet|-q          Suppresses TeX output when unpacking")
-  print("   --release|-r        Sets the release to insert into sources")
-  print("   --testfiledir|-t    Selects the specified testfile location")
+  local longest = 0
+  for k,v in pairs(option_list) do
+    if len(k) > longest then
+      longest = len(k)
+    end
+  end
+  -- Sort the options
+  local t = { }
+  for k,_ in pairs(option_list) do
+    insert(t, k)
+  end
+  sort(t)
+  for _,k in ipairs(t) do
+    local opt = option_list[k]
+    local filler = rep(" ", longest - len(k))
+    if opt["desc"] then -- Skip --help as it has no desc
+      print(
+        "   --" .. k .. "|-" .. opt["short"] .. filler .. opt["desc"]
+      )
+    end
+  end
   print("")
   print("See l3build.pdf for further details.")
 end
@@ -1649,7 +1780,9 @@ end
 function check(names)
   local errorlevel = 0
   if testfiledir ~= "" and direxists(testfiledir) then
-    checkinit()
+    if not options["rerun"] then
+      checkinit()
+    end
     local hide = true
     if names and next(names) then
       hide = false
@@ -1676,7 +1809,7 @@ function check(names)
       local errlevel = runcheck(name, hide)
       -- Return value must be 1 not errlevel
       if errlevel ~= 0 then
-        if opthalt then
+        if options["halt-on-error"] then
           return 1
         else
           errorlevel = 1
@@ -1740,7 +1873,7 @@ function clean()
 end
 
 function bundleclean()
-  local errorlevel = allmodules("clean")
+  local errorlevel = call(modules, "clean")
   for _,i in ipairs(cleanfiles) do
     errorlevel = rm(".", i) + errorlevel
   end
@@ -1790,7 +1923,7 @@ end
 
 function ctan(standalone)
   -- Always run tests for all engines
-  optengines = nil
+  options["engine"] = nil
   local function dirzip(dir, name)
     local zipname = name .. ".zip"
     local function tab_to_str(table)
@@ -1824,7 +1957,7 @@ function ctan(standalone)
     errorlevel = check()
     bundle = module
   else
-    errorlevel = allmodules("bundlecheck")
+    errorlevel = call(modules, "bundlecheck")
   end
   if errorlevel == 0 then
     rmdir(ctandir)
@@ -1834,7 +1967,7 @@ function ctan(standalone)
     if standalone then
       errorlevel = bundlectan()
     else
-      errorlevel = allmodules("bundlectan")
+      errorlevel = call(modules, "bundlectan")
     end
   else
     print("\n====================")
@@ -1897,7 +2030,7 @@ function bundlectan()
     end
     -- For the purposes here, any typesetting demo files need to be
     -- part of the main typesetting list
-    local typesetfiles
+    local typesetfiles = typesetfiles
     for _,v in pairs(typesetdemofiles) do
       insert(typesetfiles, v)
     end
@@ -1981,7 +2114,7 @@ end
 
 function save(names)
   checkinit()
-  local engines = optengines or {stdengine}
+  local engines = options["engine"] or {stdengine}
   for _,name in pairs(names) do
     local engine
     for _,engine in pairs(engines) do
@@ -1990,11 +2123,11 @@ function save(names)
       local spdffile = name .. tlgengine .. pdfext
       local newfile  = name .. "." .. engine .. logext
       local pdffile  = name .. "." .. engine .. pdfext
-      local refext = ((optpdf and pdfext) or tlgext)
+      local refext = ((options["pdf"] and pdfext) or tlgext)
       if testexists(name) then
         print("Creating and copying " .. refext)
-        runtest(name, engine, false, lvtext, optpdf)
-        if optpdf then
+        runtest(name, engine, false, lvtext, options["pdf"])
+        if options["pdf"] then
           ren(testdir, pdffile, spdffile)
           cp(spdffile, testdir, testfiledir)
         else
@@ -2025,7 +2158,7 @@ end
 -- Provide some standard search-and-replace functions
 if versionform ~= "" and not setversion_update_line then
   if versionform == "ProvidesPackage" then
-    function setversion_update_line(line, date, release)
+    function setversion_update_line(line, date, version)
       -- No real regex so do it one type at a time
       for _,i in pairs({"Class", "File", "Package"}) do
         if match(
@@ -2035,7 +2168,7 @@ if versionform ~= "" and not setversion_update_line then
           line = gsub(line, "%[%d%d%d%d/%d%d/%d%d", "["
             .. gsub(date, "%-", "/"))
           line = gsub(
-            line, "(%[%d%d%d%d/%d%d/%d%d) [^ ]*", "%1 " .. release
+            line, "(%[%d%d%d%d/%d%d/%d%d) [^ ]*", "%1 " .. version
           )
           break
         end
@@ -2043,7 +2176,7 @@ if versionform ~= "" and not setversion_update_line then
       return line
     end
   elseif versionform == "ProvidesExplPackage" then
-    function setversion_update_line(line, date, release)
+    function setversion_update_line(line, date, version)
       -- No real regex so do it one type at a time
       for _,i in pairs({"Class", "File", "Package"}) do
         if match(
@@ -2053,7 +2186,7 @@ if versionform ~= "" and not setversion_update_line then
           line = gsub(
             line,
             "{%d%d%d%d/%d%d/%d%d}( *){[^}]*}",
-            "{" .. gsub(date, "%-", "/") .. "}%1{" .. release .. "}"
+            "{" .. gsub(date, "%-", "/") .. "}%1{" .. version .. "}"
           )
           break
         end
@@ -2061,22 +2194,22 @@ if versionform ~= "" and not setversion_update_line then
       return line
     end
   elseif versionform == "filename" then
-    function setversion_update_line(line, date, release)
+    function setversion_update_line(line, date, version)
       if match(line, "^\\def\\filedate{%d%d%d%d/%d%d/%d%d}$") then
         line = "\\def\\filedate{" .. gsub(date, "%-", "/") .. "}"
       end
       if match(line, "^\\def\\fileversion{[^}]+}$") then
-        line = "\\def\\fileversion{" .. release .. "}"
+        line = "\\def\\fileversion{" .. version .. "}"
       end
       return line
     end
   elseif versionform == "ExplFileDate" then
-    function setversion_update_line(line, date, release)
+    function setversion_update_line(line, date, version)
       if match(line, "^\\def\\ExplFileDate{%d%d%d%d/%d%d/%d%d}$") then
         line = "\\def\\ExplFileDate{" .. gsub(date, "%-", "/") .. "}"
       end
       if match(line, "^\\def\\ExplFileVersion{[^}]+}$") then
-        line = "\\def\\ExplFileVersion{" .. release .. "}"
+        line = "\\def\\ExplFileVersion{" .. version .. "}"
       end
       return line
     end
@@ -2084,16 +2217,16 @@ if versionform ~= "" and not setversion_update_line then
 end
 
 -- Used to actually carry out search-and-replace
-setversion_update_line = setversion_update_line or function(line, date, release)
+setversion_update_line = setversion_update_line or function(line, date, version)
   return line
 end
 
 function setversion(dir)
-  local function rewrite(dir, file, date, release)
+  local function rewrite(dir, file, date, version)
     local changed = false
     local result = ""
     for line in lines(dir .. "/" .. file) do
-      local newline = setversion_update_line(line, date, release)
+      local newline = setversion_update_line(line, date, version)
       if newline ~= line then
         line = newline
         changed = true
@@ -2117,18 +2250,12 @@ function setversion(dir)
       rm(dir, file .. bakext)
     end
   end
-  local date = os_date("%Y-%m-%d")
-  if optdate then
-    date = optdate[1] or date
-  end
-  local release = -1
-  if optrelease then
-    release = optrelease[1] or release
-  end
+  local date = options["date"] or os_date("%Y-%m-%d")
+  local version = options["version"] or -1
   local dir = dir or "."
   for _,i in pairs(versionfiles) do
     for _,j in pairs(filelist(dir, i)) do
-      rewrite(dir, j, date, release)
+      rewrite(dir, j, date, version)
     end
   end
   return 0
@@ -2198,7 +2325,7 @@ bundleunpack = bundleunpack or function(sourcedir, sources)
         os_concat ..
         unpackexe .. " " .. unpackopts .. " " .. name .. " < "
           .. localdir .. "/yes"
-          .. (optquiet and (" > " .. os_null) or "")
+          .. (options["quiet"] and (" > " .. os_null) or "")
       )
       if errorlevel ~=0 then
         return errorlevel
@@ -2210,8 +2337,9 @@ end
 
 function version()
   print(
-    "\n"
-    .. "l3build Release " .. gsub(release_date, "/", "-") .. "\n"
+    "\n" ..
+    "l3build: A testing and building system for LaTeX\n\n" ..
+    "Release " .. release_date
   )
 end
 
@@ -2227,28 +2355,28 @@ function stdmain(target, files)
     -- Detect all of the modules
     modules = modules or listmodules()
     if target == "doc" then
-      errorlevel = allmodules("doc")
+      errorlevel = call(modules, "doc")
     elseif target == "check" then
-      errorlevel = allmodules("bundlecheck")
+      errorlevel = call(modules, "bundlecheck")
       if errorlevel ~=0 then
         print("There were errors: checks halted!\n")
       end
     elseif target == "clean" then
       errorlevel = bundleclean()
     elseif target == "cmdcheck" and next(cmdchkfiles) ~= nil then
-      errorlevel = allmodules("cmdcheck")
+      errorlevel = call(modules, "cmdcheck")
     elseif target == "ctan" then
       errorlevel = ctan()
     elseif target == "install" then
-      errorlevel = allmodules("install")
+      errorlevel = call(modules, "install")
     elseif target == "setversion" then
-      errorlevel = allmodules("setversion")
+      errorlevel = call(modules, "setversion")
       -- Deal with any files in the bundle dir itself
       if errorlevel == 0 then
         errorlevel = setversion()
       end
     elseif target == "unpack" then
-      errorlevel = allmodules("bundleunpack")
+      errorlevel = call(modules, "bundleunpack")
     elseif target == "version" then
       version()
     else

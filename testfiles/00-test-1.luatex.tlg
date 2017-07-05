@@ -12,3 +12,125 @@ l. ...}
 <argument> ...rld}}\foo } \x ={hello} \showthe \foo \show \y 
 l. ...}
 ============================================================
+============================================================
+TEST 2: Enviornment test
+============================================================
+============================================================
+Completed box being shipped out [1]
+\vbox(578.15999+0.0)x469.75499, direction TLT
+.\glue 0.0
+.\vbox(578.15999+0.0)x469.75499, direction TLT
+..\vbox(0.0+0.0)x469.75499, direction TLT
+...\glue 0.0 plus 1.0fil
+...\hbox(0.0+0.0)x469.75499, direction TLT
+..\glue 0.0
+..\glue(\lineskip) 0.0
+..\vbox(578.15999+0.0)x469.75499, glue set 532.15997fil, direction TLT
+...\glue(\topskip) 3.06
+...\hbox(6.94+0.83)x469.75499, glue set 427.755fil, direction TLT
+....\localpar
+.....\localinterlinepenalty=0
+.....\localbrokenpenalty=0
+.....\localleftbox=null
+.....\localrightbox=null
+....\hbox(0.0+0.0)x0.0, direction TLT
+.....\glue 0.0
+.....\glue 0.0
+.....\glue 0.0
+.....\hbox(0.0+0.0)x0.0, direction TLT
+.....\glue 0.0
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\TU/lmtt/m/n/10 #
+....\TU/lmtt/m/n/10 $
+....\TU/lmtt/m/n/10 %
+....\TU/lmtt/m/n/10 &
+....\hbox(0.0+0.0)x0.0, direction TLT
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 11.17
+...\hbox(0.0+0.0)x469.75499, glue set 464.505fil, direction TLT
+....\localpar
+.....\localinterlinepenalty=0
+.....\localbrokenpenalty=0
+.....\localleftbox=null
+.....\localrightbox=null
+....\hbox(0.0+0.0)x0.0, direction TLT
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\hbox(0.0+0.0)x0.0, direction TLT
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\penalty 0
+...\glue 0.0
+...\penalty 0
+...\glue 0.0 plus 1.0
+...\glue 0.0 plus -1.0
+...\glue 0.0 plus 1.0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 5.06
+...\hbox(6.94+0.83)x469.75499, glue set 427.755fil, direction TLT
+....\localpar
+.....\localinterlinepenalty=0
+.....\localbrokenpenalty=0
+.....\localleftbox=null
+.....\localrightbox=null
+....\hbox(0.0+0.0)x0.0, direction TLT
+.....\glue 0.0
+.....\glue 0.0
+.....\glue 0.0
+.....\hbox(0.0+0.0)x0.0, direction TLT
+.....\glue 0.0
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\TU/lmtt/m/n/10 #
+....\TU/lmtt/m/n/10 $
+....\TU/lmtt/m/n/10 %
+....\TU/lmtt/m/n/10 &
+....\hbox(0.0+0.0)x0.0, direction TLT
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 11.17
+...\hbox(0.0+0.0)x469.75499, glue set 464.505fil, direction TLT
+....\localpar
+.....\localinterlinepenalty=0
+.....\localbrokenpenalty=0
+.....\localleftbox=null
+.....\localrightbox=null
+....\hbox(0.0+0.0)x0.0, direction TLT
+....\penalty 10000
+....\glue(\spaceskip) 5.25
+....\penalty 10000
+....\hbox(0.0+0.0)x0.0, direction TLT
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\penalty 0
+...\glue 0.0
+...\glue 0.0 plus 1.0fil
+...\glue 0.0
+..\glue(\baselineskip) 0.0
+..\hbox(0.0+0.0)x469.75499, direction TLT
+(00-test-1.aux)
