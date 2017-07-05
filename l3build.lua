@@ -369,7 +369,15 @@ local function argparse()
         opt  = sub(a, 2, 2)
         -- Only set optarg if it is there
         if #a > 2 then
-          optarg = sub(a, 3)
+          -- If this is a 'compressed' set of short options, shift up
+          if option_list[opts[opt]]["type"] == "boolean" then
+            for j = #arg, i, -1 do
+              arg[j + 1] = arg[j]
+            end
+            arg[i + 1] = "-" .. sub(a, 3)
+          else
+            optarg = sub(a, 3)
+           end
         end
       end
       -- Now check that the option is valid and sort out the argument
