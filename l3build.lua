@@ -380,24 +380,14 @@ end
 
 options = argparse()
 
-local optdate    = options["date"]
-local optengines = options["engine"]
-local optepoch   = options["epoch"]
-local optforce   = options["force"]
-local opthalt    = options["halt"]
-local optpdf     = options["pdf"]
-local optquiet   = options["quiet"]
-local optrerun   = options["rerun"]
-local optversion = options["version"]
-
 -- Sanity check
-if optengines and not optforce then
+if options["engine"] and not options["force"] then
    -- Make a lookup table
    local t = { }
   for _, engine in pairs(checkengines) do
     t[engine] = true
   end
-  for _, engine in pairs(optengines) do
+  for _, engine in pairs(options["engine"]) do
     if not t[engine] then
       print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!")
       print("\n  Valid values are:")
@@ -412,8 +402,8 @@ end
 
 -- Tidy up the epoch setting
 -- Force an epoch if set at the command line
-if optepoch then
-  epoch           = optepoch[1]
+if options["epoch"] then
+  epoch           = options["epoch"][1]
   forcecheckepoch = true
   forcedocepoch   = true
 end
@@ -1240,8 +1230,8 @@ end
 -- Should create a difference file for each failed test
 function runcheck(name, hide)
   local checkengines = checkengines
-  if optengines then
-    checkengines = optengines
+  if options["engine"] then
+    checkengines = options["engine"]
   end
   local errorlevel = 0
   for _,i in ipairs(checkengines) do
@@ -1259,7 +1249,7 @@ function runcheck(name, hide)
     else
       errlevel = compare_tlg(name, engine)
     end
-    if errlevel ~= 0 and opthalt then
+    if errlevel ~= 0 and options["halt"] then
       showfaileddiff()
       if errlevel ~= 0 then
         return 1
@@ -1712,7 +1702,7 @@ end
 function check(names)
   local errorlevel = 0
   if testfiledir ~= "" and direxists(testfiledir) then
-    if not optrerun then
+    if not options["rerun"] then
       checkinit()
     end
     local hide = true
@@ -1741,7 +1731,7 @@ function check(names)
       local errlevel = runcheck(name, hide)
       -- Return value must be 1 not errlevel
       if errlevel ~= 0 then
-        if opthalt then
+        if options["halt"] then
           return 1
         else
           errorlevel = 1
@@ -1855,7 +1845,7 @@ end
 
 function ctan(standalone)
   -- Always run tests for all engines
-  optengines = nil
+  options["engine"] = nil
   local function dirzip(dir, name)
     local zipname = name .. ".zip"
     local function tab_to_str(table)
@@ -2046,7 +2036,7 @@ end
 
 function save(names)
   checkinit()
-  local engines = optengines or {stdengine}
+  local engines = options["engine"] or {stdengine}
   for _,name in pairs(names) do
     local engine
     for _,engine in pairs(engines) do
@@ -2055,11 +2045,11 @@ function save(names)
       local spdffile = name .. tlgengine .. pdfext
       local newfile  = name .. "." .. engine .. logext
       local pdffile  = name .. "." .. engine .. pdfext
-      local refext = ((optpdf and pdfext) or tlgext)
+      local refext = ((options["pdf"] and pdfext) or tlgext)
       if testexists(name) then
         print("Creating and copying " .. refext)
-        runtest(name, engine, false, lvtext, optpdf)
-        if optpdf then
+        runtest(name, engine, false, lvtext, options["pdf"])
+        if options["pdf"] then
           ren(testdir, pdffile, spdffile)
           cp(spdffile, testdir, testfiledir)
         else
@@ -2183,8 +2173,8 @@ function setversion(dir)
     end
   end
   local date = os_date("%Y-%m-%d")
-  if optdate then
-    date = optdate[1] or date
+  if options["date"] then
+    date = options["date"][1] or date
   end
   local version = -1
   if optversion then
@@ -2263,7 +2253,7 @@ bundleunpack = bundleunpack or function(sourcedir, sources)
         os_concat ..
         unpackexe .. " " .. unpackopts .. " " .. name .. " < "
           .. localdir .. "/yes"
-          .. (optquiet and (" > " .. os_null) or "")
+          .. (options["quiet"] and (" > " .. os_null) or "")
       )
       if errorlevel ~=0 then
         return errorlevel
