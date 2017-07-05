@@ -393,7 +393,8 @@ local function argparse()
          end
         else
           if optarg then
-            stderr:write("Value not allowed for option " .. a .."\n")
+            local opt = "-" .. (match(a, "^%-%-") and "-" or "") .. opt
+            stderr:write("Value not allowed for option " .. opt .."\n")
             return {"help"}
           end
         end
