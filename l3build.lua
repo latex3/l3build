@@ -2253,8 +2253,8 @@ function setversion(dir)
     date = options["date"][1] or date
   end
   local version = -1
-  if optversion then
-    version = optversion[1] or version
+  if options["version"] then
+    version = options["version"][1] or version
   end
   local dir = dir or "."
   for _,i in pairs(versionfiles) do
