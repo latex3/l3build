@@ -404,11 +404,15 @@ local function argparse()
       end
       -- Store the result
       if optarg then
-        local opts = result[optname] or { }
-        for hit in gmatch(optarg, "([^,%s]+)") do
-          insert(opts, hit)
+        if option_list[optname]["type"] == "string" then
+          result[optname] = optarg
+        else
+          local opts = result[optname] or { }
+          for hit in gmatch(optarg, "([^,%s]+)") do
+            insert(opts, hit)
+          end
+          result[optname] = opts
         end
-        result[optname] = opts
       else
         result[optname] = true
       end
@@ -448,7 +452,7 @@ end
 -- Tidy up the epoch setting
 -- Force an epoch if set at the command line
 if options["epoch"] then
-  epoch           = options["epoch"][1]
+  epoch           = options["epoch"]
   forcecheckepoch = true
   forcedocepoch   = true
 end
@@ -786,7 +790,10 @@ function call(dirs, target, opts)
       local t = option_list[k] or { }
       k = t["long"] or k
       local arg = ""
-      if t["type"] ~= "boolean" then
+      if t["type"] == "string" then
+        arg = arg .. "=" .. v
+      end
+      if t["type"] == "table" then
         for _,a in pairs(v) do
           if arg == "" then
             arg = "=" .. a -- Add the initial "=" here
@@ -2251,14 +2258,8 @@ function setversion(dir)
       rm(dir, file .. bakext)
     end
   end
-  local date = os_date("%Y-%m-%d")
-  if options["date"] then
-    date = options["date"][1] or date
-  end
-  local version = -1
-  if options["version"] then
-    version = options["version"][1] or version
-  end
+  local date = options["date"] or os_date("%Y-%m-%d")
+  local version = options["version"] or -1
   local dir = dir or "."
   for _,i in pairs(versionfiles) do
     for _,j in pairs(filelist(dir, i)) do
