@@ -370,7 +370,7 @@ local function argparse()
         -- Only set optarg if it is there
         if #a > 2 then
           -- If this is a 'compressed' set of short options, shift up
-          if option_list[opts[opt]]["type"] == "boolean" then
+          if opts[opt] and option_list[opts[opt]]["type"] == "boolean" then
             for j = #arg, i, -1 do
               arg[j + 1] = arg[j]
             end
