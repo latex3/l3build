@@ -381,19 +381,21 @@ local function argparse()
       -- if required
       local optname = opts[opt]
       if optname then
-        local reqarg = option_list[optname]["args"]
         -- Tidy up arguments
-        if reqarg and not optarg then
+        if option_list[optname]["args"] then
+         if not optarg then
           optarg = arg[i + 1]
           if not optarg then
             stderr:write("Missing value for option " .. a .."\n")
             return {"help"}
           end
           i = i + 1
-        end
-        if not reqarg and optarg then
-          stderr:write("Value not allowed for option " .. a .."\n")
-          return {"help"}
+         end
+        else
+          if optarg then
+            stderr:write("Value not allowed for option " .. a .."\n")
+            return {"help"}
+          end
         end
       else
         stderr:write("Unknown option " .. a .."\n")
