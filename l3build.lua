@@ -418,7 +418,9 @@ local function argparse()
       break
     end
   end
-  result["files"] = files
+  if next(files) then
+   result["files"] = files
+  end
   return result
 end
 
