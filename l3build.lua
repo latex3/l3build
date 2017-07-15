@@ -2286,7 +2286,7 @@ end
 
 -- Split off from the main unpack so it can be used on a bundle and not
 -- leave only one modules files
-bundleunpack = bundleunpack or function(sourcedir, sources)
+bundleunpack = bundleunpack or function(sourcedirs, sources)
   local errorlevel = mkdir(localdir)
   if errorlevel ~=0 then
     return errorlevel
@@ -2295,7 +2295,7 @@ bundleunpack = bundleunpack or function(sourcedir, sources)
   if errorlevel ~=0 then
     return errorlevel
   end
-  for _,i in ipairs(sourcedir or {"."}) do
+  for _,i in ipairs(sourcedirs or {"."}) do
     for _,j in ipairs(sources or {sourcefiles}) do
       for _,k in ipairs(j) do
         errorlevel = cp(k, i, unpackdir)
