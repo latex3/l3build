@@ -1698,7 +1698,7 @@ function typesetpdf(file, dir)
   local errorlevel = typeset(file, dir)
   if errorlevel == 0 then
     os_remove(name .. ".pdf")
-    cp(name .. ".pdf", typesetdir, ".")
+    cp(gsub(file, "%.[^.]+$", ".pdf"), typesetdir, ".")
   else
     print(" ! Compilation failed")
   end
