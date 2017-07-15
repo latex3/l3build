@@ -1697,8 +1697,9 @@ function typesetpdf(file, dir)
   print("Typesetting " .. name)
   local errorlevel = typeset(file, dir)
   if errorlevel == 0 then
-    os_remove(jobname(name) .. ".pdf")
-    cp(name .. ".pdf", typesetdir, ".")
+    name = name .. ".pdf"
+    os_remove(jobname(name))
+    cp(name, typesetdir, ".")
   else
     print(" ! Compilation failed")
   end
