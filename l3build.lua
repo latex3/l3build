@@ -1694,7 +1694,7 @@ end
 
 function typesetpdf(file, dir)
   local name = jobname(file)
-  print("Typesetting " .. name)
+  print("Typesetting " .. gsub(file, "%.[^.]+$", ""))
   local errorlevel = typeset(file, dir)
   if errorlevel == 0 then
     os_remove(name .. ".pdf")
