@@ -1586,7 +1586,7 @@ end
 
 -- Strip the extension from a file name (if present)
 function jobname(file)
-  local name = match(select(2, splitpath(file)), "^(.*)%.")
+  local name = match(basename(file), "^(.*)%.")
   return name or file
 end
 
