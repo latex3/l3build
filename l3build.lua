@@ -1693,12 +1693,12 @@ function tex(file, dir)
 end
 
 function typesetpdf(file, dir)
-  local name = jobname(file)
-  print("Typesetting " .. gsub(file, "%.[^.]+$", ""))
+  local name = gsub(file, "%.[^.]+$", "")
+  print("Typesetting " .. name)
   local errorlevel = typeset(file, dir)
   if errorlevel == 0 then
-    os_remove(name .. ".pdf")
-    cp(gsub(file, "%.[^.]+$", ".pdf"), typesetdir, ".")
+    os_remove(jobname(name) .. ".pdf")
+    cp(name .. ".pdf", typesetdir, ".")
   else
     print(" ! Compilation failed")
   end
