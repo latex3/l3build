@@ -2063,7 +2063,7 @@ function doc(files)
     cp(i, supportdir, typesetdir)
   end
   depinstall(typesetdeps)
-  unpack({".", docfiledir}, {sourcefiles, typesetsourcefiles})
+  unpack({sourcefiles, typesetsourcefiles}, {".", docfiledir})
   -- Main loop for doc creation
   local done = {}
   for _, typesetfiles in ipairs({typesetdemofiles, typesetfiles}) do
@@ -2271,7 +2271,7 @@ end
 
 -- Unpack the package files using an 'isolated' system: this requires
 -- a copy of the 'basic' DocStrip program, which is used then removed
-function unpack(sourcedirs, sources)
+function unpack(sources, sourcedirs)
   local errorlevel = depinstall(unpackdeps)
   if errorlevel ~= 0 then
     return errorlevel
