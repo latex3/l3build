@@ -1694,7 +1694,7 @@ end
 
 function typesetpdf(file, dir)
   local name = gsub(file, "%.[^.]+$", "")
-  print("Typesetting " .. gsub(name, "^%./", ""))
+  print("Typesetting " .. name)
   local errorlevel = typeset(file, dir)
   if errorlevel == 0 then
     name = name .. ".pdf"
@@ -2072,12 +2072,13 @@ function doc(files)
       for _, dir in ipairs({unpackdir, typesetdir}) do
         for j,_ in pairs(tree(dir, i)) do
           if not done[j] then
+            j = gsub(j, "^%./", "")
             -- Allow for command line selection of files
             local typeset = true
             if files and next(files) then
               typeset = false
               for _,k in ipairs(files) do
-                if k == gsub(j, "^%./(.*)%.[^.]+$", "%1") then
+                if k == gsub(j, "%.[^.]+$", "") then
                   typeset = true
                   break
                 end
