@@ -1694,7 +1694,7 @@ end
 
 function typesetpdf(file, dir)
   local name = gsub(file, "%.[^.]+$", "")
-  print("Typesetting " .. name)
+  print("Typesetting " .. gsub(name, "^%./", ""))
   local errorlevel = typeset(file, dir)
   if errorlevel == 0 then
     name = name .. ".pdf"
