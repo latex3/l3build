@@ -2064,25 +2064,30 @@ function doc(files)
   depinstall(typesetdeps)
   unpack({sourcefiles, typesetsourcefiles})
   -- Main loop for doc creation
+  local done = {}
   for _, typesetfiles in ipairs({typesetdemofiles, typesetfiles}) do
     for _,i in ipairs(typesetfiles) do
       for _, dir in ipairs({unpackdir, typesetdir}) do
         for j,_ in pairs(tree(dir, i)) do
-          -- Allow for command line selection of files
-          local typeset = true
-          if files and next(files) then
-            typeset = false
-            for _,k in ipairs(files) do
-              if k == jobname(j) then
-                typeset = true
-                break
+          if not done[j] then
+            -- Allow for command line selection of files
+            local typeset = true
+            if files and next(files) then
+              typeset = false
+              for _,k in ipairs(files) do
+                if k == jobname(j) then
+                  typeset = true
+                  break
+                end
               end
             end
-          end
-          if typeset then
-            local errorlevel = typesetpdf(j, dir)
-            if errorlevel ~= 0 then
-              return errorlevel
+            if typeset then
+              local errorlevel = typesetpdf(j, dir)
+              if errorlevel ~= 0 then
+                return errorlevel
+              else
+                done[j] = true
+              end
             end
           end
         end
