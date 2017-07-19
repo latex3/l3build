@@ -2077,7 +2077,7 @@ function doc(files)
             if files and next(files) then
               typeset = false
               for _,k in ipairs(files) do
-                if k == jobname(j) then
+                if k == gsub(j, "%.[^.]+$", "") then
                   typeset = true
                   break
                 end
