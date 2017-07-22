@@ -611,7 +611,7 @@ function cp(glob, source, dest)
         )
       end
     else
-      errorlevel = execute("cp -rf " .. source .. " " .. dest)
+      errorlevel = execute("cp -rLf " .. source .. " " .. dest)
     end
     if errorlevel ~=0 then
       return errorlevel
