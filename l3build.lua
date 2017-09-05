@@ -601,17 +601,17 @@ function cp(glob, source, dest)
     if os_type == "windows" then
       if lfs_attributes(source)["mode"] == "directory" then
         errorlevel = execute(
-          "xcopy /y /e /i " .. unix_to_win(source) .. " "
-             .. unix_to_win(dest .. "/" .. i) .. " > nul"
+          'xcopy /y /e /i "' .. unix_to_win(source) .. '" "'
+             .. unix_to_win(dest .. '/' .. i) .. '" > nul'
         )
       else
         errorlevel = execute(
-          "xcopy /y " .. unix_to_win(source) .. " "
-             .. unix_to_win(dest) .. " > nul"
+          'xcopy /y "' .. unix_to_win(source) .. '" "'
+             .. unix_to_win(dest) .. '" > nul'
         )
       end
     else
-      errorlevel = execute("cp -RLf " .. source .. " " .. dest)
+      errorlevel = execute("cp -RLf '" .. source .. "' '" .. dest .. "'")
     end
     if errorlevel ~=0 then
       return errorlevel
