@@ -177,6 +177,7 @@ packtdszip   = packtdszip   or false
 scriptname   = scriptname   or "build.lua"
 typesetcmds  = typesetcmds  or ""
 versionform  = versionform  or ""
+recorderrorlevel = recorderrorlevel or false
 
 -- Extensions for various file types: used to abstract out stuff a bit
 bakext = bakext or ".bak"
@@ -934,7 +935,7 @@ end
 
 -- Convert the raw log file into one for comparison/storage: keeps only
 -- the 'business' part from the tests and removes system-dependent stuff
-local function formatlog(logfile, newfile, engine)
+local function formatlog(logfile, newfile, engine, errlevels)
   local maxprintline = maxprintline
   if engine == "luatex" or engine == "luajittex" then
     maxprintline = maxprintline + 1 -- Deal with an out-by-one error
@@ -1066,6 +1067,16 @@ local function formatlog(logfile, newfile, engine)
   local newfile = open(newfile, "w")
   output(newfile)
   write(newlog)
+  if recorderrorlevel then
+    write('***************\n')
+    for i = 1, checkruns do
+      if errlevels[i] == 0 then
+        write('Run ' .. i .. ' executed without error')
+      else
+        write('Run ' .. i .. ' executed with error level ' .. errlevels[i] )
+      end
+    end
+  end
   close(newfile)
 end
 
@@ -1500,8 +1511,9 @@ function runtest(name, engine, hide, ext, makepdf)
       break
     end
   end
+  local errlevels = {}
   for i = 1, checkruns do
-    run(
+    errlevels[i] = run(
       testdir,
       -- No use of localdir here as the files get copied to testdir:
       -- avoids any paths in the logs
@@ -1524,7 +1536,7 @@ function runtest(name, engine, hide, ext, makepdf)
   if makepdf and fileexists(testdir .. "/" .. name .. dviext) then
     dvitopdf(name, testdir, engine, hide)
   end
-  formatlog(logfile, newfile, engine)
+  formatlog(logfile, newfile, engine, errlevels)
   -- Store secondary files for this engine
   for _,i in ipairs(filelist(testdir, name .. ".???")) do
     local ext = match(i, "%....")
