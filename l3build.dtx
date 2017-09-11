@@ -148,6 +148,7 @@
 \luavarset{scriptname}  {"build.lua"} {Name of script used in dependencies.}
 \luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting.}
 \luavarset{versionform} {""}          {Nature of version strings for auto-replacement.}
+\luavarset{recorderrorlevel} {false}  {Include error level(s) from test run(s) in TLG files?}
 }
 \allluavars
 \newcommand\luavartypeset{%
@@ -475,6 +476,12 @@
 %
 % If the \texttt{--engine} (or \texttt{-e}) is specified (one of |pdftex|, |xetex|, or |luatex|), the saved output is stored in \texttt{\meta{name}.\meta{engine}.tlg}. This is necessary if running the test through a different engine produces a different output.
 % A normalisation process is performed when checking to avoid common differences such as register allocation; full details are listed in section~\ref{sec:norm}.
+%
+% If the \var{recorderrorlevel} variable is set \var{true}, additional information
+% will be added to the \texttt{.tlg} to record the \enquote{output level} of the
+% typesetting compilation of the \texttt{.lvt} file. If the typesetting compilation
+% completed without throwing an error (due to \TeX\ programming errors, for example),
+% the \enquote{output level} is zero, else non-zero.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{save -p \meta{name(s)}}
