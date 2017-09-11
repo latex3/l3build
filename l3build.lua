@@ -177,7 +177,7 @@ packtdszip   = packtdszip   or false
 scriptname   = scriptname   or "build.lua"
 typesetcmds  = typesetcmds  or ""
 versionform  = versionform  or ""
-recorderrorlevel = recorderrorlevel or false
+recordstatus = recordstatus or false
 
 -- Extensions for various file types: used to abstract out stuff a bit
 bakext = bakext or ".bak"
@@ -1067,14 +1067,10 @@ local function formatlog(logfile, newfile, engine, errlevels)
   local newfile = open(newfile, "w")
   output(newfile)
   write(newlog)
-  if recorderrorlevel then
+  if recordstatus then
     write('***************\n')
     for i = 1, checkruns do
-      if errlevels[i] == 0 then
-        write('Run ' .. i .. ' executed without error')
-      else
-        write('Run ' .. i .. ' executed with error level ' .. errlevels[i] )
-      end
+      write('Compilation ' .. i .. ' of test file completed with exit status ' .. errlevels[i] )
     end
   end
   close(newfile)
