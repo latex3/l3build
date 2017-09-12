@@ -34,7 +34,8 @@ which come about as `l3build`'s focus is testing and building LaTeX packages:
   bootstrapping LaTeX: we are aiming to maintain a single file with no
   `.lua` dependencies
 - The primary documentation is aimed at the TeX world, so is in PDF format
-  and generated from `l3build.dtx`
+  and generated from `l3build.dtx`; documentation in the `.lua` file is
+  also welcome, but anything for general use does need to be in the `.dtx`
 - As far as possible, everything is done within `l3build` itself or tools
   directly available in a TeX system or as standard in the supported
   systems (Windows, MacOS, Linux)
