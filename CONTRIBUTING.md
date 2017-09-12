@@ -31,7 +31,7 @@ which come about as `l3build`'s focus is testing and building LaTeX packages:
 
 - Our target Lua set up is `texlua` (part of LuaTeX), not standalone `lua`
 - The main `l3build.lua` file is self-contained as this helps with
-  bootstrapping LaTeX: we are aiming to maintain a single file with
+  bootstrapping LaTeX: we are aiming to maintain a single file with no
   `.lua` dependencies
 - The primary documentation is aimed at the TeX world, so is in PDF format
   and generated from `l3build.dtx`
