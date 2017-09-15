@@ -1070,7 +1070,7 @@ local function formatlog(logfile, newfile, engine, errlevels)
   if recordstatus then
     write('***************\n')
     for i = 1, checkruns do
-      write('Compilation ' .. i .. ' of test file completed with exit status ' .. errlevels[i] )
+      write('Compilation ' .. i .. ' of test file completed with exit status ' .. errlevels[i] '\n')
     end
   end
   close(newfile)
