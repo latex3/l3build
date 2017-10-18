@@ -1821,12 +1821,12 @@ function check(names)
       local errlevel = runcheck(name, hide)
       -- Return value must be 1 not errlevel
       if errlevel ~= 0 then
-        -- visually show that something has failed
-        print("          --> failed\n")
         if options["halt-on-error"] then
           return 1
         else
           errorlevel = 1
+          -- visually show that something has failed
+          print("          --> failed\n")
         end
       end
     end
