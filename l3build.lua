@@ -190,7 +190,7 @@ psext  = psext  or ".ps"
 tlgext = tlgext or ".tlg"
 
 -- For "manifest"
-manifestfile = "MANIFEST.md"
+manifestfile = manifestfile or "MANIFEST.md"
 
 -- File operations are aided by the LuaFileSystem module
 local lfs = require("lfs")
