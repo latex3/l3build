@@ -2360,13 +2360,24 @@ end
 
 function writemanifest()
 
-  file_types = {"Text files","Source files","Documentation files","Bibliography files"}
+  file_types = {"source","docu","bib"}
 
   file_lists = {
-    ["Text files"] = textfiles,
-    ["Source files"] = sourcefiles,
-    ["Documentation files"] = docfiles,
-    ["Bibliography files"] = {bibfiles,bstfiles},
+    ["source"] = {
+                   ["name"]  = "Source files",
+                   ["files"] = {sourcefiles,typesetfiles},
+                   ["dir"]   = "./",
+                 },
+    ["docu"] = {
+                   ["name"]  = "Text and Documentation files",
+                   ["files"] = {textfiles,docfiles,demofiles},
+                   ["dir"]   = "./",
+                 },
+    ["bib"] = {
+                   ["name"]  = "Bibliography and index files",
+                   ["files"] = {bibfiles,bstfiles,makeindexfiles},
+                   ["dir"]   = "./",
+                 },
   }
 
   local f = assert(io.open(manifestfile, "w"))
@@ -2377,8 +2388,24 @@ function writemanifest()
 
   for _,this_type in ipairs(file_types) do
 
-    files_write_string = ""
-    file_globs = file_lists[this_type]
+    files_write_string = build_manifest(file_lists[this_type])
+
+    if #files_write_string > 0 then
+      f:write("\n## " .. file_lists[this_type]["name"] .. "\n\n" .. files_write_string)
+    end
+  end
+
+
+  f:close()
+
+  print("Manifest written to " .. manifestfile .. ".")
+
+end
+
+function build_manifest(file_list)
+
+    local files_write_string = ""
+    file_globs = file_list["files"]
 
     -- allow nested tables by requiring two levels of nesting
     if type(file_globs[1])=="string" then
@@ -2387,22 +2414,14 @@ function writemanifest()
 
     for _,this_glob in ipairs(file_globs) do
       for _,glob_str in ipairs(this_glob) do
-        these_files = filelist("./",glob_str)
+        these_files = filelist(file_list["dir"],glob_str)
         for _,this_file in ipairs(these_files) do
           files_write_string = files_write_string .. "* " .. this_file .. "\n"
         end
       end
     end
 
-    if #files_write_string > 0 then
-      f:write("\n## " .. this_type .. "\n\n" .. files_write_string)
-    end
-  end
-
-
-  f:close()
-
-  print("Manifest written to " .. manifestfile .. ".")
+    return files_write_string
 
 end
 
