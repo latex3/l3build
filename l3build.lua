@@ -2360,7 +2360,7 @@ end
 
 function writemanifest()
 
-  file_types = {"source","docu","bib"}
+  file_types = {"source","docu","bib","tests"}
 
   file_lists = {
     ["source"] = {
@@ -2377,6 +2377,11 @@ function writemanifest()
                    ["name"]  = "Bibliography and index files",
                    ["files"] = {bibfiles,bstfiles,makeindexfiles},
                    ["dir"]   = "./",
+                 },
+    ["tests"] = {
+                   ["name"]  = "Test files",
+                   ["files"] = {"*"..lvtext,"*"..lveext,"*"..tlgext},
+                   ["dir"]   = testfiledir,
                  },
   }
 
