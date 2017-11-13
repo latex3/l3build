@@ -2360,48 +2360,54 @@ end
 
 function writemanifest()
 
-  file_types = {"source","docu","bib","tests","derived","typeset"}
+  file_types = {"source","docu","bib","derived","typeset","tests"}
 
   file_lists = {
     source =  {
                    name    = "Source files",
                    files   = {sourcefiles,typesetfiles},
+                   exclude = {excludefiles},
                    dir     = "./",
                    N       = 0,
                    matches = {}
               },
     docu =    {
-                   name  = "Text and Documentation files",
-                   files = {textfiles,docfiles,demofiles},
-                   dir   = "./",
+                   name    = "Text and Documentation files",
+                   files   = {textfiles,docfiles,demofiles},
+                   exclude = {excludefiles},
+                   dir     = "./",
                    N       = 0,
                    matches = {}
               },
     bib =     {
-                   name  = "Bibliography and index files",
-                   files = {bibfiles,bstfiles,makeindexfiles},
-                   dir   = "./",
+                   name    = "Bibliography and index files",
+                   files   = {bibfiles,bstfiles,makeindexfiles},
+                   exclude = {excludefiles},
+                   dir     = "./",
                    N       = 0,
                    matches = {}
               },
     tests =   {
-                   name  = "Test files",
-                   files = {"*"..lvtext,"*"..lveext,"*"..tlgext},
-                   dir   = testfiledir,
+                   name    = "Test files",
+                   files   = {"*"..lvtext,"*"..lveext,"*"..tlgext},
+                   exclude = {excludefiles},
+                   dir     = testfiledir,
                    N       = 0,
                    matches = {}
               },
     derived = {
-                   name  = "Derived files",
-                   files = {installfiles},
-                   dir   = unpackdir,
+                   name    = "Derived files",
+                   files   = {installfiles},
+                   exclude = {excludefiles,sourcefiles},
+                   dir     = unpackdir,
                    N       = 0,
                    matches = {}
               },
     typeset = {
-                   name  = "Typeset documents",
-                   files = {typesetfiles},
-                   dir   = typesetdir,
+                   name    = "Typeset documents",
+                   files   = {typesetfiles},
+                   exclude = {excludefiles},
+                   dir     = typesetdir,
                    N       = 0,
                    matches = {}
               },
@@ -2458,27 +2464,33 @@ function build_manifest(file_list)
     errorlevel = unpack()
   end
 
-  file_globs = file_list.files
-
   -- allow nested tables by requiring two levels of nesting
-  if type(file_globs[1])=="string" then
-    file_globs = {file_globs}
+  if type(file_list.files[1])=="string" then
+    file_list.files = {file_list.files}
+  end
+  if type(file_list.exclude[1])=="string" then
+    file_list.exclude = {file_list.exclude}
   end
 
-  for _,this_glob in ipairs(file_globs) do
-    for _,glob_str in ipairs(this_glob) do
+  local excludelist = {}
+  for _,glob_list in ipairs(file_list.exclude) do
+    for _,this_glob in ipairs(glob_list) do
+      for _,this_file in ipairs(filelist(".",this_glob)) do
+        excludelist[this_file] = true
+      end
+    end
+  end
+  for _,glob_list in ipairs(file_list.files) do
+    for _,this_glob in ipairs(glob_list) do
 
-      these_files = filelist(file_list["dir"],glob_str)
+      these_files = filelist(file_list["dir"],this_glob)
 
       for _,this_file in ipairs(these_files) do
-
-        -- track # matched files: (Lua not good at "lengths" of tables)
-        file_list.N = file_list.N+1
-
-        -- store the file name: (automatic de-duplication with this approach)
-        file_list.matches[this_file] = true
+        if not excludelist[this_file] then
+          file_list.N = file_list.N+1 -- track # matched files: (Lua not good at "lengths" of tables)
+          file_list.matches[this_file] = true -- store the file name: (automatic de-duplication with this approach)
+        end
       end
-
     end
   end
 
