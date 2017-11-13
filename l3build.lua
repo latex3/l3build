@@ -2360,9 +2360,9 @@ end
 
 function writemanifest()
 
-  file_types = {"source","docu","bib","derived","typeset","tests"}
+  local file_types = {"source","docu","bib","derived","typeset","tests"}
 
-  file_lists = {
+  local file_lists = {
     source =  {
                    name    = "Source files",
                    files   = {sourcefiles,typesetfiles},
