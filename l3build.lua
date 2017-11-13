@@ -2360,7 +2360,7 @@ end
 
 function writemanifest()
 
-  file_types = {"source","docu","bib","tests","derived"}
+  file_types = {"source","docu","bib","tests","derived","typeset"}
 
   file_lists = {
     source =  {
@@ -2397,8 +2397,27 @@ function writemanifest()
                    dir   = unpackdir,
                    N       = 0,
                    matches = {}
-              }
+              },
+    typeset = {
+                   name  = "Typeset documents",
+                   files = {typesetfiles},
+                   dir   = typesetdir,
+                   N       = 0,
+                   matches = {}
+              },
   }
+
+  -- create all matching files
+  for _,this_type in ipairs(file_types) do
+    file_lists[this_type] = build_manifest(file_lists[this_type])
+  end
+
+  -- "correct" the typeset files
+  local typeset_matches = file_lists.typeset.matches
+  file_lists.typeset.matches = {}
+  for ii in pairs(typeset_matches) do
+    file_lists.typeset.matches[gsub(ii, "%.%w+$", ".pdf")] = true
+  end
 
   local f = assert(io.open(manifestfile, "w"))
 
@@ -2408,9 +2427,6 @@ function writemanifest()
   f:write("it does not include ‘generated’ files such as PDF.\n")
 
   for _,this_type in ipairs(file_types) do
-
-    file_lists[this_type] = build_manifest(file_lists[this_type])
-
     if file_lists[this_type].N > 0 then
 
       f:write("\n## " .. file_lists[this_type].name .. "\n\n")
@@ -2429,6 +2445,7 @@ function writemanifest()
   f:close()
 
   print("Manifest written to " .. manifestfile .. ".")
+  print("Note `build doc` may be required first.")
 
 end
 
