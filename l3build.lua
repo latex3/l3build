@@ -2360,6 +2360,13 @@ end
 
 function writemanifest()
 
+  -- unpack
+  if module == "" then
+    errorlevel = call(modules, "bundleunpack")
+  else
+    errorlevel = unpack()
+  end
+
   local file_types = {"source","docu","bib","derived","typeset","tests"}
 
   local file_lists = {
@@ -2444,25 +2451,16 @@ function writemanifest()
     end
   end
 
---  kpse.set_program_name("kpsewhich")
---  dofile(kpse.lookup("serialise.lua"))
---  serialise(file_lists)
-
   f:close()
 
+  print("*******************************************")
   print("Manifest written to " .. manifestfile .. ".")
   print("Note `build doc` may be required first.")
+  print("*******************************************")
 
 end
 
 function build_manifest(file_list)
-
-  -- unpack
-  if module == "" then
-    errorlevel = call(modules, "bundleunpack")
-  else
-    errorlevel = unpack()
-  end
 
   -- allow nested tables by requiring two levels of nesting
   if type(file_list.files[1])=="string" then
