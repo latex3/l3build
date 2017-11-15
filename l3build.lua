@@ -2374,7 +2374,7 @@ function writemanifest()
                    name    = "Source files",
                    files   = {sourcefiles,typesetfiles},
                    exclude = {excludefiles},
-                   dir     = "./",
+                   dir     = maindir,
                    N       = 0,
                    matches = {}
               },
@@ -2382,7 +2382,7 @@ function writemanifest()
                    name    = "Text and Documentation files",
                    files   = {textfiles,docfiles,demofiles,typesetdemofiles},
                    exclude = {excludefiles},
-                   dir     = "./",
+                   dir     = maindir,
                    N       = 0,
                    matches = {}
               },
@@ -2390,7 +2390,7 @@ function writemanifest()
                    name    = "Bibliography and index files",
                    files   = {bibfiles,bstfiles,makeindexfiles},
                    exclude = {excludefiles},
-                   dir     = "./",
+                   dir     = maindir,
                    N       = 0,
                    matches = {}
               },
@@ -2489,7 +2489,7 @@ function build_manifest(file_list)
   local excludelist = {}
   for _,glob_list in ipairs(file_list.exclude) do
     for _,this_glob in ipairs(glob_list) do
-      for _,this_file in ipairs(filelist(".",this_glob)) do
+      for _,this_file in ipairs(filelist(maindir,this_glob)) do
         excludelist[this_file] = true
       end
     end
