@@ -2380,7 +2380,7 @@ function writemanifest()
               },
     docu =    {
                    name    = "Text and Documentation files",
-                   files   = {textfiles,docfiles,demofiles},
+                   files   = {textfiles,docfiles,demofiles,typesetdemofiles},
                    exclude = {excludefiles},
                    dir     = "./",
                    N       = 0,
