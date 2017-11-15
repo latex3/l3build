@@ -2367,7 +2367,7 @@ function writemanifest()
     errorlevel = unpack()
   end
 
-  local file_types = {"source","docu","bib","derived","typeset","tests"}
+  local file_types = {"source","docu","bib","derived","typeset","supp","checksupp","tests"}
 
   local file_lists = {
     source =  {
@@ -2391,6 +2391,22 @@ function writemanifest()
                    files   = {bibfiles,bstfiles,makeindexfiles},
                    exclude = {excludefiles},
                    dir     = "./",
+                   N       = 0,
+                   matches = {}
+              },
+    supp =    {
+                   name    = "Support files needed for unpacking, typesetting, or checking",
+                   files   = {unpacksuppfiles,typesetsuppfiles,checksuppfiles},
+                   exclude = {excludefiles},
+                   dir     = supportdir,
+                   N       = 0,
+                   matches = {}
+              },
+    checksupp =    {
+                   name    = "Checking-specific support files",
+                   files   = {"*.*"},
+                   exclude = {{".",".."},excludefiles},
+                   dir     = testsuppdir,
                    N       = 0,
                    matches = {}
               },
