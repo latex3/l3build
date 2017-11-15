@@ -2372,7 +2372,7 @@ function writemanifest()
   local file_lists = {
     source =  {
                    name    = "Source files",
-                   files   = {sourcefiles,typesetfiles},
+                   files   = {sourcefiles,typesetfiles,typesetsourcefiles},
                    exclude = {excludefiles},
                    dir     = maindir,
                    N       = 0,
