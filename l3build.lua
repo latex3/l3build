@@ -2374,12 +2374,22 @@ function writemanifest()
     errorlevel = unpack()
   end
 
-  local file_types = {"source","docu","bib","derived","typeset","supp","checksupp","tests"}
+  local file_types = {"source","typesetsource","docu","bib","derived","typeset","supp","checksupp","tests"}
 
   local file_lists = {
     source =  {
                    name    = "Source files",
-                   files   = {sourcefiles,typesetfiles,typesetsourcefiles},
+                   files   = {sourcefiles},
+                   exclude = {excludefiles},
+                   dir     = maindir,
+                   N       = 0,
+                   matches = {},
+                   descr   = {},
+                   extractdescription = true,
+              },
+    typesetsource =  {
+                   name    = "Typeset documentation source files",
+                   files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
                    exclude = {excludefiles},
                    dir     = maindir,
                    N       = 0,
@@ -2388,8 +2398,8 @@ function writemanifest()
                    extractdescription = true,
               },
     docu =    {
-                   name    = "Text and Documentation files",
-                   files   = {textfiles,docfiles,demofiles,typesetdemofiles},
+                   name    = "Plain documentation files",
+                   files   = {textfiles,docfiles,demofiles},
                    exclude = {excludefiles},
                    dir     = maindir,
                    N       = 0,
