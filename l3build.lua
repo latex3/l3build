@@ -191,6 +191,13 @@ tlgext = tlgext or ".tlg"
 
 -- For "manifest"
 manifestfile = manifestfile or "MANIFEST.md"
+manifestoptions = manifestoptions or
+  {
+    extractfromline = false ,
+    extractfromfile = false ,
+    linenumber      = 2,
+    matchstr        = "%%%S%s+(.*)",
+  }
 
 -- File operations are aided by the LuaFileSystem module
 local lfs = require("lfs")
@@ -2376,7 +2383,9 @@ function writemanifest()
                    exclude = {excludefiles},
                    dir     = maindir,
                    N       = 0,
-                   matches = {}
+                   matches = {},
+                   descr   = {},
+                   extractdescription = true,
               },
     docu =    {
                    name    = "Text and Documentation files",
@@ -2384,7 +2393,9 @@ function writemanifest()
                    exclude = {excludefiles},
                    dir     = maindir,
                    N       = 0,
-                   matches = {}
+                   matches = {},
+                   descr   = {},
+                   extractdescription = false,
               },
     bib =     {
                    name    = "Bibliography and index files",
@@ -2392,7 +2403,9 @@ function writemanifest()
                    exclude = {excludefiles},
                    dir     = maindir,
                    N       = 0,
-                   matches = {}
+                   matches = {},
+                   descr   = {},
+                   extractdescription = false,
               },
     supp =    {
                    name    = "Support files needed for unpacking, typesetting, or checking",
@@ -2400,7 +2413,9 @@ function writemanifest()
                    exclude = {excludefiles},
                    dir     = supportdir,
                    N       = 0,
-                   matches = {}
+                   matches = {},
+                   descr   = {},
+                   extractdescription = true,
               },
     checksupp =    {
                    name    = "Checking-specific support files",
@@ -2408,7 +2423,9 @@ function writemanifest()
                    exclude = {{".",".."},excludefiles},
                    dir     = testsuppdir,
                    N       = 0,
-                   matches = {}
+                   matches = {},
+                   descr   = {},
+                   extractdescription = true,
               },
     tests =   {
                    name    = "Test files",
@@ -2416,7 +2433,9 @@ function writemanifest()
                    exclude = {excludefiles},
                    dir     = testfiledir,
                    N       = 0,
-                   matches = {}
+                   matches = {},
+                   descr   = {},
+                   extractdescription = false,
               },
     derived = {
                    name    = "Derived files",
@@ -2424,7 +2443,9 @@ function writemanifest()
                    exclude = {excludefiles,sourcefiles},
                    dir     = unpackdir,
                    N       = 0,
-                   matches = {}
+                   matches = {},
+                   descr   = {},
+                   extractdescription = false,
               },
     typeset = {
                    name    = "Typeset documents",
@@ -2432,7 +2453,9 @@ function writemanifest()
                    exclude = {excludefiles},
                    dir     = typesetdir,
                    N       = 0,
-                   matches = {}
+                   matches = {},
+                   descr   = {},
+                   extractdescription = true,
               },
   }
 
@@ -2459,7 +2482,16 @@ function writemanifest()
       f:write("\n## " .. file_lists[this_type].name .. "\n\n")
 
       for ii in pairs(file_lists[this_type].matches) do
-        f:write("* " .. ii .. "\n")
+        if manifestoptions.extractfromline and file_lists[this_type].extractdescription then
+          jj = file_lists[this_type].descr[ii] or ""
+        else
+          jj = ""
+        end
+        if jj == "" then
+          f:write("* " .. ii .. "\n")
+        else
+          f:write("* " .. ii .. ": " .. jj .. "\n")
+        end
       end
 
     end
@@ -2499,8 +2531,24 @@ function build_manifest(file_list)
 
       for _,this_file in ipairs(these_files) do
         if not excludelist[this_file] then
+
           file_list.N = file_list.N+1 -- track # matched files: (Lua not good at "lengths" of tables)
           file_list.matches[this_file] = true -- store the file name: (automatic de-duplication with this approach)
+
+          if file_list.extractdescription then
+            if manifestoptions.extractfromline then
+
+              local fopen = assert(io.open(file_list.dir .. "/" .. this_file, "r"))
+              for ii = 1, manifestoptions.linenumber do
+                t = fopen:read("*line")
+              end
+              fopen:close()
+
+              local s = string.match(t,manifestoptions.matchstr)
+              file_list.descr[this_file] = s
+
+            end
+          end
         end
       end
     end
