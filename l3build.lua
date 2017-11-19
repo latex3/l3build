@@ -193,10 +193,11 @@ tlgext = tlgext or ".tlg"
 manifestfile = manifestfile or "MANIFEST.md"
 manifestoptions = manifestoptions or
   {
-    extractfromline = false ,
+    extractfromline = true  ,
     extractfromfile = false ,
     linenumber      = 2,
     matchstr        = "%%%S%s+(.*)",
+    -- e.g. for file matching: "\\section{(.-)}"
   }
 
 -- File operations are aided by the LuaFileSystem module
@@ -2500,7 +2501,7 @@ function writemanifest()
 
       f:write("\n## " .. file_lists[this_type].name .. "\n\n")
 
-      if manifestoptions.extractfromline and file_lists[this_type].extractdescription then
+      if (manifestoptions.extractfromline or manifestoptions.extractfromfile) and file_lists[this_type].extractdescription then
         -- file descriptions: create ascii table (compat. w/ Github markdown)
 
         -- calculate maximum field lengths for pretty ascii table
@@ -2575,19 +2576,24 @@ function build_manifest(file_list)
             file_list.file_order[file_list.N] = this_file -- store the file order
           end
 
-          if file_list.extractdescription then
+          if file_list.extractdescription and (manifestoptions.extractfromline or manifestoptions.extractfromfile) then
+
+            local end_read_loop = 1
+            local read_string = ""
             if manifestoptions.extractfromline then
-
-              local fopen = assert(io.open(file_list.dir .. "/" .. this_file, "r"))
-              for ii = 1, manifestoptions.linenumber do
-                t = fopen:read("*line")
-              end
-              fopen:close()
-
-              local s = string.match(t,manifestoptions.matchstr)
-              file_list.descr[this_file] = s
-
+              end_read_loop = manifestoptions.linenumber
+              read_string = "*line"
+            elseif manifestoptions.extractfromfile then
+              read_string = "*all"
             end
+
+            local fopen = assert(io.open(file_list.dir .. "/" .. this_file, "r"))
+            for ii = 1, end_read_loop do
+              t = fopen:read(read_string)
+            end
+            fopen:close()
+            file_list.descr[this_file] = string.match(t,manifestoptions.matchstr)
+
           end
         end
       end
