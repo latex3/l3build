@@ -2582,23 +2582,7 @@ function build_manifest(file_list)
           end
 
           if file_list.extractdescription and (manifestoptions.extractfromline or manifestoptions.extractfromfile) then
-
-            local end_read_loop = 1
-            local read_string = ""
-            if manifestoptions.extractfromline then
-              end_read_loop = manifestoptions.linenumber
-              read_string = "*line"
-            elseif manifestoptions.extractfromfile then
-              read_string = "*all"
-            end
-
-            local fopen = assert(io.open(file_list.dir .. "/" .. this_file, "r"))
-            for ii = 1, end_read_loop do
-              t = fopen:read(read_string)
-            end
-            fopen:close()
-            file_list.descr[this_file] = string.match(t,manifestoptions.matchstr)
-
+            file_list = extract_descriptions(file_list,this_file)
           end
         end
       end
@@ -2609,6 +2593,28 @@ function build_manifest(file_list)
 
     end
   end
+
+  return file_list
+
+end
+
+function extract_descriptions(file_list,this_file)
+
+  local end_read_loop = 1
+  local read_string = ""
+  if manifestoptions.extractfromline then
+    end_read_loop = manifestoptions.linenumber
+    read_string = "*line"
+  elseif manifestoptions.extractfromfile then
+    read_string = "*all"
+  end
+
+  local fopen = assert(io.open(file_list.dir .. "/" .. this_file, "r"))
+  for ii = 1, end_read_loop do
+    t = fopen:read(read_string)
+  end
+  fopen:close()
+  file_list.descr[this_file] = string.match(t,manifestoptions.matchstr)
 
   return file_list
 
