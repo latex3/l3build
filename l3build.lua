@@ -198,6 +198,8 @@ manifestoptions = manifestoptions or
     linenumber      = 2,
     matchstr        = "%%%S%s+(.*)",
     -- e.g. for file matching: "\\section{(.-)}"
+    sortbyglob      = true  ,
+    sortbygroup     = false ,
   }
 
 -- File operations are aided by the LuaFileSystem module
@@ -2565,12 +2567,15 @@ function build_manifest(file_list)
   for _,glob_list in ipairs(file_list.files) do
     for _,this_glob in ipairs(glob_list) do
 
-      these_files = filelist(file_list["dir"],this_glob)
+      local these_files = filelist(file_list["dir"],this_glob)
+      if manifestoptions.sortbyglob then
+        table.sort(these_files)
+      end
 
       for _,this_file in ipairs(these_files) do
         if not excludelist[this_file] then
 
-          file_list.N = file_list.N+1 -- track # matched files: (Lua not good at "lengths" of tables)
+          file_list.N = file_list.N+1 -- track # matched files
           if not(file_list.matches[this_file]) then
             file_list.matches[this_file] = true -- store the file name
             file_list.file_order[file_list.N] = this_file -- store the file order
@@ -2597,6 +2602,11 @@ function build_manifest(file_list)
           end
         end
       end
+
+      if manifestoptions.sortbygroup then
+        table.sort(file_list.file_order)
+      end
+
     end
   end
 
