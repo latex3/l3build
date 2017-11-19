@@ -2491,16 +2491,25 @@ function writemanifest()
 
       f:write("\n## " .. file_lists[this_type].name .. "\n\n")
 
-      for ii in pairs(file_lists[this_type].matches) do
-        if manifestoptions.extractfromline and file_lists[this_type].extractdescription then
+      if manifestoptions.extractfromline and file_lists[this_type].extractdescription then
+        local filenamelen = 4
+        local filedesclen = 11
+        for ii in pairs(file_lists[this_type].matches) do
           jj = file_lists[this_type].descr[ii] or ""
-        else
-          jj = ""
+          filenamelen = math.max(filenamelen,string.len(ii))
+          filedesclen = math.max(filedesclen,string.len(jj))
         end
-        if jj == "" then
+
+        f:write(string.format("| %"..filenamelen.."s | %-"..filedesclen.."s |\n","File","Description"))
+        f:write(string.format("| %"..filenamelen.."s | %-"..filedesclen.."s |\n","---","---"))
+        for ii in pairs(file_lists[this_type].matches) do
+          jj = file_lists[this_type].descr[ii] or ""
+          f:write(string.format("| %"..filenamelen.."s | %-"..filedesclen.."s |\n",ii,jj))
+        end
+      else
+        for ii in pairs(file_lists[this_type].matches) do
+          jj = file_lists[this_type].descr[ii] or ""
           f:write("* " .. ii .. "\n")
-        else
-          f:write("* " .. ii .. ": " .. jj .. "\n")
         end
       end
 
