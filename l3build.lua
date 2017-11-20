@@ -2368,6 +2368,66 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
   return 0
 end
 
+manifest_groups = manifest_groups or {
+-- this needs to be an array of tables, not a table of tables, to ensure ordering.
+    {
+       name    = "Source files",
+       files   = {sourcefiles},
+       extractdescription = true,
+    },
+    {
+       name    = "Typeset documentation source files",
+       files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
+       extractdescription = true,
+    },
+    {
+       name    = "Documentation files",
+       files   = {docfiles},
+       extractdescription = true,
+    },
+    {
+       name    = "Text files",
+       files   = {textfiles},
+    },
+    {
+       name    = "Demo files",
+       files   = {demofiles},
+    },
+    {
+       name    = "Bibliography and index files",
+       files   = {bibfiles,bstfiles,makeindexfiles},
+    },
+    {
+       name    = "Derived files",
+       files   = {installfiles},
+       exclude = {excludefiles,sourcefiles},
+       dir     = unpackdir,
+    },
+    {
+       name    = "Typeset documents",
+       files   = {typesetfiles},
+       rename  = {"%.%w+$", ".pdf"}
+    },
+    {
+       name    = "Support files needed for unpacking, typesetting, or checking",
+       files   = {unpacksuppfiles,typesetsuppfiles,checksuppfiles},
+       dir     = supportdir,
+       extractdescription = true,
+    },
+    {
+       name    = "Checking-specific support files",
+       files   = {"*.*"},
+       exclude = {{".",".."},excludefiles},
+       dir     = testsuppdir,
+       extractdescription = true,
+    },
+    {
+       name    = "Test files",
+       files   = {"*"..lvtext,"*"..lveext,"*"..tlgext},
+       dir     = testfiledir,
+    },
+}
+
 function writemanifest()
 
   -- unpack
@@ -2376,121 +2436,28 @@ function writemanifest()
   else
     errorlevel = unpack()
   end
-
-  local file_types = {"source","typesetsource","docu","bib","derived","typeset","supp","checksupp","tests"}
-
-  local file_lists = {
-    source =  {
-                   name    = "Source files",
-                   files   = {sourcefiles},
-                   exclude = {excludefiles},
-                   dir     = maindir,
-                   N       = 0,
-                   matches = {},
-                   file_order = {},
-                   descr   = {},
-                   extractdescription = true,
-              },
-    typesetsource =  {
-                   name    = "Typeset documentation source files",
-                   files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
-                   exclude = {excludefiles},
-                   dir     = maindir,
-                   N       = 0,
-                   matches = {},
-                   file_order = {},
-                   descr   = {},
-                   extractdescription = true,
-              },
-    docu =    {
-                   name    = "Plain documentation files",
-                   files   = {textfiles,docfiles,demofiles},
-                   exclude = {excludefiles},
-                   dir     = maindir,
-                   N       = 0,
-                   matches = {},
-                   file_order = {},
-                   descr   = {},
-                   extractdescription = false,
-              },
-    bib =     {
-                   name    = "Bibliography and index files",
-                   files   = {bibfiles,bstfiles,makeindexfiles},
-                   exclude = {excludefiles},
-                   dir     = maindir,
-                   N       = 0,
-                   matches = {},
-                   file_order = {},
-                   descr   = {},
-                   extractdescription = false,
-              },
-    supp =    {
-                   name    = "Support files needed for unpacking, typesetting, or checking",
-                   files   = {unpacksuppfiles,typesetsuppfiles,checksuppfiles},
-                   exclude = {excludefiles},
-                   dir     = supportdir,
-                   N       = 0,
-                   matches = {},
-                   file_order = {},
-                   descr   = {},
-                   extractdescription = true,
-              },
-    checksupp =    {
-                   name    = "Checking-specific support files",
-                   files   = {"*.*"},
-                   exclude = {{".",".."},excludefiles},
-                   dir     = testsuppdir,
-                   N       = 0,
-                   matches = {},
-                   file_order = {},
-                   descr   = {},
-                   extractdescription = true,
-              },
-    tests =   {
-                   name    = "Test files",
-                   files   = {"*"..lvtext,"*"..lveext,"*"..tlgext},
-                   exclude = {excludefiles},
-                   dir     = testfiledir,
-                   N       = 0,
-                   matches = {},
-                   file_order = {},
-                   descr   = {},
-                   extractdescription = false,
-              },
-    derived = {
-                   name    = "Derived files",
-                   files   = {installfiles},
-                   exclude = {excludefiles,sourcefiles},
-                   dir     = unpackdir,
-                   N       = 0,
-                   matches = {},
-                   file_order = {},
-                   descr   = {},
-                   extractdescription = false,
-              },
-    typeset = {
-                   name    = "Typeset documents",
-                   files   = {typesetfiles},
-                   exclude = {excludefiles},
-                   dir     = typesetdir,
-                   N       = 0,
-                   matches = {},
-                   file_order = {},
-                   descr   = {},
-                   extractdescription = true,
-              },
-  }
-
-  -- create all matching files
-  for _,this_type in ipairs(file_types) do
-    file_lists[this_type] = build_manifest(file_lists[this_type])
+  
+  -- create data for all "groupings" of files
+  local file_lists = {}
+  for ii,vv in ipairs(manifest_groups) do
+    file_lists[ii] = vv
+    
+    -- defaults
+    file_lists[ii].rename  = file_lists[ii].rename or nil
+    file_lists[ii].dir     = file_lists[ii].dir or maindir
+    file_lists[ii].exclude = file_lists[ii].exclude or {excludefiles}
+    file_lists[ii].extractdescription    = file_lists[ii].extractdescription or false
+    
+    -- initialisation for internal data
+    file_lists[ii].N = 0
+    file_lists[ii].matches = {}
+    file_lists[ii].file_order = {}
+    file_lists[ii].descr = {}
   end
 
-  -- "correct" the typeset files
-  local typeset_matches = file_lists.typeset.matches
-  file_lists.typeset.matches = {}
-  for ii in pairs(typeset_matches) do
-    file_lists.typeset.matches[gsub(ii, "%.%w+$", ".pdf")] = true
+  -- create all matching files
+  for ii,_ in ipairs(file_lists) do
+    file_lists[ii] = build_manifest(file_lists[ii])
   end
 
   -- write the manifest file
@@ -2498,36 +2465,36 @@ function writemanifest()
   f:write("# Manifest for " .. module .. "\n\n")
   f:write("This file is automatically generated with `texlua build.lua manifest`.\n")
 
-  for _,this_type in ipairs(file_types) do
-    if file_lists[this_type].N > 0 then
+  for ii,vv in ipairs(file_lists) do
+    if file_lists[ii].N > 0 then
 
-      f:write("\n## " .. file_lists[this_type].name .. "\n\n")
+      f:write("\n## " .. file_lists[ii].name .. "\n\n")
 
-      if (manifestoptions.extractfromline or manifestoptions.extractfromfile) and file_lists[this_type].extractdescription then
+      if (manifestoptions.extractfromline or manifestoptions.extractfromfile) and file_lists[ii].extractdescription then
         -- file descriptions: create ascii table (compat. w/ Github markdown)
 
         -- calculate maximum field lengths for pretty ascii table
         local filenamelen = 4
         local filedesclen = 11
-        for ii in pairs(file_lists[this_type].matches) do
-          jj = file_lists[this_type].descr[ii] or ""
-          filenamelen = math.max(filenamelen,string.len(ii))
+        for ff in pairs(file_lists[ii].matches) do
+          jj = file_lists[ii].descr[ff] or ""
+          filenamelen = math.max(filenamelen,string.len(ff))
           filedesclen = math.max(filedesclen,string.len(jj))
         end
 
         -- write the table
         f:write(string.format("| %-"..filenamelen.."s | %-"..filedesclen.."s |\n","File","Description"))
         f:write(string.format("| %-"..filenamelen.."s | %-"..filedesclen.."s |\n","---","---"))
-        for _,ii in ipairs(file_lists[this_type].file_order) do
-          jj = file_lists[this_type].descr[ii] or ""
-          f:write(string.format("| %-"..filenamelen.."s | %-"..filedesclen.."s |\n",ii,jj))
+        for _,ff in ipairs(file_lists[ii].file_order) do
+          jj = file_lists[ii].descr[ff] or ""
+          f:write(string.format("| %-"..filenamelen.."s | %-"..filedesclen.."s |\n",ff,jj))
         end
 
       else
         -- no file description: bullet list
-        for _,ii in ipairs(file_lists[this_type].file_order) do
-          jj = file_lists[this_type].descr[ii] or ""
-          f:write("* " .. ii .. "\n")
+        for _,ff in ipairs(file_lists[ii].file_order) do
+          jj = file_lists[ii].descr[ff] or ""
+          f:write("* " .. ff .. "\n")
         end
       end
 
@@ -2538,7 +2505,6 @@ function writemanifest()
 
   print("*******************************************")
   print("Manifest written to " .. manifestfile .. ".")
-  print("Note `build doc` may be required first.")
   print("*******************************************")
 
 end
@@ -2567,12 +2533,18 @@ function build_manifest(file_list)
   for _,glob_list in ipairs(file_list.files) do
     for _,this_glob in ipairs(glob_list) do
 
-      local these_files = filelist(file_list["dir"],this_glob)
+      local these_files = filelist(file_list.dir,this_glob)
       if manifestoptions.sortbyglob then
         table.sort(these_files)
       end
 
       for _,this_file in ipairs(these_files) do
+      
+        -- rename?
+        if file_list.rename then
+          this_file = gsub(this_file, file_list.rename[1], file_list.rename[2])
+        end
+
         if not excludelist[this_file] then
 
           file_list.N = file_list.N+1 -- track # matched files
@@ -2593,7 +2565,7 @@ function build_manifest(file_list)
 
     end
   end
-
+  
   return file_list
 
 end
