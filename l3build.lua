@@ -189,18 +189,106 @@ pdfext = pdfext or ".pdf"
 psext  = psext  or ".ps"
 tlgext = tlgext or ".tlg"
 
--- For "manifest"
-manifestfile = manifestfile or "MANIFEST.md"
-manifestoptions = manifestoptions or
-  {
-    extractfromline = true  ,
-    extractfromfile = false ,
-    linenumber      = 2,
-    matchstr        = "%%%S%s+(.*)",
-    -- e.g. for file matching: "\\section{(.-)}"
-    sortbyglob      = true  ,
-    sortbygroup     = false ,
-  }
+-- Manifest options
+manifestoptionsdefaults = {
+  filename         = "MANIFEST.md" ,
+  groupdescription = true          ,
+  extractfiledesc  = false         , -- or 'line' or 'file', or false to turn off
+  linenumber       = 2             , -- for extractfiledesc = 'line'
+  matchstr         = "%%%S%s+(.*)" ,
+  -- e.g. for file matching: "\\section{(.-)}"
+  sortfileswithin  = "glob"        , -- or 'group'
+}
+
+-- set either global defaults...
+manifestoptions = manifestoptions or manifestoptionsdefaults
+
+-- ... or individual defaults if not specified by the user
+for ii,vv in pairs(manifestoptionsdefaults) do
+  manifestoptions[ii] = manifestoptions[ii] or vv
+end
+
+manifestgroups = manifestgroups or {
+-- this needs to be an array of tables, not a table of tables, to ensure ordering.
+    {
+       name    = "Source files",
+       description = [[
+These are source files for a number of purposes, including the `unpack`
+process which generates the installation files of the package. Additional
+files included here will also be installed for processing such as testing.
+       ]],
+       files   = {sourcefiles},
+       extractfiledescr = true,
+    },
+    {
+       name    = "Typeset documentation source files",
+       description = [[
+These files are typeset using LaTeX to produce the PDF documentation for the package.
+       ]],
+       files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
+       extractfiledescr = true,
+    },
+    {
+       name    = "Documentation files",
+       description = [[
+These files form part of the documentation but are not typeset.
+Generally they will be additional input files for the typeset
+documentation files listed above.
+       ]],
+       files   = {docfiles},
+       extractfiledescr = true,
+    },
+    {
+       name    = "Text files",
+       files   = {textfiles},
+    },
+    {
+       name    = "Demo files",
+       files   = {demofiles},
+    },
+    {
+       name    = "Bibliography and index files",
+       files   = {bibfiles,bstfiles,makeindexfiles},
+    },
+    {
+       name    = "Derived files",
+       files   = {installfiles},
+       exclude = {excludefiles,sourcefiles},
+       dir     = unpackdir,
+    },
+    {
+       name    = "Typeset documents",
+       files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
+       rename  = {"%.%w+$", ".pdf"}
+    },
+    {
+       name    = "Support files needed for unpacking, typesetting, or checking",
+       files   = {unpacksuppfiles,typesetsuppfiles,checksuppfiles},
+       dir     = supportdir,
+       extractfiledescr = true,
+    },
+    {
+       name    = "Checking-specific support files",
+       files   = {"*.*"},
+       exclude = {{".",".."},excludefiles},
+       dir     = testsuppdir,
+       extractfiledescr = true,
+    },
+    {
+       name    = "Test files",
+       description = [[
+These files form the test suite for the package.
+`.lvt` or `.lte` files are the individual unit tests,
+and `.tlg` are the stored output for ensuring changes
+to the package produce the same output. These output
+files are sometimes shared and sometime specific for
+different engines (pdfTeX, XeTeX, LuaTeX, etc.).
+       ]],
+       files   = {"*"..lvtext,"*"..lveext,"*"..tlgext},
+       dir     = testfiledir,
+    },
+}
+-- (End manifest options.)
 
 -- File operations are aided by the LuaFileSystem module
 local lfs = require("lfs")
@@ -2368,65 +2456,6 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
   return 0
 end
 
-manifest_groups = manifest_groups or {
--- this needs to be an array of tables, not a table of tables, to ensure ordering.
-    {
-       name    = "Source files",
-       files   = {sourcefiles},
-       extractdescription = true,
-    },
-    {
-       name    = "Typeset documentation source files",
-       files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
-       extractdescription = true,
-    },
-    {
-       name    = "Documentation files",
-       files   = {docfiles},
-       extractdescription = true,
-    },
-    {
-       name    = "Text files",
-       files   = {textfiles},
-    },
-    {
-       name    = "Demo files",
-       files   = {demofiles},
-    },
-    {
-       name    = "Bibliography and index files",
-       files   = {bibfiles,bstfiles,makeindexfiles},
-    },
-    {
-       name    = "Derived files",
-       files   = {installfiles},
-       exclude = {excludefiles,sourcefiles},
-       dir     = unpackdir,
-    },
-    {
-       name    = "Typeset documents",
-       files   = {typesetfiles},
-       rename  = {"%.%w+$", ".pdf"}
-    },
-    {
-       name    = "Support files needed for unpacking, typesetting, or checking",
-       files   = {unpacksuppfiles,typesetsuppfiles,checksuppfiles},
-       dir     = supportdir,
-       extractdescription = true,
-    },
-    {
-       name    = "Checking-specific support files",
-       files   = {"*.*"},
-       exclude = {{".",".."},excludefiles},
-       dir     = testsuppdir,
-       extractdescription = true,
-    },
-    {
-       name    = "Test files",
-       files   = {"*"..lvtext,"*"..lveext,"*"..tlgext},
-       dir     = testfiledir,
-    },
-}
 
 function writemanifest()
 
@@ -2439,14 +2468,14 @@ function writemanifest()
   
   -- create data for all "groupings" of files
   local file_lists = {}
-  for ii,vv in ipairs(manifest_groups) do
+  for ii,vv in ipairs(manifestgroups) do
     file_lists[ii] = vv
     
     -- defaults
     file_lists[ii].rename  = file_lists[ii].rename or nil
     file_lists[ii].dir     = file_lists[ii].dir or maindir
     file_lists[ii].exclude = file_lists[ii].exclude or {excludefiles}
-    file_lists[ii].extractdescription    = file_lists[ii].extractdescription or false
+    file_lists[ii].extractfiledescr    = file_lists[ii].extractfiledescr or false
     
     -- initialisation for internal data
     file_lists[ii].N = 0
@@ -2461,7 +2490,7 @@ function writemanifest()
   end
 
   -- write the manifest file
-  local f = assert(io.open(manifestfile, "w"))
+  local f = assert(io.open(manifestoptions.filename, "w"))
   f:write("# Manifest for " .. module .. "\n\n")
   f:write("This file is automatically generated with `texlua build.lua manifest`.\n")
 
@@ -2469,8 +2498,12 @@ function writemanifest()
     if file_lists[ii].N > 0 then
 
       f:write("\n## " .. file_lists[ii].name .. "\n\n")
+      
+      if manifestoptions.groupdescription and file_lists[ii].description then
+        f:write(file_lists[ii].description .. "\n")
+      end
 
-      if (manifestoptions.extractfromline or manifestoptions.extractfromfile) and file_lists[ii].extractdescription then
+      if manifestoptions.extractfiledesc and file_lists[ii].extractfiledescr then
         -- file descriptions: create ascii table (compat. w/ Github markdown)
 
         -- calculate maximum field lengths for pretty ascii table
@@ -2504,7 +2537,7 @@ function writemanifest()
   f:close()
 
   print("*******************************************")
-  print("Manifest written to " .. manifestfile .. ".")
+  print("Manifest written to " .. manifestoptions.filename .. ".")
   print("*******************************************")
 
 end
@@ -2534,7 +2567,7 @@ function build_manifest(file_list)
     for _,this_glob in ipairs(glob_list) do
 
       local these_files = filelist(file_list.dir,this_glob)
-      if manifestoptions.sortbyglob then
+      if manifestoptions.sortfileswithin == "glob" then
         table.sort(these_files)
       end
 
@@ -2553,13 +2586,13 @@ function build_manifest(file_list)
             file_list.file_order[file_list.N] = this_file -- store the file order
           end
 
-          if file_list.extractdescription and (manifestoptions.extractfromline or manifestoptions.extractfromfile) then
+          if file_list.extractfiledescr and manifestoptions.extractfiledesc then
             file_list = extract_descriptions(file_list,this_file)
           end
         end
       end
 
-      if manifestoptions.sortbygroup then
+      if manifestoptions.sortfileswithin == "group" then
         table.sort(file_list.file_order)
       end
 
@@ -2574,10 +2607,10 @@ function extract_descriptions(file_list,this_file)
 
   local end_read_loop = 1
   local read_string = ""
-  if manifestoptions.extractfromline then
+  if manifestoptions.extractfiledesc == "line" then
     end_read_loop = manifestoptions.linenumber
     read_string = "*line"
-  elseif manifestoptions.extractfromfile then
+  elseif manifestoptions.extractfiledesc == "file" then
     read_string = "*all"
   end
 
