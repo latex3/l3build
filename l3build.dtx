@@ -149,12 +149,12 @@
 \luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting.}
 \luavarset{versionform} {""}          {Nature of version strings for auto-replacement.}
 \luavarset{recordstatus} {false}      {Include error level(s) from test run(s) in TLG files?}
+\luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file.}
 \luavarset{manifestoptions}        {} {Table for controlling the \texttt{manifest} output file.}
 }
 \allluavars
 
 % not typeset in the table
-\luavarset{manifestoptions.filename}        {"MANIFEST.md"} {Filename to use for the manifest file.}
 \luavarset{manifestoptions.groupdescription}{true}          {Whether to include description text within each group of files.}
 \luavarset{manifestoptions.extractfiledesc} {false}         {Whether to include a one-line description of each file extracted from the file itself.}
 \luavarset{manifestoptions.linenumber}      {2}             {If extracting by line, which line to use.}
@@ -1194,7 +1194,7 @@
 %   \begin{center}
 %   \begin{tabular}{ll}
 %     \toprule
-%     Entry & Default \\
+%     Entry & Default & Notes \\
 %     \midrule
 %       \var{filename}          & \luavar{manifestoptions.filename}          \\
 %       \var{groupdescription}  & \luavar{manifestoptions.groupdescription}  \\
@@ -1218,7 +1218,7 @@
 % These are source files generating the package files.
 %        ]],
 %        files   = {"*.dtx","*.ins"},
-%        extractfiledescr = true,
+%        extractfiledesc = true,
 %     },
 %     ...
 % }
@@ -1236,7 +1236,7 @@
 %       \var{exclude}            & Files to exclude (default |{exclude}|)         \\
 %       \var{dir}                & The directory to search (default |maindir|)         \\
 %       \var{rename}             & An array with a |gsub| redefinition for the filename         \\
-%       \var{extractfiledescr}   & Whether to extract file descriptions from these files, and how (default |false|)       \\
+%       \var{extractfiledesc}    & Whether to extract file descriptions from these files, and how (default |false|)       \\
 %     \bottomrule
 %     \end{tabular}
 %   \end{center}
