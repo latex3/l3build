@@ -286,7 +286,7 @@ local option_list =
       },
     rerun =
       {
-        desc  = "Suppresses TeX output when unpacking",
+        desc  = "Skip setup: simply rerun tests",
         short = "r",
         type  = "boolean"
       },
