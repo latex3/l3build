@@ -1134,6 +1134,9 @@ local function formatlualog(logfile, newfile)
         "Missing character: There is no (%^%^..) %(U%+(....)%)",
         "Missing character: There is no %1"
       )
+    -- The first time a new font is used, it shows up
+    -- as being cached
+    line = gsub(line, "(save cache:", "(load cache:")
     -- A function to handle the box prefix part
     local function boxprefix(s)
       return gsub(match(s, "^(%.+)"), "%.", "%%.")
