@@ -1051,7 +1051,8 @@ local function formatlog(logfile, newfile, engine, errlevels)
   for line in gmatch(contents, "([^\n]*)\n") do
     if line == "START-TEST-LOG" then
       prestart = false
-    elseif line == "END-TEST-LOG" then
+    elseif line == "END-TEST-LOG" or
+      match(line, "^Here is how much of .?.?.?TeX\'s memory you used:") then
       break
     elseif line == "OMIT" then
       skipping = true
