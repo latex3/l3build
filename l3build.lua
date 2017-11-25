@@ -984,6 +984,10 @@ local function formatlog(logfile, newfile, engine, errlevels)
       -- luaotfload files start with keywords
       line = gsub(line, "from " .. pattern .. "%(", "from. ./%1(")
       line = gsub(line, ": " .. pattern .. "%)", ": ../%1)")
+      -- Deal with XeTeX specials
+      if match(line, "^%.+\\XeTeX.?.?.?file") then
+        line = gsub(line, pattern, "../%1")
+      end
     end
     -- Deal with the fact that "(.aux)" may have still a leading space
     line = gsub(line, "^ %(%.aux%)", "(.aux)")
