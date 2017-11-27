@@ -857,20 +857,23 @@ end
 
 -- Copy files to the main CTAN release directory
 function copyctan()
-  -- Do all of the copying in one go
-  for _,i in ipairs(
+  -- Do all of the copying
+  for _,filetype in pairs(
       {
         bibfiles,
         demofiles,
         docfiles,
         pdffiles,
-        sourcefiles,
-        textfiles,
         typesetlist
       }
     ) do
-    for _,j in ipairs(i) do
-      cp(j, ".", ctandir .. "/" .. ctanpkg)
+    for _,file in pairs(filetype) do
+      cp(file, docfiledir, ctandir .. "/" .. ctanpkg)
+    end
+  end
+  for _,filetype in pairs({sourcefiles, textfiles}) do
+    for _,file in pairs(filetype) do
+      cp(file, maindir, ctandir .. "/" .. ctanpkg)
     end
   end
 end
