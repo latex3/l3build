@@ -61,7 +61,7 @@ end
 
 -- Directory structure for the build system
 -- Use Unix-style path separators
-maindir     = maindir or "."
+maindir = maindir or "."
 
 -- Substructure files
 docfiledir  = docfiledir  or maindir
@@ -70,17 +70,17 @@ testfiledir = testfiledir or maindir     .. "/testfiles"
 testsuppdir = testsuppdir or testfiledir .. "/support"
 
 -- Structure within a development area
-builddir    = builddir   or maindir .. "/build"
-distribdir  = distribdir or builddir .. "/distrib"
-localdir    = localdir   or builddir .. "/local"
-testdir     = testdir    or builddir .. "/test"
-typesetdir  = typesetdir or builddir .. "/doc"
-unpackdir   = unpackdir  or builddir .. "/unpacked"
+builddir   = builddir   or maindir .. "/build"
+distribdir = distribdir or builddir .. "/distrib"
+localdir   = localdir   or builddir .. "/local"
+testdir    = testdir    or builddir .. "/test"
+typesetdir = typesetdir or builddir .. "/doc"
+unpackdir  = unpackdir  or builddir .. "/unpacked"
 
 -- Substructure for CTAN release material
-ctandir     = ctandir or distribdir .. "/ctan"
-tdsdir      = tdsdir  or distribdir .. "/tds"
-tdsroot     = tdsroot or "latex"
+ctandir = ctandir or distribdir .. "/ctan"
+tdsdir  = tdsdir  or distribdir .. "/tds"
+tdsroot = tdsroot or "latex"
 
 -- Location for installation on CTAN or in TEXMFHOME
 if bundle == "" then
