@@ -64,9 +64,9 @@ end
 maindir     = maindir or "."
 
 -- Substructure for tests and support files
-testfiledir = testfiledir or "testfiles"
+supportdir  = supportdir  or maindir     .. "/support"
+testfiledir = testfiledir or maindir     .. "/testfiles"
 testsuppdir = testsuppdir or testfiledir .. "/support"
-supportdir  = supportdir  or maindir .. "/support"
 
 -- Structure within a development area
 distribdir  = distribdir or maindir .. "/build/distrib"
