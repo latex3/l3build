@@ -1912,13 +1912,15 @@ function cmdcheck()
   mkdir(localdir)
   cleandir(testdir)
   depinstall(checkdeps)
-  for _,i in ipairs({bibfiles, docfiles, sourcefiles, typesetfiles}) do
-    for _,j in ipairs(i) do
-      cp(j, ".", testdir)
+  for _,filetype in pairs(
+    {bibfiles, docfiles, typesetfiles, typesetdemofiles}
+    ) do
+    for _,file in pairs(filetype) do
+      cp(file, docfiledir, typesetdir)
     end
   end
-  for _,i in ipairs(typesetsuppfiles) do
-    cp(i, supportdir, testdir)
+  for _,file in pairs(sourcefiles) do
+    cp(file, maindir, typesetdir)
   end
   local engine = gsub(stdengine, "tex$", "latex")
   local localdir = abspath(localdir)
@@ -2072,18 +2074,21 @@ end
 function doc(files)
   -- Set up
   cleandir(typesetdir)
-  for _,i in ipairs(
-    {bibfiles, docfiles, sourcefiles, typesetfiles, typesetdemofiles}
-  ) do
-    for _,j in ipairs(i) do
-      cp(j, ".", typesetdir)
+  for _,filetype in pairs(
+    {bibfiles, docfiles, typesetfiles, typesetdemofiles}
+    ) do
+    for _,file in pairs(filetype) do
+      cp(file, docfiledir, typesetdir)
     end
+  end
+  for _,file in pairs(sourcefiles) do
+    cp(file, maindir, typesetdir)
   end
   for _,i in ipairs(typesetsuppfiles) do
     cp(i, supportdir, typesetdir)
   end
   depinstall(typesetdeps)
-  unpack({sourcefiles, typesetsourcefiles}, {".", docfiledir})
+  unpack({sourcefiles, typesetsourcefiles}, {maindir, docfiledir})
   -- Main loop for doc creation
   local done = {}
   for _, typesetfiles in ipairs({typesetdemofiles, typesetfiles}) do
