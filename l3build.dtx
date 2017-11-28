@@ -58,7 +58,6 @@
 \luavarset{exclmodules}{\{~\}}{Directories to be excluded from automatic module detection}
 \luavarseparator
 \luavarset{maindir}     {"."}{The top level directory for this module or bundle.}
-\luavarset{docfiledir}        {maindir}{Where to look for the |typesetfiles| and |typesetsourcefiles|.}
 \luavarset{supportdir}  {maindir .. "/support"}     {Where copies of files to support check/doc compilation are stored.}
 \luavarset{testfiledir} {maindir .. "/testfiles"}   {Where the tests are.}
 \luavarset{testsuppdir} {testfiledir .. "/support"} {Where support files for the tests are.}
@@ -89,6 +88,7 @@
 \luavarset{textfiles}         {\{"*.md", "*.txt"\}}{Plain text files to send to CTAN as-is.}
 \luavarset{typesetdemofiles}  {\{~\}}       {Files to typeset before the documentation (as demos), but where the PDF results are not included in the release.}
 \luavarset{typesetfiles}      {\{"*.dtx"\}} {Files to typeset for documentation.}
+\luavarset{docfiledir}        {maindir}{Where to look for the |typesetfiles| and |typesetsourcefiles|.}
 \luavarset{typesetsuppfiles}  {\{~\}}       {Files needed to support typesetting when \enquote{sandboxed}.}
 \luavarset{typesetsourcefiles}{\{~\}}       {Files to copy to unpacking when typesetting.}
 \luavarset{unpackfiles}       {\{"*.ins"\}} {Files to run to perform unpacking.}
