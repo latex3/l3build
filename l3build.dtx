@@ -58,7 +58,8 @@
 \luavarset{exclmodules}{\{~\}}{Directories to be excluded from automatic module detection}
 \luavarseparator
 \luavarset{maindir}     {"."}{The top level directory for this module or bundle.}
-\luavarset{docfiledir}        {maindir}{Where to look for files for the documentation tree.}
+\luavarset{sourcefiledir}{maindir}{Where to look for the source files.}
+\luavarset{docfiledir}  {maindir}{Where to look for files for the documentation tree.}
 \luavarset{supportdir}  {maindir .. "/support"}     {Where copies of files to support check/doc compilation are stored.}
 \luavarset{testfiledir} {maindir .. "/testfiles"}   {Where the tests are.}
 \luavarset{testsuppdir} {testfiledir .. "/support"} {Where support files for the tests are.}
