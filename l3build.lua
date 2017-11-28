@@ -65,6 +65,7 @@ maindir = maindir or "."
 
 -- Substructure files
 docfiledir  = docfiledir  or maindir
+sourcefiledir = sourcefiledir or maindir
 supportdir  = supportdir  or maindir     .. "/support"
 testfiledir = testfiledir or maindir     .. "/testfiles"
 testsuppdir = testsuppdir or testfiledir .. "/support"
