@@ -70,12 +70,11 @@ testfiledir = testfiledir or maindir     .. "/testfiles"
 testsuppdir = testsuppdir or testfiledir .. "/support"
 
 -- Structure within a development area
-builddir    = builddir   or maindir .. "/build"
-distribdir  = distribdir or builddir .. "/distrib"
-localdir    = localdir   or builddir .. "/local"
-testdir     = testdir    or builddir .. "/test"
-typesetdir  = typesetdir or builddir .. "/doc"
-unpackdir   = unpackdir  or builddir .. "/unpacked"
+distribdir  = distribdir or maindir .. "/build/distrib"
+localdir    = localdir   or maindir .. "/build/local"
+testdir     = testdir    or maindir .. "/build/test"
+typesetdir  = typesetdir or maindir .. "/build/doc"
+unpackdir   = unpackdir  or maindir .. "/build/unpacked"
 
 -- Substructure for CTAN release material
 ctandir     = ctandir or distribdir .. "/ctan"
@@ -691,7 +690,7 @@ function tree(path, glob)
       for _, file in ipairs(filelist(dir, pattern)) do
         local fullpath = path .. "/" .. file
         if file ~= "." and file ~= ".." and
-          fullpath ~= builddir and
+          fullpath ~= maindir .. "/build" and
           (string.sub(pattern, 1, 1) == "."
             or string.sub(file, 1, 1) ~= ".")
         then
