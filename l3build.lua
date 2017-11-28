@@ -2457,7 +2457,7 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
 end
 
 
-function writemanifest()
+manifest = manifest or function()
 
   -- unpack
   if module == "" then
@@ -2465,17 +2465,17 @@ function writemanifest()
   else
     errorlevel = unpack()
   end
-  
+
   -- create data for all "groupings" of files
   local file_lists = {}
   for ii,vv in ipairs(manifestgroups) do
     file_lists[ii] = vv
-    
+
     -- copy global options locally
     for kk,_ in pairs(private_manifest_defaults) do
       file_lists[ii][kk] = file_lists[ii][kk] or manifestoptions[kk]
     end
-    
+
     -- initialisation for internal data
     file_lists[ii].N          = 0
     file_lists[ii].ND         = 0
@@ -2498,7 +2498,7 @@ function writemanifest()
     if file_lists[ii].N > 0 then
 
       f:write("\n## " .. file_lists[ii].name .. "\n\n")
-      
+
       if file_lists[ii].groupdescription and file_lists[ii].description then
         f:write(file_lists[ii].description .. "\n")
       end
@@ -2542,7 +2542,7 @@ function writemanifest()
 
 end
 
-function build_manifest(file_list)
+build_manifest = build_manifest or function(file_list)
 
   -- allow nested tables by requiring two levels of nesting
   if type(file_list.files[1])=="string" then
@@ -2572,7 +2572,7 @@ function build_manifest(file_list)
       end
 
       for _,this_file in ipairs(these_files) do
-      
+
         -- rename?
         if file_list.rename then
           this_file = gsub(this_file, file_list.rename[1], file_list.rename[2])
@@ -2601,7 +2601,7 @@ function build_manifest(file_list)
 
     end
   end
-  
+
   return file_list
 
 end
@@ -2694,7 +2694,7 @@ function stdmain(target, files)
     elseif target == "install" then
       errorlevel = install()
     elseif target == "manifest" then
-      errorlevel = writemanifest()
+      errorlevel = manifest()
     elseif target == "save" then
       if next(files) then
         errorlevel = save(files)
