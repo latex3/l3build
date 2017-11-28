@@ -838,7 +838,7 @@ function checkinit()
   for _,i in ipairs(filelist(localdir)) do
     cp(i, localdir, testdir)
   end
-  bundleunpack({".", testfiledir})
+  bundleunpack({sourcefiledir, testfiledir})
   for _,i in ipairs(installfiles) do
     cp(i, unpackdir, testdir)
   end
@@ -1895,7 +1895,9 @@ function clean()
     cleandir(typesetdir) +
     cleandir(unpackdir)
   for _,i in ipairs(cleanfiles) do
-    errorlevel = rm(".", i) + errorlevel
+    for _,dir in pairs({maindir, sourcefiledir, docfiledir}) do
+      errorlevel = rm(dir, i) + errorlevel
+    end
   end
   return errorlevel
 end
@@ -1903,7 +1905,7 @@ end
 function bundleclean()
   local errorlevel = call(modules, "clean")
   for _,i in ipairs(cleanfiles) do
-    errorlevel = rm(".", i) + errorlevel
+    errorlevel = rm(maindir, i) + errorlevel
   end
   return (
     errorlevel     +
@@ -1931,7 +1933,7 @@ function cmdcheck()
   local localdir = abspath(localdir)
   print("Checking source files")
   for _,i in ipairs(cmdchkfiles) do
-    for _,j in ipairs(filelist(".", i)) do
+    for _,j in ipairs(filelist(sourcefiledir, i)) do
       print("  " .. jobname(j))
       run(
         testdir,
@@ -2007,7 +2009,7 @@ function ctan(standalone)
   end
   if errorlevel == 0 then
     for _,i in ipairs(textfiles) do
-      for _,j in pairs({unpackdir, "."}) do
+      for _,j in pairs({unpackdir, maindir}) do
         cp(i, j, ctandir .. "/" .. ctanpkg)
         cp(i, j, tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle)
       end
@@ -2017,7 +2019,7 @@ function ctan(standalone)
       cp(ctanpkg .. ".tds.zip", tdsdir, ctandir)
     end
     dirzip(ctandir, ctanpkg)
-    cp(ctanpkg .. ".zip", ctandir, ".")
+    cp(ctanpkg .. ".zip", ctandir, maindir)
   else
     print("\n====================")
     print("Typesetting failed, zip stage skipped!")
@@ -2029,20 +2031,20 @@ end
 function bundlectan()
   -- Generate a list of individual file names excluding those in the second
   -- argument: the latter is a table
-  local function excludelist(include, exclude)
+  local function excludelist(include, exclude, dir)
     local include = include or { }
     local exclude = exclude or { }
     local includelist = { }
     local excludelist = { }
     for _,i in ipairs(exclude) do
       for _,j in ipairs(i) do
-        for _,k in ipairs(filelist(".", j)) do
+        for _,k in ipairs(filelist(dir, j)) do
           excludelist[k] = true
         end
       end
     end
     for _,i in ipairs(include) do
-      for _,j in ipairs(filelist(".", i)) do
+      for _,j in ipairs(filelist(dir, i)) do
         if not excludelist[j] then
           insert(includelist, j)
         end
@@ -2064,9 +2066,9 @@ function bundlectan()
     for _,v in pairs(typesetdemofiles) do
       insert(typesetfiles, v)
     end
-    typesetlist = excludelist(typesetfiles, {sourcefiles})
+    typesetlist = excludelist(typesetfiles, {sourcefiles}, docfiledir)
     sourcelist = excludelist(
-      sourcefiles, {bstfiles, installfiles, makeindexfiles}
+      sourcefiles, {bstfiles, installfiles, makeindexfiles}, sourcefiledir
     )
     copyctan()
     copytds()
@@ -2291,7 +2293,7 @@ function setversion(dir)
   end
   local date = options["date"] or os_date("%Y-%m-%d")
   local version = options["version"] or -1
-  local dir = dir or "."
+  local dir = dir or sourcefiledir
   for _,i in pairs(versionfiles) do
     for _,j in pairs(filelist(dir, i)) do
       rewrite(dir, j, date, version)
