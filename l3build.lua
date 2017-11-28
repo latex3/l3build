@@ -2333,7 +2333,7 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
   if errorlevel ~=0 then
     return errorlevel
   end
-  for _,i in ipairs(sourcedirs or {sourcefiledir}) do
+  for _,i in ipairs(sourcedirs or {"."}) do
     for _,j in ipairs(sources or {sourcefiles}) do
       for _,k in ipairs(j) do
         errorlevel = cp(k, i, unpackdir)
