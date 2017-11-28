@@ -872,10 +872,11 @@ function copyctan()
       cp(file, docfiledir, ctandir .. "/" .. ctanpkg)
     end
   end
-  for _,filetype in pairs({sourcefiles, textfiles}) do
-    for _,file in pairs(filetype) do
-      cp(file, maindir, ctandir .. "/" .. ctanpkg)
-    end
+  for _,file in pairs(sourcefiles) do
+    cp(file, sourcefiledir, ctandir .. "/" .. ctanpkg)
+  end
+  for _,file in pairs(textfiles) do
+    cp(file, maindir, ctandir .. "/" .. ctanpkg)
   end
 end
 
@@ -921,7 +922,7 @@ function copytds()
   )
   install(unpackdir, "makeindex", {makeindexfiles}, true)
   install(unpackdir, "bibtex/bst", {bstfiles}, true)
-  install(maindir, "source", {sourcelist})
+  install(sourcefiledir, "source", {sourcelist})
   install(unpackdir, "tex", {installfiles})
 end
 
@@ -1924,7 +1925,7 @@ function cmdcheck()
     end
   end
   for _,file in pairs(sourcefiles) do
-    cp(file, maindir, typesetdir)
+    cp(file, sourcefiledir, typesetdir)
   end
   local engine = gsub(stdengine, "tex$", "latex")
   local localdir = abspath(localdir)
@@ -2086,13 +2087,13 @@ function doc(files)
     end
   end
   for _,file in pairs(sourcefiles) do
-    cp(file, maindir, typesetdir)
+    cp(file, sourcefiledir, typesetdir)
   end
   for _,i in ipairs(typesetsuppfiles) do
     cp(i, supportdir, typesetdir)
   end
   depinstall(typesetdeps)
-  unpack({sourcefiles, typesetsourcefiles}, {maindir, docfiledir})
+  unpack({sourcefiles, typesetsourcefiles}, {sourcefiledir, docfiledir})
   -- Main loop for doc creation
   local done = {}
   for _, typesetfiles in ipairs({typesetdemofiles, typesetfiles}) do
