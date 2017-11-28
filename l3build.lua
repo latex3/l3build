@@ -911,13 +911,13 @@ function copytds()
     end
   end
   install(
-    docfiledir,
+    ".",
     "doc",
     {bibfiles, demofiles, docfiles, pdffiles, textfiles, typesetlist}
   )
   install(unpackdir, "makeindex", {makeindexfiles}, true)
   install(unpackdir, "bibtex/bst", {bstfiles}, true)
-  install(maindir, "source", {sourcelist})
+  install(".", "source", {sourcelist})
   install(unpackdir, "tex", {installfiles})
 end
 
