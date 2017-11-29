@@ -683,7 +683,7 @@ function tree(path, glob)
   function is_dir(file)
     return lfs_attributes(file)["mode"] == "directory"
   end
-  local dirs = {["."]=cropdots(path)}
+  local dirs = {["."] = cropdots(path)}
   for pattern, critereon in gmatch(cropdots(glob), "([^/]+)(/?)") do
     local critereon = critereon == "/" and is_dir or always_true
     function fill(path, dir, table)
