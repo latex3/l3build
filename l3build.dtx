@@ -57,20 +57,20 @@
 \luavarset{modules}{\{~\}}{The list of all modules in a bundle (when not auto-detecting)}
 \luavarset{exclmodules}{\{~\}}{Directories to be excluded from automatic module detection}
 \luavarseparator
-\luavarset{maindir}     {"."}{The top level directory for this module or bundle.}
-\luavarset{docfiledir}  {maindir}{Where to look for the |typesetfiles| and |typesetsourcefiles|.}
-\luavarset{supportdir}  {maindir .. "/support"}     {Where copies of files to support check/doc compilation are stored.}
-\luavarset{testfiledir} {maindir .. "/testfiles"}   {Where the tests are.}
-\luavarset{testsuppdir} {testfiledir .. "/support"} {Where support files for the tests are.}
+\luavarset{maindir}    {"."}{The top level directory for this module or bundle.}
+\luavarset{docfiledir} {maindir}{Where to look for the |typesetfiles| and |typesetsourcefiles|.}
+\luavarset{testfiledir}{maindir .. "/testfiles"}   {Where the tests are.}
+\luavarset{testsuppdir}{testfiledir .. "/support"} {Where support files for the tests are.}
+\luavarset{supportdir} {maindir .. "/support"}     {Where copies of files to support check/doc compilation are stored.}
 \luavarseparator
-\luavarset{localdir}   {maindir .. "/build/local"}  {Generated folder where support files are placed to allow \enquote{sandboxed} \TeX{} runs.}
-\luavarset{testdir}    {maindir .. "/build/test"}   {Generated folder where tests are run.}
-\luavarset{typesetdir} {maindir .. "/build/doc"}    {Generated folder where typesetting is run.}
-\luavarset{unpackdir}  {maindir .. "/build/unpack"} {Generated folder where unpacking occurs.}
-\luavarset{distribdir} {maindir .. "/build/distrib"}{Generated folder where the archive is created.}
-\luavarset{ctandir}    {distribdir .. "/ctan"}      {Generated folder where files are organised for CTAN.}
-\luavarset{tdsdir}     {distribdir .. "/tds"}       {Generated folder where files are organised for a TDS.}
-\luavarset{tdsroot}    {"latex"}{Root directory of the TDS structure for the bundle/module to be installed into.}
+\luavarset{localdir}  {maindir .. "/build/local"}  {Generated folder where support files are placed to allow \enquote{sandboxed} \TeX{} runs.}
+\luavarset{testdir}   {maindir .. "/build/test"}   {Generated folder where tests are run.}
+\luavarset{typesetdir}{maindir .. "/build/doc"}    {Generated folder where typesetting is run.}
+\luavarset{unpackdir} {maindir .. "/build/unpack"} {Generated folder where unpacking occurs.}
+\luavarset{distribdir}{maindir .. "/build/distrib"}{Generated folder where the archive is created.}
+\luavarset{ctandir}   {distribdir .. "/ctan"}      {Generated folder where files are organised for CTAN.}
+\luavarset{tdsdir}    {distribdir .. "/tds"}       {Generated folder where files are organised for a TDS.}
+\luavarset{tdsroot}   {"latex"}{Root directory of the TDS structure for the bundle/module to be installed into.}
 \luavarseparator
 \luavarset{bibfiles}          {\{"*.bib"\}}{\BibTeX{} database files.}
 \luavarset{binaryfiles}       {\{"*.pdf", "*.zip"\}}
