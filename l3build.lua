@@ -681,7 +681,7 @@ function tree(path, glob)
     return true
   end
   function is_dir(file)
-    return lfs.attributes(file)["mode"] == "directory"
+    return lfs_attributes(file)["mode"] == "directory"
   end
   local dirs = {["."]=cropdots(path)}
   for pattern, critereon in gmatch(cropdots(glob), "([^/]+)(/?)") do
@@ -691,8 +691,8 @@ function tree(path, glob)
         local fullpath = path .. "/" .. file
         if file ~= "." and file ~= ".." and
           fullpath ~= maindir .. "/build" and
-          (string.sub(pattern, 1, 1) == "."
-            or string.sub(file, 1, 1) ~= ".")
+          (sub(pattern, 1, 1) == "."
+            or sub(file, 1, 1) ~= ".")
         then
           local fulldir = dir .. "/" .. file
           if critereon(fulldir) then
