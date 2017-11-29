@@ -63,10 +63,11 @@ end
 -- Use Unix-style path separators
 maindir = maindir or "."
 
--- Substructure for tests and support files
+-- Substructure for file locations
+docfiledir  = docfiledir  or maindir
+supportdir  = supportdir  or maindir .. "/support"
 testfiledir = testfiledir or "testfiles"
 testsuppdir = testsuppdir or testfiledir .. "/support"
-supportdir  = supportdir  or maindir .. "/support"
 
 -- Structure within a development area
 distribdir = distribdir or maindir .. "/build/distrib"
@@ -108,7 +109,6 @@ sourcefiles        = sourcefiles        or {"*.dtx", "*.ins"}
 textfiles          = textfiles          or {"*.md", "*.txt"}
 typesetdemofiles   = typesetdemofiles   or { }
 typesetfiles       = typesetfiles       or {"*.dtx"}
-docfiledir         = docfiledir         or maindir
 typesetsuppfiles   = typesetsuppfiles   or { }
 typesetsourcefiles = typesetsourcefiles or { }
 unpackfiles        = unpackfiles        or {"*.ins"}
