@@ -1038,6 +1038,10 @@ local function formatlog(logfile, newfile, engine, errlevels)
     if register_types[match(line, "^\\[^%]]+=\\([a-z]+)%d+$")] then
       line = gsub(line, "%d+$", "...")
     end
+    -- Also deal with showing boxes
+    if match(line, "^> \\box%d+=$") or match(line, "^> \\box%d+=(void)$") then
+      line = gsub(line, "%d+=", "...=")
+    end
     -- Remove 'normal' direction information on boxes with (u)pTeX
     line = gsub(line, ",? yoko direction,?", "")
     line = gsub(line, ",? yoko%(math%) direction,?", "")
