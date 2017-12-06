@@ -23,7 +23,7 @@ for those people who are interested.
 --]]
 
 -- Version information
-release_date = "2017/11/25"
+release_date = "2017/12/06"
 
 -- "module" is a deprecated function in Lua 5.2: as we want the name
 -- for other purposes, and it should eventually be 'free', simply
