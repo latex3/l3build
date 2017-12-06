@@ -1012,6 +1012,32 @@ local function formatlog(logfile, newfile, engine, errlevels)
     for i = 0, 31 do
       line = gsub(line, char(i), "^^" .. char(64 + i))
     end
+    -- Normalise register allocation to hard-coded numbers
+    -- No regex, so use a pattern plus lookup approach
+    local register_types = {
+        attribute      = true,
+        box            = true,
+        bytecode       = true,
+        catcodetable   = true,
+        count          = true,
+        dimen          = true,
+        insert         = true,
+        language       = true,
+        luabytecode    = true,
+        luachunk       = true,
+        luafunction    = true,
+        marks          = true,
+        muskip         = true,
+        read           = true,
+        skip           = true,
+        toks           = true,
+        whatsit        = true,
+        write          = true,
+        XeTeXcharclass = true
+      } 
+    if register_types[match(line, "^\\[^%]]+=\\([a-z]+)%d+$")] then
+      line = gsub(line, "%d+$", "...")
+    end
     -- Remove 'normal' direction information on boxes with (u)pTeX
     line = gsub(line, ",? yoko direction,?", "")
     line = gsub(line, ",? yoko%(math%) direction,?", "")
