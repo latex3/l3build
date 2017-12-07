@@ -2550,7 +2550,13 @@ end
 if #checkconfigs == 1 and
    checkconfigs[1] ~= stdconfig and
    (options["target"] == "check" or options["target"] == "save") then
-   dofile("./" .. checkconfigs[1] .. ".lua")
+   local config = "./" .. checkconfigs[1] .. ".lua"
+   if fileexists(config) then
+     dofile(config)
+   else
+     print("Error: Cannot find configuration " ..  checkconfigs[1])
+     exit(1)
+   end
 end
 
 -- Call the main function
