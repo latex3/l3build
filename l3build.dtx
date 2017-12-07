@@ -112,6 +112,9 @@
 \luavarset{stdengine}    {"pdftex"}{Engine to generate \texttt{.tlg} file from}
 \luavarset{checkformat}  {"latex"} {Format to use for tests}
 \luavarseparator
+\luavarset{checkconfigs}{\{\}}{Configurations to use for tests}
+\luavarset{stdconfig}   {\meta{Main script}}{Standard test configuration}
+\luavarseparator
 \luavarset{typesetexe}{"pdflatex"}{Executable for compiling \texttt{doc(s)}}
 \luavarset{unpackexe} {"tex"}     {Executable for running \texttt{unpack}}
 \luavarset{zipexe}    {"zip"}     {Executable for creating archive with \texttt{ctan}}
@@ -304,6 +307,7 @@
 %
 % As well as these commands, the system recognises the options
 % \begin{itemize}
+%   \item \texttt{--config} (\texttt{-c}) Configuration(s) to use for testing
 % \item \texttt{--date} (\texttt{-d}) Date to use when setting version
 %   data
 % \item \texttt{--engine} (\texttt{-e}) Sets the engine to use for
@@ -614,6 +618,46 @@
 % This section lists all variables defined in the |l3build.lua| script that are available for customisation.
 %
 % \luavartypeset
+%
+% \subsection{Multiple sets of tests}
+%
+% In most cases, a single set of tests will be appropriate for the module, with
+% a common set of configuration settings applying. However, there are
+% situations where you may need entirely independent sets of tests which have
+% different setting values, for example using different formats or where the
+% entire set will be engine-dependent. To support this, \pkg{l3build} offers
+% the possibility of using multiple configurations for tests. This is supported
+% using the \var{checkconfigs} table. This is used to list the names of each
+% configuration (|.lua| file) which will be used to run tests.
+%
+% For example, for the core \LaTeXe{} tests the main test files are contained 
+% in a directory |testfiles|. To test font loading for \XeTeX{} and \LuaTeX{}
+% there are a second set of tests in |testfiles-TU| which use the short
+% |build-TU.lua| file shown in Figure~\ref{fig:configs}. To run both sets of
+% tests, the main |build.lua| file contains the setting
+% |checkconfigs = {"build", "build-TU"}|. This will cause \pkg{l3build} to run
+% first using no additional settings (\emph{i.e.}~reading the normal
+% |build.lua| file alone), then running \emph{also} loading the settings from
+% |build-TU.lua|.
+% \begin{figure} 
+%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6] 
+%     -- Special config for these tests 
+%     checksearch  = true
+%     checkengines = {"xetex","luatex"}
+%     testfiledir  = "testfiles-TU"
+%   \end{lstlisting} 
+% \caption{The build script for the \pkg{xparse} module.} 
+% \label{fig:configs} 
+% \end{figure} 
+%
+% To allow selection of a one or more configurations, and to allow saving of
+% |.tlg| files in non-standard configurations, the |--config| (|-c|) option may
+% be used. This works in the same way as |--engine|: it takes a comma list of
+% configurations to apply, overriding \var{checkconfigs}.
+%
+% Note that the setting \var{stdconfig} is used to determine the \emph{vanilla}
+% configuration: this will typically be the name of the main script (usually
+% |build| for a standard |build.lua| file).
 %
 % \subsection{Dependencies}
 %
