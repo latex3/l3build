@@ -238,6 +238,12 @@ local utf8_char        = unicode.utf8.char
 
 local option_list =
   {
+    config =
+      {
+        desc  = "Sets the config(s) used for running tests",
+        short = "c",
+        type  = "table"
+      },
     date =
       {
         desc  = "Sets the date to insert into sources",
