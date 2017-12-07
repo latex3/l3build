@@ -246,7 +246,7 @@ local option_list =
       },
     engine =
       {
-        desc  = "Sets the engine to use for running test",
+        desc  = "Sets the engine(s) to use for running test",
         short = "e",
         type  = "table"
       },
