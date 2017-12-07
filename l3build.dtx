@@ -637,10 +637,10 @@
 % there are a second set of tests in |testfiles-TU| which use the short
 % |build-TU.lua| file shown in Figure~\ref{fig:configs}. To run both sets of
 % tests, the main |build.lua| file contains the setting
-% |checkconfigs = {"build", "build-TU"}|. This will cause \pkg{l3build} to run
+% |checkconfigs = {"build", "config-TU"}|. This will cause \pkg{l3build} to run
 % first using no additional settings (\emph{i.e.}~reading the normal
 % |build.lua| file alone), then running \emph{also} loading the settings from
-% |build-TU.lua|.
+% |config-TU.lua|.
 % \begin{figure} 
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6] 
 %     -- Special config for these tests 
