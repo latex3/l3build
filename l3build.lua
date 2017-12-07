@@ -137,8 +137,8 @@ checkformat  = checkformat  or "latex"
 stdengine    = stdengine    or "pdftex"
 
 -- Configs for testing
-checkconfigs = checkconfigs or { }
 stdconfig    = stdconfig    or string.gsub(arg[0], "%.lua$", "")
+checkconfigs = checkconfigs or {stdconfig}
 
 -- Enable access to trees outside of the repo
 -- As these may be set false, a more elaborate test than normal is needed
