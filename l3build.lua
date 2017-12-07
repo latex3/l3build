@@ -294,12 +294,6 @@ local option_list =
         short = "r",
         type  = "boolean"
       },
-    testfiledir =
-      {
-        desc  = "Selects the specified testfile location",
-        short = "t",
-        type  = "table"
-      },
     version =
       {
         desc  = "Sets the version to insert into sources",
@@ -2527,19 +2521,6 @@ end
 
 -- Allow main function to be disabled 'higher up'
 main = main or stdmain
-
--- Pick up and read any per-run testfiledir
-if options["testfiledir"] then
-  if #options["testfiledir"] == 1 then
-    testfiledir = options["testfiledir"][1]
-    if fileexists(testfiledir .. "/config.lua") then
-      dofile(testfiledir .. "/config.lua")
-    end
-  else
-    print("Cannot use more than one testfile dir at a time!")
-    return 1
-  end
-end
 
 -- Call the main function
 main(options["target"], options["files"])
