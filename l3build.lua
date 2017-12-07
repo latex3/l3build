@@ -139,6 +139,10 @@ checkengines = checkengines or {"pdftex", "xetex", "luatex"}
 checkformat  = checkformat  or "latex"
 stdengine    = stdengine    or "pdftex"
 
+-- Configs for testing
+checkconfigs = checkconfigs or { }
+stdconfig    = stdconfig    or string.gsub(arg[0], "%.lua$", "")
+
 -- Enable access to trees outside of the repo
 -- As these may be set false, a more elaborate test than normal is needed
 if checksearch == nil then
@@ -2527,6 +2531,27 @@ end
 
 -- Allow main function to be disabled 'higher up'
 main = main or stdmain
+
+-- Deal with multiple configs for tests
+checkconfigs = options["config"] or checkconfigs
+if options["target"] == "check" then
+  if #checkconfigs > 1 then
+    local errorlevel = 0
+    local opts = options
+    for i = 1, #checkconfigs do
+      opts["config"] = {checkconfigs[i]}
+      errorlevel = call({"."}, "check", opts)
+      if errorlevel ~= 0 then exit(1) end
+    end
+    -- Avoid running the 'main' set of tests twice
+    exit(0)
+  end
+end
+if #checkconfigs == 1 and
+   checkconfigs[1] ~= stdconfig and
+   (options["target"] == "check" or options["target"] == "save") then
+   dofile("./" .. checkconfigs[1] .. ".lua")
+end
 
 -- Call the main function
 main(options["target"], options["files"])
