@@ -65,10 +65,10 @@ currentdir = "."
 maindir    = maindir or currentdir
 
 -- Substructure for file locations
-docfiledir  = docfiledir  or currentdir
-supportdir  = supportdir  or maindir .. "/support"
-testfiledir = testfiledir or currentdir .. "/testfiles"
-testsuppdir = testsuppdir or testfiledir .. "/support"
+docfiledir    = docfiledir    or currentdir
+supportdir    = supportdir    or maindir .. "/support"
+testfiledir   = testfiledir   or currentdir .. "/testfiles"
+testsuppdir   = testsuppdir   or testfiledir .. "/support"
 
 -- Structure within a development area
 builddir   = builddir   or maindir .. "/build"
