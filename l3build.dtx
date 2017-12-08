@@ -57,10 +57,11 @@
 \luavarset{modules}{\{\}}{The list of all modules in a bundle (when not auto-detecting)}
 \luavarset{exclmodules}{\{\}}{Directories to be excluded from automatic module detection}
 \luavarseparator
-\luavarset{maindir}    {"."}                      {Top level directory for the module/bundle}
-\luavarset{docfiledir} {maindir}                  {Directory containing documentation files}
+\luavarset{maindir}     {"."}                      {Top level directory for the module/bundle}
+\luavarset{docfiledir}  {"."}                 {Directory containing documentation files}
+\luavarset{sourcfiledir}{"."}                 {Directory containing source files}
 \luavarset{supportdir} {maindir .. "/support"}    {Directory containing general support files}
-\luavarset{testfiledir}{maindir .. "/testfiles"}  {Directory containing test files}
+\luavarset{testfiledir}{"./testfiles"}  {Directory containing test files}
 \luavarset{testsuppdir}{testfiledir .. "/support"}{Directory containing test-specific support files}
 \luavarseparator
 \luavarset{builddir}  {maindir .. "/build"}   {Directory for building and testing}
@@ -679,6 +680,14 @@
 % This ensures that the \pkg{l3kernel} code is included in all processes involved in unpacking and checking and so on.
 % The name of the script file in the dependency is set with the |scriptname| variable; by default these are |"build.lua"|.
 %
+% \subsection{Non-standard source layouts}
+%
+% A variety of source layouts are supported. In general, a \enquote{flat}
+% layout with all source files \enquote{here} is most convenient. However,
+% \pkg{l3build} supports placement of both code and documentation source
+% files in other locations using the \var{sourcefiledir} and \var{docfiledir}
+% variables. For pre-built trees, the glob syntax |**/*| may be useful in these
+% cases: this enables recursive searching in the appropriate tree locations.
 %
 % \subsection{Output normalisation}
 % \label{sec:norm}
