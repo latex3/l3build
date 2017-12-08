@@ -860,19 +860,22 @@ end
 -- Copy files to the main CTAN release directory
 function copyctan()
   -- Do all of the copying in one go
-  for _,i in ipairs(
+  for _,filetype in pairs(
       {
         bibfiles,
         demofiles,
         docfiles,
         pdffiles,
-        sourcefiles,
-        textfiles,
         typesetlist
       }
     ) do
-    for _,j in ipairs(i) do
-      cp(j, currentdir, ctandir .. "/" .. ctanpkg)
+    for _,file in pairs(filetype) do
+      cp(file, docfiledir, ctandir .. "/" .. ctanpkg)
+    end
+  end
+  for _,filetype in pairs({sourcefiles, textfiles}) do
+    for _,file in pairs(filetype) do
+      cp(file, currentdir, ctandir .. "/" .. ctanpkg)
     end
   end
 end
@@ -913,7 +916,7 @@ function copytds()
     end
   end
   install(
-    ".",
+    docfiledir,
     "doc",
     {bibfiles, demofiles, docfiles, pdffiles, textfiles, typesetlist}
   )
@@ -1748,7 +1751,7 @@ function typesetpdf(file, dir)
   if errorlevel == 0 then
     name = name .. ".pdf"
     os_remove(jobname(name))
-    cp(name, typesetdir, ".")
+    cp(name, typesetdir, docfiledir)
   else
     print(" ! Compilation failed")
   end
@@ -1944,13 +1947,18 @@ function cmdcheck()
   mkdir(localdir)
   cleandir(testdir)
   depinstall(checkdeps)
-  for _,i in ipairs({bibfiles, docfiles, sourcefiles, typesetfiles}) do
-    for _,j in ipairs(i) do
-      cp(j, currentdir, testdir)
+  for _,filetype in pairs(
+      {bibfiles, docfiles, typesetfiles, typesetdemofiles}
+    ) do
+    for _,file in pairs(filetype) do
+      cp(file, docfiledir, typesetdir)
     end
   end
-  for _,i in ipairs(typesetsuppfiles) do
-    cp(i, supportdir, testdir)
+  for _,file in pairs(sourcefiles) do
+    cp(file, currentdir, testdir)
+  end
+  for _,file in pairs(typesetsuppfiles) do
+    cp(file, supportdir, testdir)
   end
   local engine = gsub(stdengine, "tex$", "latex")
   local localdir = abspath(localdir)
@@ -2104,15 +2112,18 @@ end
 function doc(files)
   -- Set up
   cleandir(typesetdir)
-  for _,i in ipairs(
-    {bibfiles, docfiles, sourcefiles, typesetfiles, typesetdemofiles}
-  ) do
-    for _,j in ipairs(i) do
-      cp(j, ".", typesetdir)
-    end
-  end
-  for _,i in ipairs(typesetsuppfiles) do
-    cp(i, supportdir, typesetdir)
+  for _,filetype in pairs( 
+      {bibfiles, docfiles, typesetfiles, typesetdemofiles} 
+    ) do 
+    for _,file in pairs(filetype) do 
+      cp(file, docfiledir, typesetdir) 
+    end 
+  end 
+  for _,file in pairs(sourcefiles) do 
+    cp(file, currentdir, typesetdir) 
+  end 
+  for _,file in pairs(typesetsuppfiles) do
+    cp(file, supportdir, typesetdir)
   end
   depinstall(typesetdeps)
   unpack({sourcefiles, typesetsourcefiles}, {currentdir, docfiledir})
