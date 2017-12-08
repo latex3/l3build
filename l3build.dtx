@@ -63,11 +63,12 @@
 \luavarset{testfiledir}{maindir .. "/testfiles"}  {Directory containing test files}
 \luavarset{testsuppdir}{testfiledir .. "/support"}{Directory containing test-specific support files}
 \luavarseparator
-\luavarset{distribdir}{maindir .. "/build/distrib"}{Directory for generating distribution structure}
-\luavarset{localdir}  {maindir .. "/build/local"}  {Directory for extracted files in \enquote{sandboxed} \TeX{} runs}
-\luavarset{testdir}   {maindir .. "/build/test"}   {Directory for running tests}
-\luavarset{typesetdir}{maindir .. "/build/doc"}    {Directory for building documentation}
-\luavarset{unpackdir} {maindir .. "/build/unpack"} {Directory for unpacking sources}
+\luavarset{builddir}  {maindir .. "/build"}   {Directory for building and testing}
+\luavarset{distribdir}{builddir .. "/distrib"}{Directory for generating distribution structure}
+\luavarset{localdir}  {builddir .. "/local"}  {Directory for extracted files in \enquote{sandboxed} \TeX{} runs}
+\luavarset{testdir}   {builddir .. "/test"}   {Directory for running tests}
+\luavarset{typesetdir}{builddir .. "/doc"}    {Directory for building documentation}
+\luavarset{unpackdir} {builddir .. "/unpack"} {Directory for unpacking sources}
 \luavarseparator
 \luavarset{ctandir}{distribdir .. "/ctan"}{Directory for organising files for CTAN}
 \luavarset{tdsdir} {distribdir .. "/tds"} {Directory for organised files into TDS structure}
