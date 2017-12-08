@@ -61,12 +61,13 @@ end
 
 -- Directory structure for the build system
 -- Use Unix-style path separators
-maindir = maindir or "."
+currentdir = "."
+maindir    = maindir or currentdir
 
 -- Substructure for file locations
-docfiledir  = docfiledir  or maindir
+docfiledir  = docfiledir  or currentdir
 supportdir  = supportdir  or maindir .. "/support"
-testfiledir = testfiledir or maindir .. "/testfiles"
+testfiledir = testfiledir or currentdir .. "/testfiles"
 testsuppdir = testsuppdir or testfiledir .. "/support"
 
 -- Structure within a development area
@@ -838,7 +839,7 @@ function checkinit()
   for _,i in ipairs(filelist(localdir)) do
     cp(i, localdir, testdir)
   end
-  bundleunpack({".", testfiledir})
+  bundleunpack({currentdir, testfiledir})
   for _,i in ipairs(installfiles) do
     cp(i, unpackdir, testdir)
   end
@@ -871,7 +872,7 @@ function copyctan()
       }
     ) do
     for _,j in ipairs(i) do
-      cp(j, ".", ctandir .. "/" .. ctanpkg)
+      cp(j, currentdir, ctandir .. "/" .. ctanpkg)
     end
   end
 end
@@ -918,7 +919,7 @@ function copytds()
   )
   install(unpackdir, "makeindex", {makeindexfiles}, true)
   install(unpackdir, "bibtex/bst", {bstfiles}, true)
-  install(".", "source", {sourcelist})
+  install(currentdir, "source", {sourcelist})
   install(unpackdir, "tex", {installfiles})
 end
 
@@ -1921,7 +1922,7 @@ function clean()
     cleandir(typesetdir) +
     cleandir(unpackdir)
   for _,i in ipairs(cleanfiles) do
-    errorlevel = rm(".", i) + errorlevel
+    errorlevel = rm(currentdir, i) + errorlevel
   end
   return errorlevel
 end
@@ -1929,7 +1930,7 @@ end
 function bundleclean()
   local errorlevel = call(modules, "clean")
   for _,i in ipairs(cleanfiles) do
-    errorlevel = rm(".", i) + errorlevel
+    errorlevel = rm(maindir, i) + errorlevel
   end
   return (
     errorlevel     +
@@ -1945,7 +1946,7 @@ function cmdcheck()
   depinstall(checkdeps)
   for _,i in ipairs({bibfiles, docfiles, sourcefiles, typesetfiles}) do
     for _,j in ipairs(i) do
-      cp(j, ".", testdir)
+      cp(j, currentdir, testdir)
     end
   end
   for _,i in ipairs(typesetsuppfiles) do
@@ -1955,7 +1956,7 @@ function cmdcheck()
   local localdir = abspath(localdir)
   print("Checking source files")
   for _,i in ipairs(cmdchkfiles) do
-    for _,j in ipairs(filelist(".", i)) do
+    for _,j in ipairs(filelist(currentdir, i)) do
       print("  " .. jobname(j))
       run(
         testdir,
@@ -2031,7 +2032,7 @@ function ctan(standalone)
   end
   if errorlevel == 0 then
     for _,i in ipairs(textfiles) do
-      for _,j in pairs({unpackdir, "."}) do
+      for _,j in pairs({unpackdir, currentdir}) do
         cp(i, j, ctandir .. "/" .. ctanpkg)
         cp(i, j, tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle)
       end
@@ -2041,7 +2042,7 @@ function ctan(standalone)
       cp(ctanpkg .. ".tds.zip", tdsdir, ctandir)
     end
     dirzip(ctandir, ctanpkg)
-    cp(ctanpkg .. ".zip", ctandir, ".")
+    cp(ctanpkg .. ".zip", ctandir, currentdir)
   else
     print("\n====================")
     print("Typesetting failed, zip stage skipped!")
@@ -2060,13 +2061,13 @@ function bundlectan()
     local excludelist = { }
     for _,i in ipairs(exclude) do
       for _,j in ipairs(i) do
-        for _,k in ipairs(filelist(".", j)) do
+        for _,k in ipairs(filelist(currentdir, j)) do
           excludelist[k] = true
         end
       end
     end
     for _,i in ipairs(include) do
-      for _,j in ipairs(filelist(".", i)) do
+      for _,j in ipairs(filelist(currentdir, i)) do
         if not excludelist[j] then
           insert(includelist, j)
         end
@@ -2114,7 +2115,7 @@ function doc(files)
     cp(i, supportdir, typesetdir)
   end
   depinstall(typesetdeps)
-  unpack({sourcefiles, typesetsourcefiles}, {".", docfiledir})
+  unpack({sourcefiles, typesetsourcefiles}, {currentdir, docfiledir})
   -- Main loop for doc creation
   local done = {}
   for _, typesetfiles in ipairs({typesetdemofiles, typesetfiles}) do
@@ -2312,7 +2313,7 @@ function setversion(dir)
   end
   local date = options["date"] or os_date("%Y-%m-%d")
   local version = options["version"] or -1
-  local dir = dir or "."
+  local dir = dir or currentdir
   for _,i in pairs(versionfiles) do
     for _,j in pairs(filelist(dir, i)) do
       rewrite(dir, j, date, version)
@@ -2352,7 +2353,7 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
   if errorlevel ~=0 then
     return errorlevel
   end
-  for _,i in ipairs(sourcedirs or {"."}) do
+  for _,i in ipairs(sourcedirs or {currentdir}) do
     for _,j in ipairs(sources or {sourcefiles}) do
       for _,k in ipairs(j) do
         errorlevel = cp(k, i, unpackdir)
