@@ -66,7 +66,7 @@ maindir = maindir or "."
 -- Substructure for file locations
 docfiledir  = docfiledir  or maindir
 supportdir  = supportdir  or maindir .. "/support"
-testfiledir = testfiledir or "testfiles"
+testfiledir = testfiledir or maindir .. "/testfiles"
 testsuppdir = testsuppdir or testfiledir .. "/support"
 
 -- Structure within a development area
