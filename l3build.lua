@@ -2125,6 +2125,11 @@ function bundlectan()
   return errorlevel
 end
 
+-- A hook to allow additional typesetting of demos
+typeset_demo_tasks = typeset_demo_tasks or function()
+  return 0
+end
+
 -- Typeset all required documents
 -- Uses a set of dedicated auxiliaries that need to be available to others
 function doc(files)
@@ -2147,6 +2152,10 @@ function doc(files)
   unpack({sourcefiles, typesetsourcefiles}, {sourcefiledir, docfiledir})
   -- Main loop for doc creation
   local done = {}
+  local errorlevel = typeset_demo_tasks()
+  if errorlevel ~= 0 then
+    return errorlevel
+  end
   for _, typesetfiles in ipairs({typesetdemofiles, typesetfiles}) do
     for _,i in ipairs(typesetfiles) do
       for _, dir in ipairs({unpackdir, typesetdir}) do
