@@ -612,7 +612,7 @@ function cp(glob, source, dest)
       else
         errorlevel = execute(
           'xcopy /y "' .. unix_to_win(source) .. '" "'
-             .. unix_to_win(dest) .. '" > nul'
+             .. unix_to_win(dest .. '/') .. '" > nul'
         )
       end
     else
