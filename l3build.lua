@@ -903,8 +903,8 @@ function copytds()
     local filenames = { }
     for _,i in ipairs(files) do
       for _,j in ipairs(i) do
-        for _,k in ipairs(filelist(source, j)) do
-          insert(filenames, k)
+        for file,_ in pairs(tree(source, j)) do
+          insert(filenames, file)
         end
       end
     end
@@ -2074,15 +2074,15 @@ function bundlectan()
     local excludelist = { }
     for _,i in ipairs(exclude) do
       for _,j in ipairs(i) do
-        for _,k in ipairs(filelist(dir, j)) do
-          excludelist[k] = true
+        for file,_ in pairs(tree(dir, j)) do
+          excludelist[file] = true
         end
       end
     end
     for _,i in ipairs(include) do
-      for _,j in ipairs(filelist(dir, i)) do
-        if not excludelist[j] then
-          insert(includelist, j)
+      for file,_ in pairs(tree(dir, i)) do
+        if not excludelist[file] then
+          insert(includelist, file)
         end
       end
     end
@@ -2331,8 +2331,8 @@ function setversion()
   local version = options["version"] or -1
   for _,dir in pairs({currentdir, sourcefiledir, docfiledir}) do
     for _,i in pairs(versionfiles) do
-      for _,j in pairs(filelist(dir, i)) do
-        rewrite(dir, j, date, version)
+      for file,_ in pairs(tree(dir, i)) do
+        rewrite(dir, file, date, version)
       end
     end
   end
