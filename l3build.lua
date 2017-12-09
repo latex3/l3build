@@ -860,7 +860,11 @@ end
 
 -- Copy files to the main CTAN release directory
 function copyctan()
-  -- Do all of the copying in one go
+  local ctantarget = ctanpkg
+  if docfiledir ~= currentdir then
+    ctantarget = ctanpkg .. "/" .. gsub(docfiledir, "^%.*/", "")
+    print(ctantarget)
+  end
   for _,filetype in pairs(
       {
         bibfiles,
@@ -871,11 +875,18 @@ function copyctan()
       }
     ) do
     for _,file in pairs(filetype) do
-      cp(file, docfiledir, ctandir .. "/" .. ctanpkg)
+      cp(file, docfiledir, ctandir .. "/" .. ctantarget)
     end
   end
+  ctantarget = ctanpkg
+  if sourcefiledir ~= currentdir then
+    ctantarget = ctanpkg .. "/" .. gsub(sourcefiledir, "^%.*/", "")
+    print(ctantarget)
+  end
   for _,file in pairs(sourcefiles) do
-    cp(file, sourcefiledir, ctandir .. "/" .. ctanpkg)
+    if sourcedir ~= currentdir then
+    end
+    cp(file, sourcefiledir, ctandir .. "/" .. ctantarget)
   end
   for _,file in pairs(textfiles) do
     cp(file, currentdir, ctandir .. "/" .. ctanpkg)
