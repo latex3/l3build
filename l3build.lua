@@ -2069,7 +2069,7 @@ function bundlectan()
   local function excludelist(include, exclude, dir)
     local include = include or { }
     local exclude = exclude or { }
-    local dir = dir or currendir
+    local dir = dir or currentdir
     local includelist = { }
     local excludelist = { }
     for _,i in ipairs(exclude) do
