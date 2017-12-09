@@ -863,7 +863,6 @@ function copyctan()
   local ctantarget = ctanpkg
   if docfiledir ~= currentdir then
     ctantarget = ctanpkg .. "/" .. gsub(docfiledir, "^%.*/", "")
-    print(ctantarget)
   end
   for _,filetype in pairs(
       {
