@@ -676,13 +676,13 @@ end
 -- table, the keys are paths relative to the given starting path, the values
 -- are their counterparts relative to the current working directory.
 function tree(path, glob)
-  function cropdots(path)
+  local function cropdots(path)
     return gsub(gsub(path, "^%./", ""), "/%./", "/")
   end
-  function always_true()
+  local function always_true()
     return true
   end
-  function is_dir(file)
+  local function is_dir(file)
     return lfs_attributes(file)["mode"] == "directory"
   end
   local dirs = {["."] = cropdots(path)}
