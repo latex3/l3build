@@ -743,6 +743,8 @@ end
 function ren(dir, source, dest)
   local dir = dir .. "/"
   if os_type == "windows" then
+    local source = gsub(source, "^%.+/", "")
+    local dest = gsub(dest, "^%.+/", "")
     return execute("ren " .. unix_to_win(dir) .. source .. " " .. dest)
   else
     return execute("mv " .. dir .. source .. " " .. dir .. dest)
