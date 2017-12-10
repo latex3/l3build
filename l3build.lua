@@ -686,8 +686,8 @@ function tree(path, glob)
     return lfs_attributes(file)["mode"] == "directory"
   end
   local dirs = {["."] = cropdots(path)}
-  for pattern, critereon in gmatch(cropdots(glob), "([^/]+)(/?)") do
-    local critereon = critereon == "/" and is_dir or always_true
+  for pattern, criterion in gmatch(cropdots(glob), "([^/]+)(/?)") do
+    local criterion = criterion == "/" and is_dir or always_true
     function fill(path, dir, table)
       for _, file in ipairs(filelist(dir, pattern)) do
         local fullpath = path .. "/" .. file
@@ -697,7 +697,7 @@ function tree(path, glob)
             or sub(file, 1, 1) ~= ".")
         then
           local fulldir = dir .. "/" .. file
-          if critereon(fulldir) then
+          if criterion(fulldir) then
             table[fullpath] = fulldir
           end
         end
