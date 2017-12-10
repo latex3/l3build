@@ -883,7 +883,6 @@ function copyctan()
   ctantarget = ctanpkg
   if sourcefiledir ~= currentdir then
     ctantarget = ctanpkg .. "/" .. gsub(sourcefiledir, "^%.*/", "")
-    print(ctantarget)
   end
   mkdir(ctandir .. "/" .. ctantarget)
   for _,file in pairs(sourcefiles) do
