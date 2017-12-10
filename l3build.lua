@@ -866,6 +866,7 @@ function copyctan()
   if docfiledir ~= currentdir then
     ctantarget = ctanpkg .. "/" .. gsub(docfiledir, "^%.*/", "")
   end
+  mkdir(ctandir .. "/" .. ctantarget)
   for _,filetype in pairs(
       {
         bibfiles,
@@ -884,6 +885,7 @@ function copyctan()
     ctantarget = ctanpkg .. "/" .. gsub(sourcefiledir, "^%.*/", "")
     print(ctantarget)
   end
+  mkdir(ctandir .. "/" .. ctantarget)
   for _,file in pairs(sourcefiles) do
     if sourcedir ~= currentdir then
     end
