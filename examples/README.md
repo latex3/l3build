@@ -11,6 +11,7 @@ The examples are:
 
 | Example                 | Description                                    |
 | ---                     | ---                                            |
+| `Simple-Flat`           | Demonstrates a simple package in a flat layout |
 | `Simple-Tree`           | Demonstrates a simple package in a tree layout |
 
 
