@@ -11,8 +11,10 @@ The examples are:
 
 | Example                 | Description                                    |
 | ---                     | ---                                            |
-| `Simple-Flat`           | Demonstrates a simple package in a flat layout |
-| `Simple-Tree`           | Demonstrates a simple package in a tree layout |
+| `Simple-Flat`           | A simple package in a flat layout |
+| `Simple-Tree`           | A simple package in a tree layout |
+| `Bundle-Flat`           | A bundle with two modules in a flat layout |
+| `Bundle-Tree`           | A bundle with two modules in a tree layout |
 
 
 -----
