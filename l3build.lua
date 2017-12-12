@@ -2467,13 +2467,6 @@ manifest = manifest or function()
     exclude          = {excludefiles},
   }
 
-  -- unpack
-  if module == "" then
-    errorlevel = call(modules, "bundleunpack")
-  else
-    errorlevel = unpack()
-  end
-
   -- create data for all "groupings" of files
   local file_lists = {}
   for ii,vv in ipairs(manifestgroups) do
