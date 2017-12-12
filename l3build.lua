@@ -191,92 +191,6 @@ tlgext = tlgext or ".tlg"
 
 -- Manifest options
 manifestfile = "MANIFEST.md"
-private_manifest_defaults = {
-  extractfiledesc  = true          ,
-  rename           = false         ,
-  dir              = maindir       ,
-  exclude          = {excludefiles},
-}
-
-manifestgroups = manifestgroups or {
--- this needs to be an array of tables, not a table of tables, to ensure ordering.
-    {
-       name    = "Source files",
-       description = [[
-These are source files for a number of purposes, including the `unpack`
-process which generates the installation files of the package. Additional
-files included here will also be installed for processing such as testing.
-       ]],
-       files   = {sourcefiles},
-    },
-    {
-       name    = "Typeset documentation source files",
-       description = [[
-These files are typeset using LaTeX to produce the PDF documentation for the package.
-       ]],
-       files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
-    },
-    {
-       name    = "Documentation files",
-       description = [[
-These files form part of the documentation but are not typeset.
-Generally they will be additional input files for the typeset
-documentation files listed above.
-       ]],
-       files   = {docfiles},
-    },
-    {
-       name    = "Text files",
-       files   = {textfiles},
-       extractfiledesc = false,
-    },
-    {
-       name    = "Demo files",
-       files   = {demofiles},
-    },
-    {
-       name    = "Bibliography and index files",
-       files   = {bibfiles,bstfiles,makeindexfiles},
-    },
-    {
-       name    = "Derived files",
-       files   = {installfiles},
-       exclude = {excludefiles,sourcefiles},
-       dir     = unpackdir,
-       extractfiledesc = false,
-    },
-    {
-       name    = "Typeset documents",
-       files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
-       rename  = {"%.%w+$", ".pdf"},
-    },
-    {
-       name    = "Support files needed for unpacking, typesetting, or checking",
-       files   = {unpacksuppfiles,typesetsuppfiles,checksuppfiles},
-       dir     = supportdir,
-    },
-    {
-       name    = "Checking-specific support files",
-       files   = {"*.*"},
-       exclude = {{".",".."},excludefiles},
-       dir     = testsuppdir,
-    },
-    {
-       name    = "Test files",
-       description = [[
-These files form the test suite for the package.
-`.lvt` or `.lte` files are the individual unit tests,
-and `.tlg` are the stored output for ensuring changes
-to the package produce the same output. These output
-files are sometimes shared and sometime specific for
-different engines (pdfTeX, XeTeX, LuaTeX, etc.).
-       ]],
-       files   = {"*"..lvtext,"*"..lveext,"*"..tlgext},
-       dir     = testfiledir,
-       extractfiledesc = false,
-    },
-}
--- (End manifest options.)
 
 -- File operations are aided by the LuaFileSystem module
 local lfs = require("lfs")
@@ -2460,7 +2374,98 @@ manifest_write_group_description = manifest_write_group_description or function(
 end
 
 
+manifest_setup = manifest_setup or function()
+-- this needs to be an array of tables, not a table of tables, to ensure ordering.
+  local groups = {
+    {
+       name    = "Source files",
+       description = [[
+These are source files for a number of purposes, including the `unpack`
+process which generates the installation files of the package. Additional
+files included here will also be installed for processing such as testing.
+       ]],
+       files   = {sourcefiles},
+    },
+    {
+       name    = "Typeset documentation source files",
+       description = [[
+These files are typeset using LaTeX to produce the PDF documentation for the package.
+       ]],
+       files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
+    },
+    {
+       name    = "Documentation files",
+       description = [[
+These files form part of the documentation but are not typeset.
+Generally they will be additional input files for the typeset
+documentation files listed above.
+       ]],
+       files   = {docfiles},
+    },
+    {
+       name    = "Text files",
+       files   = {textfiles},
+       extractfiledesc = false,
+    },
+    {
+       name    = "Demo files",
+       files   = {demofiles},
+    },
+    {
+       name    = "Bibliography and index files",
+       files   = {bibfiles,bstfiles,makeindexfiles},
+    },
+    {
+       name    = "Derived files",
+       files   = {installfiles},
+       exclude = {excludefiles,sourcefiles},
+       dir     = unpackdir,
+       extractfiledesc = false,
+    },
+    {
+       name    = "Typeset documents",
+       files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
+       rename  = {"%.%w+$", ".pdf"},
+    },
+    {
+       name    = "Support files needed for unpacking, typesetting, or checking",
+       files   = {unpacksuppfiles,typesetsuppfiles,checksuppfiles},
+       dir     = supportdir,
+    },
+    {
+       name    = "Checking-specific support files",
+       files   = {"*.*"},
+       exclude = {{".",".."},excludefiles},
+       dir     = testsuppdir,
+    },
+    {
+       name    = "Test files",
+       description = [[
+These files form the test suite for the package.
+`.lvt` or `.lte` files are the individual unit tests,
+and `.tlg` are the stored output for ensuring changes
+to the package produce the same output. These output
+files are sometimes shared and sometime specific for
+different engines (pdfTeX, XeTeX, LuaTeX, etc.).
+       ]],
+       files   = {"*"..lvtext,"*"..lveext,"*"..tlgext},
+       dir     = testfiledir,
+       extractfiledesc = false,
+    },
+  }
+  return groups
+end
+
 manifest = manifest or function()
+
+  manifestgroups = manifest_setup()
+
+  private_manifest_defaults = {
+    extractfiledesc  = true          ,
+    rename           = false         ,
+    dir              = maindir       ,
+    exclude          = {excludefiles},
+  }
 
   -- unpack
   if module == "" then
@@ -2587,7 +2592,7 @@ build_manifest = build_manifest or function(file_list)
           end
 
           if not(file_list.rename) and file_list.extractfiledesc then
-print(this_file)
+
             local ff = assert(io.open(file_list.dir .. "/" .. this_file, "r"))
             file_list.descr[this_file] = manifest_extract_filedesc(ff)
             ff:close()
