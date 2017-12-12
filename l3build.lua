@@ -2533,7 +2533,6 @@ manifest = manifest or function()
       else
         -- no file description: bullet list
         for _,ff in ipairs(manifest_lists[ii].file_order) do
-          jj = manifest_lists[ii].descr[ff] or ""
           f:write("* " .. ff .. "\n")
         end
       end
