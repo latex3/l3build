@@ -2366,6 +2366,12 @@ manifest_write_opening = manifest_write_opening or function(filehandle)
 
 end
 
+manifest_write_group_heading = manifest_write_group_heading or function (filehandle,heading)
+
+   filehandle:write("\n## " .. heading .. "\n\n")
+
+end
+
 -- Redefine as a no-op if you don't like each group to have a written description.
 manifest_write_group_description = manifest_write_group_description or function(filehandle,description)
 
@@ -2497,7 +2503,7 @@ manifest = manifest or function()
   for ii,vv in ipairs(file_lists) do
     if file_lists[ii].N > 0 then
 
-      f:write("\n## " .. file_lists[ii].name .. "\n\n")
+      manifest_write_group_heading(f,file_lists[ii].name)
 
       if file_lists[ii].description then
         manifest_write_group_description(f,file_lists[ii].description)
