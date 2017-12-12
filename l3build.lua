@@ -2475,49 +2475,49 @@ manifest = manifest or function()
     exclude          = {excludefiles},
   }
 
-  local file_lists = {}
+  local manifest_lists = {}
   for ii,vv in ipairs(manifestgroups) do
-    file_lists[ii] = vv
+    manifest_lists[ii] = vv
 
     -- copy global options locally
     for kk,ll in pairs(manifest_group_defaults) do
-      file_lists[ii][kk] = file_lists[ii][kk] or ll
+      manifest_lists[ii][kk] = manifest_lists[ii][kk] or ll
     end
 
     -- initialisation for internal data
-    file_lists[ii].N          = 0
-    file_lists[ii].ND         = 0
-    file_lists[ii].matches    = {}
-    file_lists[ii].file_order = {}
-    file_lists[ii].descr      = {}
+    manifest_lists[ii].N          = 0
+    manifest_lists[ii].ND         = 0
+    manifest_lists[ii].matches    = {}
+    manifest_lists[ii].file_order = {}
+    manifest_lists[ii].descr      = {}
   end
 
   -- create all matching files
-  for ii,_ in ipairs(file_lists) do
-    file_lists[ii] = build_manifest(file_lists[ii])
+  for ii,_ in ipairs(manifest_lists) do
+    manifest_lists[ii] = manifest_build_list(manifest_lists[ii])
   end
 
   -- write the manifest file
   local f = assert(io.open(manifestfile, "w"))
   manifest_write_opening(f)
 
-  for ii,vv in ipairs(file_lists) do
-    if file_lists[ii].N > 0 then
+  for ii,vv in ipairs(manifest_lists) do
+    if manifest_lists[ii].N > 0 then
 
-      manifest_write_group_heading(f,file_lists[ii].name)
+      manifest_write_group_heading(f,manifest_lists[ii].name)
 
-      if file_lists[ii].description then
-        manifest_write_group_description(f,file_lists[ii].description)
+      if manifest_lists[ii].description then
+        manifest_write_group_description(f,manifest_lists[ii].description)
       end
 
-      if not(file_lists[ii].rename) and file_lists[ii].extractfiledesc and file_lists[ii].ND > 0 then
+      if not(manifest_lists[ii].rename) and manifest_lists[ii].extractfiledesc and manifest_lists[ii].ND > 0 then
         -- file descriptions: create ascii table (compat. w/ Github markdown)
 
         -- calculate maximum field lengths for pretty ascii table
         local filenamelen = 4
         local filedesclen = 11
-        for ff in pairs(file_lists[ii].matches) do
-          jj = file_lists[ii].descr[ff] or ""
+        for ff in pairs(manifest_lists[ii].matches) do
+          jj = manifest_lists[ii].descr[ff] or ""
           filenamelen = math.max(filenamelen,string.len(ff))
           filedesclen = math.max(filedesclen,string.len(jj))
         end
@@ -2525,15 +2525,15 @@ manifest = manifest or function()
         -- write the table
         f:write(string.format("| %-"..filenamelen.."s | %-"..filedesclen.."s |\n","File","Description"))
         f:write(string.format("| %-"..filenamelen.."s | %-"..filedesclen.."s |\n","---","---"))
-        for _,ff in ipairs(file_lists[ii].file_order) do
-          jj = file_lists[ii].descr[ff] or ""
+        for _,ff in ipairs(manifest_lists[ii].file_order) do
+          jj = manifest_lists[ii].descr[ff] or ""
           f:write(string.format("| %-"..filenamelen.."s | %-"..filedesclen.."s |\n",ff,jj))
         end
 
       else
         -- no file description: bullet list
-        for _,ff in ipairs(file_lists[ii].file_order) do
-          jj = file_lists[ii].descr[ff] or ""
+        for _,ff in ipairs(manifest_lists[ii].file_order) do
+          jj = manifest_lists[ii].descr[ff] or ""
           f:write("* " .. ff .. "\n")
         end
       end
@@ -2549,19 +2549,21 @@ manifest = manifest or function()
 
 end
 
-build_manifest = build_manifest or function(file_list)
+
+
+manifest_build_list = manifest_build_list or function(manifest_list)
 
   -- allow nested tables by requiring two levels of nesting
-  if type(file_list.files[1])=="string" then
-    file_list.files = {file_list.files}
+  if type(manifest_list.files[1])=="string" then
+    manifest_list.files = {manifest_list.files}
   end
-  if type(file_list.exclude[1])=="string" then
-    file_list.exclude = {file_list.exclude}
+  if type(manifest_list.exclude[1])=="string" then
+    manifest_list.exclude = {manifest_list.exclude}
   end
 
   -- build list of excluded files
   local excludelist = {}
-  for _,glob_list in ipairs(file_list.exclude) do
+  for _,glob_list in ipairs(manifest_list.exclude) do
     for _,this_glob in ipairs(glob_list) do
       for _,this_file in ipairs(filelist(maindir,this_glob)) do
         excludelist[this_file] = true
@@ -2570,49 +2572,51 @@ build_manifest = build_manifest or function(file_list)
   end
 
   -- build list of matched files
-  for _,glob_list in ipairs(file_list.files) do
+  for _,glob_list in ipairs(manifest_list.files) do
     for _,this_glob in ipairs(glob_list) do
 
-      local these_files = filelist(file_list.dir,this_glob)
+      local these_files = filelist(manifest_list.dir,this_glob)
       manifest_sort_within_glob(these_files)
 
       for _,this_file in ipairs(these_files) do
 
         -- rename?
-        if file_list.rename then
-          this_file = gsub(this_file, file_list.rename[1], file_list.rename[2])
+        if manifest_list.rename then
+          this_file = gsub(this_file, manifest_list.rename[1], manifest_list.rename[2])
         end
 
         if not excludelist[this_file] then
 
-          file_list.N = file_list.N+1 -- track # matched files
-          if not(file_list.matches[this_file]) then
-            file_list.matches[this_file] = true -- store the file name
-            file_list.file_order[file_list.N] = this_file -- store the file order
+          manifest_list.N = manifest_list.N+1 -- track # matched files
+          if not(manifest_list.matches[this_file]) then
+            manifest_list.matches[this_file] = true -- store the file name
+            manifest_list.file_order[manifest_list.N] = this_file -- store the file order
           end
 
-          if not(file_list.rename) and file_list.extractfiledesc then
+          if not(manifest_list.rename) and manifest_list.extractfiledesc then
 
-            local ff = assert(io.open(file_list.dir .. "/" .. this_file, "r"))
-            file_list.descr[this_file] = manifest_extract_filedesc(ff)
+            local ff = assert(io.open(manifest_list.dir .. "/" .. this_file, "r"))
+            manifest_list.descr[this_file] = manifest_extract_filedesc(ff)
             ff:close()
 
-            if file_list.descr[this_file] and file_list.descr[this_file] ~= "" then
-              file_list.ND = file_list.ND+1 -- track # matched files
+            if manifest_list.descr[this_file] and manifest_list.descr[this_file] ~= "" then
+              manifest_list.ND = manifest_list.ND+1 -- track # matched files
             end
 
           end
         end
       end
 
-      manifest_sort_within_group(file_list.file_order)
+      manifest_sort_within_group(manifest_list.file_order)
 
     end
   end
 
-  return file_list
+  return manifest_list
 
 end
+
+
 
 manifest_sort_within_glob = manifest_sort_within_glob or function(files)
   table.sort(files)
@@ -2623,15 +2627,14 @@ manifest_sort_within_group = manifest_sort_within_group or function(files)
   -- table.sort(files)
 end
 
-
 manifest_extract_filedesc = manifest_extract_filedesc or function(filehandle)
--- no-op by default
+-- no-op by default; two examples below
 end
 
 --[[
-    -- Two examples:
 
-manifest_extract_filedesc_from_file = function(filehandle)
+-- From the first match of a pattern in a file:
+manifest_extract_filedesc = function(filehandle)
 
   local read_string   = "*all"
   local matchstr      = "\\section{(.-)}"
@@ -2642,7 +2645,8 @@ manifest_extract_filedesc_from_file = function(filehandle)
 
 end
 
-manifest_extract_filedesc_from_line = function(filehandle)
+-- From the match of the 2nd line (say) of a file:
+manifest_extract_filedesc = function(filehandle)
 
   local end_read_loop = 2
   local read_string   = "*line"
