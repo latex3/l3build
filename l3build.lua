@@ -2379,6 +2379,15 @@ manifest_write_group_description = manifest_write_group_description or function(
 
 end
 
+manifest_write_group_files = manifest_write_group_files or function(filehandle,files)
+
+  -- no file description: bullet list
+  for _,ff in ipairs(files) do
+    filehandle:write("* " .. ff .. "\n")
+  end
+
+end
+
 
 manifest_setup = manifest_setup or function()
 -- this needs to be an array of tables, not a table of tables, to ensure ordering.
@@ -2490,6 +2499,8 @@ manifest = manifest or function()
     manifest_lists[ii].matches    = {}
     manifest_lists[ii].file_order = {}
     manifest_lists[ii].descr      = {}
+    manifest_lists[ii].Nchar_file  = 4  -- TODO: generalise
+    manifest_lists[ii].Nchar_descr = 11 -- TODO: generalise
   end
 
   -- create all matching files
@@ -2513,28 +2524,20 @@ manifest = manifest or function()
       if not(manifest_lists[ii].rename) and manifest_lists[ii].extractfiledesc and manifest_lists[ii].ND > 0 then
         -- file descriptions: create ascii table (compat. w/ Github markdown)
 
-        -- calculate maximum field lengths for pretty ascii table
-        local filenamelen = 4
-        local filedesclen = 11
-        for ff in pairs(manifest_lists[ii].matches) do
-          jj = manifest_lists[ii].descr[ff] or ""
-          filenamelen = math.max(filenamelen,string.len(ff))
-          filedesclen = math.max(filedesclen,string.len(jj))
-        end
+        f:write(string.format(
+          "| %-"..manifest_lists[ii].Nchar_file..
+          "s | %-"..manifest_lists[ii].Nchar_descr..
+          "s |\n","File","Description"))
 
-        -- write the table
-        f:write(string.format("| %-"..filenamelen.."s | %-"..filedesclen.."s |\n","File","Description"))
-        f:write(string.format("| %-"..filenamelen.."s | %-"..filedesclen.."s |\n","---","---"))
+        f:write(string.format("| %-"..manifest_lists[ii].Nchar_file.."s | %-"..manifest_lists[ii].Nchar_descr.."s |\n","---","---"))
+
         for _,ff in ipairs(manifest_lists[ii].file_order) do
           jj = manifest_lists[ii].descr[ff] or ""
-          f:write(string.format("| %-"..filenamelen.."s | %-"..filedesclen.."s |\n",ff,jj))
+          f:write(string.format("| %-"..manifest_lists[ii].Nchar_file.."s | %-"..manifest_lists[ii].Nchar_descr.."s |\n",ff,jj))
         end
 
       else
-        -- no file description: bullet list
-        for _,ff in ipairs(manifest_lists[ii].file_order) do
-          f:write("* " .. ff .. "\n")
-        end
+        manifest_write_group_files(f,manifest_lists[ii].file_order)
       end
 
     end
@@ -2588,8 +2591,13 @@ manifest_build_list = manifest_build_list or function(manifest_list)
 
           manifest_list.N = manifest_list.N+1 -- track # matched files
           if not(manifest_list.matches[this_file]) then
+
             manifest_list.matches[this_file] = true -- store the file name
             manifest_list.file_order[manifest_list.N] = this_file -- store the file order
+
+            manifest_list.Nchar_file =
+              math.max( manifest_list.Nchar_file , string.len(this_file) )
+
           end
 
           if not(manifest_list.rename) and manifest_list.extractfiledesc then
@@ -2599,9 +2607,15 @@ manifest_build_list = manifest_build_list or function(manifest_list)
             ff:close()
 
             if manifest_list.descr[this_file] and manifest_list.descr[this_file] ~= "" then
-              manifest_list.ND = manifest_list.ND+1 -- track # matched files
-            end
 
+              manifest_list.ND = manifest_list.ND+1 -- track # matched files
+              manifest_list.Nchar_descr =
+                math.max(
+                  manifest_list.Nchar_descr,
+                  string.len(manifest_list.descr[this_file])
+                )
+
+            end
           end
         end
       end
