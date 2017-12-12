@@ -2466,20 +2466,21 @@ manifest = manifest or function()
 
   manifestgroups = manifest_setup()
 
-  private_manifest_defaults = {
+  -- create data for all "groupings" of files
+
+  local manifest_group_defaults = {
     extractfiledesc  = true          ,
     rename           = false         ,
     dir              = maindir       ,
     exclude          = {excludefiles},
   }
 
-  -- create data for all "groupings" of files
   local file_lists = {}
   for ii,vv in ipairs(manifestgroups) do
     file_lists[ii] = vv
 
     -- copy global options locally
-    for kk,ll in pairs(private_manifest_defaults) do
+    for kk,ll in pairs(manifest_group_defaults) do
       file_lists[ii][kk] = file_lists[ii][kk] or ll
     end
 
