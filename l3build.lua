@@ -2584,30 +2584,23 @@ manifest_write = manifest_write or function(manifest_lists)
       if not(manifest_lists[ii].rename) and manifest_lists[ii].extractfiledesc and manifest_lists[ii].ND > 0 then
         -- file descriptions: create ascii table (compat. w/ Github markdown)
 
-        local manifest_write_table_line = function(file,descr)
-
-          f:write(string.format(
-            " | "..
-            "%-"..manifest_lists[ii].Nchar_file.."s"..
-            " | "..
-            "%-"..manifest_lists[ii].Nchar_descr.."s"..
-            " |\n",
-            file,descr))
-
+        local manifest_write_table_line = function(C,file,descr)
+          manifest_write_group_file_descr(f,C,file,manifest_lists[ii].Nchar_file,descr,manifest_lists[ii].Nchar_descr)
         end
 
-        manifest_write_table_line("File","Description")
-        manifest_write_table_line("---","---")
-
+        local C = 0
         for _,ff in ipairs(manifest_lists[ii].files_ordered) do
+          C = C+1
           jj = manifest_lists[ii].descr[ff] or ""
-          manifest_write_table_line(ff,jj)
+          manifest_write_table_line(C,ff,jj)
         end
 
       else
 
+        local C = 0
         for _,ff in ipairs(manifest_lists[ii].files_ordered) do
-          manifest_write_group_file(f,ff,manifest_lists[ii].Nchar_file)
+          C = C+1
+          manifest_write_group_file(f,C,ff,manifest_lists[ii].Nchar_file)
         end
 
       end
@@ -2644,15 +2637,46 @@ manifest_write_group_description = manifest_write_group_description or function(
 
 end
 
-manifest_write_group_file = manifest_write_group_file or function(filehandle,filename,Nchar)
+manifest_write_group_file = manifest_write_group_file or function(filehandle,count,filename,Nchar)
   --[[
         filehandle : write file object
+             count : the count of the filename to be written
           filename : the name of the file to write
              Nchar : the maximum number of chars of all filenames in this group
   --]]
 
-  -- no file description: plain bullet item
-    filehandle:write("* " .. filename .. "\n")
+  -- no file description: plain bullet list item:
+  filehandle:write("* " .. filename .. "\n")
+
+  --[[
+    -- or if you prefer an enumerated list:
+    filehandle:write(count..". " .. filename .. "\n")
+  --]]
+
+
+end
+
+manifest_write_group_file_descr = manifest_write_group_file_descr or function(filehandle,count,filename,Nchar,descr,NcharD)
+  --[[
+        filehandle : write file object
+             count : the count of the filename to be written
+          filename : the name of the file to write
+             Nchar : the maximum number of chars of all filenames in this group
+             descr : description of the file to write
+            NcharD : the maximum number of chars of all descriptions in this group
+  --]]
+
+  -- filename+description: Github-flavoured Markdown table
+
+  if count==1 then
+    -- header of table
+    manifest_write_group_file_descr(filehandle,-1,"File",Nchar,"Description",NcharD)
+    manifest_write_group_file_descr(filehandle,-1,"---", Nchar,"---",        NcharD)
+  end
+
+  filehandle:write(string.format(
+    "  | %-"..Nchar .."s | %-"..NcharD.."s |\n",
+    filename,descr))
 
 end
 
@@ -2661,8 +2685,11 @@ manifest_sort_within_glob = manifest_sort_within_glob or function(files)
 end
 
 manifest_sort_within_group = manifest_sort_within_group or function(files)
--- no-op by default; make your own definition to customise. E.g.:
-  -- table.sort(files)
+  --[[
+      -- no-op by default; make your own definition to customise. E.g.:
+
+      table.sort(files)
+  --]]
 end
 
 manifest_extract_filedesc = manifest_extract_filedesc or function(filehandle)
