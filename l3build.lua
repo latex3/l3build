@@ -2527,9 +2527,12 @@ manifest = manifest or function()
         local manifest_write_table_line = function(file,descr)
 
           f:write(string.format(
-            "| %-"..manifest_lists[ii].Nchar_file..
-            "s | %-"..manifest_lists[ii].Nchar_descr..
-            "s |\n",file,descr))
+            " | "..
+            "%-"..manifest_lists[ii].Nchar_file.."s"..
+            " | "..
+            "%-"..manifest_lists[ii].Nchar_descr.."s"..
+            " |\n",
+            file,descr))
 
         end
 
