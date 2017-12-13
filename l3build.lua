@@ -2605,7 +2605,11 @@ manifest_write = manifest_write or function(manifest_lists)
         end
 
       else
-        manifest_write_group_files(f,manifest_lists[ii].files_ordered)
+
+        for _,ff in ipairs(manifest_lists[ii].files_ordered) do
+          manifest_write_group_file(f,ff,manifest_lists[ii].Nchar_file)
+        end
+
       end
 
     end
@@ -2640,12 +2644,15 @@ manifest_write_group_description = manifest_write_group_description or function(
 
 end
 
-manifest_write_group_files = manifest_write_group_files or function(filehandle,files)
+manifest_write_group_file = manifest_write_group_file or function(filehandle,filename,Nchar)
+  --[[
+        filehandle : write file object
+          filename : the name of the file to write
+             Nchar : the maximum number of chars of all filenames in this group
+  --]]
 
-  -- no file description: bullet list
-  for _,ff in ipairs(files) do
-    filehandle:write("* " .. ff .. "\n")
-  end
+  -- no file description: plain bullet item
+    filehandle:write("* " .. filename .. "\n")
 
 end
 
