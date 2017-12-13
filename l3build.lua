@@ -2461,42 +2461,7 @@ end
 
 manifest_build_list = manifest_build_list or function(manifest_list)
 
-  -- currently these aren't customisable; I guess they could/should be?
-  local manifest_group_defaults = {
-    extractfiledesc  = true           ,
-    rename           = false          ,
-    dir              = maindir        ,
-    exclude          = {excludefiles} ,
-  }
-
-  -- internal data added to each group in the table that needs to be initialised
-  local manifest_group_init = {
-    N             = 0  , -- # matched files
-    ND            = 0  , -- # descriptions
-    matches       = {} ,
-    files_ordered = {} ,
-    descr         = {} ,
-    Nchar_file    = 4  , -- TODO: generalise
-    Nchar_descr   = 11 , -- TODO: generalise
-  }
-
-   -- copy default options to each group if necessary
-  for kk,ll in pairs(manifest_group_defaults) do
-    manifest_list[kk] = manifest_list[kk] or ll
-  end
-
-  -- initialisation for internal data
-  for kk,ll in pairs(manifest_group_init) do
-    manifest_list[kk] = ll
-  end
-
-  -- allow nested tables by requiring two levels of nesting
-  if type(manifest_list.files[1])=="string" then
-    manifest_list.files = {manifest_list.files}
-  end
-  if type(manifest_list.exclude[1])=="string" then
-    manifest_list.exclude = {manifest_list.exclude}
-  end
+  manifest_list = manifest_build_init(manifest_list)
 
   -- build list of excluded files
   local excludelist = {}
@@ -2513,7 +2478,7 @@ manifest_build_list = manifest_build_list or function(manifest_list)
     for _,this_glob in ipairs(glob_list) do
 
       local these_files = filelist(manifest_list.dir,this_glob)
-      manifest_sort_within_glob(these_files)
+      these_files = manifest_sort_within_glob(these_files)
 
       for _,this_file in ipairs(these_files) do
 
@@ -2556,7 +2521,7 @@ manifest_build_list = manifest_build_list or function(manifest_list)
         end
       end
 
-      manifest_sort_within_group(manifest_list.files_ordered)
+      manifest_list.files_ordered = manifest_sort_within_group(manifest_list.files_ordered)
 
     end
   end
@@ -2565,46 +2530,59 @@ manifest_build_list = manifest_build_list or function(manifest_list)
 
 end
 
+manifest_build_init = manifest_build_init or function(manifest_list)
+
+-- currently these aren't customisable; I guess they could/should be?
+  local manifest_group_defaults = {
+    extractfiledesc  = true           ,
+    rename           = false          ,
+    dir              = maindir        ,
+    exclude          = {excludefiles} ,
+  }
+
+  -- internal data added to each group in the table that needs to be initialised
+  local manifest_group_init = {
+    N             = 0  , -- # matched files
+    ND            = 0  , -- # descriptions
+    matches       = {} ,
+    files_ordered = {} ,
+    descr         = {} ,
+    Nchar_file    = 4  , -- TODO: generalise
+    Nchar_descr   = 11 , -- TODO: generalise
+  }
+
+   -- copy default options to each group if necessary
+  for kk,ll in pairs(manifest_group_defaults) do
+    manifest_list[kk] = manifest_list[kk] or ll
+  end
+
+  -- initialisation for internal data
+  for kk,ll in pairs(manifest_group_init) do
+    manifest_list[kk] = ll
+  end
+
+  -- allow nested tables by requiring two levels of nesting
+  if type(manifest_list.files[1])=="string" then
+    manifest_list.files = {manifest_list.files}
+  end
+  if type(manifest_list.exclude[1])=="string" then
+    manifest_list.exclude = {manifest_list.exclude}
+  end
+
+  return manifest_list
+
+end
+
+
 
 manifest_write = manifest_write or function(manifest_lists)
 
-  -- write the manifest file
   local f = assert(io.open(manifestfile, "w"))
   manifest_write_opening(f)
 
   for ii,vv in ipairs(manifest_lists) do
     if manifest_lists[ii].N > 0 then
-
-      manifest_write_group_heading(f,manifest_lists[ii].name)
-
-      if manifest_lists[ii].description then
-        manifest_write_group_description(f,manifest_lists[ii].description)
-      end
-
-      if not(manifest_lists[ii].rename) and manifest_lists[ii].extractfiledesc and manifest_lists[ii].ND > 0 then
-        -- file descriptions: create ascii table (compat. w/ Github markdown)
-
-        local manifest_write_table_line = function(C,file,descr)
-          manifest_write_group_file_descr(f,C,file,manifest_lists[ii].Nchar_file,descr,manifest_lists[ii].Nchar_descr)
-        end
-
-        local C = 0
-        for _,ff in ipairs(manifest_lists[ii].files_ordered) do
-          C = C+1
-          jj = manifest_lists[ii].descr[ff] or ""
-          manifest_write_table_line(C,ff,jj)
-        end
-
-      else
-
-        local C = 0
-        for _,ff in ipairs(manifest_lists[ii].files_ordered) do
-          C = C+1
-          manifest_write_group_file(f,C,ff,manifest_lists[ii].Nchar_file)
-        end
-
-      end
-
+      manifest_write_group(f,manifest_lists[ii])
     end
   end
 
@@ -2613,6 +2591,36 @@ manifest_write = manifest_write or function(manifest_lists)
   print("*******************************************")
   print("Manifest written to " .. manifestfile .. ".")
   print("*******************************************")
+
+end
+
+
+manifest_write_group = manifest_write_group or function(f,manifest_list)
+
+  manifest_write_group_heading(f,manifest_list.name)
+
+  if manifest_list.description then
+    manifest_write_group_description(f,manifest_list.description)
+  end
+
+  if not(manifest_list.rename) and manifest_list.extractfiledesc and manifest_list.ND > 0 then
+
+    local C = 0
+    for _,file in ipairs(manifest_list.files_ordered) do
+      C = C+1
+      descr = manifest_list.descr[file] or ""
+      manifest_write_group_file_descr(f,C,file,manifest_list.Nchar_file,descr,manifest_list.Nchar_descr)
+    end
+
+  else
+
+    local C = 0
+    for _,ff in ipairs(manifest_list.files_ordered) do
+      C = C+1
+      manifest_write_group_file(f,C,ff,manifest_list.Nchar_file)
+    end
+
+  end
 
 end
 
@@ -2630,8 +2638,8 @@ manifest_write_group_heading = manifest_write_group_heading or function (filehan
 
 end
 
--- Redefine as a no-op if you don't like each group to have a written description.
 manifest_write_group_description = manifest_write_group_description or function(filehandle,description)
+-- Redefine as a no-op if you don't like each group to have a written description.
 
   filehandle:write(description .. "\n")
 
@@ -2682,14 +2690,15 @@ end
 
 manifest_sort_within_glob = manifest_sort_within_glob or function(files)
   table.sort(files)
+  return files
 end
 
 manifest_sort_within_group = manifest_sort_within_group or function(files)
   --[[
       -- no-op by default; make your own definition to customise. E.g.:
-
       table.sort(files)
   --]]
+  return files
 end
 
 manifest_extract_filedesc = manifest_extract_filedesc or function(filehandle)
