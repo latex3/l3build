@@ -1058,7 +1058,7 @@ local function formatlog(logfile, newfile, engine, errlevels)
         whatsit        = true,
         write          = true,
         XeTeXcharclass = true
-      } 
+      }
     if register_types[match(line, "^\\[^%]]+=\\([a-z]+)%d+$")] then
       line = gsub(line, "%d+$", "...")
     end
@@ -1130,7 +1130,7 @@ local function formatlog(logfile, newfile, engine, errlevels)
   if recordstatus then
     write('***************\n')
     for i = 1, checkruns do
-      write('Compilation ' .. i .. ' of test file completed with exit status ' .. errlevels[i] '\n')
+      write('Compilation ' .. i .. ' of test file completed with exit status ' .. errlevels[i] .. '\n')
     end
   end
   close(newfile)
@@ -2139,16 +2139,16 @@ end
 function doc(files)
   -- Set up
   cleandir(typesetdir)
-  for _,filetype in pairs( 
-      {bibfiles, docfiles, typesetfiles, typesetdemofiles} 
-    ) do 
-    for _,file in pairs(filetype) do 
-      cp(file, docfiledir, typesetdir) 
-    end 
-  end 
-  for _,file in pairs(sourcefiles) do 
-    cp(file, sourcefiledir, typesetdir) 
-  end 
+  for _,filetype in pairs(
+      {bibfiles, docfiles, typesetfiles, typesetdemofiles}
+    ) do
+    for _,file in pairs(filetype) do
+      cp(file, docfiledir, typesetdir)
+    end
+  end
+  for _,file in pairs(sourcefiles) do
+    cp(file, sourcefiledir, typesetdir)
+  end
   for _,file in pairs(typesetsuppfiles) do
     cp(file, supportdir, typesetdir)
   end
