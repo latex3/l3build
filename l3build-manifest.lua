@@ -35,13 +35,13 @@ for those people who are interested.
 
 manifest = manifest or function()
 
-  manifest_lists = manifest_setup()
+  local manifest_entries = manifest_setup()
 
-  for ii,_ in ipairs(manifest_lists) do
-    manifest_lists[ii] = manifest_build_list(manifest_lists[ii])
+  for ii,_ in ipairs(manifest_entries) do
+    manifest_entries[ii] = manifest_build_list(manifest_entries[ii])
   end
 
-  manifest_write(manifest_lists)
+  manifest_write(manifest_entries)
 
   printline = "Manifest written to " .. manifestfile
   print((printline:gsub(".","*")))  print(printline)  print((printline:gsub(".","*")))
@@ -53,79 +53,41 @@ end
       ---------------------------------------
 --]]
 
-manifest_build_list = function(manifest_list)
+manifest_build_list = function(entry)
 
-  manifest_list = manifest_build_init(manifest_list)
+  entry = manifest_build_init(entry)
 
   -- build list of excluded files
-  local excludelist = {}
-  for _,glob_list in ipairs(manifest_list.exclude) do
+  for _,glob_list in ipairs(entry.exclude) do
     for _,this_glob in ipairs(glob_list) do
       for _,this_file in ipairs(filelist(maindir,this_glob)) do
-        excludelist[this_file] = true
+        entry.excludes[this_file] = true
       end
     end
   end
 
   -- build list of matched files
-  for _,glob_list in ipairs(manifest_list.files) do
+  for _,glob_list in ipairs(entry.files) do
     for _,this_glob in ipairs(glob_list) do
 
-      local these_files = filelist(manifest_list.dir,this_glob)
-      these_files = manifest_sort_within_glob(these_files)
+      local these_files = filelist(entry.dir,this_glob)
+      these_files = manifest_sort_within_match(these_files)
 
       for _,this_file in ipairs(these_files) do
-
-        -- rename?
-        if manifest_list.rename then
-          this_file = string.gsub(this_file, manifest_list.rename[1], manifest_list.rename[2])
-        end
-
-        if not excludelist[this_file] then
-
-          manifest_list.N = manifest_list.N+1
-          if not(manifest_list.matches[this_file]) then
-
-            manifest_list.matches[this_file] = true -- store the file name
-            manifest_list.files_ordered[manifest_list.N] = this_file -- store the file order
-
-            manifest_list.Nchar_file =
-              math.max( manifest_list.Nchar_file , string.len(this_file) )
-
-          end
-
-          if not(manifest_list.rename) and manifest_list.extractfiledesc then
-
-            local ff = assert(io.open(manifest_list.dir .. "/" .. this_file, "r"))
-            this_descr = manifest_extract_filedesc(ff)
-            ff:close()
-
-            if this_descr and this_descr ~= "" then
-
-              manifest_list.descr[this_file] = this_descr
-              manifest_list.ND = manifest_list.ND+1
-              manifest_list.Nchar_descr =
-                math.max(
-                  manifest_list.Nchar_descr,
-                  string.len(this_descr)
-                )
-
-            end
-          end
-        end
+        entry = manifest_build_file(entry,this_file)
       end
 
-      manifest_list.files_ordered = manifest_sort_within_group(manifest_list.files_ordered)
+      entry.files_ordered = manifest_sort_within_group(entry.files_ordered)
 
     end
   end
 
-  return manifest_list
+  return entry
 
 end
 
 
-manifest_build_init = function(manifest_list)
+manifest_build_init = function(entry)
 
   -- currently these aren't customisable; I guess they could/should be?
   local manifest_group_defaults = {
@@ -140,6 +102,7 @@ manifest_build_init = function(manifest_list)
     N             = 0  , -- # matched files
     ND            = 0  , -- # descriptions
     matches       = {} ,
+    excludes      = {} ,
     files_ordered = {} ,
     descr         = {} ,
     Nchar_file    = 4  , -- TODO: generalise
@@ -148,40 +111,79 @@ manifest_build_init = function(manifest_list)
 
    -- copy default options to each group if necessary
   for kk,ll in pairs(manifest_group_defaults) do
-    manifest_list[kk] = manifest_list[kk] or ll
+    entry[kk] = entry[kk] or ll
   end
 
   -- initialisation for internal data
   for kk,ll in pairs(manifest_group_init) do
-    manifest_list[kk] = ll
+    entry[kk] = ll
   end
 
   -- allow nested tables by requiring two levels of nesting
-  if type(manifest_list.files[1])=="string" then
-    manifest_list.files = {manifest_list.files}
+  if type(entry.files[1])=="string" then
+    entry.files = {entry.files}
   end
-  if type(manifest_list.exclude[1])=="string" then
-    manifest_list.exclude = {manifest_list.exclude}
+  if type(entry.exclude[1])=="string" then
+    entry.exclude = {entry.exclude}
   end
 
-  return manifest_list
+  return entry
 
 end
 
+
+manifest_build_file = function(entry,this_file)
+
+  -- rename?
+  if entry.rename then
+    this_file:gsub(entry.rename[1], entry.rename[2])
+  end
+
+  if not entry.excludes[this_file] then
+
+    entry.N = entry.N+1
+    if not(entry.matches[this_file]) then
+
+      entry.matches[this_file] = true -- store the file name
+      entry.files_ordered[entry.N] = this_file -- store the file order
+
+      entry.Nchar_file = math.max( entry.Nchar_file , this_file:len() )
+
+    end
+
+    if not(entry.rename) and entry.extractfiledesc then
+
+      local ff = assert(io.open(entry.dir .. "/" .. this_file, "r"))
+      this_descr = manifest_extract_filedesc(ff)
+      ff:close()
+
+      if this_descr and this_descr ~= "" then
+
+        entry.descr[this_file] = this_descr
+        entry.ND = entry.ND+1
+        entry.Nchar_descr = math.max( entry.Nchar_descr, this_descr.len() )
+
+      end
+    end
+  end
+
+  return entry
+
+end
 
 --[[
       Internal Manifest functions: write
       ----------------------------------
 --]]
 
-manifest_write = function(manifest_lists)
+manifest_write = function(manifest_entries)
 
   local f = assert(io.open(manifestfile, "w"))
   manifest_write_opening(f)
 
-  for ii,vv in ipairs(manifest_lists) do
-    if manifest_lists[ii].N > 0 then
-      manifest_write_group(f,manifest_lists[ii])
+  for ii,vv in ipairs(manifest_entries) do
+    if manifest_entries[ii].N > 0 then
+      manifest_write_group(f,manifest_entries[ii])
     end
   end
 
@@ -190,29 +192,29 @@ manifest_write = function(manifest_lists)
 end
 
 
-manifest_write_group = function(f,manifest_list)
+manifest_write_group = function(f,entry)
 
-  manifest_write_group_heading(f,manifest_list.name)
+  manifest_write_group_heading(f,entry.name)
 
-  if manifest_list.description then
-    manifest_write_group_description(f,manifest_list.description)
+  if entry.description then
+    manifest_write_group_description(f,entry.description)
   end
 
-  if not(manifest_list.rename) and manifest_list.extractfiledesc and manifest_list.ND > 0 then
+  if not(entry.rename) and entry.extractfiledesc and entry.ND > 0 then
 
     local C = 0
-    for _,file in ipairs(manifest_list.files_ordered) do
+    for _,file in ipairs(entry.files_ordered) do
       C = C+1
-      descr = manifest_list.descr[file] or ""
-      manifest_write_group_file_descr(f,C,file,manifest_list.Nchar_file,descr,manifest_list.Nchar_descr)
+      descr = entry.descr[file] or ""
+      manifest_write_group_file_descr(f,C,file,entry.Nchar_file,descr,entry.Nchar_descr)
     end
 
   else
 
     local C = 0
-    for _,ff in ipairs(manifest_list.files_ordered) do
+    for _,ff in ipairs(entry.files_ordered) do
       C = C+1
-      manifest_write_group_file(f,C,ff,manifest_list.Nchar_file)
+      manifest_write_group_file(f,C,ff,entry.Nchar_file)
     end
 
   end

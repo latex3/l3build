@@ -124,7 +124,7 @@ end
       ---------------------
 --]]
 
-manifest_sort_within_glob = manifest_sort_within_glob or function(files)
+manifest_sort_within_match = manifest_sort_within_match or function(files)
   table.sort(files)
   return files
 end
