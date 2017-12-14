@@ -251,9 +251,10 @@ manifest_write = manifest_write or function(manifest_lists)
 
   f:close()
 
-  print("*******************************************")
-  print("Manifest written to " .. manifestfile .. ".")
-  print("*******************************************")
+  printline = "Manifest written to " .. manifestfile
+  print((printline:gsub(".","*")))
+  print(printline)
+  print((printline:gsub(".","*")))
 
 end
 
