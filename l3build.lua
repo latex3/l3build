@@ -2359,7 +2359,9 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
 end
 
 
-dofile("l3build-manifest.lua")
+kpse.set_program_name("kpsewhich")
+build_kpse_path = dirname(kpse.lookup("l3build.lua"))
+require( kpse.lookup("l3build-manifest.lua", { path = build_kpse_path } ) )
 
 
 function version()
