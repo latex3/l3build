@@ -874,7 +874,6 @@ end
 -- for saving the test files
 function checkinit()
   cleandir(testdir)
-  cleandir(localdir)
   depinstall(checkdeps)
   -- Copy dependencies to the test directory itself: this makes the paths
   -- a lot easier to manage, and is important for dealing with the log and
