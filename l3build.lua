@@ -96,6 +96,7 @@ end
 -- File types for various operations
 -- Use Unix-style globs
 -- All of these may be set earlier, so a initialised conditionally
+auxfiles           = auxfiles           or {"*.aux", "*.lof", "*.lot", "*.toc"}
 bibfiles           = bibfiles           or {"*.bib"}
 binaryfiles        = binaryfiles        or {"*.pdf", "*.zip"}
 bstfiles           = bstfiles           or {"*.bst"}
@@ -1598,15 +1599,16 @@ function runtest(name, engine, hide, ext, makepdf)
   end
   formatlog(logfile, newfile, engine, errlevels)
   -- Store secondary files for this engine
-  for _,i in ipairs(filelist(testdir, name .. ".???")) do
-    local ext = match(i, "%....")
-    if ext ~= lvtext and ext ~= tlgext and ext ~= lveext and ext ~= logext then
-      if not fileexists(testsuppdir .. "/" .. i) then
-        ren(
-          testdir, i, gsub(
-            i, gsub(name, "%-", "%%-"), name .. "." .. engine
-          )
-        )
+  for _,filetype in pairs(auxfiles) do
+    for _,file in pairs(filelist(testdir, filetype)) do
+      if match(file,"^" .. name) then
+        local ext = match(file, "%.[^.]+$")
+        if ext ~= lvtext and
+           ext ~= tlgext and
+           ext ~= lveext and
+           ext ~= logext then
+           ren(testdir, file, gsub(file, "(%.[^.]+)$", "." .. engine .. "%1"))
+        end
       end
     end
   end
