@@ -81,7 +81,6 @@
 \luavarset{bstfiles}          {\{"*.bst"\}}{\BibTeX{} style files}
 \luavarset{checkfiles}        {\{~\}}{Extra files unpacked purely for tests}
 \luavarset{checksuppfiles}    { }{Files needed for performing regression tests}
-\luavarset{cmdchkfiles}       {\{\}}{Files need to perform command checking (\cls{l3doc}-based documentation only)}
 \luavarset{cleanfiles}        {\{"*.log", "*.pdf", "*.zip"\}}{Files to delete when cleaning}
 \luavarset{demofiles}         {\{\}}{Files which show how to use a module}
 \luavarset{docfiles}          {\{\}}{Files which are part of the documentation but should not be typeset}
@@ -123,7 +122,6 @@
 \luavarset{zipexe}    {"zip"}     {Executable for creating archive with \texttt{ctan}}
 \luavarseparator
 \luavarset{checkopts}  {"-interaction=nonstopmode"}{Options based to engine when running checks.}
-\luavarset{cmdchkopts} {"-interaction=batchmode"}  {Options based to engine when running command checks.}
 \luavarset{typesetopts}{"-interaction=nonstopmode"}{Options based to engine when typesetting.}
 \luavarset{unpackopts} {""}                        {Options based to engine when unpacking.}
 \luavarset{zipopts}    {"-v -r -X"}                {Options based to zip program.}
@@ -384,13 +382,6 @@
 % This functionality requires \TeX{} Live 2016 or later as it needs support
 % from the engines not available in earlier releases.
 % \end{buildcmd}
-%
-% \begin{buildcmd}{cmdcheck}
-% For \cls{l3doc}-based sources, allows checking that the commands defined in the code part  (by \var{cmdchkfiles}) are documented in the description part.
-% This is performed by passing the |check| option to the \cls{l3doc} class, typesetting the file(s) to check with engine \var{stdengine} with options \var{cmdchkopts}, and checking the resultant |.cmds| file(s).
-% Dependencies are specified also with \var{checkdeps}.
-% \end{buildcmd}
-%
 %
 % \begin{buildcmd}{clean}
 % This command removes all temporary files used for package bundling and regression testing.

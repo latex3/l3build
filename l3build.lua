@@ -102,7 +102,6 @@ binaryfiles        = binaryfiles        or {"*.pdf", "*.zip"}
 bstfiles           = bstfiles           or {"*.bst"}
 checkfiles         = checkfiles         or { }
 checksuppfiles     = checksuppfiles     or { }
-cmdchkfiles        = cmdchkfiles        or { }
 cleanfiles         = cleanfiles         or {"*.log", "*.pdf", "*.zip"}
 demofiles          = demofiles          or { }
 docfiles           = docfiles           or { }
@@ -130,7 +129,6 @@ unpackexe  = unpackexe  or "tex"
 zipexe     = zipexe     or "zip"
 
 checkopts   = checkopts   or "-interaction=nonstopmode"
-cmdchkopts  = cmdchkopts  or "-interaction=batchmode"
 typesetopts = typesetopts or "-interaction=nonstopmode"
 unpackopts  = unpackopts  or ""
 zipopts     = zipopts     or "-v -r -X"
@@ -1816,9 +1814,6 @@ function help()
     print("   check      Run all automated tests")
   end
   print("   clean      Clean out directory tree")
-  if next(cmdchkfiles) ~= nil then
-    print("   cmdcheck   Check commands documented are defined")
-  end
   if module == "" or bundle == "" then
     print("   ctan       Create CTAN-ready archive")
   end
@@ -1964,48 +1959,6 @@ function bundleclean()
     rmdir(ctandir) +
     rmdir(tdsdir)
   )
-end
-
--- Check commands are defined
-function cmdcheck()
-  mkdir(localdir)
-  cleandir(testdir)
-  depinstall(checkdeps)
-  for _,filetype in pairs(
-      {bibfiles, docfiles, typesetfiles, typesetdemofiles}
-    ) do
-    for _,file in pairs(filetype) do
-      cp(file, docfiledir, typesetdir)
-    end
-  end
-  for _,file in pairs(sourcefiles) do
-    cp(file, sourcefiledir, testdir)
-  end
-  for _,file in pairs(typesetsuppfiles) do
-    cp(file, supportdir, testdir)
-  end
-  local engine = gsub(stdengine, "tex$", "latex")
-  local localdir = abspath(localdir)
-  print("Checking source files")
-  for _,i in ipairs(cmdchkfiles) do
-    for _,j in ipairs(filelist(sourcefiledir, i)) do
-      print("  " .. jobname(j))
-      run(
-        testdir,
-        os_setenv .. " TEXINPUTS=." .. os_pathsep .. localdir
-          .. os_pathsep ..
-        os_concat ..
-        engine .. " " .. cmdchkopts ..
-          " \"\\PassOptionsToClass{check}{l3doc} \\input " .. j .. "\""
-          .. " > " .. os_null
-      )
-      for line in lines(testdir .. "/" .. jobname(j) .. ".cmds") do
-        if match(line, "^%!") then
-          print("   - " .. match(line, "^%! (.*)"))
-        end
-      end
-    end
-  end
 end
 
 function ctan(standalone)
@@ -2470,8 +2423,6 @@ function stdmain(target, files)
       end
     elseif target == "clean" then
       errorlevel = bundleclean()
-    elseif target == "cmdcheck" and next(cmdchkfiles) ~= nil then
-      errorlevel = call(modules, "cmdcheck")
     elseif target == "ctan" then
       errorlevel = ctan()
     elseif target == "install" then
@@ -2503,8 +2454,6 @@ function stdmain(target, files)
       errorlevel = check(files)
     elseif target == "clean" then
       errorlevel = clean()
-    elseif target == "cmdcheck" and next(cmdchkfiles) ~= nil then
-      errorlevel = cmdcheck()
     elseif target == "ctan" and bundle == "" then  -- Stand-alone module
       errorlevel = ctan(true)
     elseif target == "install" then
