@@ -499,16 +499,15 @@
 % \begin{buildcmd}{manifest}
 % Generates a `manifest' file which lists the files of the package as known to \pkg{l3build}.
 % The filename of this file (by default \luavar{manifestfile}) can be set with the variable \var{manifestfile}.
-% Additional information and further options are described in Section~\ref{sec:manifest}.
 %
 % The intended purpose of this manifest file is to include it within a package as metadata.
 % This would allow, say, for the copyright statement for the package to refer to the
 % manifest file rather than requiring the author to manually keep a file list up-to-date
 % in multiple locations. The manifest file can be structured and documented with a degree
-% of flexibility.
+% of flexibility. Additional information is described in Section~\ref{sec:manifest}.
 %
 % In order for \texttt{manifest} to detect derived and typeset files, it should be run
-% after running \texttt{unpack} and \texttt{doc}.
+% \emph{after} running \texttt{unpack} and \texttt{doc}.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{setversion}
@@ -1177,44 +1176,6 @@
 %   \label{fig:PDF}
 % \end{figure}
 %
-% \subsection{Customising the manifest file}
-%
-% The default setup for the manifest file creating with the \texttt{manifest}
-% target attempt to reflect the defaults for \pkg{l3build} itself.
-% The groups (and hence the files) displayed can be completely
-% customised by defining a new Lua table with the appropriate settings.
-% This might look something like the following:
-% \begin{verbatim}
-% manifestgroups = {
-%     {
-%        name    = "Source files",
-%        description = [[
-% These are source files generating the package files.
-%        ]],
-%        files   = {"*.dtx","*.ins"},
-%        extractfiledesc = true,
-%     },
-%     ...
-% }
-% \end{verbatim}
-%
-% \begin{variable}{manifestgroups}
-%   \begin{center}
-%   \begin{tabular}{lp{8cm}}
-%     \toprule
-%     Entry & Description \\
-%     \midrule
-%       \var{name}               & The heading of the group          \\
-%       \var{description}        & The description printed below the heading (optional)  \\
-%       \var{files}              & Files to match to include in this group   \\
-%       \var{exclude}            & Files to exclude (default |{exclude}|)         \\
-%       \var{dir}                & The directory to search (default |maindir|)         \\
-%       \var{rename}             & An array with a |gsub| redefinition for the filename         \\
-%       \var{extractfiledesc}    & Whether to extract file descriptions from these files, and how (default |false|)       \\
-%     \bottomrule
-%     \end{tabular}
-%   \end{center}
-% \end{variable}
 %
 % \section{Lua interfaces}
 %
@@ -1436,6 +1397,81 @@
 %   absent then the global list is used. Note that any entry for the
 %   |target| in this table is ignored.
 % \end{function}
+%
+% \subsection{Customising the manifest file}
+% \label{sec:manifest}
+%
+% The default setup for the manifest file creating with the \texttt{manifest}
+% target attempt to reflect the defaults for \pkg{l3build} itself.
+% The groups (and hence the files) displayed can be completely
+% customised by defining a new setup function which creates a Lua table with
+% the appropriate settings.
+%
+% This might look something like the following:
+% \begin{verbatim}
+% manifest_setup = manifest_setup or function()
+%   local groups = {
+%     {
+%        name    = "Source files",
+%        description = [[
+% These are source files generating the package files.
+%        ]],
+%        files   = {sourcefiles},
+%     },
+%     {
+%        name    = "Typeset documentation source files",
+%        description = [[
+% These files are typeset using LaTeX to produce the PDF documentation for the package.
+%        ]],
+%        files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
+%     },
+%     ...
+%   }
+%   return groups
+% end
+% \end{verbatim}
+%
+% The |groups| variable is an ordered array of tables which contain the metadata about each
+% `group' in the manifest listing.
+% See the complete setup code in |l3build-manifest-setup.lua| for examples of these in use.
+%
+% \begin{table}
+%   \caption{Table entries used in the manifest setup table.}
+%   \centering
+%   \begin{tabular}{lp{8cm}}
+%     \toprule
+%     Entry & Description \\
+%     \midrule
+%       \var{name}               & The heading of the group                             \\
+%       \var{description}        & The description printed below the heading            \\
+%       \var{files}              & Files to include in this group                       \\
+%       \var{exclude}            & Files to exclude (default |{excludefiles}|)          \\
+%       \var{dir}                & The directory to search (default |maindir|)          \\
+%       \var{rename}             & An array with a |gsub| redefinition for the filename \\
+%       \var{extractfiledesc}    & Whether to extract file descriptions from these files (default |true|) \\
+%     \bottomrule
+%     \end{tabular}
+% \end{table}
+%
+% \subsubsection{File matches and sorting}
+%
+% Within a single group in the manifest listing, files can be matched against multiple variables.
+% For example, for |sourcefiles={*.dtx,*.ins}| the following file listing might result:
+% \begin{itemize}
+% \item foo.dtx
+% \item bar.dtx
+% \item foo.ins
+% \item bar.ins
+% \end{itemize}
+% This listing can be sorted using two separate functions by the default manifest code.
+% The first, default, is to sort alphabetically within a single variable match.
+% This keeps all files of a single extension contiguous in the listing.
+% To edit how this sort is performed, redefine the |manifest_sort_within_match| function.
+%
+% The second approach to sorting is to apply a sorting function to the entire set of matched files.
+% (This happens \emph{after} any sorting is applied for each match.)
+% By default this is a no-op but can be edited by redefining the |manifest_sort_within_group|
+% function.
 %
 % \end{documentation}
 %
