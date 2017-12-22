@@ -125,16 +125,18 @@ end
 --]]
 
 manifest_sort_within_match = manifest_sort_within_match or function(files)
-  table.sort(files)
-  return files
+  local f = files
+  table.sort(f)
+  return f
 end
 
 manifest_sort_within_group = manifest_sort_within_group or function(files)
+  local f = files
   --[[
       -- no-op by default; make your own definition to customise. E.g.:
-      table.sort(files)
+      table.sort(f)
   --]]
-  return files
+  return f
 end
 
 --[[
