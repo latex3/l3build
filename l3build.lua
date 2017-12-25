@@ -303,6 +303,11 @@ local option_list =
         short = "r",
         type  = "boolean"
       },
+    texmfhome =
+      {
+        desc = "Location of user texmf tree",
+        type = "string"
+      },
     version =
       {
         desc  = "Sets the version to insert into sources",
@@ -2158,7 +2163,7 @@ function install()
     return errorlevel
   end
   set_program_name("latex")
-  local texmfhome = var_value("TEXMFHOME")
+  local texmfhome = options["texmfhome"] or var_value("TEXMFHOME")
   local installdir = texmfhome .. "/tex/" .. moduledir
   errorlevel = cleandir(installdir)
   if errorlevel ~= 0 then
