@@ -1968,7 +1968,7 @@ function bundleclean()
   )
 end
 
-function ctan(standalone)
+function ctan()
   -- Always run tests for all engines
   options["engine"] = nil
   local function dirzip(dir, name)
@@ -2000,6 +2000,10 @@ function ctan(standalone)
     )
   end
   local errorlevel
+  local standalone = false
+  if bundle == "" then
+    standalone = true
+  end
   if standalone then
     errorlevel = check()
     bundle = module
@@ -2461,8 +2465,8 @@ function stdmain(target, files)
       errorlevel = check(files)
     elseif target == "clean" then
       errorlevel = clean()
-    elseif target == "ctan" and bundle == "" then  -- Stand-alone module
-      errorlevel = ctan(true)
+    elseif target == "ctan" then
+      errorlevel = ctan()
     elseif target == "install" then
       errorlevel = install()
     elseif target == "save" then
