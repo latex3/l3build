@@ -320,7 +320,9 @@ local function argparse()
   local short_options = { }
   -- Turn long/short options into two lookup tables
   for k,v in pairs(option_list) do
-    short_options[v["short"]] = k
+    if v["short"] then
+      short_options[v["short"]] = k
+    end
     long_options[k] = k
   end
   local args = args
