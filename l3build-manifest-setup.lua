@@ -151,25 +151,24 @@ manifest_write_opening = manifest_write_opening or function(filehandle)
 
 end
 
-manifest_write_group_heading = manifest_write_group_heading or function (filehandle,heading)
+manifest_write_group_heading = manifest_write_group_heading or function (filehandle,heading,description)
 
    filehandle:write("\n## " .. heading .. "\n\n")
-
+   
+   if description then
+     filehandle:write(description .. "\n")
+   end
+  
 end
 
-manifest_write_group_description = manifest_write_group_description or function(filehandle,description)
--- Redefine as a no-op if you don't like each group to have a written description.
-
-  filehandle:write(description .. "\n")
-
-end
-
-manifest_write_group_file = manifest_write_group_file or function(filehandle,count,filename,Nchar)
+manifest_write_group_file = manifest_write_group_file or function(filehandle,filename,param)
   --[[
-        filehandle : write file object
-             count : the count of the filename to be written
-          filename : the name of the file to write
-             Nchar : the maximum number of chars of all filenames in this group
+        filehandle        : write file object
+        filename          : the count of the filename to be written
+        
+        param.dir         : the directory of the file
+        param.count       : the name of the file to write
+        param.filemaxchar : the maximum number of chars of all filenames in this group
   --]]
 
   -- no file description: plain bullet list item:
@@ -177,32 +176,37 @@ manifest_write_group_file = manifest_write_group_file or function(filehandle,cou
 
   --[[
     -- or if you prefer an enumerated list:
-    filehandle:write(count..". " .. filename .. "\n")
+    filehandle:write(param.count..". " .. filename .. "\n")
   --]]
 
 
 end
 
-manifest_write_group_file_descr = manifest_write_group_file_descr or function(filehandle,count,filename,Nchar,descr,NcharD)
+manifest_write_group_file_descr = manifest_write_group_file_descr or function(filehandle,filename,descr,param)
   --[[
-        filehandle : write file object
-             count : the count of the filename to be written
-          filename : the name of the file to write
-             Nchar : the maximum number of chars of all filenames in this group
-             descr : description of the file to write
-            NcharD : the maximum number of chars of all descriptions in this group
+        filehandle        : write file object
+        filename          : the name of the file to write
+        descr             : description of the file to write
+        
+        param.dir         : the directory of the file
+        param.count       : the count of the filename to be written
+        param.filemaxchar : the maximum number of chars of all filenames in this group
+        param.descmaxchar : the maximum number of chars of all descriptions in this group
   --]]
 
   -- filename+description: Github-flavoured Markdown table
 
-  if count==1 then
-    -- header of table
-    manifest_write_group_file_descr(filehandle,-1,"File",Nchar,"Description",NcharD)
-    manifest_write_group_file_descr(filehandle,-1,"---", Nchar,"---",        NcharD)
+  -- header of table
+  if param.count == 1 then
+    local p = param
+    p.count = -1
+    manifest_write_group_file_descr(filehandle,"File","Description",p)
+    manifest_write_group_file_descr(filehandle,"---","---",p)
   end
 
+  -- entry
   filehandle:write(string.format(
-    "  | %-"..Nchar .."s | %-"..NcharD.."s |\n",
+    "  | %-"..param.filemaxchar.."s | %-"..param.descmaxchar.."s |\n",
     filename,descr))
 
 end
@@ -221,29 +225,28 @@ end
 -- From the first match of a pattern in a file:
 manifest_extract_filedesc = function(filehandle)
 
-  local read_string   = "*all"
-  local matchstr      = "\\section{(.-)}"
+  local all_file = filehandle:read("*all")
+  local matchstr = "\\section{(.-)}"
 
-  all_file = filehandle:read(read_string)
-
-  return string.match(all_file,matchstr)
-
+  filedesc = string.match(all_file,matchstr)
+  
+  return filedesc
 end
 
 -- From the match of the 2nd line (say) of a file:
 manifest_extract_filedesc = function(filehandle)
 
   local end_read_loop = 2
-  local read_string   = "*line"
   local matchstr      = "%%%S%s+(.*)"
   local this_line     = ""
 
   for ii = 1, end_read_loop do
-    this_line = filehandle:read(read_string)
+    this_line = filehandle:read("*line")
   end
+  
+  filedesc = string.match(this_line,matchstr)
 
-  return string.match(this_line,matchstr)
-
+  return filedesc
 end
 
 ]]--

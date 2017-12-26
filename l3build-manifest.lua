@@ -134,7 +134,6 @@ end
 
 manifest_build_file = function(entry,this_file)
 
-  -- rename?
   if entry.rename then
     this_file:gsub(entry.rename[1], entry.rename[2])
   end
@@ -143,27 +142,25 @@ manifest_build_file = function(entry,this_file)
 
     entry.N = entry.N+1
     if not(entry.matches[this_file]) then
-
+    
       entry.matches[this_file] = true -- store the file name
       entry.files_ordered[entry.N] = this_file -- store the file order
-
-      entry.Nchar_file = math.max( entry.Nchar_file , this_file:len() )
-
+      entry.Nchar_file = math.max(entry.Nchar_file,this_file:len())
+      
     end
 
     if not(entry.rename) and entry.extractfiledesc then
-
+    
       local ff = assert(io.open(entry.dir .. "/" .. this_file, "r"))
-      this_descr = manifest_extract_filedesc(ff)
+      this_descr  = manifest_extract_filedesc(ff,this_file)
       ff:close()
 
       if this_descr and this_descr ~= "" then
-
         entry.descr[this_file] = this_descr
         entry.ND = entry.ND+1
-        entry.Nchar_descr = math.max( entry.Nchar_descr, this_descr.len() )
-
+        entry.Nchar_descr = math.max(entry.Nchar_descr,this_descr:len())
       end
+      
     end
   end
 
@@ -194,27 +191,30 @@ end
 
 manifest_write_group = function(f,entry)
 
-  manifest_write_group_heading(f,entry.name)
+  manifest_write_group_heading(f,entry.name,entry.description)
 
-  if entry.description then
-    manifest_write_group_description(f,entry.description)
-  end
+  if entry.ND > 0 then
 
-  if not(entry.rename) and entry.extractfiledesc and entry.ND > 0 then
-
-    local C = 0
-    for _,file in ipairs(entry.files_ordered) do
-      C = C+1
-      descr = entry.descr[file] or ""
-      manifest_write_group_file_descr(f,C,file,entry.Nchar_file,descr,entry.Nchar_descr)
+    for ii,file in ipairs(entry.files_ordered) do
+      local descr = entry.descr[file] or ""
+      local param = {
+        dir         = entry.dir         ,
+        count       = ii                ,
+        filemaxchar = entry.Nchar_file  ,
+        descmaxchar = entry.Nchar_descr ,
+      }
+      manifest_write_group_file_descr(f,file,descr,param)
     end
 
   else
 
-    local C = 0
-    for _,ff in ipairs(entry.files_ordered) do
-      C = C+1
-      manifest_write_group_file(f,C,ff,entry.Nchar_file)
+    for ii,file in ipairs(entry.files_ordered) do
+      local param = { 
+        dir         = entry.dir        ,
+      	count       = ii               , 
+      	filemaxchar = entry.Nchar_file ,
+      }
+      manifest_write_group_file(f,file,param)
     end
 
   end
