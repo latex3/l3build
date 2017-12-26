@@ -43,9 +43,9 @@ manifest_setup = manifest_setup or function()
     {
        name    = "Source files",
        description = [[
-These are source files for a number of purposes, including the `unpack`
-process which generates the installation files of the package. Additional
-files included here will also be installed for processing such as testing.
+These are source files for a number of purposes, including the `unpack` process which 
+generates the installation files of the package. Additional files included here will also
+be installed for processing such as testing.
        ]],
        files   = {sourcefiles},
     },
@@ -59,9 +59,8 @@ These files are typeset using LaTeX to produce the PDF documentation for the pac
     {
        name    = "Documentation files",
        description = [[
-These files form part of the documentation but are not typeset.
-Generally they will be additional input files for the typeset
-documentation files listed above.
+These files form part of the documentation but are not typeset. Generally they will be
+additional input files for the typeset documentation files listed above.
        ]],
        files   = {docfiles},
     },
@@ -104,11 +103,9 @@ documentation files listed above.
     {
        name    = "Test files",
        description = [[
-These files form the test suite for the package.
-`.lvt` or `.lte` files are the individual unit tests,
-and `.tlg` are the stored output for ensuring changes
-to the package produce the same output. These output
-files are sometimes shared and sometime specific for
+These files form the test suite for the package. `.lvt` or `.lte` files are the individual
+unit tests, and `.tlg` are the stored output for ensuring changes to the package produce 
+the same output. These output files are sometimes shared and sometime specific for 
 different engines (pdfTeX, XeTeX, LuaTeX, etc.).
        ]],
        files   = {"*"..lvtext,"*"..lveext,"*"..tlgext},
