@@ -1427,6 +1427,12 @@
 % manifest_setup = function()
 %   local groups = {
 %     {
+%        subheading = "Repository files",
+%        description = [[
+% Files located in the package development repository.
+%        ]],
+%     },
+%     {
 %        name    = "Source files",
 %        description = [[
 % These are source files generating the package files.
@@ -1448,11 +1454,11 @@
 %
 % The |groups| variable is an ordered array of tables which contain the metadata about each
 % `group' in the manifest listing.
-% The keys supported in these tables are outlined in Table~\ref{tab:manifest-setup}.
+% The keys supported in these tables are outlined in Table~\ref{tab:manifest-setup} and Table~\ref{tab:manifest-subheadings}
 % See the complete setup code in |l3build-manifest-setup.lua| for examples of these in use.
 %
 % \begin{table}
-%   \caption{Table entries used in the manifest setup table.}
+%   \caption{Table entries used in the manifest setup table for a group.}
 %   \label{tab:manifest-setup}
 %   \centering
 %   \begin{tabular}{lp{8cm}}
@@ -1466,6 +1472,20 @@
 %       \var{dir}                & The directory to search (default |maindir|)          \\
 %       \var{rename}             & An array with a |gsub| redefinition for the filename \\
 %       \var{skipfiledescription} & Whether to extract file descriptions from these files (default |false|) \\
+%     \bottomrule
+%     \end{tabular}
+% \end{table}
+%
+% \begin{table}
+%   \caption{Table entries used in the manifest setup table for a subheading.}
+%   \label{tab:manifest-subheadings}
+%   \centering
+%   \begin{tabular}{lp{8cm}}
+%     \toprule
+%     Entry & Description \\
+%     \midrule
+%       \var{subheading}         & The subheading                                       \\
+%       \var{description}        & The description printed below the subheading         \\
 %     \bottomrule
 %     \end{tabular}
 % \end{table}
@@ -1518,12 +1538,12 @@
 % to the first |\section| in each can be used as a file description:
 % \begin{verbatim}
 % manifest_extract_filedesc = function(filehandle,filename)
-% 
+%
 %   local all_file = filehandle:read("*all")
 %   local matchstr = "\\section{(.-)}"
-% 
+%
 %   filedesc = string.match(all_file,matchstr)
-%   
+%
 %   return filedesc
 % end
 % \end{verbatim}
@@ -1538,6 +1558,7 @@
 % The following functions can be re-defined to change the formatting of the manifest file:
 % \begin{itemize}
 % \item |manifest_write_opening|: Write the heading of the manifest file and its opening paragraph.
+% \item |manifest_write_subheading|: Write a subheading and description
 % \item |manifest_write_group_heading|: Write the section heading of the manifest group and the group description
 % \item |manifest_write_group_file|: Write the filename (when not writing file descriptions)
 % \item |manifest_write_group_file_descr|: Write the filename and the file description
