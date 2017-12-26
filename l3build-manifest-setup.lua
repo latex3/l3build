@@ -68,7 +68,7 @@ documentation files listed above.
     {
        name    = "Text files",
        files   = {textfiles},
-       extractfiledesc = false,
+       skipfiledescription = true,
     },
     {
        name    = "Demo files",
@@ -83,7 +83,7 @@ documentation files listed above.
        files   = {installfiles},
        exclude = {excludefiles,sourcefiles},
        dir     = unpackdir,
-       extractfiledesc = false,
+       skipfiledescription = true,
     },
     {
        name    = "Typeset documents",
@@ -113,7 +113,7 @@ different engines (pdfTeX, XeTeX, LuaTeX, etc.).
        ]],
        files   = {"*"..lvtext,"*"..lveext,"*"..tlgext},
        dir     = testfiledir,
-       extractfiledesc = false,
+       skipfiledescription = true,
     },
   }
   return groups

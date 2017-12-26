@@ -91,10 +91,10 @@ manifest_build_init = function(entry)
 
   -- currently these aren't customisable; I guess they could/should be?
   local manifest_group_defaults = {
-    extractfiledesc  = true           ,
-    rename           = false          ,
-    dir              = maindir        ,
-    exclude          = {excludefiles} ,
+    skipfiledescription  = false          ,
+    rename               = false          ,
+    dir                  = maindir        ,
+    exclude              = {excludefiles} ,
   }
 
   -- internal data added to each group in the table that needs to be initialised
@@ -149,7 +149,7 @@ manifest_build_file = function(entry,this_file)
       
     end
 
-    if not(entry.rename) and entry.extractfiledesc then
+    if not(entry.rename) and not(entry.skipfiledescription) then
     
       local ff = assert(io.open(entry.dir .. "/" .. this_file, "r"))
       this_descr  = manifest_extract_filedesc(ff,this_file)
