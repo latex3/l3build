@@ -1405,11 +1405,26 @@
 % target attempt to reflect the defaults for \pkg{l3build} itself.
 % The groups (and hence the files) displayed can be completely
 % customised by defining a new setup function which creates a Lua table with
-% the appropriate settings.
+% the appropriate settings (\S\ref{sec:manifest-groups}).
 %
-% This might look something like the following:
+% The formatting within the manifest file can be customised by redefining a number
+% of Lua functions. This includes
+% how the files are sorted within each group (\S\ref{sec:manifest-sorting}),
+% the inclusion of one-line descriptions for each file (\S\ref{sec:manifest-desc}),
+% and the details of the formatting of each entry (\S\ref{sec:manifest-formatting}).
+%
+% To perform such customisations, either include the re-definitions directly within your
+% package's |build.lua| file, or make a copy of |l3build-manifest-setup.lua|, rename it,
+% and load it within your |build.lua| using |dofile()|.
+%
+%
+% \subsubsection{Custom manifest groups}
+% \label{sec:manifest-groups}
+%
+% The setup code for defining each group of files within the manifest looks something like
+% the following:
 % \begin{verbatim}
-% manifest_setup = manifest_setup or function()
+% manifest_setup = function()
 %   local groups = {
 %     {
 %        name    = "Source files",
@@ -1433,10 +1448,12 @@
 %
 % The |groups| variable is an ordered array of tables which contain the metadata about each
 % `group' in the manifest listing.
+% The keys supported in these tables are outlined in Table~\ref{tab:manifest-setup}.
 % See the complete setup code in |l3build-manifest-setup.lua| for examples of these in use.
 %
 % \begin{table}
 %   \caption{Table entries used in the manifest setup table.}
+%   \label{tab:manifest-setup}
 %   \centering
 %   \begin{tabular}{lp{8cm}}
 %     \toprule
@@ -1453,10 +1470,12 @@
 %     \end{tabular}
 % \end{table}
 %
-% \subsubsection{File matches and sorting}
+%
+% \subsubsection{Sorting within each manifest group}
+% \label{sec:manifest-sorting}
 %
 % Within a single group in the manifest listing, files can be matched against multiple variables.
-% For example, for |sourcefiles={*.dtx,*.ins}| the following file listing might result:
+% For example, for |sourcefiles={*.dtx,*.ins}| the following (unsorted) file listing might result:
 % \begin{itemize}
 % \item foo.dtx
 % \item bar.dtx
@@ -1471,7 +1490,61 @@
 % The second approach to sorting is to apply a sorting function to the entire set of matched files.
 % (This happens \emph{after} any sorting is applied for each match.)
 % By default this is a no-op but can be edited by redefining the |manifest_sort_within_group|
-% function.
+% function. For example:
+% \begin{verbatim}
+% manifest_sort_within_group = function(files)
+%   local f = files
+%   table.sort(f)
+%   return f
+% end
+% \end{verbatim}
+% This will produce an alphabetical listing of files:
+% \begin{itemize}
+% \item bar.dtx
+% \item bar.ins
+% \item foo.dtx
+% \item foo.ins
+% \end{itemize}
+%
+%
+% \subsubsection{File descriptions}
+% \label{sec:manifest-desc}
+%
+% By default the manifest contains lists of files, and with a small addition these
+% lists can be augmented with a one-line summary of each file.
+% If the Lua function |manifest_extract_filedesc| is defined, it will be used to search
+% the contents of each file to extract a description for that file.
+% For example, perhaps you are using multiple |.dtx| files for a project and the argument
+% to the first |\section| in each can be used as a file description:
+% \begin{verbatim}
+% manifest_extract_filedesc = function(filehandle,filename)
+% 
+%   local all_file = filehandle:read("*all")
+%   local matchstr = "\\section{(.-)}"
+% 
+%   filedesc = string.match(all_file,matchstr)
+%   
+%   return filedesc
+% end
+% \end{verbatim}
+% (Note the |matchstr| above is only an example and doesn't handle nested braces.)
+%
+%
+% \subsubsection{Custom formatting}
+% \label{sec:manifest-formatting}
+%
+% After the manifest code has built a complete listing of files to print, a series of
+% file writing operations are performed which create the manifest file.
+% The following functions can be re-defined to change the formatting of the manifest file:
+% \begin{itemize}
+% \item |manifest_write_opening|: Write the heading of the manifest file and its opening paragraph.
+% \item |manifest_write_group_heading|: Write the section heading of the manifest group and the group description
+% \item |manifest_write_group_file|: Write the filename (when not writing file descriptions)
+% \item |manifest_write_group_file_descr|: Write the filename and the file description
+% \end{itemize}
+% Full descriptions of their usage and arguments can be found within the |l3build-manifest-setup.lua|
+% code itself.
+%
 %
 % \end{documentation}
 %
