@@ -41,54 +41,12 @@ for those people who are interested.
 manifest_setup = manifest_setup or function()
   local groups = {
     {
-       subheading = "CTAN manifest",
-       description = [[
-The following group lists the files included in the CTAN package.
-       ]],
-    },
-    {
-       name    = "CTAN files",
-       dir     = ctandir.."/"..module,
-       files   = {"*.*"},
-       exclude = {".",".."},
-       flag    = false,
-       skipfiledescription = true,
-    },
-    {
-       subheading = "TDS manifest",
-       description = [[
-The following groups list the files included in the TeX Directory Structure used to install
-the package into a TeX distribution.
-       ]],
-    },
-    {
-       name    = "Source files (TDS)",
-       dir     = tdsdir.."/source/"..moduledir,
-       files   = {"*.*"},
-       exclude = {".",".."},
-       flag    = false,
-    },
-    {
-       name    = "TeX files (TDS)",
-       dir     = tdsdir.."/tex/"..moduledir,
-       files   = {"*.*"},
-       exclude = {".",".."},
-       flag    = false,
-       skipfiledescription = true,
-    },
-    {
-       name    = "Doc files (TDS)",
-       dir     = tdsdir.."/doc/"..moduledir,
-       files   = {"*.*"},
-       exclude = {".",".."},
-       flag    = false,
-       skipfiledescription = true,
-    },
-    {
        subheading = "Repository manifest",
        description = [[
 The following groups list the files included in the development repository of the package.
-       ]],
+Files listed with a ‘†’ marker are included in the TDS but not CTAN files, and files listed
+with ‘‡’ are included in both.
+]],
     },
     {
        name    = "Source files",
@@ -96,14 +54,14 @@ The following groups list the files included in the development repository of th
 These are source files for a number of purposes, including the `unpack` process which
 generates the installation files of the package. Additional files included here will also
 be installed for processing such as testing.
-       ]],
+]],
        files   = {sourcefiles},
     },
     {
        name    = "Typeset documentation source files",
        description = [[
 These files are typeset using LaTeX to produce the PDF documentation for the package.
-       ]],
+]],
        files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
     },
     {
@@ -111,24 +69,38 @@ These files are typeset using LaTeX to produce the PDF documentation for the pac
        description = [[
 These files form part of the documentation but are not typeset. Generally they will be
 additional input files for the typeset documentation files listed above.
-       ]],
+]],
        files   = {docfiles},
     },
     {
        name    = "Text files",
+       description = [[
+Plain text files included as documentation or metadata.
+]],
        files   = {textfiles},
        skipfiledescription = true,
     },
     {
        name    = "Demo files",
+       description = [[
+Files included to demonstrate package functionality. These files are *not*
+typeset or compiled in any way.
+]],
        files   = {demofiles},
     },
     {
        name    = "Bibliography and index files",
+       description = [[
+Supplementary files used for compiling package documentation.
+]],
        files   = {bibfiles,bstfiles,makeindexfiles},
     },
     {
        name    = "Derived files",
+       description = [[
+The files created by ‘unpacking’ the package sources. This typically includes
+`.sty` and `.cls` files created from DocStrip `.dtx` files.
+]],
        files   = {installfiles},
        exclude = {excludefiles,sourcefiles},
        dir     = unpackdir,
@@ -136,17 +108,27 @@ additional input files for the typeset documentation files listed above.
     },
     {
        name    = "Typeset documents",
+       description = [[
+The output files (PDF, essentially) from typesetting the various source, demo,
+etc., package files.
+]],
        files   = {typesetfiles,typesetsourcefiles,typesetdemofiles},
        rename  = {"%.%w+$", ".pdf"},
        skipfiledescription = true,
     },
     {
-       name    = "Support files needed for unpacking, typesetting, or checking",
+       name    = "Support files",
+       description = [[
+These files are used for unpacking, typesetting, or checking purposes.
+]],
        files   = {unpacksuppfiles,typesetsuppfiles,checksuppfiles},
        dir     = supportdir,
     },
     {
        name    = "Checking-specific support files",
+       description = [[
+Support files for checking the test suite.
+]],
        files   = {"*.*"},
        exclude = {{".",".."},excludefiles},
        dir     = testsuppdir,
@@ -158,9 +140,57 @@ These files form the test suite for the package. `.lvt` or `.lte` files are the 
 unit tests, and `.tlg` are the stored output for ensuring changes to the package produce
 the same output. These output files are sometimes shared and sometime specific for
 different engines (pdfTeX, XeTeX, LuaTeX, etc.).
-       ]],
+]],
        files   = {"*"..lvtext,"*"..lveext,"*"..tlgext},
        dir     = testfiledir,
+       skipfiledescription = true,
+    },
+    {
+       subheading = "TDS manifest",
+       description = [[
+The following groups list the files included in the TeX Directory Structure used to install
+the package into a TeX distribution.
+]],
+    },
+    {
+       name    = "Source files (TDS)",
+       description = "All files included in the `"..module.."/source` directory.\n",
+       dir     = tdsdir.."/source/"..moduledir,
+       files   = {"*.*"},
+       exclude = {".",".."},
+       flag    = false,
+       skipfiledescription = true,
+    },
+    {
+       name    = "TeX files (TDS)",
+       description = "All files included in the `"..module.."/tex` directory.\n",
+       dir     = tdsdir.."/tex/"..moduledir,
+       files   = {"*.*"},
+       exclude = {".",".."},
+       flag    = false,
+       skipfiledescription = true,
+    },
+    {
+       name    = "Doc files (TDS)",
+       description = "All files included in the `"..module.."/doc` directory.\n",
+       dir     = tdsdir.."/doc/"..moduledir,
+       files   = {"*.*"},
+       exclude = {".",".."},
+       flag    = false,
+       skipfiledescription = true,
+    },
+    {
+       subheading = "CTAN manifest",
+       description = [[
+The following group lists the files included in the CTAN package.
+]],
+    },
+    {
+       name    = "CTAN files",
+       dir     = ctandir.."/"..module,
+       files   = {"*.*"},
+       exclude = {".",".."},
+       flag    = false,
        skipfiledescription = true,
     },
   }
@@ -195,7 +225,10 @@ end
 manifest_write_opening = manifest_write_opening or function(filehandle)
 
   filehandle:write("# Manifest for " .. module .. "\n\n")
-  filehandle:write("This file is automatically generated with `texlua build.lua manifest`.\n")
+  filehandle:write([[
+This file is a listing of all files considered to be part of this package.
+It is automatically generated with `texlua build.lua manifest`.
+]])
 
 end
 
@@ -204,7 +237,7 @@ manifest_write_subheading = manifest_write_subheading or function(filehandle,hea
   filehandle:write("\n\n## " .. heading .. "\n\n")
 
   if description then
-    filehandle:write(description .. "\n")
+    filehandle:write(description)
   end
 
 end
@@ -262,18 +295,6 @@ manifest_write_group_file_descr = manifest_write_group_file_descr or function(fi
 
   -- filename+description: Github-flavoured Markdown table
 
-  -- header of table
-  if param.count == 1 then
-    local p = {}
-    for k,v in pairs(param) do p[k] = v end
-    p.count = -1
-    p.flag = p.flag and "Flag"
-    manifest_write_group_file_descr(filehandle,"File","Description",p)
-    p.flag = p.flag and "--- "
-    manifest_write_group_file_descr(filehandle,"---","---",p)
-  end
-
-  -- entry of table
   filestr = string.format(" | %-"..param.filemaxchar.."s",filename)
   flagstr = param.flag and string.format(" | %s",param.flag) or  ""
   descstr = string.format(" | %-"..param.descmaxchar.."s",descr)

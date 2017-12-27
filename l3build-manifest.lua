@@ -70,7 +70,7 @@ manifest_build_list = function(entry)
   if not(entry.subheading) then
 
     entry = manifest_build_init(entry)
-  
+
     -- build list of excluded files
     for _,glob_list in ipairs(entry.exclude) do
       for _,this_glob in ipairs(glob_list) do
@@ -79,25 +79,25 @@ manifest_build_list = function(entry)
         end
       end
     end
-    
+
     -- build list of matched files
     for _,glob_list in ipairs(entry.files) do
       for _,this_glob in ipairs(glob_list) do
-  
+
         local these_files = filelist(entry.dir,this_glob)
         these_files = manifest_sort_within_match(these_files)
-  
+
         for _,this_file in ipairs(these_files) do
           entry = manifest_build_file(entry,this_file)
         end
-  
+
         entry.files_ordered = manifest_sort_within_group(entry.files_ordered)
-  
+
       end
     end
-    
+
 	end
-	
+
   return entry
 
 end
@@ -162,15 +162,15 @@ manifest_build_file = function(entry,this_file)
 
     entry.N = entry.N+1
     if not(entry.matches[this_file]) then
-    
+
       entry.matches[this_file] = true -- store the file name
       entry.files_ordered[entry.N] = this_file -- store the file order
       entry.Nchar_file = math.max(entry.Nchar_file,this_file:len())
-      
+
     end
 
     if not(entry.skipfiledescription) then
-    
+
       local ff = assert(io.open(entry.dir .. "/" .. this_file, "r"))
       this_descr  = manifest_extract_filedesc(ff,this_file)
       ff:close()
@@ -180,7 +180,7 @@ manifest_build_file = function(entry,this_file)
         entry.ND = entry.ND+1
         entry.Nchar_descr = math.max(entry.Nchar_descr,this_descr:len())
       end
-      
+
     end
   end
 
@@ -228,7 +228,7 @@ manifest_write_group = function(f,entry)
         tdsfile     = tdsfiles[file]    ,
         flag        = false             ,
       }
-      
+
       if entry.flag then
         param.flag = "    "
 	  		if tdsfiles[file] and not(ctanfiles[file]) then
@@ -237,15 +237,28 @@ manifest_write_group = function(f,entry)
 	  			param.flag = "‡   "
 	  		end
 			end
+
+			if ii == 1 then
+        -- header of table
+        -- TODO: generalise
+				local p = {}
+				for k,v in pairs(param) do p[k] = v end
+				p.count = -1
+				p.flag = p.flag and "Flag"
+				manifest_write_group_file_descr(f,"File","Description",p)
+				p.flag = p.flag and "--- "
+				manifest_write_group_file_descr(f,"---","---",p)
+      end
+
       manifest_write_group_file_descr(f,file,descr,param)
     end
 
   else
 
     for ii,file in ipairs(entry.files_ordered) do
-      local param = { 
+      local param = {
         dir         = entry.dir         ,
-      	count       = ii                , 
+      	count       = ii                ,
       	filemaxchar = entry.Nchar_file  ,
         ctanfile    = ctanfiles[file]   ,
         tdsfile     = tdsfiles[file]    ,
