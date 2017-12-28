@@ -56,6 +56,7 @@ generates the installation files of the package. Additional files included here 
 be installed for processing such as testing.
 ]],
        files   = {sourcefiles},
+       dir     = sourcefiledir or maindir, -- TODO: remove "or maindir" after rebasing onto master
     },
     {
        name    = "Typeset documentation source files",
@@ -71,6 +72,7 @@ These files form part of the documentation but are not typeset. Generally they w
 additional input files for the typeset documentation files listed above.
 ]],
        files   = {docfiles},
+       dir     = docfiledir or maindir, -- TODO: remove "or maindir" after rebasing onto master
     },
     {
        name    = "Text files",
