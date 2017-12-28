@@ -507,7 +507,14 @@
 % of flexibility. Additional information is described in Section~\ref{sec:manifest}.
 %
 % In order for \texttt{manifest} to detect derived and typeset files, it should be run
-% \emph{after} running \texttt{unpack} and \texttt{doc}.
+% \emph{after} running \texttt{unpack} and \texttt{doc}. If \texttt{manifest}
+% is run after also running \texttt{ctan} it will include the files included
+% in the CTAN and TDS directories as well.
+%
+% Presently, this means that if you wish to include an up-to-date manifest file
+% as part of a \texttt{ctan} release, you must run
+%   \texttt{ctan} / \texttt{manifest} / \texttt{ctan}.
+% Improvements to this process are planned for the future.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{setversion}
