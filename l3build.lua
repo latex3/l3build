@@ -210,7 +210,6 @@ local print            = print
 local select           = select
 local tonumber         = tonumber
 local close            = io.close
-local lines            = io.lines
 local open             = io.open
 local output           = io.output
 local stderr           = io.stderr
@@ -219,7 +218,6 @@ local set_program_name = kpse.set_program_name
 local var_value        = kpse.var_value
 local lfs_attributes   = lfs.attributes
 local lfs_dir          = lfs.dir
-local os_date          = os.date
 local execute          = os.execute
 local exit             = os.exit
 local getenv           = os.getenv
@@ -572,7 +570,7 @@ local os_cmpext  = getenv("cmpext") or ".cmp"
 local os_diffext = getenv("diffext") or ".diff"
 local os_diffexe = getenv("diffexe") or "diff -c --strip-trailing-cr"
 local os_grepexe = "grep"
-local os_newline = "\n"
+os_newline = "\n"
 if os_type == "windows" then
   os_ascii   = "@echo."
   os_cmpexe  = getenv("cmpexe") or "fc /b"
@@ -2251,112 +2249,6 @@ function save(names)
   end
 end
 
--- Provide some standard search-and-replace functions
-if versionform ~= "" and not setversion_update_line then
-  if versionform == "ProvidesPackage" then
-    function setversion_update_line(line, date, version)
-      -- No real regex so do it one type at a time
-      for _,i in pairs({"Class", "File", "Package"}) do
-        if match(
-          line,
-          "^\\Provides" .. i .. "{[a-zA-Z0-9%-%.]+}%[[^%]]*%]$"
-        ) then
-          line = gsub(line, "%[%d%d%d%d/%d%d/%d%d", "["
-            .. gsub(date, "%-", "/"))
-          line = gsub(
-            line, "(%[%d%d%d%d/%d%d/%d%d) [^ ]*", "%1 " .. version
-          )
-          break
-        end
-      end
-      return line
-    end
-  elseif versionform == "ProvidesExplPackage" then
-    function setversion_update_line(line, date, version)
-      -- No real regex so do it one type at a time
-      for _,i in pairs({"Class", "File", "Package"}) do
-        if match(
-          line,
-          "^\\ProvidesExpl" .. i .. " *{[a-zA-Z0-9%-%.]+}"
-        ) then
-          line = gsub(
-            line,
-            "{%d%d%d%d/%d%d/%d%d}( *){[^}]*}",
-            "{" .. gsub(date, "%-", "/") .. "}%1{" .. version .. "}"
-          )
-          break
-        end
-      end
-      return line
-    end
-  elseif versionform == "filename" then
-    function setversion_update_line(line, date, version)
-      if match(line, "^\\def\\filedate{%d%d%d%d/%d%d/%d%d}$") then
-        line = "\\def\\filedate{" .. gsub(date, "%-", "/") .. "}"
-      end
-      if match(line, "^\\def\\fileversion{[^}]+}$") then
-        line = "\\def\\fileversion{" .. version .. "}"
-      end
-      return line
-    end
-  elseif versionform == "ExplFileDate" then
-    function setversion_update_line(line, date, version)
-      if match(line, "^\\def\\ExplFileDate{%d%d%d%d/%d%d/%d%d}$") then
-        line = "\\def\\ExplFileDate{" .. gsub(date, "%-", "/") .. "}"
-      end
-      if match(line, "^\\def\\ExplFileVersion{[^}]+}$") then
-        line = "\\def\\ExplFileVersion{" .. version .. "}"
-      end
-      return line
-    end
-  end
-end
-
--- Used to actually carry out search-and-replace
-setversion_update_line = setversion_update_line or function(line, date, version)
-  return line
-end
-
-function setversion()
-  local function rewrite(dir, file, date, version)
-    local changed = false
-    local result = ""
-    for line in lines(dir .. "/" .. file) do
-      local newline = setversion_update_line(line, date, version)
-      if newline ~= line then
-        line = newline
-        changed = true
-      end
-      result = result .. line .. os_newline
-    end
-    if changed then
-      -- Avoid adding/removing end-of-file newline
-      local f = open(dir .. "/" .. file, "rb")
-      local content = f:read("*all")
-      close(f)
-      if not match(content, os_newline .. "$") then
-        gsub(result, os_newline .. "$", "")
-      end
-      -- Write the new file
-      ren(dir, file, file .. bakext)
-      local f = open(dir .. "/" .. file, "w")
-      output(f)
-      write(result)
-      close(f)
-      rmfile(dir, file .. bakext)
-    end
-  end
-  local date = options["date"] or os_date("%Y-%m-%d")
-  local version = options["version"] or -1
-  for _,dir in pairs(remove_duplicates({currentdir, sourcefiledir, docfiledir})) do
-    for _,i in pairs(versionfiles) do
-      for file,_ in pairs(tree(dir, i)) do
-        rewrite(dir, file, date, version)
-      end
-    end
-  end
-  return 0
-end
 
 -- Unpack the package files using an 'isolated' system: this requires
 -- a copy of the 'basic' DocStrip program, which is used then removed
@@ -2437,6 +2329,8 @@ kpse.set_program_name("kpsewhich")
 build_kpse_path = dirname(kpse.lookup("l3build.lua"))
 require( kpse.lookup("l3build-manifest.lua", { path = build_kpse_path } ) )
 require( kpse.lookup("l3build-manifest-setup.lua", { path = build_kpse_path } ) )
+
+require( kpse.lookup("l3build-setversion.lua", { path = build_kpse_path } ) )
 
 
 function version()
