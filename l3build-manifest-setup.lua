@@ -36,7 +36,23 @@ for those people who are interested.
 --[[
       Setup of manifest "groups"
       --------------------------
+
+      The grouping of manifest files is broken into three subheadings:
+
+      * The development repository
+      * The TDS structure from `ctan`
+      * The CTAN structure from `ctan`
+
+      The latter two will only be produced if the `manifest` target is run *after*
+      the `ctan` target. Contrarily, if you run `clean` before `manifest` then
+      only the first grouping will be printed.
+
+      If you want to omit the files in the development repository, essentially
+      producing a minimalist manifest with only the files included for distribution,
+      make a copy of the `manifest_setup` function and delete the groups under
+      the ‘Repository manifest’ subheading below.
 --]]
+
 
 manifest_setup = manifest_setup or function()
   local groups = {
