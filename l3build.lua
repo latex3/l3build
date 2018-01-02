@@ -739,6 +739,22 @@ function tree(path, glob)
   return dirs
 end
 
+function remove_duplicates(a)
+  -- Return array with duplicate entries removed from input array `a`.
+
+  local uniq = {}
+  local hash = {}
+
+  for _,v in ipairs(a) do
+    if (not hash[v]) then
+      hash[v] = true
+      uniq[#uniq+1] = v
+    end
+  end
+
+  return uniq
+end
+
 function mkdir(dir)
   if os_type == "windows" then
     -- Windows (with the extensions) will automatically make directory trees
@@ -1959,7 +1975,7 @@ function clean()
     cleandir(typesetdir) +
     cleandir(unpackdir)
   for _,i in ipairs(cleanfiles) do
-    for _,dir in pairs({maindir, sourcefiledir, docfiledir}) do
+    for _,dir in pairs(remove_duplicates({maindir, sourcefiledir, docfiledir})) do
       errorlevel = rm(dir, i) + errorlevel
     end
   end
@@ -2332,7 +2348,7 @@ function setversion()
   end
   local date = options["date"] or os_date("%Y-%m-%d")
   local version = options["version"] or -1
-  for _,dir in pairs({currentdir, sourcefiledir, docfiledir}) do
+  for _,dir in pairs(remove_duplicates({currentdir, sourcefiledir, docfiledir})) do
     for _,i in pairs(versionfiles) do
       for file,_ in pairs(tree(dir, i)) do
         rewrite(dir, file, date, version)
