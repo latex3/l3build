@@ -23,7 +23,7 @@ for those people who are interested.
 --]]
 
 -- Version information
-release_date = "2017/09/12"
+release_date = "2017/12/12"
 
 -- "module" is a deprecated function in Lua 5.2: as we want the name
 -- for other purposes, and it should eventually be 'free', simply
@@ -61,24 +61,28 @@ end
 
 -- Directory structure for the build system
 -- Use Unix-style path separators
-maindir     = maindir or "."
+currentdir = "."
+maindir    = maindir or currentdir
 
--- Substructure for tests and support files
-testfiledir = testfiledir or "testfiles"
-testsuppdir = testsuppdir or testfiledir .. "/support"
-supportdir  = supportdir  or maindir .. "/support"
+-- Substructure for file locations
+docfiledir    = docfiledir    or currentdir
+sourcefiledir = sourcefiledir or currentdir
+supportdir    = supportdir    or maindir .. "/support"
+testfiledir   = testfiledir   or currentdir .. "/testfiles"
+testsuppdir   = testsuppdir   or testfiledir .. "/support"
 
 -- Structure within a development area
-distribdir  = distribdir or maindir .. "/build/distrib"
-localdir    = localdir   or maindir .. "/build/local"
-testdir     = testdir    or maindir .. "/build/test"
-typesetdir  = typesetdir or maindir .. "/build/doc"
-unpackdir   = unpackdir  or maindir .. "/build/unpacked"
+builddir   = builddir   or maindir .. "/build"
+distribdir = distribdir or builddir .. "/distrib"
+localdir   = localdir   or builddir .. "/local"
+testdir    = testdir    or builddir .. "/test"
+typesetdir = typesetdir or builddir .. "/doc"
+unpackdir  = unpackdir  or builddir .. "/unpacked"
 
 -- Substructure for CTAN release material
-ctandir     = ctandir or distribdir .. "/ctan"
-tdsdir      = tdsdir  or distribdir .. "/tds"
-tdsroot     = tdsroot or "latex"
+ctandir = ctandir or distribdir .. "/ctan"
+tdsdir  = tdsdir  or distribdir .. "/tds"
+tdsroot = tdsroot or "latex"
 
 -- Location for installation on CTAN or in TEXMFHOME
 if bundle == "" then
@@ -92,23 +96,22 @@ end
 -- File types for various operations
 -- Use Unix-style globs
 -- All of these may be set earlier, so a initialised conditionally
+auxfiles           = auxfiles           or {"*.aux", "*.lof", "*.lot", "*.toc"}
 bibfiles           = bibfiles           or {"*.bib"}
 binaryfiles        = binaryfiles        or {"*.pdf", "*.zip"}
 bstfiles           = bstfiles           or {"*.bst"}
 checkfiles         = checkfiles         or { }
 checksuppfiles     = checksuppfiles     or { }
-cmdchkfiles        = cmdchkfiles        or { }
 cleanfiles         = cleanfiles         or {"*.log", "*.pdf", "*.zip"}
 demofiles          = demofiles          or { }
 docfiles           = docfiles           or { }
 excludefiles       = excludefiles       or {"*~"}
-installfiles       = installfiles       or {"*.sty"}
+installfiles       = installfiles       or {"*.sty","*.cls"}
 makeindexfiles     = makeindexfiles     or {"*.ist"}
 sourcefiles        = sourcefiles        or {"*.dtx", "*.ins"}
 textfiles          = textfiles          or {"*.md", "*.txt"}
 typesetdemofiles   = typesetdemofiles   or { }
 typesetfiles       = typesetfiles       or {"*.dtx"}
-docfiledir         = docfiledir         or maindir
 typesetsuppfiles   = typesetsuppfiles   or { }
 typesetsourcefiles = typesetsourcefiles or { }
 unpackfiles        = unpackfiles        or {"*.ins"}
@@ -126,7 +129,6 @@ unpackexe  = unpackexe  or "tex"
 zipexe     = zipexe     or "zip"
 
 checkopts   = checkopts   or "-interaction=nonstopmode"
-cmdchkopts  = cmdchkopts  or "-interaction=batchmode"
 typesetopts = typesetopts or "-interaction=nonstopmode"
 unpackopts  = unpackopts  or ""
 zipopts     = zipopts     or "-v -r -X"
@@ -135,6 +137,10 @@ zipopts     = zipopts     or "-v -r -X"
 checkengines = checkengines or {"pdftex", "xetex", "luatex"}
 checkformat  = checkformat  or "latex"
 stdengine    = stdengine    or "pdftex"
+
+-- Configs for testing
+stdconfig    = stdconfig    or string.gsub(arg[0], "%.lua$", "")
+checkconfigs = checkconfigs or {stdconfig}
 
 -- Enable access to trees outside of the repo
 -- As these may be set false, a more elaborate test than normal is needed
@@ -176,6 +182,7 @@ maxprintline = maxprintline or 79
 packtdszip   = packtdszip   or false
 scriptname   = scriptname   or "build.lua"
 typesetcmds  = typesetcmds  or ""
+typesetruns  = typesetruns  or 2
 versionform  = versionform  or ""
 recordstatus = recordstatus or false
 
@@ -240,6 +247,12 @@ local utf8_char        = unicode.utf8.char
 
 local option_list =
   {
+    config =
+      {
+        desc  = "Sets the config(s) used for running tests",
+        short = "c",
+        type  = "table"
+      },
     date =
       {
         desc  = "Sets the date to insert into sources",
@@ -248,7 +261,7 @@ local option_list =
       },
     engine =
       {
-        desc  = "Sets the engine to use for running test",
+        desc  = "Sets the engine(s) to use for running test",
         short = "e",
         type  = "table"
       },
@@ -289,15 +302,14 @@ local option_list =
       },
     rerun =
       {
-        desc  = "Suppresses TeX output when unpacking",
+        desc  = "Skip setup: simply rerun tests",
         short = "r",
         type  = "boolean"
       },
-    testfiledir =
+    texmfhome =
       {
-        desc  = "Selects the specified testfile location",
-        short = "t",
-        type  = "table"
+        desc = "Location of user texmf tree",
+        type = "string"
       },
     version =
       {
@@ -316,7 +328,9 @@ local function argparse()
   local short_options = { }
   -- Turn long/short options into two lookup tables
   for k,v in pairs(option_list) do
-    short_options[v["short"]] = k
+    if v["short"] then
+      short_options[v["short"]] = k
+    end
     long_options[k] = k
   end
   local args = args
@@ -611,7 +625,7 @@ function cp(glob, source, dest)
       else
         errorlevel = execute(
           'xcopy /y "' .. unix_to_win(source) .. '" "'
-             .. unix_to_win(dest) .. '" > nul'
+             .. unix_to_win(dest .. '/') .. '" > nul'
         )
       end
     else
@@ -677,28 +691,28 @@ end
 -- table, the keys are paths relative to the given starting path, the values
 -- are their counterparts relative to the current working directory.
 function tree(path, glob)
-  function cropdots(path)
+  local function cropdots(path)
     return gsub(gsub(path, "^%./", ""), "/%./", "/")
   end
-  function always_true()
+  local function always_true()
     return true
   end
-  function is_dir(file)
-    return lfs.attributes(file)["mode"] == "directory"
+  local function is_dir(file)
+    return lfs_attributes(file)["mode"] == "directory"
   end
-  local dirs = {["."]=cropdots(path)}
-  for pattern, critereon in gmatch(cropdots(glob), "([^/]+)(/?)") do
-    local critereon = critereon == "/" and is_dir or always_true
+  local dirs = {["."] = cropdots(path)}
+  for pattern, criterion in gmatch(cropdots(glob), "([^/]+)(/?)") do
+    local criterion = criterion == "/" and is_dir or always_true
     function fill(path, dir, table)
       for _, file in ipairs(filelist(dir, pattern)) do
         local fullpath = path .. "/" .. file
         if file ~= "." and file ~= ".." and
-          fullpath ~= maindir .. "/build" and
-          (string.sub(pattern, 1, 1) == "."
-            or string.sub(file, 1, 1) ~= ".")
+          fullpath ~= builddir and
+          (sub(pattern, 1, 1) == "."
+            or sub(file, 1, 1) ~= ".")
         then
           local fulldir = dir .. "/" .. file
-          if critereon(fulldir) then
+          if criterion(fulldir) then
             table[fullpath] = fulldir
           end
         end
@@ -742,6 +756,8 @@ end
 function ren(dir, source, dest)
   local dir = dir .. "/"
   if os_type == "windows" then
+    local source = gsub(source, "^%.+/", "")
+    local dest = gsub(dest, "^%.+/", "")
     return execute("ren " .. unix_to_win(dir) .. source .. " " .. dest)
   else
     return execute("mv " .. dir .. source .. " " .. dir .. dest)
@@ -832,6 +848,7 @@ end
 -- for saving the test files
 function checkinit()
   cleandir(testdir)
+  cleandir(localdir)
   depinstall(checkdeps)
   -- Copy dependencies to the test directory itself: this makes the paths
   -- a lot easier to manage, and is important for dealing with the log and
@@ -839,7 +856,7 @@ function checkinit()
   for _,i in ipairs(filelist(localdir)) do
     cp(i, localdir, testdir)
   end
-  bundleunpack({".", testfiledir})
+  bundleunpack({sourcefiledir, testfiledir})
   for _,i in ipairs(installfiles) do
     cp(i, unpackdir, testdir)
   end
@@ -859,21 +876,36 @@ end
 
 -- Copy files to the main CTAN release directory
 function copyctan()
-  -- Do all of the copying in one go
-  for _,i in ipairs(
+  local ctantarget = ctanpkg
+  if docfiledir ~= currentdir then
+    ctantarget = ctanpkg .. "/" .. gsub(docfiledir, "^%.*/", "")
+  end
+  mkdir(ctandir .. "/" .. ctantarget)
+  for _,filetype in pairs(
       {
         bibfiles,
         demofiles,
         docfiles,
         pdffiles,
-        sourcefiles,
-        textfiles,
         typesetlist
       }
     ) do
-    for _,j in ipairs(i) do
-      cp(j, ".", ctandir .. "/" .. ctanpkg)
+    for _,file in pairs(filetype) do
+      cp(file, docfiledir, ctandir .. "/" .. ctantarget)
     end
+  end
+  ctantarget = ctanpkg
+  if sourcefiledir ~= currentdir then
+    ctantarget = ctanpkg .. "/" .. gsub(sourcefiledir, "^%.*/", "")
+  end
+  mkdir(ctandir .. "/" .. ctantarget)
+  for _,file in pairs(sourcefiles) do
+    if sourcedir ~= currentdir then
+    end
+    cp(file, sourcefiledir, ctandir .. "/" .. ctantarget)
+  end
+  for _,file in pairs(textfiles) do
+    cp(file, currentdir, ctandir .. "/" .. ctanpkg)
   end
 end
 
@@ -898,8 +930,8 @@ function copytds()
     local filenames = { }
     for _,i in ipairs(files) do
       for _,j in ipairs(i) do
-        for _,k in ipairs(filelist(source, j)) do
-          insert(filenames, k)
+        for file,_ in pairs(tree(source, j)) do
+          insert(filenames, file)
         end
       end
     end
@@ -913,13 +945,13 @@ function copytds()
     end
   end
   install(
-    ".",
+    docfiledir,
     "doc",
     {bibfiles, demofiles, docfiles, pdffiles, textfiles, typesetlist}
   )
   install(unpackdir, "makeindex", {makeindexfiles}, true)
   install(unpackdir, "bibtex/bst", {bstfiles}, true)
-  install(".", "source", {sourcelist})
+  install(sourcefiledir, "source", {sourcelist})
   install(unpackdir, "tex", {installfiles})
 end
 
@@ -987,6 +1019,10 @@ local function formatlog(logfile, newfile, engine, errlevels)
       -- luaotfload files start with keywords
       line = gsub(line, "from " .. pattern .. "%(", "from. ./%1(")
       line = gsub(line, ": " .. pattern .. "%)", ": ../%1)")
+      -- Deal with XeTeX specials
+      if match(line, "^%.+\\XeTeX.?.?.?file") then
+        line = gsub(line, pattern, "../%1")
+      end
     end
     -- Deal with the fact that "(.aux)" may have still a leading space
     line = gsub(line, "^ %(%.aux%)", "(.aux)")
@@ -1009,6 +1045,36 @@ local function formatlog(logfile, newfile, engine, errlevels)
     -- Tidy up to ^^ notation
     for i = 0, 31 do
       line = gsub(line, char(i), "^^" .. char(64 + i))
+    end
+    -- Normalise register allocation to hard-coded numbers
+    -- No regex, so use a pattern plus lookup approach
+    local register_types = {
+        attribute      = true,
+        box            = true,
+        bytecode       = true,
+        catcodetable   = true,
+        count          = true,
+        dimen          = true,
+        insert         = true,
+        language       = true,
+        luabytecode    = true,
+        luachunk       = true,
+        luafunction    = true,
+        marks          = true,
+        muskip         = true,
+        read           = true,
+        skip           = true,
+        toks           = true,
+        whatsit        = true,
+        write          = true,
+        XeTeXcharclass = true
+      }
+    if register_types[match(line, "^\\[^%]]+=\\([a-z]+)%d+$")] then
+      line = gsub(line, "%d+$", "...")
+    end
+    -- Also deal with showing boxes
+    if match(line, "^> \\box%d+=$") or match(line, "^> \\box%d+=(void)$") then
+      line = gsub(line, "%d+=", "...=")
     end
     -- Remove 'normal' direction information on boxes with (u)pTeX
     line = gsub(line, ",? yoko direction,?", "")
@@ -1054,7 +1120,8 @@ local function formatlog(logfile, newfile, engine, errlevels)
   for line in gmatch(contents, "([^\n]*)\n") do
     if line == "START-TEST-LOG" then
       prestart = false
-    elseif line == "END-TEST-LOG" then
+    elseif line == "END-TEST-LOG" or
+      match(line, "^Here is how much of .?.?.?TeX\'s memory you used:") then
       break
     elseif line == "OMIT" then
       skipping = true
@@ -1073,7 +1140,7 @@ local function formatlog(logfile, newfile, engine, errlevels)
   if recordstatus then
     write('***************\n')
     for i = 1, checkruns do
-      write('Compilation ' .. i .. ' of test file completed with exit status ' .. errlevels[i] '\n')
+      write('Compilation ' .. i .. ' of test file completed with exit status ' .. errlevels[i] .. '\n')
     end
   end
   close(newfile)
@@ -1137,6 +1204,9 @@ local function formatlualog(logfile, newfile)
         "Missing character: There is no (%^%^..) %(U%+(....)%)",
         "Missing character: There is no %1"
       )
+    -- The first time a new font is used, it shows up
+    -- as being cached
+    line = gsub(line, "(save cache:", "(load cache:")
     -- A function to handle the box prefix part
     local function boxprefix(s)
       return gsub(match(s, "^(%.+)"), "%.", "%%.")
@@ -1537,15 +1607,16 @@ function runtest(name, engine, hide, ext, makepdf)
   end
   formatlog(logfile, newfile, engine, errlevels)
   -- Store secondary files for this engine
-  for _,i in ipairs(filelist(testdir, name .. ".???")) do
-    local ext = match(i, "%....")
-    if ext ~= lvtext and ext ~= tlgext and ext ~= lveext and ext ~= logext then
-      if not fileexists(testsuppdir .. "/" .. i) then
-        ren(
-          testdir, i, gsub(
-            i, gsub(name, "%-", "%%-"), name .. "." .. engine
-          )
-        )
+  for _,filetype in pairs(auxfiles) do
+    for _,file in pairs(filelist(testdir, filetype)) do
+      if match(file,"^" .. name) then
+        local ext = match(file, "%.[^.]+$")
+        if ext ~= lvtext and
+           ext ~= tlgext and
+           ext ~= lveext and
+           ext ~= logext then
+           ren(testdir, file, gsub(file, "(%.[^.]+)$", "." .. engine .. "%1"))
+        end
       end
     end
   end
@@ -1710,7 +1781,7 @@ function typesetpdf(file, dir)
   if errorlevel == 0 then
     name = name .. ".pdf"
     os_remove(jobname(name))
-    cp(name, typesetdir, ".")
+    cp(name, typesetdir, docfiledir)
   else
     print(" ! Compilation failed")
   end
@@ -1733,9 +1804,9 @@ typeset = typeset or function(file, dir)
           tex(file, dir)
         )
       end
-      errorlevel = cycle(name, dir)
-      if errorlevel == 0 then
+      for i = 1, typesetruns do
         errorlevel = cycle(name, dir)
+        if errorlevel ~= 0 then break end
       end
     end
     return errorlevel
@@ -1753,9 +1824,6 @@ function help()
     print("   check      Run all automated tests")
   end
   print("   clean      Clean out directory tree")
-  if next(cmdchkfiles) ~= nil then
-    print("   cmdcheck   Check commands documented are defined")
-  end
   if module == "" or bundle == "" then
     print("   ctan       Create CTAN-ready archive")
   end
@@ -1884,7 +1952,9 @@ function clean()
     cleandir(typesetdir) +
     cleandir(unpackdir)
   for _,i in ipairs(cleanfiles) do
-    errorlevel = rm(".", i) + errorlevel
+    for _,dir in pairs({maindir, sourcefiledir, docfiledir}) do
+      errorlevel = rm(dir, i) + errorlevel
+    end
   end
   return errorlevel
 end
@@ -1892,7 +1962,7 @@ end
 function bundleclean()
   local errorlevel = call(modules, "clean")
   for _,i in ipairs(cleanfiles) do
-    errorlevel = rm(".", i) + errorlevel
+    errorlevel = rm(maindir, i) + errorlevel
   end
   return (
     errorlevel     +
@@ -1901,44 +1971,7 @@ function bundleclean()
   )
 end
 
--- Check commands are defined
-function cmdcheck()
-  mkdir(localdir)
-  cleandir(testdir)
-  depinstall(checkdeps)
-  for _,i in ipairs({bibfiles, docfiles, sourcefiles, typesetfiles}) do
-    for _,j in ipairs(i) do
-      cp(j, ".", testdir)
-    end
-  end
-  for _,i in ipairs(typesetsuppfiles) do
-    cp(i, supportdir, testdir)
-  end
-  local engine = gsub(stdengine, "tex$", "latex")
-  local localdir = abspath(localdir)
-  print("Checking source files")
-  for _,i in ipairs(cmdchkfiles) do
-    for _,j in ipairs(filelist(".", i)) do
-      print("  " .. jobname(j))
-      run(
-        testdir,
-        os_setenv .. " TEXINPUTS=." .. os_pathsep .. localdir
-          .. os_pathsep ..
-        os_concat ..
-        engine .. " " .. cmdchkopts ..
-          " \"\\PassOptionsToClass{check}{l3doc} \\input " .. j .. "\""
-          .. " > " .. os_null
-      )
-      for line in lines(testdir .. "/" .. jobname(j) .. ".cmds") do
-        if match(line, "^%!") then
-          print("   - " .. match(line, "^%! (.*)"))
-        end
-      end
-    end
-  end
-end
-
-function ctan(standalone)
+function ctan()
   -- Always run tests for all engines
   options["engine"] = nil
   local function dirzip(dir, name)
@@ -1970,6 +2003,10 @@ function ctan(standalone)
     )
   end
   local errorlevel
+  local standalone = false
+  if bundle == "" then
+    standalone = true
+  end
   if standalone then
     errorlevel = check()
     bundle = module
@@ -1994,7 +2031,7 @@ function ctan(standalone)
   end
   if errorlevel == 0 then
     for _,i in ipairs(textfiles) do
-      for _,j in pairs({unpackdir, "."}) do
+      for _,j in pairs({unpackdir, currentdir}) do
         cp(i, j, ctandir .. "/" .. ctanpkg)
         cp(i, j, tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle)
       end
@@ -2004,7 +2041,7 @@ function ctan(standalone)
       cp(ctanpkg .. ".tds.zip", tdsdir, ctandir)
     end
     dirzip(ctandir, ctanpkg)
-    cp(ctanpkg .. ".zip", ctandir, ".")
+    cp(ctanpkg .. ".zip", ctandir, currentdir)
   else
     print("\n====================")
     print("Typesetting failed, zip stage skipped!")
@@ -2016,22 +2053,23 @@ end
 function bundlectan()
   -- Generate a list of individual file names excluding those in the second
   -- argument: the latter is a table
-  local function excludelist(include, exclude)
+  local function excludelist(include, exclude, dir)
     local include = include or { }
     local exclude = exclude or { }
+    local dir = dir or currentdir
     local includelist = { }
     local excludelist = { }
     for _,i in ipairs(exclude) do
       for _,j in ipairs(i) do
-        for _,k in ipairs(filelist(".", j)) do
-          excludelist[k] = true
+        for file,_ in pairs(tree(dir, j)) do
+          excludelist[file] = true
         end
       end
     end
     for _,i in ipairs(include) do
-      for _,j in ipairs(filelist(".", i)) do
-        if not excludelist[j] then
-          insert(includelist, j)
+      for file,_ in pairs(tree(dir, i)) do
+        if not excludelist[file] then
+          insert(includelist, file)
         end
       end
     end
@@ -2051,9 +2089,9 @@ function bundlectan()
     for _,v in pairs(typesetdemofiles) do
       insert(typesetfiles, v)
     end
-    typesetlist = excludelist(typesetfiles, {sourcefiles})
+    typesetlist = excludelist(typesetfiles, {sourcefiles}, docfiledir)
     sourcelist = excludelist(
-      sourcefiles, {bstfiles, installfiles, makeindexfiles}
+      sourcefiles, {bstfiles, installfiles, makeindexfiles}, sourcefiledir
     )
     copyctan()
     copytds()
@@ -2061,25 +2099,37 @@ function bundlectan()
   return errorlevel
 end
 
+-- A hook to allow additional typesetting of demos
+typeset_demo_tasks = typeset_demo_tasks or function()
+  return 0
+end
+
 -- Typeset all required documents
 -- Uses a set of dedicated auxiliaries that need to be available to others
 function doc(files)
   -- Set up
   cleandir(typesetdir)
-  for _,i in ipairs(
-    {bibfiles, docfiles, sourcefiles, typesetfiles, typesetdemofiles}
-  ) do
-    for _,j in ipairs(i) do
-      cp(j, ".", typesetdir)
+  for _,filetype in pairs(
+      {bibfiles, docfiles, typesetfiles, typesetdemofiles}
+    ) do
+    for _,file in pairs(filetype) do
+      cp(file, docfiledir, typesetdir)
     end
   end
-  for _,i in ipairs(typesetsuppfiles) do
-    cp(i, supportdir, typesetdir)
+  for _,file in pairs(sourcefiles) do
+    cp(file, sourcefiledir, typesetdir)
+  end
+  for _,file in pairs(typesetsuppfiles) do
+    cp(file, supportdir, typesetdir)
   end
   depinstall(typesetdeps)
-  unpack({sourcefiles, typesetsourcefiles}, {".", docfiledir})
+  unpack({sourcefiles, typesetsourcefiles}, {sourcefiledir, docfiledir})
   -- Main loop for doc creation
   local done = {}
+  local errorlevel = typeset_demo_tasks()
+  if errorlevel ~= 0 then
+    return errorlevel
+  end
   for _, typesetfiles in ipairs({typesetdemofiles, typesetfiles}) do
     for _,i in ipairs(typesetfiles) do
       for _, dir in ipairs({unpackdir, typesetdir}) do
@@ -2120,7 +2170,7 @@ function install()
     return errorlevel
   end
   set_program_name("latex")
-  local texmfhome = var_value("TEXMFHOME")
+  local texmfhome = options["texmfhome"] or var_value("TEXMFHOME")
   local installdir = texmfhome .. "/tex/" .. moduledir
   errorlevel = cleandir(installdir)
   if errorlevel ~= 0 then
@@ -2244,7 +2294,7 @@ setversion_update_line = setversion_update_line or function(line, date, version)
   return line
 end
 
-function setversion(dir)
+function setversion()
   local function rewrite(dir, file, date, version)
     local changed = false
     local result = ""
@@ -2275,10 +2325,11 @@ function setversion(dir)
   end
   local date = options["date"] or os_date("%Y-%m-%d")
   local version = options["version"] or -1
-  local dir = dir or "."
-  for _,i in pairs(versionfiles) do
-    for _,j in pairs(filelist(dir, i)) do
-      rewrite(dir, j, date, version)
+  for _,dir in pairs({currentdir, sourcefiledir, docfiledir}) do
+    for _,i in pairs(versionfiles) do
+      for file,_ in pairs(tree(dir, i)) do
+        rewrite(dir, file, date, version)
+      end
     end
   end
   return 0
@@ -2315,7 +2366,7 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
   if errorlevel ~=0 then
     return errorlevel
   end
-  for _,i in ipairs(sourcedirs or {"."}) do
+  for _,i in ipairs(sourcedirs or {sourcefiledir}) do
     for _,j in ipairs(sources or {sourcefiles}) do
       for _,k in ipairs(j) do
         errorlevel = cp(k, i, unpackdir)
@@ -2393,8 +2444,6 @@ function stdmain(target, files)
       end
     elseif target == "clean" then
       errorlevel = bundleclean()
-    elseif target == "cmdcheck" and next(cmdchkfiles) ~= nil then
-      errorlevel = call(modules, "cmdcheck")
     elseif target == "ctan" then
       errorlevel = ctan()
     elseif target == "install" then
@@ -2426,10 +2475,8 @@ function stdmain(target, files)
       errorlevel = check(files)
     elseif target == "clean" then
       errorlevel = clean()
-    elseif target == "cmdcheck" and next(cmdchkfiles) ~= nil then
-      errorlevel = cmdcheck()
-    elseif target == "ctan" and bundle == "" then  -- Stand-alone module
-      errorlevel = ctan(true)
+    elseif target == "ctan" then
+      errorlevel = ctan()
     elseif target == "install" then
       errorlevel = install()
     elseif target == "manifest" then
@@ -2460,17 +2507,31 @@ end
 -- Allow main function to be disabled 'higher up'
 main = main or stdmain
 
--- Pick up and read any per-run testfiledir
-if options["testfiledir"] then
-  if #options["testfiledir"] == 1 then
-    testfiledir = options["testfiledir"][1]
-    if fileexists(testfiledir .. "/config.lua") then
-      dofile(testfiledir .. "/config.lua")
+-- Deal with multiple configs for tests
+checkconfigs = options["config"] or checkconfigs
+if options["target"] == "check" then
+  if #checkconfigs > 1 then
+    local errorlevel = 0
+    local opts = options
+    for i = 1, #checkconfigs do
+      opts["config"] = {checkconfigs[i]}
+      errorlevel = call({"."}, "check", opts)
+      if errorlevel ~= 0 then exit(1) end
     end
-  else
-    print("Cannot use more than one testfile dir at a time!")
-    return 1
+    -- Avoid running the 'main' set of tests twice
+    exit(0)
   end
+end
+if #checkconfigs == 1 and
+   checkconfigs[1] ~= stdconfig and
+   (options["target"] == "check" or options["target"] == "save") then
+   local config = "./" .. checkconfigs[1] .. ".lua"
+   if fileexists(config) then
+     dofile(config)
+   else
+     print("Error: Cannot find configuration " ..  checkconfigs[1])
+     exit(1)
+   end
 end
 
 -- Call the main function

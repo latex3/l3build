@@ -50,81 +50,85 @@
 \newcommand\luavarseparator{}
 \makeatother
 \def\allluavars{
-\luavarset{module}{""}{The name of the module.}
-\luavarset{bundle}{""}{The name of the bundle in which the module belongs.}
-\luavarset{ctanpkg}{bundle}{Name of the bundle on CTAN}
+\luavarset{module}{""}{The name of the module}
+\luavarset{bundle}{""}{The name of the bundle in which the module belongs (where relevant)}
+\luavarset{ctanpkg}{module/bundle}{Name of the CTAN package matching this module}
 \luavarseparator
-\luavarset{modules}{\{~\}}{The list of all modules in a bundle (when not auto-detecting)}
-\luavarset{exclmodules}{\{~\}}{Directories to be excluded from automatic module detection}
+\luavarset{modules}{\{\}}{The list of all modules in a bundle (when not auto-detecting)}
+\luavarset{exclmodules}{\{\}}{Directories to be excluded from automatic module detection}
 \luavarseparator
-\luavarset{maindir}     {"."}{The top level directory for this module or bundle.}
-\luavarset{supportdir}  {maindir .. "/support"}     {Where copies of files to support check/doc compilation are stored.}
-\luavarset{testfiledir} {maindir .. "/testfiles"}   {Where the tests are.}
-\luavarset{testsuppdir} {testfiledir .. "/support"} {Where support files for the tests are.}
+\luavarset{maindir}     {"."}                      {Top level directory for the module/bundle}
+\luavarset{docfiledir}  {"."}                 {Directory containing documentation files}
+\luavarset{sourcfiledir}{"."}                 {Directory containing source files}
+\luavarset{supportdir} {maindir .. "/support"}    {Directory containing general support files}
+\luavarset{testfiledir}{"./testfiles"}  {Directory containing test files}
+\luavarset{testsuppdir}{testfiledir .. "/support"}{Directory containing test-specific support files}
 \luavarseparator
-\luavarset{localdir}   {maindir .. "/build/local"}  {Generated folder where support files are placed to allow \enquote{sandboxed} \TeX{} runs.}
-\luavarset{testdir}    {maindir .. "/build/test"}   {Generated folder where tests are run.}
-\luavarset{typesetdir} {maindir .. "/build/doc"}    {Generated folder where typesetting is run.}
-\luavarset{unpackdir}  {maindir .. "/build/unpack"} {Generated folder where unpacking occurs.}
-\luavarset{distribdir} {maindir .. "/build/distrib"}{Generated folder where the archive is created.}
-\luavarset{ctandir}    {distribdir .. "/ctan"}      {Generated folder where files are organised for CTAN.}
-\luavarset{tdsdir}     {distribdir .. "/tds"}       {Generated folder where files are organised for a TDS.}
-\luavarset{tdsroot}    {"latex"}{Root directory of the TDS structure for the bundle/module to be installed into.}
+\luavarset{builddir}  {maindir .. "/build"}   {Directory for building and testing}
+\luavarset{distribdir}{builddir .. "/distrib"}{Directory for generating distribution structure}
+\luavarset{localdir}  {builddir .. "/local"}  {Directory for extracted files in \enquote{sandboxed} \TeX{} runs}
+\luavarset{testdir}   {builddir .. "/test"}   {Directory for running tests}
+\luavarset{typesetdir}{builddir .. "/doc"}    {Directory for building documentation}
+\luavarset{unpackdir} {builddir .. "/unpack"} {Directory for unpacking sources}
 \luavarseparator
-\luavarset{bibfiles}          {\{"*.bib"\}}{\BibTeX{} database files.}
-\luavarset{binaryfiles}       {\{"*.pdf", "*.zip"\}}
-                              {Files to be added in binary mode to zip files.}
-\luavarset{bstfiles}          {\{"*.bst"\}}{\BibTeX{} style files.}
+\luavarset{ctandir}{distribdir .. "/ctan"}{Directory for organising files for CTAN}
+\luavarset{tdsdir} {distribdir .. "/tds"} {Directory for organised files into TDS structure}
+\luavarset{tdsroot}{"latex"}{Root directory of the TDS structure for the bundle/module to be installed into}
+\luavarseparator
+\luavarset{auxfiles}          {\{"*.aux", "*.lof", "*.lot", "*.toc"\}}{Secondary files to be saved as part of running tests}
+\luavarset{bibfiles}          {\{"*.bib"\}}{\BibTeX{} database files}
+\luavarset{binaryfiles}       {\{"*.pdf", "*.zip"\}}{Files to be added in binary mode to zip files}
+\luavarset{bstfiles}          {\{"*.bst"\}}{\BibTeX{} style files}
 \luavarset{checkfiles}        {\{~\}}{Extra files unpacked purely for tests}
-\luavarset{checksuppfiles}    { }{Files needed for performing regression tests.}
-\luavarset{cmdchkfiles}       {\{~\}}{Files need to perform command checking (\cls{l3doc}-based documentation only).}
-\luavarset{cleanfiles}        {\{"*.log", "*.pdf", "*.zip"\}}{Files to delete when cleaning.}
-\luavarset{demofiles}         {\{~\}}{Files which show how to use a module.}
-\luavarset{docfiles}          {\{~\}}{Files which are part of the documentation but should not be typeset.}
-\luavarset{excludefiles}      {\{"*\string~"\}}            {Files to ignore entirely (default for Emacs backup files).}
-\luavarset{installfiles}      {\{"*.sty"\}}         {Files to install to the \TeX{} tree and similar tasks.}
+\luavarset{checksuppfiles}    { }{Files needed for performing regression tests}
+\luavarset{cleanfiles}        {\{"*.log", "*.pdf", "*.zip"\}}{Files to delete when cleaning}
+\luavarset{demofiles}         {\{\}}{Files which show how to use a module}
+\luavarset{docfiles}          {\{\}}{Files which are part of the documentation but should not be typeset}
+\luavarset{excludefiles}      {\{"*\string~"\}}{Files to ignore entirely (default for Emacs backup files)}
+\luavarset{installfiles}      {\{"*.sty","*.cls"\}}{Files to install to the \TeX{} tree and similar task}
 \luavarset{makeindexfiles}    {\{"*.ist"\}}{MakeIndex files to be included in a TDS-style zip}
-\luavarset{sourcefiles}       {\{"*.dtx", "*.ins"\}}{Files to copy for unpacking.}
-\luavarset{textfiles}         {\{"*.md", "*.txt"\}}{Plain text files to send to CTAN as-is.}
-\luavarset{typesetdemofiles}  {\{~\}}       {Files to typeset before the documentation (as demos), but where the PDF results are not included in the release.}
-\luavarset{typesetfiles}      {\{"*.dtx"\}} {Files to typeset for documentation.}
-\luavarset{docfiledir}        {maindir}{Where to look for the |typesetfiles| and |typesetsourcefiles|.}
-\luavarset{typesetsuppfiles}  {\{~\}}       {Files needed to support typesetting when \enquote{sandboxed}.}
-\luavarset{typesetsourcefiles}{\{~\}}       {Files to copy to unpacking when typesetting.}
-\luavarset{unpackfiles}       {\{"*.ins"\}} {Files to run to perform unpacking.}
-\luavarset{unpacksuppfiles}   {\{~\}}       {Files needed to support unpacking when \enquote{sandboxed}.}
-\luavarset{versionfiles}      {\{"*.dtx"\}} {Files for automatic version editing.}
+\luavarset{sourcefiles}       {\{"*.dtx", "*.ins"\}}{Files to copy for unpacking}
+\luavarset{textfiles}         {\{"*.md", "*.txt"\}}{Plain text files to send to CTAN as-is}
+\luavarset{typesetdemofiles}  {\{\}}{Files to typeset before the documentation for inclusion in main documentation files}
+\luavarset{typesetfiles}      {\{"*.dtx"\}}{Files to typeset for documentation}
+\luavarset{typesetsuppfiles}  {\{\}}{Files needed to support typesetting when \enquote{sandboxed}}
+\luavarset{typesetsourcefiles}{\{\}}{Files to copy to unpacking when typesetting.}
+\luavarset{unpackfiles}       {\{"*.ins"\}}{Files to run to perform unpacking.}
+\luavarset{unpacksuppfiles}   {\{\}}{Files needed to support unpacking when \enquote{sandboxed}}
+\luavarset{versionfiles}      {\{"*.dtx"\}}{Files for automatic version editing}
 \luavarseparator
-\luavarset{bakext} {".bak"} {Extension of backup files.}
-\luavarset{dviext} {".dvi"} {Extension of DVI files.}
-\luavarset{lvtext} {".lvt"} {Extension of test files.}
-\luavarset{tlgext} {".tlg"} {Extension of test file output.}
-\luavarset{lveext} {".lve"} {Extension of auto-generating test file output.}
-\luavarset{logext} {".log"} {Extension of checking output, before processing it into a \texttt{.tlg}.}
-\luavarset{pdfext} {".pdf"} {Extension of PDF file for checking and saving.}
-\luavarset{psext}  {".ps"}  {Extension of PostScript files.}
+\luavarset{bakext}{".bak"}{Extension of backup files}
+\luavarset{dviext}{".dvi"}{Extension of DVI files}
+\luavarset{lvtext}{".lvt"}{Extension of test files}
+\luavarset{tlgext}{".tlg"}{Extension of test file output}
+\luavarset{lveext}{".lve"}{Extension of auto-generating test file output}
+\luavarset{logext}{".log"}{Extension of checking output, before processing it into a \texttt{.tlg}}
+\luavarset{pdfext}{".pdf"}{Extension of PDF file for checking and saving}
+\luavarset{psext} {".ps"} {Extension of PostScript files}
 \luavarseparator
-\luavarset{checkdeps}   {\{~\}} {List of build unpack dependencies for checking.}
-\luavarset{typesetdeps} {\{~\}} {\dots for typesetting docs.}
-\luavarset{unpackdeps}  {\{~\}} {\dots for unpacking.}
+\luavarset{checkdeps}  {\{\}}{List of dependencies for running checks}
+\luavarset{typesetdeps}{\{\}}{List of dependencies for typesetting docs}
+\luavarset{unpackdeps} {\{\}}{List of dependencies for unpacking}
 \luavarseparator
-\luavarset{checkengines}{\{"pdftex", "xetex", "luatex"\}} {Engines to check with \texttt{check} by default.}
-\luavarset{stdengine}    {"pdftex"} {Engine to generate \texttt{.tlg} file from.}
-\luavarset{checkformat}  {"latex"} {Format to use for tests.}
+\luavarset{checkengines}{\{"pdftex", "xetex", "luatex"\}}{Engines to check with \texttt{check} by default}
+\luavarset{stdengine}    {"pdftex"}{Engine to generate \texttt{.tlg} file from}
+\luavarset{checkformat}  {"latex"} {Format to use for tests}
 \luavarseparator
-\luavarset{typesetexe} {"pdflatex"} {Executable for compiling \texttt{doc(s)}.}
-\luavarset{unpackexe}  {"tex"}      {Executable for running \texttt{unpack}.}
-\luavarset{zipexe}     {"zip"}      {Executable for creating archive with \texttt{ctan}.}
+\luavarset{checkconfigs}{\{\}}{Configurations to use for tests}
+\luavarset{stdconfig}   {\meta{Main script}}{Standard test configuration}
+\luavarseparator
+\luavarset{typesetexe}{"pdflatex"}{Executable for compiling \texttt{doc(s)}}
+\luavarset{unpackexe} {"tex"}     {Executable for running \texttt{unpack}}
+\luavarset{zipexe}    {"zip"}     {Executable for creating archive with \texttt{ctan}}
 \luavarseparator
 \luavarset{checkopts}  {"-interaction=nonstopmode"}{Options based to engine when running checks.}
-\luavarset{cmdchkopts} {"-interaction=batchmode"}  {Options based to engine when running command checks.}
 \luavarset{typesetopts}{"-interaction=nonstopmode"}{Options based to engine when typesetting.}
 \luavarset{unpackopts} {""}                        {Options based to engine when unpacking.}
 \luavarset{zipopts}    {"-v -r -X"}                {Options based to zip program.}
 \luavarseparator
-\luavarset{checksearch}  {true}  {Look in \texttt{tds} dirs for checking?}
-\luavarset{typesetsearch}{true}  {Look in \texttt{tds} dirs for typesetting docs?}
-\luavarset{unpacksearch} {true}  {Look in \texttt{tds} dirs for unpacking?}
+\luavarset{checksearch}  {true}{Switch to search the system \texttt{texmf} for during checking}
+\luavarset{typesetsearch}{true}{Switch to search the system \texttt{texmf} for during typesetting}
+\luavarset{unpacksearch} {true}{Switch to search the system \texttt{texmf} for during unpacking}
 \luavarseparator
 \luavarset{glossarystyle}{"gglo.ist"}{MakeIndex style file for glossary/changes creation}
 \luavarset{indexstyle}   {"gind.ist"}{MakeIndex style for index creation}
@@ -141,14 +145,15 @@
 \luavarset{forcedocepoch}  {"false"}   {Force epoch when typesetting}
 \luavarseparator
 \luavarset{asciiengines}{\{"pdftex"\}}{Engines which should log as sure ASCII}
-\luavarset{checkruns}   {1}           {How many times to run a check file before comparing the log.}
-\luavarset{epoch}       {1463734800}  {Epoch (Unix date) to set for test runs.}
-\luavarset{maxprintline}{79}          {Length of line to use in log files.}
-\luavarset{packtdszip}  {false}       {Build a TDS-style zip file for CTAN?}
-\luavarset{scriptname}  {"build.lua"} {Name of script used in dependencies.}
+\luavarset{checkruns}   {1}           {Number of runs to complete for a test before comparing the log}
+\luavarset{epoch}       {1463734800}  {Epoch (Unix date) to set for test runs}
+\luavarset{maxprintline}{79}          {Length of line to use in log files}
+\luavarset{packtdszip}  {false}       {Switch to build a TDS-style zip file for CTAN}
+\luavarset{scriptname}  {"build.lua"} {Name of script used in dependencies}
 \luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting.}
+\luavarset{typsetcycles}{3}           {Number of cycles of typesetting to carry out.}
 \luavarset{versionform} {""}          {Nature of version strings for auto-replacement.}
-\luavarset{recordstatus} {false}      {Include error level(s) from test run(s) in TLG files?}
+\luavarset{recordstatus}{false}       {Switch to include error level from test runs in \texttt{.tlg} files}
 \luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file.}
 }
 \allluavars
@@ -211,7 +216,7 @@
 %    }^^A
 % }
 %
-% \date{Released 2017/09/12}
+% \date{Released 2017/12/12}
 %
 % \maketitle
 % \tableofcontents
@@ -295,15 +300,18 @@
 % \item check \meta{name(s)}
 % \item cmdcheck
 % \item clean
+% \item ctan
 % \item doc \meta{name(s)}
 % \item install
 % \item save \meta{name(s)}
 % \item setversion
+% \item unpack
 % \end{itemize}
 % These commands are described below.
 %
 % As well as these commands, the system recognises the options
 % \begin{itemize}
+%   \item \texttt{--config} (\texttt{-c}) Configuration(s) to use for testing
 % \item \texttt{--date} (\texttt{-d}) Date to use when setting version
 %   data
 % \item \texttt{--engine} (\texttt{-e}) Sets the engine to use for
@@ -377,13 +385,6 @@
 % This functionality requires \TeX{} Live 2016 or later as it needs support
 % from the engines not available in earlier releases.
 % \end{buildcmd}
-%
-% \begin{buildcmd}{cmdcheck}
-% For \cls{l3doc}-based sources, allows checking that the commands defined in the code part  (by \var{cmdchkfiles}) are documented in the description part.
-% This is performed by passing the |check| option to the \cls{l3doc} class, typesetting the file(s) to check with engine \var{stdengine} with options \var{cmdchkopts}, and checking the resultant |.cmds| file(s).
-% Dependencies are specified also with \var{checkdeps}.
-% \end{buildcmd}
-%
 %
 % \begin{buildcmd}{clean}
 % This command removes all temporary files used for package bundling and regression testing.
@@ -470,6 +471,8 @@
 %
 % \begin{buildcmd}{install}
 % Copies all package files (defined by \var{installfiles}) into the user's home \texttt{texmf} tree in the form of the \TeX\ Directory Structure.
+% The location of the user tree can be adjusted using the |--texmfhome| swtich:
+% the standard setting is the location set as |TEXMFHOME|.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{save \meta{name(s)}}
@@ -639,31 +642,42 @@
 % \subsection{Multiple sets of tests}
 %
 % In most cases, a single set of tests will be appropriate for the module, with
-% a common set of configuration settings applying. However, there are situations
-% where you may need entirely independent sets of tests which have different
-% setting values, for example using different formats or where the entire set
-% will be engine-dependent. To support this, \pkg{l3build} offers the |--testfiledir|
-% (|-t|) command line option. When this is given with a directory argument it
-% overrides the \var{testfiledir} variable. Moreover, before the tests are run,
-% \pkg{l3build} will read |config.lua| within the directory (if available). This
-% should comprise a list of settings which apply to the tests in place of those in
-% the main build script.
+% a common set of configuration settings applying. However, there are
+% situations where you may need entirely independent sets of tests which have
+% different setting values, for example using different formats or where the
+% entire set will be engine-dependent. To support this, \pkg{l3build} offers
+% the possibility of using multiple configurations for tests. This is supported
+% using the \var{checkconfigs} table. This is used to list the names of each
+% configuration (|.lua| file) which will be used to run tests.
 %
-% For example, for the core \LaTeXe{} tests the main test files are contained
-% in a directory |testfiles| and have \var{checksearch} set \var{false}. To test
-% font loading for \XeTeX{} and \LuaTeX{} there are a second set of tests in
-% |testfiles-TU| which use the short |config.lua| file shown in
-% Figure~\ref{fig:testfiledir}. These additional tests are then run using
-% |texlua build.lua check --testfiledir=testfiles-TU|.
-% \begin{figure}
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
-%     -- Special config for these tests
+% For example, for the core \LaTeXe{} tests the main test files are contained 
+% in a directory |testfiles|. To test font loading for \XeTeX{} and \LuaTeX{}
+% there are a second set of tests in |testfiles-TU| which use the short
+% |build-TU.lua| file shown in Figure~\ref{fig:configs}. To run both sets of
+% tests, the main |build.lua| file contains the setting
+% |checkconfigs = {"build", "config-TU"}|. This will cause \pkg{l3build} to run
+% first using no additional settings (\emph{i.e.}~reading the normal
+% |build.lua| file alone), then running \emph{also} loading the settings from
+% |config-TU.lua|.
+% \begin{figure} 
+%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6] 
+%     -- Special config for these tests 
 %     checksearch  = true
 %     checkengines = {"xetex","luatex"}
-%   \end{lstlisting}
-% \caption{The build script for the \pkg{xparse} module.}
-% \label{fig:testfiledir}
-% \end{figure}
+%     testfiledir  = "testfiles-TU"
+%   \end{lstlisting} 
+% \caption{The build script for the \pkg{xparse} module.} 
+% \label{fig:configs} 
+% \end{figure} 
+%
+% To allow selection of a one or more configurations, and to allow saving of
+% |.tlg| files in non-standard configurations, the |--config| (|-c|) option may
+% be used. This works in the same way as |--engine|: it takes a comma list of
+% configurations to apply, overriding \var{checkconfigs}.
+%
+% Note that the setting \var{stdconfig} is used to determine the \emph{vanilla}
+% configuration: this will typically be the name of the main script (usually
+% |build| for a standard |build.lua| file).
 %
 % \subsection{Dependencies}
 %
@@ -699,6 +713,18 @@
 % This ensures that the \pkg{l3kernel} code is included in all processes involved in unpacking and checking and so on.
 % The name of the script file in the dependency is set with the |scriptname| variable; by default these are |"build.lua"|.
 %
+% \subsection{Non-standard source layouts}
+%
+% A variety of source layouts are supported. In general, a \enquote{flat}
+% layout with all source files \enquote{here} is most convenient. However,
+% \pkg{l3build} supports placement of both code and documentation source
+% files in other locations using the \var{sourcefiledir} and \var{docfiledir}
+% variables. For pre-built trees, the glob syntax \texttt{**/*.\meta{ext}} may
+% be useful in these cases: this enables recursive searching in the appropriate
+% tree locations.
+%
+% A series of example layouts and matching |build.lua| files are available from
+% \url{https://github.com/latex3/l3build/tree/master/examples}.
 %
 % \subsection{Output normalisation}
 % \label{sec:norm}
@@ -730,6 +756,11 @@
 %     years due to a \TeX{} bug).
 %   \item Conversion of \texttt{on line \meta{number}} to \texttt{on line ...}
 %     to allow flexibility in changes to test files.
+%   \item Conversion of register numbers in assignment lines
+%     \texttt{\cs{\meta{register}}=\cs{\meta{type}}\meta{number}} to
+%     \texttt{\cs{\meta{type}}\meta{...}}
+%   \item Conversion of box numbers in |\show| lines
+%     \texttt{>~\cs{box}\meta{number}=} to \texttt{>~\cs{box}...=}
 % \end{itemize}
 %
 % \LuaTeX{} makes several additional changes to the log file. As normalising
@@ -1151,6 +1182,13 @@
 % For example,  Figure~\ref{fig:PDF} shows a simple script which might
 % apply to a case where multiple \BibTeX{} runs are needed (perhaps where
 % citations can appear within other references).
+%
+% Where there are complex requirements for pre-compiled demonstration
+% files, the hook |typeset_demo_hook()| is available: it runs after
+% copying files to the typesetting location but before the main typesetting
+% run. This may be used for example to script a very large number of
+% demonstrations using a single source (see the \pkg{beamer} package
+% for an example of this).
 %
 % \begin{figure}[!b]
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
