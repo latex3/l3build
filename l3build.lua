@@ -767,8 +767,15 @@ end
 -- Remove file(s) based on a glob
 function rm(source, glob)
   for _,i in ipairs(filelist(source, glob)) do
-    os_remove(source .. "/" .. i)
+    rmfile(source,i)
   end
+  -- os_remove doesn't give a sensible errorlevel
+  return 0
+end
+
+-- Remove file
+function rmfile(source, file)
+  os_remove(source .. "/" .. file)
   -- os_remove doesn't give a sensible errorlevel
   return 0
 end
@@ -2320,7 +2327,7 @@ function setversion()
       output(f)
       write(result)
       close(f)
-      rm(dir, file .. bakext)
+      rmfile(dir, file .. bakext)
     end
   end
   local date = options["date"] or os_date("%Y-%m-%d")
