@@ -196,6 +196,9 @@ pdfext = pdfext or ".pdf"
 psext  = psext  or ".ps"
 tlgext = tlgext or ".tlg"
 
+-- Manifest options
+manifestfile = "MANIFEST.md"
+
 -- File operations are aided by the LuaFileSystem module
 local lfs = require("lfs")
 
@@ -2406,6 +2409,13 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
   return 0
 end
 
+
+kpse.set_program_name("kpsewhich")
+build_kpse_path = dirname(kpse.lookup("l3build.lua"))
+require( kpse.lookup("l3build-manifest.lua", { path = build_kpse_path } ) )
+require( kpse.lookup("l3build-manifest-setup.lua", { path = build_kpse_path } ) )
+
+
 function version()
   print(
     "\n" ..
@@ -2469,6 +2479,8 @@ function stdmain(target, files)
       errorlevel = ctan()
     elseif target == "install" then
       errorlevel = install()
+    elseif target == "manifest" then
+      errorlevel = manifest()
     elseif target == "save" then
       if next(files) then
         errorlevel = save(files)

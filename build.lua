@@ -11,12 +11,12 @@ checkconfigs = {"build", "plain"}
 checkdeps    = { }
 checkengines = {"pdftex", "xetex", "luatex", "ptex", "uptex"}
 cleanfiles   = {"*.pdf", "*.tex", "*.zip"}
-installfiles = {"l3build.lua", "regression-test.tex"}
+installfiles = {"*.lua", "regression-test.tex"}
 packtdszip   = true
-sourcefiles  = {"*.dtx", "l3build.lua", "*.ins"}
+sourcefiles  = {"*.dtx", "*.lua", "*.ins"}
 typesetcmds  = "\\AtBeginDocument{\\DisableImplementation}"
 unpackdeps   = { }
-versionfiles = {"*.dtx", "*.md", "l3build.lua"}
+versionfiles = {"*.dtx", "*.md", "*.lua"}
 
 -- Detail how to set the version automatically
 function setversion_update_line(line, date, version)
