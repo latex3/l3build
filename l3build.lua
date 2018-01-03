@@ -1872,9 +1872,11 @@ function help()
     local opt = option_list[k]
     local filler = rep(" ", longest - len(k) + 1)
     if opt["desc"] then -- Skip --help as it has no desc
-      print(
-        "   --" .. k .. "|-" .. opt["short"] .. filler .. opt["desc"]
-      )
+      if opt["short"] then
+        print("   --" .. k .. "|-" .. opt["short"] .. filler .. opt["desc"])
+      else
+        print("   --" .. k .. "   " .. filler .. opt["desc"])
+      end
     end
   end
   print("")
