@@ -1859,6 +1859,7 @@ function help()
     print("   save       Saves test validation log")
   end
   print("   setversion Update version information in sources")
+  print("   unpack     Unpacks the source files into the build tree")
   print("")
   print("Valid options are:")
   local longest = 0
