@@ -1870,7 +1870,7 @@ function help()
   sort(t)
   for _,k in ipairs(t) do
     local opt = option_list[k]
-    local filler = rep(" ", longest - len(k))
+    local filler = rep(" ", longest - len(k) + 1)
     if opt["desc"] then -- Skip --help as it has no desc
       print(
         "   --" .. k .. "|-" .. opt["short"] .. filler .. opt["desc"]
