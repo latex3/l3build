@@ -257,6 +257,11 @@ local option_list =
         short = "d",
         type  = "string"
       },
+    ["dry-run"] =
+      {
+        desc = "Dry run for install",
+        type = "boolean"
+      },
     engine =
       {
         desc  = "Sets the engine(s) to use for running test",
@@ -2199,8 +2204,15 @@ function install()
   if errorlevel ~= 0 then
     return errorlevel
   end
+  print()
   for _,i in ipairs(installfiles) do
-    errorlevel = cp(i, unpackdir, installdir)
+    if options["dry-run"] then
+      for _,file in pairs(filelist(unpackdir,i)) do
+        print("Would install " .. file)
+      end
+    else
+      errorlevel = cp(i, unpackdir, installdir)
+    end
     if errorlevel ~= 0 then
       return errorlevel
     end
