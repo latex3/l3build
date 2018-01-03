@@ -2201,21 +2201,25 @@ function install()
   set_program_name("latex")
   local texmfhome = options["texmfhome"] or var_value("TEXMFHOME")
   local installdir = texmfhome .. "/tex/" .. moduledir
-  errorlevel = cleandir(installdir)
-  if errorlevel ~= 0 then
-    return errorlevel
-  end
-  print()
-  for _,i in ipairs(installfiles) do
-    if options["dry-run"] then
-      for _,file in pairs(filelist(unpackdir,i)) do
-        print("Would install " .. file)
+  if options["dry-run"] then
+    print("\n" .. "Installation root: " .. installdir
+      .. "\n" .. "Intallation files:"
+    )
+    for _,filetype in ipairs(installfiles) do
+      for _,file in pairs(filelist(unpackdir,filetype)) do
+        print("- " .. file)
       end
-    else
-      errorlevel = cp(i, unpackdir, installdir)
     end
+  else
+    errorlevel = cleandir(installdir)
     if errorlevel ~= 0 then
       return errorlevel
+    end
+    for _,filetype in ipairs(installfiles) do
+      errorlevel = cp(filetype, unpackdir, installdir)
+      if errorlevel ~= 0 then
+        return errorlevel
+      end
     end
   end
   return 0
