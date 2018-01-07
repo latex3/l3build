@@ -28,6 +28,9 @@ for those people who are interested.
       ==================
 --]]
 
+local gsub             = string.gsub
+local match            = string.match
+
 -- Provide some standard search-and-replace functions
 if versionform ~= "" and not setversion_update_line then
   if versionform == "ProvidesPackage" then
@@ -108,18 +111,18 @@ function setversion()
     end
     if changed then
       -- Avoid adding/removing end-of-file newline
-      local f = open(dir .. "/" .. file, "rb")
+      local f = io.open(dir .. "/" .. file, "rb")
       local content = f:read("*all")
-      close(f)
+      f:close()
       if not match(content, os_newline .. "$") then
         gsub(result, os_newline .. "$", "")
       end
       -- Write the new file
       ren(dir, file, file .. bakext)
-      local f = open(dir .. "/" .. file, "w")
-      output(f)
-      write(result)
-      close(f)
+      local f = io.open(dir .. "/" .. file, "w")
+      io.output(f)
+      io.write(result)
+      f:close()
       rmfile(dir, file .. bakext)
     end
   end
