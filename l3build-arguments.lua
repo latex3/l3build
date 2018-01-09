@@ -55,7 +55,6 @@ option_list =
     epoch =
       {
         desc  = "Sets the epoch for tests and typesetting",
-        short = "E",
         type  = "string"
       },
     force =
@@ -90,7 +89,6 @@ option_list =
     rerun =
       {
         desc  = "Skip setup: simply rerun tests",
-        short = "r",
         type  = "boolean"
       },
     shuffle =
