@@ -726,8 +726,10 @@ function check(names)
     end
     -- Actually run the tests
     print("Running checks on")
+    local i = 0
     for _,name in ipairs(names) do
-      print("  " .. name)
+      i = i + 1
+      print("  " .. name .. " (" ..  i.. "/" .. #names ..")")
       local errlevel = runcheck(name, hide)
       -- Return value must be 1 not errlevel
       if errlevel ~= 0 then
