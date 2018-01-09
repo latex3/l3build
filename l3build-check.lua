@@ -35,6 +35,8 @@ local gmatch           = string.gmatch
 local gsub             = string.gsub
 local match            = string.match
 
+local sort             = table.sort
+
 local utf8_char        = unicode.utf8.char
 
 local exit             = os.exit
@@ -724,6 +726,7 @@ function check(names)
         end
       end
     end
+    sort(names)
     -- Actually run the tests
     print("Running checks on")
     local i = 0
