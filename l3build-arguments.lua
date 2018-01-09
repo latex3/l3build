@@ -93,6 +93,11 @@ option_list =
         short = "r",
         type  = "boolean"
       },
+    shuffle =
+      {
+        desc  = "Shuffle order of tests",
+        type  = "boolean"
+      },
     texmfhome =
       {
         desc = "Location of user texmf tree",

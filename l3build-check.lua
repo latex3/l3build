@@ -28,6 +28,8 @@ local close            = io.close
 local write            = io.write
 local output           = io.output
 
+local rnd              = math.random
+
 local len              = string.len
 local char             = string.char
 local format           = string.format
@@ -726,7 +728,20 @@ function check(names)
         end
       end
     end
-    sort(names)
+    -- https://stackoverflow.com/a/32167188
+    local function shuffle(tbl)
+      local len, random = #tbl, rnd
+      for i = len, 2, -1 do
+          local j = random(1, i)
+          tbl[i], tbl[j] = tbl[j], tbl[i]
+      end
+      return tbl
+    end
+    if options["shuffle"] then
+      names = shuffle(names)
+    else
+      sort(names)
+    end
     -- Actually run the tests
     print("Running checks on")
     local i = 0
