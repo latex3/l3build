@@ -727,6 +727,7 @@ function check(names)
           table.insert(names, jobname(i))
         end
       end
+      sort(names)
     end
     -- https://stackoverflow.com/a/32167188
     local function shuffle(tbl)
@@ -739,8 +740,6 @@ function check(names)
     end
     if options["shuffle"] then
       names = shuffle(names)
-    else
-      sort(names)
     end
     -- Actually run the tests
     print("Running checks on")
