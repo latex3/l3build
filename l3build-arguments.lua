@@ -56,6 +56,11 @@ option_list =
         desc  = "Sets the epoch for tests and typesetting",
         type  = "string"
       },
+    first =
+      {
+        desc  = "Name of first test to run",
+        type  = "string"
+      },
     force =
       {
         desc  = "Force tests to run if engine is not set up",
@@ -84,6 +89,11 @@ option_list =
         desc  = "Suppresses TeX output when unpacking",
         short = "q",
         type  = "boolean"
+      },
+    last =
+      {
+        desc  = "Name of last test to run",
+        type  = "string"
       },
     rerun =
       {

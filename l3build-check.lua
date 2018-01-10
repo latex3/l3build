@@ -37,6 +37,7 @@ local gmatch           = string.gmatch
 local gsub             = string.gsub
 local match            = string.match
 
+local insert           = table.insert
 local sort             = table.sort
 
 local utf8_char        = unicode.utf8.char
@@ -717,17 +718,43 @@ function check(names)
     -- No names passed: find all test files
     if not next(names) then
       for _,i in pairs(filelist(testfiledir, "*" .. lvtext)) do
-        table.insert(names, jobname(i))
+        insert(names, jobname(i))
       end
       for _,i in ipairs(filelist(unpackdir, "*" .. lvtext)) do
         if fileexists(testfiledir .. "/" .. i) then
           print("Duplicate test file: " .. i)
           return 1
         else
-          table.insert(names, jobname(i))
+          insert(names, jobname(i))
         end
       end
       sort(names)
+      -- Deal limiting range of names
+      if options["first"] then
+        local allnames = names
+        local active = false
+        local firstname = options["first"]
+        names = { }
+        for _,name in ipairs(allnames) do
+          if name == firstname then
+            active = true
+          end
+          if active then
+            insert(names,name)
+          end
+        end
+      end
+      if options["last"] then
+        local allnames = names
+        local lastname = options["last"]
+        names = { }
+        for _,name in ipairs(allnames) do
+          insert(names,name)
+          if name == lastname then
+            break
+          end
+        end
+      end
     end
     -- https://stackoverflow.com/a/32167188
     local function shuffle(tbl)
