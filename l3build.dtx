@@ -657,7 +657,7 @@
 % using the \var{checkconfigs} table. This is used to list the names of each
 % configuration (|.lua| file) which will be used to run tests.
 %
-% For example, for the core \LaTeXe{} tests the main test files are contained 
+% For example, for the core \LaTeXe{} tests the main test files are contained
 % in a directory |testfiles|. To test font loading for \XeTeX{} and \LuaTeX{}
 % there are a second set of tests in |testfiles-TU| which use the short
 % |build-TU.lua| file shown in Figure~\ref{fig:configs}. To run both sets of
@@ -666,16 +666,16 @@
 % first using no additional settings (\emph{i.e.}~reading the normal
 % |build.lua| file alone), then running \emph{also} loading the settings from
 % |config-TU.lua|.
-% \begin{figure} 
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6] 
-%     -- Special config for these tests 
+% \begin{figure}
+%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
+%     -- Special config for these tests
 %     checksearch  = true
 %     checkengines = {"xetex","luatex"}
 %     testfiledir  = "testfiles-TU"
-%   \end{lstlisting} 
-% \caption{The build script for the \pkg{xparse} module.} 
-% \label{fig:configs} 
-% \end{figure} 
+%   \end{lstlisting}
+% \caption{Example of using additional (or overriding) settings for configuring tests in a different subdirectory.}
+% \label{fig:configs}
+% \end{figure}
 %
 % To allow selection of a one or more configurations, and to allow saving of
 % |.tlg| files in non-standard configurations, the |--config| (|-c|) option may
