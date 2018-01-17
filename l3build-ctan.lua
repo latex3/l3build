@@ -51,8 +51,6 @@ function copyctan()
   end
   mkdir(ctandir .. "/" .. ctantarget)
   for _,file in pairs(sourcefiles) do
-    if sourcedir ~= currentdir then
-    end
     cp(file, sourcefiledir, ctandir .. "/" .. ctantarget)
   end
   for _,file in pairs(textfiles) do
