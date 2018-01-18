@@ -317,6 +317,8 @@ local function formatlualog(logfile, newfile)
     -- The first time a new font is used, it shows up
     -- as being cached
     line = gsub(line, "(save cache:", "(load cache:")
+    -- Changes in PDF specials
+    line = gsub(line, "\\pdfliteral origin", "\\pdfliteral")
     -- A function to handle the box prefix part
     local function boxprefix(s)
       return gsub(match(s, "^(%.+)"), "%.", "%%.")
