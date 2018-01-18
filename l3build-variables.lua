@@ -181,9 +181,7 @@ if flatten == nil then
   flatten = true
 end
 maxprintline = maxprintline or 79
-if packtdszip == nil then
-  packtdszip = true
-end
+packtdszip   = packtdszip   or false
 scriptname   = scriptname   or "build.lua"
 typesetcmds  = typesetcmds  or ""
 typesetruns  = typesetruns  or 2
