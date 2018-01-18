@@ -179,7 +179,7 @@ checkruns    = checkruns    or 1
 epoch        = epoch        or 1463734800
 if flatten == nil then
   flatten = true
-end  
+end
 maxprintline = maxprintline or 79
 packtdszip   = packtdszip   or false
 scriptname   = scriptname   or "build.lua"
