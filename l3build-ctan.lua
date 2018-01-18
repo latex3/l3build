@@ -27,32 +27,27 @@ local insert           = table.insert
 
 -- Copy files to the main CTAN release directory
 function copyctan()
-  local ctantarget = ctanpkg
-  if docfiledir ~= currentdir then
-    ctantarget = ctanpkg .. "/" .. gsub(docfiledir, "^%.*/", "")
-  end
-  mkdir(ctandir .. "/" .. ctantarget)
-  for _,filetype in pairs(
-      {
-        bibfiles,
-        demofiles,
-        docfiles,
-        pdffiles,
-        typesetlist
-      }
-    ) do
-    for _,file in pairs(filetype) do
-      cp(file, docfiledir, ctandir .. "/" .. ctantarget)
+  mkdir(ctandir .. "/" .. ctanpkg)
+  local function copyfiles(files,source)
+    if source == currentdir or flatten then
+      for _,filetype in pairs(files) do
+        cp(filetype,source,ctandir .. "/" .. ctanpkg)
+      end
+    else
+      for _,filetype in pairs(files) do
+        for _,file in pairs(tree(source,filetype)) do
+          local path,file = splitpath(file)
+          local ctantarget = ctandir .. "/" .. ctanpkg .. "/" .. path
+          mkdir(ctantarget)
+          cp(file,source,ctantarget)
+        end
+      end
     end
   end
-  ctantarget = ctanpkg
-  if sourcefiledir ~= currentdir then
-    ctantarget = ctanpkg .. "/" .. gsub(sourcefiledir, "^%.*/", "")
+  for _,tab in pairs({bibfiles,demofiles,docfiles,pdffiles,typesetlist}) do
+    copyfiles(tab,docfiledir)
   end
-  mkdir(ctandir .. "/" .. ctantarget)
-  for _,file in pairs(sourcefiles) do
-    cp(file, sourcefiledir, ctandir .. "/" .. ctantarget)
-  end
+  copyfiles(sourcefiles,sourcefiledir)
   for _,file in pairs(textfiles) do
     cp(file, currentdir, ctandir .. "/" .. ctanpkg)
   end
