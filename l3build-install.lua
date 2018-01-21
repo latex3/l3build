@@ -22,6 +22,33 @@ for those people who are interested.
 
 --]]
 
+local set_program = kpse.set_program_name
+local var_value   = kpse.var_value
+
+local function gethome()
+  set_program("latex")
+  return options["texmfhome"] or var_value("TEXMFHOME")
+end
+
+function uninstall()
+  local installdir = gethome() .. "/tex/" .. moduledir
+  if options["dry-run"] then
+    print("\n" .. "Installation root: " .. installdir)
+    local files = filelist(installdir)
+    -- Deal with an empty directory
+    if next(files) then
+      print("\n" .. "Files for removal:")
+      for _,file in pairs(filelist(installdir)) do
+        print("- " .. file)
+      end
+    else
+      print("No files present")
+    end
+    return 0
+  else
+    return rmdir(installdir)
+  end
+end
 
 -- Locally install files: only deals with those extracted, not docs etc.
 function install()
@@ -29,9 +56,7 @@ function install()
   if errorlevel ~= 0 then
     return errorlevel
   end
-  kpse.set_program_name("latex")
-  local texmfhome = options["texmfhome"] or kpse.var_value("TEXMFHOME")
-  local installdir = texmfhome .. "/tex/" .. moduledir
+  local installdir = gethome() .. "/tex/" .. moduledir
   if options["dry-run"] then
     print("\n" .. "Installation root: " .. installdir
       .. "\n" .. "Installation files:"
@@ -41,6 +66,7 @@ function install()
         print("- " .. file)
       end
     end
+    return 0
   else
     errorlevel = cleandir(installdir)
     if errorlevel ~= 0 then

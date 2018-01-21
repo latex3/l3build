@@ -72,6 +72,8 @@ function stdmain(target, files)
       if errorlevel == 0 then
         errorlevel = setversion()
       end
+    elseif target == "uninstall" then
+      errorlevel = call(modules, "uninstall")
     elseif target == "unpack" then
       errorlevel = call(modules, "bundleunpack")
     elseif target == "version" then
@@ -107,6 +109,8 @@ function stdmain(target, files)
       end
     elseif target == "setversion" then
       errorlevel = setversion()
+    elseif target == "uninstall" then
+      errorlevel = uninstall()
     elseif target == "unpack" then
       errorlevel = unpack()
     elseif target == "version" then
