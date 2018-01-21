@@ -22,6 +22,9 @@ for those people who are interested.
 
 --]]
 
+local pairs = pairs
+local print = print
+
 local set_program = kpse.set_program_name
 local var_value   = kpse.var_value
 
@@ -61,7 +64,7 @@ function install()
     print("\n" .. "Installation root: " .. installdir
       .. "\n" .. "Installation files:"
     )
-    for _,filetype in ipairs(installfiles) do
+    for _,filetype in pairs(installfiles) do
       for _,file in pairs(filelist(unpackdir,filetype)) do
         print("- " .. file)
       end
@@ -72,7 +75,7 @@ function install()
     if errorlevel ~= 0 then
       return errorlevel
     end
-    for _,filetype in ipairs(installfiles) do
+    for _,filetype in pairs(installfiles) do
       errorlevel = cp(filetype, unpackdir, installdir)
       if errorlevel ~= 0 then
         return errorlevel
