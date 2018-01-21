@@ -34,7 +34,7 @@ function install()
   local installdir = texmfhome .. "/tex/" .. moduledir
   if options["dry-run"] then
     print("\n" .. "Installation root: " .. installdir
-      .. "\n" .. "Intallation files:"
+      .. "\n" .. "Installation files:"
     )
     for _,filetype in ipairs(installfiles) do
       for _,file in pairs(filelist(unpackdir,filetype)) do
