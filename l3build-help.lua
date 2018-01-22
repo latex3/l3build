@@ -47,7 +47,7 @@ function help()
     print("   save       Saves test validation log")
   end
   print("   setversion Update version information in sources")
-  print("   uninstall  Uninstalls files into the local texmf tree")
+  print("   uninstall  Uninstalls files from the local texmf tree")
   print("   unpack     Unpacks the source files into the build tree")
   print("")
   print("Valid options are:")
