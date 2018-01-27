@@ -364,7 +364,11 @@ end
 
 -- Deal with the fact that Windows and Unix use different path separators
 function unix_to_win(path)
-  return gsub(path, "/", "\\")
+  if os_type == "windows" then
+    return gsub(path, "/", "\\")
+  else
+    return path
+  end
 end
 
 
