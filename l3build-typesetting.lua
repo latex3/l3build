@@ -117,12 +117,14 @@ end
 function makeindex(name, dir, inext, outext, logext, style)
   if fileexists(typesetdir .. "/" .. name .. inext) then
     local path, name = splitpath(name)
+    if style == "" then style = nil end
     return(
       runtool(
         path, dir,
         "INDEXSTYLE",
-        makeindexexe .. " " .. makeindexopts .. " "
-          .. " -s " .. style .. " -o " .. name .. outext
+        makeindexexe .. " " .. makeindexopts
+          .. " -o " .. name .. outext
+          .. (style and (" -s " .. style) or "")
           .. " -t " .. name .. " "  .. name .. inext
       )
     )
