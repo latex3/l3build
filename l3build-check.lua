@@ -546,9 +546,7 @@ function compare_pdf(name, engine)
   if not refpdffile then
     return
   end
-  if os_type == "windows" then
-    refpdffile = unix_to_win(refpdffile)
-  end
+  refpdffile = unix_to_win(refpdffile)
   errorlevel = execute(
     os_cmpexe .. " " .. refpdffile .. " " .. pdffile .. " > " .. cmpfile
   )
@@ -567,9 +565,7 @@ function compare_tlg(name, engine)
   if not tlgfile then
     return
   end
-  if os_type == "windows" then
-    tlgfile = unix_to_win(tlgfile)
-  end
+  tlgfile = unix_to_win(tlgfile)
   -- Do additional log formatting if the engine is LuaTeX, there is no
   -- LuaTeX-specific .tlg file and the default engine is not LuaTeX
   if engine == "luatex"
@@ -578,9 +574,7 @@ function compare_tlg(name, engine)
     and stdengine ~= "luajittex"
     then
     local luatlgfile = testdir .. "/" .. name .. ".luatex" ..  tlgext
-    if os_type == "windows" then
-      luatlgfile = unix_to_win(luatlgfile)
-    end
+    luatlgfile = unix_to_win(luatlgfile)
     formatlualog(tlgfile, luatlgfile)
     formatlualog(logfile, logfile)
     -- This allows code sharing below: we only need the .tlg name in one place
