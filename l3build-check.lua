@@ -565,7 +565,6 @@ function compare_tlg(name, engine)
   if not tlgfile then
     return
   end
-  tlgfile = unix_to_win(tlgfile)
   -- Do additional log formatting if the engine is LuaTeX, there is no
   -- LuaTeX-specific .tlg file and the default engine is not LuaTeX
   if engine == "luatex"
@@ -574,14 +573,16 @@ function compare_tlg(name, engine)
     and stdengine ~= "luajittex"
     then
     local luatlgfile = testdir .. "/" .. name .. ".luatex" ..  tlgext
-    luatlgfile = unix_to_win(luatlgfile)
     formatlualog(tlgfile, luatlgfile)
     formatlualog(logfile, logfile)
     -- This allows code sharing below: we only need the .tlg name in one place
     tlgfile = luatlgfile
   end
   errorlevel = execute(
-    os_diffexe .. " " .. tlgfile .. " " .. logfile .. " > " .. difffile
+    os_diffexe .. " "
+      .. unix_to_win(tlgfile) .. " "
+      .. unix_to_win(logfile) .. " > "
+      .. unix_to_win(difffile)
   )
   if errorlevel == 0 then
     os.remove(difffile)
