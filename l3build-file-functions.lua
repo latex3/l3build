@@ -22,17 +22,30 @@ for those people who are interested.
 
 --]]
 
+local pairs            = pairs
+local print            = print
+
+local open             = io.open
+
+local attributes       = lfs.attributes
+local currentdir       = lfs.currentdir
+local chdir            = lfs.chdir
+local lfs_dir          = lfs.dir
 
 local execute          = os.execute
 local getenv           = os.getenv
+local remove           = os.remove
 local os_time          = os.time
 local os_type          = os.type
 
+local luatex_version   = status.luatex_version
+
 local match            = string.match
 local sub              = string.sub
+local gmatch           = string.gmatch
 local gsub             = string.gsub
 
-
+local insert           = table.insert
 
 -- Convert a file glob into a pattern for use by e.g. string.gub
 -- Based on https://github.com/davidm/lua-glob-pattern
@@ -132,9 +145,9 @@ if os_type == "windows" then
   os_diffexe = getenv("diffexe") or "fc /n"
   os_grepexe = "findstr /r"
   os_newline = "\n"
-  if tonumber(status.luatex_version) < 100 or
-     (tonumber(status.luatex_version) == 100
-       and tonumber(status.luatex_revision) < 4) then
+  if tonumber(luatex_version) < 100 or
+     (tonumber(luatex_version) == 100
+       and tonumber(luatex_revision) < 4) then
     os_newline = "\r\n"
   end
   os_null    = "nul"
@@ -157,10 +170,10 @@ end
 
 -- Return an absolute path from a relative one
 function abspath(path)
-  local oldpwd = lfs.currentdir()
-  lfs.chdir(path)
-  local result = lfs.currentdir()
-  lfs.chdir(oldpwd)
+  local oldpwd = currentdir()
+  chdir(path)
+  local result = currentdir()
+  chdir(oldpwd)
   return gsub(result, "\\", "/")
 end
 
@@ -179,7 +192,7 @@ function cp(glob, source, dest)
   for i,_ in pairs(tree(source, glob)) do
     local source = source .. "/" .. i
     if os_type == "windows" then
-      if lfs.attributes(source)["mode"] == "directory" then
+      if attributes(source)["mode"] == "directory" then
         errorlevel = execute(
           'xcopy /y /e /i "' .. unix_to_win(source) .. '" "'
              .. unix_to_win(dest .. '/' .. i) .. '" > nul'
@@ -216,7 +229,7 @@ function direxists(dir)
 end
 
 function fileexists(file)
-  local f = io.open(file, "r")
+  local f = open(file, "r")
   if f ~= nil then
     f:close()
     return true
@@ -234,14 +247,14 @@ function filelist(path, glob)
     pattern = glob_to_pattern(glob)
   end
   if direxists(path) then
-    for entry in lfs.dir(path) do
+    for entry in lfs_dir(path) do
       if pattern then
         if match(entry, pattern) then
-          table.insert(files, entry)
+          insert(files, entry)
         end
       else
         if entry ~= "." and entry ~= ".." then
-          table.insert(files, entry)
+          insert(files, entry)
         end
       end
     end
@@ -260,10 +273,10 @@ function tree(path, glob)
     return true
   end
   local function is_dir(file)
-    return lfs.attributes(file)["mode"] == "directory"
+    return attributes(file)["mode"] == "directory"
   end
   local dirs = {["."] = cropdots(path)}
-  for pattern, criterion in string.gmatch(cropdots(glob), "([^/]+)(/?)") do
+  for pattern, criterion in gmatch(cropdots(glob), "([^/]+)(/?)") do
     local criterion = criterion == "/" and is_dir or always_true
     function fill(path, dir, table)
       for _, file in ipairs(filelist(dir, pattern)) do
@@ -353,7 +366,7 @@ end
 
 -- Remove file
 function rmfile(source, file)
-  os.remove(source .. "/" .. file)
+  remove(source .. "/" .. file)
   -- os.remove doesn't give a sensible errorlevel
   return 0
 end
