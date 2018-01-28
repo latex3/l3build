@@ -1386,13 +1386,12 @@
 %   the |basename()|.
 % \end{function}
 %
-% \begin{function}{unix_to_win()}
+% \begin{function}{normalize_path()}
 %   \begin{syntax}
-%     |unix_to_win(|\meta{path}|)|
+%     |normalize_path(|\meta{path}|)|
 %   \end{syntax}
-%   Returns a string comprising the \meta{path} with |/| characters replaced
-%   by |\\|  and thus suitable for use with Windows-specific commands which
-%   require this form of path.
+%   When called on Windows, returns a string comprising the \meta{path} with
+%   |/| characters replaced by |\\|. In other cases returns the path unchanged.
 % \end{function}
 %
 % \subsection{System-dependent strings}

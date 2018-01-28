@@ -546,11 +546,9 @@ function compare_pdf(name, engine)
   if not refpdffile then
     return
   end
-  if os_type == "windows" then
-    refpdffile = unix_to_win(refpdffile)
-  end
   errorlevel = execute(
-    os_cmpexe .. " " .. refpdffile .. " " .. pdffile .. " > " .. cmpfile
+    os_cmpexe .. " " .. normalize_path(refpdffile)
+      .. " " .. pdffile .. " > " .. cmpfile
   )
   if errorlevel == 0 then
     os.remove(cmpfile)
@@ -580,14 +578,8 @@ function compare_tlg(name, engine)
     -- This allows code sharing below: we only need the .tlg name in one place
     tlgfile = luatlgfile
   end
-  local args
-  if os_type == "windows" then
-    args = unix_to_win(tlgfile) .. " " .. unix_to_win(logfile)
-      .. " > " .. unix_to_win(difffile)
-  else
-    args = tlgfile .. " " .. logfile .. " > " .. difffile
-  end
-  errorlevel = execute(os_diffexe .. " " .. args)
+  errorlevel = execute(os_diffexe .. " "
+    .. normalize_path(tlgfile .. " " .. logfile .. " > " .. difffile))
   if errorlevel == 0 then
     os.remove(difffile)
   end

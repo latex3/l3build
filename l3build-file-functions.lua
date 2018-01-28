@@ -143,6 +143,18 @@ if os_type == "windows" then
   os_yes     = "for /l %I in (1,1,200) do @echo y"
 end
 
+-- Deal with the fact that Windows and Unix use different path separators
+local function unix_to_win(path)
+  return gsub(path, "/", "\\")
+end
+
+function normalize_path(path)
+  if os_type == "windows" then
+    return unix_to_win(path)
+  end
+  return path
+end
+
 -- Return an absolute path from a relative one
 function abspath(path)
   local oldpwd = lfs.currentdir()
@@ -361,12 +373,6 @@ end
 function run(dir, cmd)
   return execute("cd " .. dir .. os_concat .. cmd)
 end
-
--- Deal with the fact that Windows and Unix use different path separators
-function unix_to_win(path)
-  return gsub(path, "/", "\\")
-end
-
 
 -- Split a path into file and directory component
 function splitpath(file)
