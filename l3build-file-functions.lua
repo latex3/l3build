@@ -38,6 +38,7 @@ local remove           = os.remove
 local os_time          = os.time
 local os_type          = os.type
 
+local luatex_revision  = status.luatex_revision
 local luatex_version   = status.luatex_version
 
 local match            = string.match
