@@ -658,8 +658,8 @@ function runtest(name, engine, hide, ext, makepdf)
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
-      realengine ..  format .. " "
-        .. checkopts .. " " .. asciiopt .. lvtfile
+      realengine .. format .. " -jobname=" .. name .. " "
+        .. asciiopt .. " " .. checkopts .. " \\input " .. lvtfile
         .. (hide and (" > " .. os_null) or "")
         .. os_concat ..
       runtest_tasks(jobname(lvtfile))
