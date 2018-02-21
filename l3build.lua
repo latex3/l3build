@@ -65,8 +65,18 @@ build_require("stdmain")
 -- Allow main function to be disabled 'higher up'
 main = main or stdmain
 
+--
 -- Deal with multiple configs for tests
-checkconfigs = options["config"] or checkconfigs
+--
+ 
+-- When we have specific files to deal with, only use explicit configs
+-- (or just the std one)
+if options["files"] then
+  checkconfigs = options["config"] or {stdconfig}
+else 
+  checkconfigs = options["config"] or checkconfigs
+end
+
 if options["target"] == "check" then
   if #checkconfigs > 1 then
     local errorlevel = 0
