@@ -672,7 +672,7 @@ function runtest(name, engine, hide, ext, makepdf)
   -- Store secondary files for this engine
   for _,filetype in pairs(auxfiles) do
     for _,file in pairs(filelist(testdir, filetype)) do
-      if match(file,"^" .. name) then
+      if match(file,"^" .. name .. ".[^.]+$") then
         local ext = match(file, "%.[^.]+$")
         if ext ~= lvtext and
            ext ~= tlgext and
