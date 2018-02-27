@@ -170,7 +170,7 @@ if forcecheckepoch == nil then
   forcecheckepoch = true
 end
 if forcedocepoch == nil then
-  forcedocepoch = true
+  forcedocepoch = false
 end
 
 -- Other required settings
