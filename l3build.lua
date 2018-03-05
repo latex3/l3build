@@ -33,6 +33,7 @@ local lfs = require("lfs")
 local assert           = assert
 local ipairs           = ipairs
 local lookup           = kpse.lookup
+local match            = string.match
 local next             = next
 local print            = print
 local select           = select
@@ -65,6 +66,25 @@ build_require("stdmain")
 
 -- Allow main function to be disabled 'higher up'
 main = main or stdmain
+
+-- Load configuration file if running as a script
+if match(arg[0], "l3build(%.lua)$") then
+  -- Options which do not need any configuration
+  if options["help"] then
+    help()
+    exit(0)
+  -- Look for some configuration details
+  elseif fileexists("build.lua") then
+    -- Force these to be undefined: needed for the reloading step
+    dofile("build.lua")
+    -- Reload the variables to set things up correctly
+    -- Has to be dofile() as require() doesn't reload
+    dofile(lookup("l3build-variables.lua", { path = build_kpse_path } ))
+  else
+    print("Error: Cannot find configuration build.lua")
+    exit(1)
+  end
+end
 
 --
 -- Deal with multiple configs for tests
