@@ -38,6 +38,3 @@ function setversion_update_line(line, date, version)
   end
   return line
 end
-
--- Load l3build itself: truly self-contained so no kpsewhich() here
-dofile("./l3build.lua")
