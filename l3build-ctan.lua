@@ -98,6 +98,7 @@ function copytds()
   install(unpackdir, "bibtex/bst", {bstfiles}, true)
   install(sourcefiledir, "source", {sourcelist})
   install(unpackdir, "tex", {installfiles})
+  install(unpackdir, "scripts", {scriptfiles}, true)
 end
 
 -- Standard versions of the main targets for building modules
@@ -222,7 +223,8 @@ function bundlectan()
     end
     typesetlist = excludelist(typesetfiles, {sourcefiles}, docfiledir)
     sourcelist = excludelist(
-      sourcefiles, {bstfiles, installfiles, makeindexfiles}, sourcefiledir
+      sourcefiles, {bstfiles, installfiles, makeindexfiles, scriptfiles},
+      sourcefiledir
     )
     copyctan()
     copytds()
