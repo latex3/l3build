@@ -34,53 +34,65 @@ local function gethome()
 end
 
 function uninstall()
-  local installdir = gethome() .. "/tex/" .. moduledir
-  if options["dry-run"] then
-    print("\n" .. "Installation root: " .. installdir)
-    local files = filelist(installdir)
-    -- Deal with an empty directory
-    if next(files) then
-      print("\n" .. "Files for removal:")
-      for _,file in pairs(filelist(installdir)) do
-        print("- " .. file)
+  local function uninstall_files(target)
+    local installdir = gethome() .. target
+    if options["dry-run"] then
+      print("\n" .. "Installation root: " .. installdir)
+      local files = filelist(installdir)
+      -- Deal with an empty directory
+      if next(files) then
+        print("\n" .. "Files for removal:")
+        for _,file in pairs(filelist(installdir)) do
+          print("- " .. file)
+        end
+      else
+        print("No files present")
       end
+      return 0
     else
-      print("No files present")
+      return rmdir(installdir)
     end
-    return 0
-  else
-    return rmdir(installdir)
   end
+  return   uninstall_files("/tex/" .. moduledir)
+         + uninstall_files("/scripts/" .. module)
 end
+
 
 -- Locally install files: only deals with those extracted, not docs etc.
 function install()
+  local function install_files(files,target)
+    if not next(files) then
+      return 0
+    end
+    local installdir = gethome() .. target
+    if options["dry-run"] then
+      print("\n" .. "Installation root: " .. installdir
+        .. "\n" .. "Installation files:"
+      )
+      for _,filetype in pairs(files) do
+        for _,file in pairs(filelist(unpackdir,filetype)) do
+          print("- " .. file)
+        end
+      end
+      return 0
+    else
+      errorlevel = cleandir(installdir)
+      if errorlevel ~= 0 then
+        return errorlevel
+      end
+      for _,filetype in pairs(files) do
+        errorlevel = cp(filetype, unpackdir, installdir)
+        if errorlevel ~= 0 then
+          return errorlevel
+        end
+      end
+    end
+    return 0
+  end
   local errorlevel = unpack()
   if errorlevel ~= 0 then
     return errorlevel
   end
-  local installdir = gethome() .. "/tex/" .. moduledir
-  if options["dry-run"] then
-    print("\n" .. "Installation root: " .. installdir
-      .. "\n" .. "Installation files:"
-    )
-    for _,filetype in pairs(installfiles) do
-      for _,file in pairs(filelist(unpackdir,filetype)) do
-        print("- " .. file)
-      end
-    end
-    return 0
-  else
-    errorlevel = cleandir(installdir)
-    if errorlevel ~= 0 then
-      return errorlevel
-    end
-    for _,filetype in pairs(installfiles) do
-      errorlevel = cp(filetype, unpackdir, installdir)
-      if errorlevel ~= 0 then
-        return errorlevel
-      end
-    end
-  end
-  return 0
+  return   install_files(installfiles, "/tex/" .. moduledir)
+         + install_files(scriptfiles, "/scripts/" .. module)
 end

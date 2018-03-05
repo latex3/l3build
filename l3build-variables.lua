@@ -107,6 +107,7 @@ docfiles           = docfiles           or { }
 excludefiles       = excludefiles       or {"*~"}
 installfiles       = installfiles       or {"*.sty","*.cls"}
 makeindexfiles     = makeindexfiles     or {"*.ist"}
+scriptfiles        = scriptfiles        or { }
 sourcefiles        = sourcefiles        or {"*.dtx", "*.ins"}
 textfiles          = textfiles          or {"*.md", "*.txt"}
 typesetdemofiles   = typesetdemofiles   or { }
