@@ -22,15 +22,15 @@ tagfiles     = {"l3build.dtx", "*.md", "l3build.lua"}
 function update_tag(file,content,tagname,tagdate)
   if string.match(file, "%.dtx$") then
     return string.gsub(content,
-      "\n%% \\date{Released %d%d%d%d/%d%d/%d%d}\n",
+      "\n%% \\date{Released %d%d%d%d%-%d%d%-%d%d}\n",
       "\n%% \\date{Released " .. tagname .. "}\n")
   elseif string.match(file, "%.md$") then
     return string.gsub(content,
-      "\nRelease %d%d%d%d/%d%d/%d%d\n",
+      "\nRelease %d%d%d%d%-%d%d%-%d%d\n",
       "\nRelease " .. tagname .. "\n")
   elseif string.match(file, "%.lua$") then
     return string.gsub(content,
-      '\nrelease_date = "%d%d%d%d/%d%d/%d%d"\n',
+      '\nrelease_date = "%d%d%d%d%-%d%d%-%d%d"\n',
       '\nrelease_date = "' .. tagname .. '"\n')
   end
   return contents
