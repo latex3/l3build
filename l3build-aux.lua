@@ -89,10 +89,13 @@ function call(dirs, target, opts)
     scriptname = "build.lua"
   end
   for _,i in ipairs(dirs) do
+    local text = " for module " .. i
+    if i == "." then
+      text = " with configuration " .. opts["config"][1]
+    end
     print(
       "Running script " .. scriptname .. " with target \"" .. target
-        .. "\" for module "
-        .. i
+        .. "\"" .. text
     )
     local errorlevel = run(
       i,
