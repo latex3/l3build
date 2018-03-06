@@ -264,24 +264,3 @@ if options["engine"] and not options["force"] then
     end
   end
 end
-
--- Tidy up the epoch setting
--- Force an epoch if set at the command line
-if options["epoch"] then
-  epoch           = options["epoch"]
-  forcecheckepoch = true
-  forcedocepoch   = true
-end
--- If given as an ISO date, turn into an epoch number
-do
-  local y, m, d = string.match(epoch, "^(%d%d%d%d)-(%d%d)-(%d%d)$")
-  if y then
-    epoch =
-      os_time({year = y, month = m, day = d, hour = 0, sec = 0, isdst = nil}) -
-      os_time({year = 1970, month = 1, day = 1, hour = 0, sec = 0, isdst = nil})
-  elseif string.match(epoch, "^%d+$") then
-    epoch = tonumber(epoch)
-  else
-    epoch = 0
-  end
-end

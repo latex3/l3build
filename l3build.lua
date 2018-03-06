@@ -87,6 +87,16 @@ if match(arg[0], "l3build(%.lua)$") then
   end
 end
 
+-- Tidy up the epoch setting
+-- Force an epoch if set at the command line
+-- Must be done after loading variables, etc.
+if options["epoch"] then
+  epoch           = options["epoch"]
+  forcecheckepoch = true
+  forcedocepoch   = true
+end
+normalise_epoch()
+
 --
 -- Deal with multiple configs for tests
 --
