@@ -103,5 +103,13 @@ if #checkconfigs == 1 and
    end
 end
 
--- Call the main function
+-- Call the main function after filtering special cases
+if options["target"] == "help" then
+  help()
+  exit(0)
+elseif options["target"] == "version" then
+  version()
+  exit(0)
+end
+
 main(options["target"], options["names"])

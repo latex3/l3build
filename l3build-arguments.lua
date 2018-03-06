@@ -141,12 +141,12 @@ local function argparse()
   result["target"] = "help"
   if a then
     -- No options are allowed in position 1, so filter those out
-    if not match(a, "^%-") then
-      result["target"] = a
+    if not match(a, "^%-") or a == "--version" then
+      result["target"] = "version"
     end
   end
-  -- Stop here if help is required
-  if result["target"] == "help" then
+  -- Stop here if help or version is required
+  if result["target"] == "help" or result["target"] == "version" then
     return result
   end
   -- An auxiliary to grab all file names into a table

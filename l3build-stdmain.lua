@@ -82,8 +82,6 @@ function stdmain(target, names)
       errorlevel = call(modules, "uninstall")
     elseif target == "unpack" then
       errorlevel = call(modules, "bundleunpack")
-    elseif target == "version" then
-      version()
     else
       help()
     end
@@ -125,8 +123,6 @@ function stdmain(target, names)
       errorlevel = uninstall()
     elseif target == "unpack" then
       errorlevel = unpack()
-    elseif target == "version" then
-      version()
     else
       help()
     end
