@@ -71,7 +71,7 @@ main = main or stdmain
  
 -- When we have specific files to deal with, only use explicit configs
 -- (or just the std one)
-if options["files"] then
+if options["names"] then
   checkconfigs = options["config"] or {stdconfig}
 else 
   checkconfigs = options["config"] or checkconfigs
@@ -103,4 +103,4 @@ if #checkconfigs == 1 and
 end
 
 -- Call the main function
-main(options["target"], options["files"])
+main(options["target"], options["names"])

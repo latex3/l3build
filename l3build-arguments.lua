@@ -122,7 +122,7 @@ option_list =
 -- termination (break)
 local function argparse()
   local result = { }
-  local files  = { }
+  local names  = { }
   local long_options =  { }
   local short_options = { }
   -- Turn long/short options into two lookup tables
@@ -150,11 +150,11 @@ local function argparse()
   end
   -- An auxiliary to grab all file names into a table
   local function remainder(num)
-    local files = { }
+    local names = { }
     for i = num, #arg do
-      table.insert(files, arg[i])
+      table.insert(names, arg[i])
     end
-    return files
+    return names
   end
   -- Examine all other arguments
   -- Use a while loop rather than for as this makes it easier
@@ -164,7 +164,7 @@ local function argparse()
     local a = arg[i]
     -- Terminate search for options
     if a == "--" then
-      files = remainder(i + 1)
+      names = remainder(i + 1)
       break
     end
     -- Look for optionals
@@ -232,12 +232,12 @@ local function argparse()
       i = i + 1
     end
     if not opt then
-      files = remainder(i)
+      names = remainder(i)
       break
     end
   end
-  if next(files) then
-   result["files"] = files
+  if next(names) then
+   result["names"] = names
   end
   return result
 end

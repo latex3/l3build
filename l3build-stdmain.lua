@@ -46,7 +46,7 @@ end
 -- The overall main function
 --
 
-function stdmain(target, files)
+function stdmain(target, names)
   local errorlevel
   -- If the module name is empty, the script is running in a bundle:
   -- apart from ctan all of the targets are then just mappings
@@ -90,7 +90,7 @@ function stdmain(target, files)
     elseif target == "bundlectan" then
       errorlevel = bundlectan()
     elseif target == "doc" then
-      errorlevel = doc(files)
+      errorlevel = doc(names)
     elseif target == "check" then
       errorlevel = check(files)
     elseif target == "clean" then
