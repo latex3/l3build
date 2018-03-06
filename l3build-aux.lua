@@ -84,6 +84,10 @@ function call(dirs, target, opts)
       s = s .. " " .. v
     end
   end
+  local scriptname = "l3build.lua"
+  if not match(arg[0], "l3build(%.lua)$") then
+    scriptname = "build.lua"
+  end
   for _,i in ipairs(dirs) do
     print(
       "Running script " .. scriptname .. " with target \"" .. target
