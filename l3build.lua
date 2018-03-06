@@ -47,6 +47,7 @@ local function build_require(s)
   require(lookup("l3build-"..s..".lua", { path = build_kpse_path } ) )
 end
 
+-- Minimal code to do basic checks
 build_require("arguments")
 build_require("help")
 
