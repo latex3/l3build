@@ -141,8 +141,10 @@ local function argparse()
   result["target"] = "help"
   if a then
     -- No options are allowed in position 1, so filter those out
-    if not match(a, "^%-") or a == "--version" then
+    if a == "--version" then
       result["target"] = "version"
+    elseif not match(a, "^%-") then
+      result["target"] = a
     end
   end
   -- Stop here if help or version is required
