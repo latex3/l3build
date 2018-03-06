@@ -116,13 +116,7 @@ option_list =
       {
         desc = "Location of user texmf tree",
         type = "string"
-      },
-    version =
-      {
-        desc  = "Sets the version to insert into sources",
-        short = "v",
-        type  = "string"
-      },
+      }
   }
 
 -- This is done as a function (rather than do ... end) as it allows early

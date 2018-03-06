@@ -59,7 +59,7 @@ build_require("install")
 build_require("unpack")
 build_require("manifest")
 build_require("manifest-setup")
-build_require("setversion")
+build_require("tagging")
 build_require("help")
 build_require("stdmain")
 

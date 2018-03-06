@@ -1,6 +1,6 @@
 % \iffalse
 %
-% File l3build.dtx (C) Copyright 2014-2017 The LaTeX3 Project
+% File l3build.dtx (C) Copyright 2014-2018 The LaTeX3 Project
 %
 % It may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -88,6 +88,7 @@
 \luavarset{installfiles}      {\{"*.sty","*.cls"\}}{Files to install to the \TeX{} tree and similar task}
 \luavarset{makeindexfiles}    {\{"*.ist"\}}{MakeIndex files to be included in a TDS-style zip}
 \luavarset{sourcefiles}       {\{"*.dtx", "*.ins"\}}{Files to copy for unpacking}
+\luavarset{tagfiles}          {\{"*.dtx"\}}{Files for automatic tagging}
 \luavarset{textfiles}         {\{"*.md", "*.txt"\}}{Plain text files to send to CTAN as-is}
 \luavarset{typesetdemofiles}  {\{\}}{Files to typeset before the documentation for inclusion in main documentation files}
 \luavarset{typesetfiles}      {\{"*.dtx"\}}{Files to typeset for documentation}
@@ -95,7 +96,6 @@
 \luavarset{typesetsourcefiles}{\{\}}{Files to copy to unpacking when typesetting.}
 \luavarset{unpackfiles}       {\{"*.ins"\}}{Files to run to perform unpacking.}
 \luavarset{unpacksuppfiles}   {\{\}}{Files needed to support unpacking when \enquote{sandboxed}}
-\luavarset{versionfiles}      {\{"*.dtx"\}}{Files for automatic version editing}
 \luavarseparator
 \luavarset{bakext}{".bak"}{Extension of backup files}
 \luavarset{dviext}{".dvi"}{Extension of DVI files}
@@ -153,7 +153,6 @@
 \luavarset{scriptname}  {"build.lua"} {Name of script used in dependencies}
 \luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting.}
 \luavarset{typsetcycles}{3}           {Number of cycles of typesetting to carry out.}
-\luavarset{versionform} {""}          {Nature of version strings for auto-replacement.}
 \luavarset{recordstatus}{false}       {Switch to include error level from test runs in \texttt{.tlg} files}
 \luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file.}
 }
@@ -305,7 +304,7 @@
 % \item doc \meta{name(s)}
 % \item install
 % \item save \meta{name(s)}
-% \item setversion
+% \item tag
 % \item unpack
 % \end{itemize}
 % These commands are described below.
@@ -313,7 +312,7 @@
 % As well as these commands, the system recognises the options
 % \begin{itemize}
 %   \item |--config| (|-c|) Configuration(s) to use for testing
-% \item |--date| Date to use when setting version
+% \item |--date| Date to use when tagging
 %   data
 % \item |--dry-run| Runs the \texttt{install} target but does not copy
 %   any files: simply lists those that would be installed
@@ -334,8 +333,6 @@
 % \item |--rerun| Run tests without unpacking/set up
 % \item |--shuffle| Shuffle the order in whichs tests run
 % \item |--texmfhome| Sets the location of the user tree for installing
-% \item |--version| (|-v|) Version string to use when setting
-%   version data
 % \end{itemize}
 %
 % \begin{buildcmd}{check}
@@ -528,15 +525,14 @@
 % Improvements to this process are planned for the future.
 % \end{buildcmd}
 %
-% \begin{buildcmd}{setversion}
-% Modifies the content of files specified by |versionfiles| to allow
-% automatic updating of the file date and version. The latter are
-% specified using the |-d| and |-v| command line options and if not
-% given will default to the current date in ISO format (YYYY-MM-DD) and |-1|,
-% respectively. As detailed below, the standard set up has no search pattern
-% defined for this target and so no action will be taken \emph{unless}
-% a version type for substitution is set up (using \var{versionform} or
-% by defining a custom function).
+% \begin{buildcmd}{tag}
+% Modifies the content of files specified by |tagfiles| to allow
+% automatic updating of the release tag and date. The tag is given as a
+% command line option, whilst the optional date should be passed using
+% |--date| (|-d|); if not given, the date will default to the current date in
+% ISO format (YYYY-MM-DD). As detailed below, the standard set up has no search
+% pattern defined for this target and so no action will be taken \emph{unless}
+% tag substitution is set up.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{unpack}
@@ -1116,56 +1112,43 @@
 %
 % \section{Release-focussed features}
 %
-% \subsection{Automatic version modification}
+% \subsection{Automatic tagging}
 %
-% As detailed above, the |setversion| target will automatically edit
-% source files to modify date and version. This behaviour is governed by
-% variable \var{versionform}. As standard, no automatic replacement
-% takes place, but setting \var{versionform} will allow this to happen,
-% with options
+% As detailed above, the |tag| target will automatically edit
+% source files to modify date and release tag. As standard, no automatic
+% replacement takes place, but setting up a |updae_tag()| function
+% will allow this to happen. This takes four arguments:
 % \begin{itemize}
-%   \item |ProvidesPackage| --- Searches for lines using the \LaTeXe{}
-%     \cs{ProvidesPackage}, \cs{ProvidesClass} and \cs{ProvidesFile}
-%     identifiers (as a whole line).
-%   \item |ProvidesExplPackage| --- Searches for lines using the \pkg{expl3}
-%     \cs{ProvidesExplPackage}, \cs{ProvidesExplClass} and
-%     \cs{ProvidesExplFile} identifiers (at the start of a line).
-%   \item |filename| --- Searches for lines using |\def\filename|,
-%     |\def\filedate|, \dots, formulation.
-%   \item |ExplFileDate| --- Searches for lines using |\def\ExplFileDate|,
-%     \dots, formulation.
+%   \item The file name
+%   \item The full content of the file
+%   \item The tag name
+%   \item The tag date
 % \end{itemize}
-%
-% For more complex cases, the programmer may directly define the
-% Lua function |setversion_update_line()|, which takes as arguments the line of the
-% source, the supplied date and the supplied version. It should return a
-% (possibly unmodified) line and may use one, both or neither of the
-% date and version to update the line. Typically, |setversion_update_line| should
-% match to the exact pattern used by the programmer in the source files.
-% For example, for code using macros for the date and version
-% a suitable function might read as shown in Figure~\ref{fig:update-line}.
+% and should return the (modified) contents for writing to disk.
+% For example, the function used by |l3build| itself is
+% shown in Figure~\ref{fig:update-tag}.
 % \begin{figure}
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
-%     function setversion_update_line(line, date, version)
-%       -- No real regex so do it one type at a time
-%       for _,i in pairs({"Class", "File", "Package"}) do
-%         if string.match(
-%           line,
-%           "^\\Provides" .. i .. "{[a-zA-Z0-9%-]+}%[[^%]]*%]$"
-%         ) then
-%           line = string.gsub(line, "%[%d%d%d%d/%d%d/%d%d", "["
-%             .. string.gsub(date, "%-", "/")
-%           line = string.gsub(
-%             line, "(%[%d%d%d%d/%d%d/%d%d) [^ ]*", "%1 " .. version
-%           )
-%           break
-%         end
+%     -- Detail how to set the version automatically
+%     function update_tag(file,content,tagname,tagdate)
+%       if string.match(file, "%.dtx$") then
+%         return string.gsub(content,
+%           "\n%% \\date{Released %d%d%d%d/%d%d/%d%d}\n",
+%           "\n%% \\date{Released " .. tagname .. "}\n")
+%       elseif string.match(file, "%.md$") then
+%         return string.gsub(content,
+%           "\nRelease %d%d%d%d/%d%d/%d%d\n",
+%           "\nRelease " .. tagname .. "\n")
+%       elseif string.match(file, "%.lua$") then
+%         return string.gsub(content,
+%           '\nrelease_date = "%d%d%d%d/%d%d/%d%d"\n',
+%           '\nrelease_date = "' .. tagname .. '"\n')
 %       end
-%       return line
+%       return contents
 %     end
 %   \end{lstlisting}
-%   \caption{Example \texttt{setversion_update_line} function.}
-%   \label{fig:update-line}
+%   \caption{Example \texttt{update_tag} function.}
+%   \label{fig:update-tag}
 % \end{figure}
 %
 % \subsection{Typesetting documentation}

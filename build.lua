@@ -16,9 +16,26 @@ packtdszip   = true
 sourcefiles  = {"*.dtx", "l3build*.lua", "*.ins"}
 typesetcmds  = "\\AtBeginDocument{\\DisableImplementation}"
 unpackdeps   = { }
-versionfiles = {"*.dtx", "*.md", "*.lua"}
+tagfiles     = {"*.dtx", "*.md", "*.lua"}
 
 -- Detail how to set the version automatically
+function update_tag(file,content,tagname,tagdate)
+  if string.match(file, "%.dtx$") then
+    return string.gsub(content,
+      "\n%% \\date{Released %d%d%d%d/%d%d/%d%d}\n",
+      "\n%% \\date{Released " .. tagname .. "}\n")
+  elseif string.match(file, "%.md$") then
+    return string.gsub(content,
+      "\nRelease %d%d%d%d/%d%d/%d%d\n",
+      "\nRelease " .. tagname .. "\n")
+  elseif string.match(file, "%.lua$") then
+    return string.gsub(content,
+      '\nrelease_date = "%d%d%d%d/%d%d/%d%d"\n',
+      '\nrelease_date = "' .. tagname .. '"\n')
+  end
+  return contents
+end
+
 function setversion_update_line(line, date, version)
   local date = string.gsub(date, "%-", "/")
   -- .dtx file

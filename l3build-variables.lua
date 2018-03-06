@@ -108,6 +108,7 @@ excludefiles       = excludefiles       or {"*~"}
 installfiles       = installfiles       or {"*.sty","*.cls"}
 makeindexfiles     = makeindexfiles     or {"*.ist"}
 sourcefiles        = sourcefiles        or {"*.dtx", "*.ins"}
+tagfiles           = tagfiles           or {"*.dtx"}
 textfiles          = textfiles          or {"*.md", "*.txt"}
 typesetdemofiles   = typesetdemofiles   or { }
 typesetfiles       = typesetfiles       or {"*.dtx"}
@@ -115,7 +116,6 @@ typesetsuppfiles   = typesetsuppfiles   or { }
 typesetsourcefiles = typesetsourcefiles or { }
 unpackfiles        = unpackfiles        or {"*.ins"}
 unpacksuppfiles    = unpacksuppfiles    or { }
-versionfiles       = versionfiles       or {"*.dtx"}
 
 -- Roots which should be unpacked to support unpacking/testing/typesetting
 checkdeps   = checkdeps   or { }

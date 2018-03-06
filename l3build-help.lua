@@ -46,7 +46,7 @@ function help()
   if module ~= "" and testfiledir ~= "" then
     print("   save       Saves test validation log")
   end
-  print("   setversion Update version information in sources")
+  print("   tag        Update release tags in files")
   print("   uninstall  Uninstalls files from the local texmf tree")
   print("   unpack     Unpacks the source files into the build tree")
   print("")

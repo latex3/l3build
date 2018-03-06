@@ -66,11 +66,17 @@ function stdmain(target, names)
       errorlevel = ctan()
     elseif target == "install" then
       errorlevel = call(modules, "install")
-    elseif target == "setversion" then
-      errorlevel = call(modules, "setversion")
-      -- Deal with any files in the bundle dir itself
-      if errorlevel == 0 then
-        errorlevel = setversion()
+    elseif target == "tag" then
+      if options["names"] and #options["names"] == 1 then
+        errorlevel = call(modules,"tag")
+        -- Deal with any files in the bundle dir itself
+        if errorlevel == 0 then
+          errorlevel = tag(options["names"][1])
+        end
+      else
+        print("Tag name required")
+        help()
+        exit(1)
       end
     elseif target == "uninstall" then
       errorlevel = call(modules, "uninstall")
@@ -107,8 +113,14 @@ function stdmain(target, names)
       else
         help()
       end
-    elseif target == "setversion" then
-      errorlevel = setversion()
+    elseif target == "tag" then
+      if options["names"] and #options["names"] == 1 then
+        errorlevel = tag(options["names"][1])
+      else
+        print("Tag name required")
+        help()
+        exit(1)
+      end
     elseif target == "uninstall" then
       errorlevel = uninstall()
     elseif target == "unpack" then
