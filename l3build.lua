@@ -41,8 +41,6 @@ local tonumber         = tonumber
 local exit             = os.exit
 
 -- l3build setup and functions
--- Note that global (config) variables are done a little later
-
 kpse.set_program_name("kpsewhich")
 build_kpse_path = string.match(lookup("l3build.lua"),"(.*[/])")
 local function build_require(s)
