@@ -116,7 +116,6 @@
 \luavarset{checkformat}  {"latex"} {Format to use for tests}
 \luavarseparator
 \luavarset{checkconfigs}{\{\}}{Configurations to use for tests}
-\luavarset{stdconfig}   {\meta{Main script}}{Standard test configuration}
 \luavarseparator
 \luavarset{typesetexe}{"pdflatex"}{Executable for compiling \texttt{doc(s)}}
 \luavarset{unpackexe} {"tex"}     {Executable for running \texttt{unpack}}
@@ -654,10 +653,6 @@
 % |.tlg| files in non-standard configurations, the |--config| (|-c|) option may
 % be used. This works in the same way as |--engine|: it takes a comma list of
 % configurations to apply, overriding \var{checkconfigs}.
-%
-% Note that the setting \var{stdconfig} is used to determine the \emph{vanilla}
-% configuration: this will typically be the name of the main script (usually
-% |build| for a standard |build.lua| file).
 %
 % \subsection{Dependencies}
 %

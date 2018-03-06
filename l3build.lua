@@ -123,7 +123,7 @@ if options["target"] == "check" then
   end
 end
 if #checkconfigs == 1 and
-   checkconfigs[1] ~= stdconfig and
+   checkconfigs[1] ~= "build.lua" and
    (options["target"] == "check" or options["target"] == "save") then
    local config = "./" .. checkconfigs[1] .. ".lua"
    if fileexists(config) then
