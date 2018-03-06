@@ -79,13 +79,8 @@ main = main or stdmain
 
 -- Load configuration file if running as a script
 if match(arg[0], "l3build(%.lua)$") then
-  -- Options which do not need any configuration
-  if options["help"] then
-    help()
-    exit(0)
   -- Look for some configuration details
-  elseif fileexists("build.lua") then
-    -- Force these to be undefined: needed for the reloading step
+  if fileexists("build.lua") then
     dofile("build.lua")
   else
     print("Error: Cannot find configuration build.lua")
