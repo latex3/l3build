@@ -41,6 +41,7 @@ local tonumber         = tonumber
 local exit             = os.exit
 
 -- l3build setup and functions
+-- Note that global (config) variables are done a little later
 
 kpse.set_program_name("kpsewhich")
 build_kpse_path = string.match(lookup("l3build.lua"),"(.*[/])")
@@ -48,7 +49,6 @@ local function build_require(s)
   require(lookup("l3build-"..s..".lua", { path = build_kpse_path } ) )
 end
 
-build_require("variables")
 build_require("arguments")
 build_require("file-functions")
 build_require("typesetting")
@@ -78,14 +78,15 @@ if match(arg[0], "l3build(%.lua)$") then
   elseif fileexists("build.lua") then
     -- Force these to be undefined: needed for the reloading step
     dofile("build.lua")
-    -- Reload the variables to set things up correctly
-    -- Has to be dofile() as require() doesn't reload
-    dofile(lookup("l3build-variables.lua", { path = build_kpse_path } ))
   else
     print("Error: Cannot find configuration build.lua")
     exit(1)
   end
 end
+
+-- Load standard settings for variables:
+-- comes after any user versions
+build_require("variables")
 
 -- Tidy up the epoch setting
 -- Force an epoch if set at the command line
