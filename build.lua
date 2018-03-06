@@ -16,7 +16,7 @@ packtdszip   = true
 sourcefiles  = {"*.dtx", "l3build*.lua", "*.ins"}
 typesetcmds  = "\\AtBeginDocument{\\DisableImplementation}"
 unpackdeps   = { }
-tagfiles     = {"*.dtx", "*.md", "*.lua"}
+tagfiles     = {"l3build.dtx", "*.md", "l3build.lua"}
 
 -- Detail how to set the version automatically
 function update_tag(file,content,tagname,tagdate)
