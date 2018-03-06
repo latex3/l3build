@@ -22,6 +22,9 @@ for those people who are interested.
 
 --]]
 
+local match = string.match
+local pairs = pairs
+local print = print
 --
 -- Auxiliary functions which are used by more than one main function
 --

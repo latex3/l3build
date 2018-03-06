@@ -25,6 +25,13 @@ for those people who are interested.
 local exit             = os.exit
 local stderr           = io.stderr
 
+local find             = string.find
+local gmatch           = string.gmatch
+local match            = string.match
+local sub              = string.sub
+
+local insert           = table.insert
+
 -- Parse command line options
 
 option_list =
@@ -140,7 +147,7 @@ local function argparse()
   result["target"] = "help"
   if a then
     -- No options are allowed in position 1, so filter those out
-    if not string.match(a, "^%-") then
+    if not match(a, "^%-") then
       result["target"] = a
     end
   end
@@ -152,7 +159,7 @@ local function argparse()
   local function remainder(num)
     local names = { }
     for i = num, #arg do
-      table.insert(names, arg[i])
+      insert(names, arg[i])
     end
     return names
   end
@@ -172,22 +179,22 @@ local function argparse()
     local optarg
     local opts
     -- Look for and option and get it into a variable
-    if string.match(a, "^%-") then
-      if string.match(a, "^%-%-") then
+    if match(a, "^%-") then
+      if match(a, "^%-%-") then
         opts = long_options
-        local pos = string.find(a, "=", 1, true)
+        local pos = find(a, "=", 1, true)
         if pos then
-          opt    = string.sub(a, 3, pos - 1)
-          optarg = string.sub(a, pos + 1)
+          opt    = sub(a, 3, pos - 1)
+          optarg = sub(a, pos + 1)
         else
-          opt = string.sub(a, 3)
+          opt = sub(a, 3)
         end
       else
         opts = short_options
-        opt  = string.sub(a, 2, 2)
+        opt  = sub(a, 2, 2)
         -- Only set optarg if it is there
         if #a > 2 then
-          optarg = string.sub(a, 3)
+          optarg = sub(a, 3)
         end
       end
       -- Now check that the option is valid and sort out the argument
@@ -197,7 +204,7 @@ local function argparse()
         -- Tidy up arguments
         if option_list[optname]["type"] == "boolean" then
           if optarg then
-            local opt = "-" .. (string.match(a, "^%-%-") and "-" or "") .. opt
+            local opt = "-" .. (match(a, "^%-%-") and "-" or "") .. opt
             stderr:write("Value not allowed for option " .. opt .."\n")
             return {"help"}
           end
@@ -221,8 +228,8 @@ local function argparse()
           result[optname] = optarg
         else
           local opts = result[optname] or { }
-          for hit in string.gmatch(optarg, "([^,%s]+)") do
-            table.insert(opts, hit)
+          for hit in gmatch(optarg, "([^,%s]+)") do
+            insert(opts, hit)
           end
           result[optname] = opts
         end

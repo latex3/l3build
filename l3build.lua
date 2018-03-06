@@ -32,6 +32,7 @@ local lfs = require("lfs")
 
 local assert           = assert
 local ipairs           = ipairs
+local lookup           = kpse.lookup
 local next             = next
 local print            = print
 local select           = select
@@ -41,9 +42,9 @@ local exit             = os.exit
 -- l3build setup and functions
 
 kpse.set_program_name("kpsewhich")
-build_kpse_path = string.match(kpse.lookup("l3build.lua"),"(.*[/])")
+build_kpse_path = string.match(lookup("l3build.lua"),"(.*[/])")
 local function build_require(s)
-  require( kpse.lookup("l3build-"..s..".lua", { path = build_kpse_path } ) )
+  require(lookup("l3build-"..s..".lua", { path = build_kpse_path } ) )
 end
 
 build_require("variables")
