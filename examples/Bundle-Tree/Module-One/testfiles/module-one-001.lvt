@@ -1,0 +1,12 @@
+\input regression-test.tex\relax
+
+\documentclass{minimal}
+
+\usepackage{module-one}
+
+\begin{document}
+
+\START
+% Tests go here
+
+\end{document}
