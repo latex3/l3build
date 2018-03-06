@@ -248,21 +248,23 @@ end
 options = argparse()
 
 -- Sanity check
-if options["engine"] and not options["force"] then
-   -- Make a lookup table
-   local t = { }
-  for _, engine in pairs(checkengines) do
-    t[engine] = true
-  end
-  for _, engine in pairs(options["engine"]) do
-    if not t[engine] then
-      print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!")
-      print("\n  Valid values are:")
-      for _, engine in ipairs(checkengines) do
-        print("  - " .. engine)
+function check_engines()
+  if options["engine"] and not options["force"] then
+     -- Make a lookup table
+     local t = { }
+    for _, engine in pairs(checkengines) do
+      t[engine] = true
+    end
+    for _, engine in pairs(options["engine"]) do
+      if not t[engine] then
+        print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!")
+        print("\n  Valid values are:")
+        for _, engine in ipairs(checkengines) do
+          print("  - " .. engine)
+        end
+        print("")
+        exit(1)
       end
-      print("")
-      exit(1)
     end
   end
 end

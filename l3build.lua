@@ -102,6 +102,9 @@ if options["epoch"] then
 end
 normalise_epoch()
 
+-- Sanity check
+check_engines()
+
 --
 -- Deal with multiple configs for tests
 --
