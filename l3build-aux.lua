@@ -23,11 +23,27 @@ for those people who are interested.
 --]]
 
 local match = string.match
+
 local pairs = pairs
 local print = print
+
 --
 -- Auxiliary functions which are used by more than one main function
 --
+
+function normalise_epoch()
+  -- If given as an ISO date, turn into an epoch number
+  local y, m, d = match(epoch, "^(%d%d%d%d)-(%d%d)-(%d%d)$")
+  if y then
+    epoch =
+      os_time({year = y, month = m, day = d, hour = 0, sec = 0, isdst = nil}) -
+      os_time({year = 1970, month = 1, day = 1, hour = 0, sec = 0, isdst = nil})
+  elseif match(epoch, "^%d+$") then
+    epoch = tonumber(epoch)
+  else
+    epoch = 0
+  end
+end
 
 function setepoch()
   return
