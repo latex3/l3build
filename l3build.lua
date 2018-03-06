@@ -69,6 +69,7 @@ main = main or stdmain
 
 -- Load configuration file if running as a script
 if match(arg[0], "l3build(%.lua)$") then
+  scriptname = "l3build.lua"
   -- Options which do not need any configuration
   if options["help"] then
     help()
