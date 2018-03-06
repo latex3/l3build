@@ -96,7 +96,7 @@ function stdmain(target, names)
     elseif target == "doc" then
       errorlevel = doc(names)
     elseif target == "check" then
-      errorlevel = check(files)
+      errorlevel = check(names)
     elseif target == "clean" then
       errorlevel = clean()
     elseif target == "ctan" then
@@ -106,8 +106,8 @@ function stdmain(target, names)
     elseif target == "manifest" then
       errorlevel = manifest()
     elseif target == "save" then
-      if next(files) then
-        errorlevel = save(files)
+      if next(names) then
+        errorlevel = save(names)
       else
         help()
       end
