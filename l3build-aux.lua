@@ -61,7 +61,7 @@ function call(dirs, target, opts)
   local opts = opts or options
   local s = ""
   for k,v in pairs(opts) do
-    if k ~= "files" and k ~= "target" then -- Special cases
+    if k ~= "names" and k ~= "target" then -- Special cases
       local t = option_list[k] or { }
       local arg = ""
       if t["type"] == "string" then
@@ -79,8 +79,8 @@ function call(dirs, target, opts)
       s = s .. " --" .. k .. arg
     end
   end
-  if opts["files"] then
-    for _,v in pairs(opts["files"]) do
+  if opts["names"] then
+    for _,v in pairs(opts["names"]) do
       s = s .. " " .. v
     end
   end
