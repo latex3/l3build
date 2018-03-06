@@ -199,4 +199,4 @@ psext  = psext  or ".ps"
 tlgext = tlgext or ".tlg"
 
 -- Manifest options
-manifestfile = "MANIFEST.md"
+manifestfile = manifestfile or "MANIFEST.md"
