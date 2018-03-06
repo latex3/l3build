@@ -616,6 +616,15 @@
 %
 % This section lists all variables defined in the |l3build.lua| script that are available for customisation.
 %
+% \subsection{Interaction between tests}
+%
+% Tests are run in a single directory, so whilst they are may be isolated from
+% the system \TeX{} tree they do share files. This may be significant if
+% installation-type files are generated during a test, for example by a 
+% |filecontents| environment in \LaTeX{}. Typically, you should set up your
+% tests such that they do not use the same names for such files: this may lead
+% to variable outcomes depending on the order in which tests are run.
+%
 % \luavartypeset
 %
 % \subsection{Multiple sets of tests}
