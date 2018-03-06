@@ -50,6 +50,17 @@ local function build_require(s)
 end
 
 build_require("arguments")
+build_require("help")
+
+-- Filter out special cases early
+if options["target"] == "help" then
+  help()
+  exit(0)
+elseif options["target"] == "version" then
+  version()
+  exit(0)
+end
+
 build_require("file-functions")
 build_require("typesetting")
 build_require("aux")
@@ -61,7 +72,6 @@ build_require("unpack")
 build_require("manifest")
 build_require("manifest-setup")
 build_require("tagging")
-build_require("help")
 build_require("stdmain")
 
 -- Allow main function to be disabled 'higher up'
@@ -134,13 +144,5 @@ if #checkconfigs == 1 and
    end
 end
 
--- Call the main function after filtering special cases
-if options["target"] == "help" then
-  help()
-  exit(0)
-elseif options["target"] == "version" then
-  version()
-  exit(0)
-end
-
+-- Call the main function
 main(options["target"], options["names"])
