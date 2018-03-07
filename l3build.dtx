@@ -1131,6 +1131,11 @@
 %   \label{fig:update-tag}
 % \end{figure}
 %
+% To allow more complex tasks to take place, a hook |tag_hook()| is also
+% available. It will receive the tag name and date as arguments, and
+% may be used to carry out arbitrary tasks during tagging (for example,
+% setting a version control tag for an entire repository).
+%
 % \subsection{Typesetting documentation}
 %
 % As part of the overall build process, \pkg{l3build} will create PDF
