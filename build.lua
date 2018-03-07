@@ -14,6 +14,7 @@ cleanfiles   = {"*.pdf", "*.tex", "*.zip"}
 installfiles = {"regression-test.tex"}
 packtdszip   = true
 scriptfiles  = {"l3build*.lua"}
+scriptmanfiles = {"l3build.1"}
 sourcefiles  = {"*.dtx", "l3build*.lua", "*.ins"}
 typesetcmds  = "\\AtBeginDocument{\\DisableImplementation}"
 unpackdeps   = { }

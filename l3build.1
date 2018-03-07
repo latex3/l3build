@@ -1,0 +1,67 @@
+.TH l3build 1 "2018-03-07"
+.SH NAME
+l3build \- Checking and building packages
+.SH SYNOPSIS
+l3build <command> [<options>] [<names>]
+.SH DESCRIPTION
+The l3build system is a Lua script for building TeX packages, with particular
+emphasis on regression testing. It is written in cross-platform Lua code, so
+can be used by any modern TeX distribution with the texlua interpreter. A
+package for building with l3build can be written in any TeX dialect; its
+defaults are set up for LaTeX packages written in the DocStrip style.
+.PP
+The most commonly used l3build commands are:
+.IP check
+Run all automated tests
+.IP clean
+Clean out directory tree
+.IP doc
+Typesets all documentation files
+.IP install
+Installs files into the local texmf tree
+.IP save
+Saves test validation log
+.IP tag
+Update release tags in files
+.IP uninstall
+Uninstalls files from the local texmf tree
+.IP unpack
+Unpacks the source files into the build tree
+.SH OPTIONS
+Various options apply 
+.IP --config|-c
+Sets the config(s) used for running tests
+.IP --date
+Sets the date to insert into sources
+.IP --dry-run
+Dry run for install
+.IP --engine|-e
+Sets the engine(s) to use for running test
+.IP --epoch
+Sets the epoch for tests and typesetting
+.IP --first
+Name of first test to run
+.IP --force|-f
+Force tests to run if engine is not set up
+.IP --halt-on-error|-H
+Stops running tests after the first failure
+.IP --last
+Name of last test to run
+.IP --pdf|-p
+Check/save PDF files
+.IP --quiet|-q
+Suppresses TeX output when unpacking
+.IP --rerun
+Skip setup: simply rerun tests
+.IP --shuffle
+Shuffle order of tests
+.IP --texmfhome
+Location of user texmf tree
+.SH BUGS
+.SH AUTHOR
+The LaTeX3 Project (latex-team@latex-project.org)
+.PP
+Please log issues on the GitHub homepage:
+https://github.com/latex3/l3build/issues.
+.SH SEE ALSO
+See l3build.pdf for more details.
