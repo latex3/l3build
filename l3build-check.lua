@@ -142,10 +142,16 @@ local function formatlog(logfile, newfile, engine, errlevels)
       return "", (lastline or "") .. line
     end
     -- TeX90/XeTeX knows only the smaller set of dimension units
-    line = gsub(
-      line,
-      "cm, mm, dd, cc, bp, or sp", "cm, mm, dd, cc, nd, nc, bp, or sp"
-    )
+    line = gsub(line,
+      "cm, mm, dd, cc, bp, or sp",
+      "cm, mm, dd, cc, nd, nc, bp, or sp")
+    -- On the other hand, (u)pTeX has some new units!
+    line = gsub(line,
+      "em, ex, zw, zh, in, pt, pc,",
+      "em, ex, in, pt, pc,")
+    line = gsub(line,
+      "cm, mm, dd, cc, bp, H, Q, or sp;",
+      "cm, mm, dd, cc, nd, nc, bp, or sp;")
     -- Normalise a case where fixing a TeX bug changes the message text
     line = gsub(line, "\\csname\\endcsname ", "\\csname\\endcsname")
     -- Zap "on line <num>" and replace with "on line ..."
