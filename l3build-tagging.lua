@@ -32,7 +32,7 @@ function update_tag(filename,content,tagname,tagdate)
   return content
 end
 
-function tag_hook(tagname)
+function tag_hook(tagname,tagdate)
   return 0
 end
 
@@ -75,6 +75,6 @@ function tag(tagname)
       end
     end
   end
-  return tag_hook(tagname)
+  return tag_hook(tagname,tagdate)
 end
 
