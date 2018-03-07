@@ -30,6 +30,8 @@ local output           = io.output
 
 local rnd              = math.random
 
+local luatex_version   = status.luatex_version
+
 local len              = string.len
 local char             = string.char
 local format           = string.format
@@ -267,7 +269,7 @@ local function formatlog(logfile, newfile, engine, errlevels)
 end
 
 -- Additional normalization for LuaTeX
-local function formatlualog(logfile, newfile)
+local function formatlualog(logfile, newfile, luatex)
   local function normalize(line, lastline, dropping)
     -- Find \discretionary or \whatsit lines:
     -- These may come back later
@@ -327,6 +329,19 @@ local function formatlualog(logfile, newfile)
     -- The first time a new font is used, it shows up
     -- as being cached
     line = gsub(line, "(save cache:", "(load cache:")
+    -- LuaTeX from v1.07 logs kerns differently ...
+    -- This block only applies to the output of LuaTeX itself,
+    -- hence needing a flag to skip the case of the reference log
+    if luatex and
+       tonumber(luatex_version) >= 107 and
+       match(line, "^%.*\\kern") then
+       -- Re-insert the space in explicit kerns
+       if match(line, "kern%-?%d+%.%d+ *$") then
+         line = gsub(line, "kern", "kern ")
+       elseif match(line, " %(font%)$") then
+         line = gsub(line, " %(font%)", "")
+       end
+    end
     -- Changes in PDF specials
     line = gsub(line, "\\pdfliteral origin", "\\pdfliteral")
     -- A function to handle the box prefix part
@@ -583,8 +598,8 @@ function compare_tlg(name, engine)
     and stdengine ~= "luajittex"
     then
     local luatlgfile = testdir .. "/" .. name .. ".luatex" ..  tlgext
-    formatlualog(tlgfile, luatlgfile)
-    formatlualog(logfile, logfile)
+    formatlualog(tlgfile, luatlgfile, false)
+    formatlualog(logfile, logfile, true)
     -- This allows code sharing below: we only need the .tlg name in one place
     tlgfile = luatlgfile
   end
