@@ -55,6 +55,14 @@ function setepoch()
       .. os_concat
 end
 
+local function getscriptname()
+  if match(arg[0], "l3build(%.lua)$") then
+    return "l3build.lua"
+  else
+    return "build.lua"
+  end
+end
+
 -- Do some subtarget for all modules in a bundle
 function call(dirs, target, opts)
   -- Turn the option table into a string
@@ -84,10 +92,7 @@ function call(dirs, target, opts)
       s = s .. " " .. v
     end
   end
-  local scriptname = "l3build.lua"
-  if not match(arg[0], "l3build(%.lua)$") then
-    scriptname = "build.lua"
-  end
+  local scriptname = getscriptname()
   for _,i in ipairs(dirs) do
     local text = " for module " .. i
     if i == "." then
@@ -113,7 +118,7 @@ function depinstall(deps)
   local errorlevel
   for _,i in ipairs(deps) do
     print("Installing dependency: " .. i)
-    errorlevel = run(i, "texlua " .. scriptname .. " unpack -q")
+    errorlevel = run(i, "texlua " .. getscriptname() .. " unpack -q")
     if errorlevel ~= 0 then
       return errorlevel
     end
