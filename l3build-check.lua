@@ -338,8 +338,14 @@ local function formatlualog(logfile, newfile, luatex)
        -- Re-insert the space in explicit kerns
        if match(line, "kern%-?%d+%.%d+ *$") then
          line = gsub(line, "kern", "kern ")
-       elseif match(line, " %(font%)$") then
-         line = gsub(line, " %(font%)", "")
+       elseif match(line, "%(accent%)$") then
+         line = gsub(line, "kern", "kern ")
+         line = gsub(line, "%(accent%)$", "(for accent)")
+       elseif match(line, "%(italic%)$") then
+         line = gsub(line, "kern", "kern ")
+         line = gsub(line, " %(italic%)$", "")
+       else
+         line = gsub(line, " %(font%)$", "")
        end
     end
     -- Changes in PDF specials
@@ -351,6 +357,7 @@ local function formatlualog(logfile, newfile, luatex)
     -- 'Recover' some discretionary data
     if match(lastline, "^%.+\\discretionary %(penalty 50%)$") and
        match(line, boxprefix(lastline) .. "%.= ") then
+       line = gsub(line," %(font%)$","")
        return gsub(line, "%.= ", ""),""
     end
     -- Where the last line was a discretionary, looks for the
