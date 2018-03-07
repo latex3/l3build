@@ -85,6 +85,7 @@ excludefiles       = excludefiles       or {"*~"}
 installfiles       = installfiles       or {"*.sty","*.cls"}
 makeindexfiles     = makeindexfiles     or {"*.ist"}
 scriptfiles        = scriptfiles        or { }
+scriptmanfiles     = scriptmanfiles     or { }
 sourcefiles        = sourcefiles        or {"*.dtx", "*.ins"}
 tagfiles           = tagfiles           or {"*.dtx"}
 textfiles          = textfiles          or {"*.md", "*.txt"}

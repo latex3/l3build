@@ -23,6 +23,7 @@ for those people who are interested.
 --]]
 
 local gsub             = string.gsub
+local match            = string.match
 local insert           = table.insert
 
 -- Copy files to the main CTAN release directory
@@ -45,7 +46,8 @@ function copyctan()
       end
     end
   end
-  for _,tab in pairs({bibfiles,demofiles,docfiles,pdffiles,typesetlist}) do
+  for _,tab in pairs(
+    {bibfiles,demofiles,docfiles,pdffiles,scriptmanfiles,typesetlist}) do
     copyfiles(tab,docfiledir)
   end
   copyfiles(sourcefiles,sourcefiledir)
@@ -99,6 +101,15 @@ function copytds()
   install(sourcefiledir, "source", {sourcelist})
   install(unpackdir, "tex", {installfiles})
   install(unpackdir, "scripts", {scriptfiles}, true)
+  -- Any script man files need special handling
+  for _,glob in pairs(scriptmanfiles) do
+    for file,_ in pairs(tree(docfiledir,glob)) do
+      -- Man files should have a single-digit extension: the type
+      local installdir = tdsdir .. "/doc/man/man"  .. match(file,".$")
+      mkdir(installdir)
+      cp(file,docfiledir,installdir)
+    end
+  end
 end
 
 -- Standard versions of the main targets for building modules
