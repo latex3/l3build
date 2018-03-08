@@ -43,21 +43,3 @@ function update_tag(file,content,tagname,tagdate)
   return contents
 end
 
-function setversion_update_line(line, date, version)
-  local date = string.gsub(date, "%-", "/")
-  -- .dtx file
-  if string.match(line, "^%% \\date{Released %d%d%d%d/%d%d/%d%d}$") then
-    line = string.gsub(line, "%d%d%d%d/%d%d/%d%d", date)
-  end
-  -- Markdown files
-  if string.match(
-    line, "^Release %d%d%d%d/%d%d/%d%d$"
-  ) then
-    line = "Release " .. date
-  end
-  -- l3build.lua
-  if string.match(line, "^release_date = \"%d%d%d%d/%d%d/%d%d\"$") then
-    line = "release_date = \"" .. date .. "\""
-  end
-  return line
-end
