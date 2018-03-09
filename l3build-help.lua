@@ -31,7 +31,11 @@ function version()
 end
 
 function help()
-  print("usage: " .. arg[0] .. " <command> [<options>] [<names>]")
+  local scriptname = "l3build"
+  if not string.match(arg[0], "l3build(%.lua)$") then
+    scriptname = arg[0]
+  end
+  print("usage: " .. scriptname .. " <command> [<options>] [<names>]")
   print("")
   print("The most commonly used l3build commands are:")
   if testfiledir ~= "" then
