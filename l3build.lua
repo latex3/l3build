@@ -79,7 +79,7 @@ build_require("stdmain")
 main = main or stdmain
 
 -- Load configuration file if running as a script
-if match(arg[0], "l3build(%.lua)$") then
+if match(arg[0], "l3build$") or match(arg[0], "l3build%.lua$") then
   -- Look for some configuration details
   if fileexists("build.lua") then
     dofile("build.lua")

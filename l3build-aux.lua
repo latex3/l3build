@@ -58,7 +58,7 @@ function setepoch()
 end
 
 local function getscriptname()
-  if match(arg[0], "l3build(%.lua)$") then
+  if match(arg[0], "l3build$") or match(arg[0], "l3build%.lua$") then
     return lookup("l3build.lua")
   else
     return arg[0]
