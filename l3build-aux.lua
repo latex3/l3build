@@ -27,6 +27,8 @@ local match = string.match
 local pairs = pairs
 local print = print
 
+local lookup = kpse.lookup
+
 --
 -- Auxiliary functions which are used by more than one main function
 --
@@ -57,9 +59,9 @@ end
 
 local function getscriptname()
   if match(arg[0], "l3build(%.lua)$") then
-    return "l3build.lua"
+    return lookup("l3build.lua")
   else
-    return "build.lua"
+    return arg[0]
   end
 end
 
