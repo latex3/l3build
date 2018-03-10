@@ -1,3 +1,5 @@
+#!/usr/bin/env texlua
+
 module = "simple-tree"
 
 sourcefiledir = "code"
