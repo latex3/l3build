@@ -556,29 +556,12 @@
 % variable settings \emph{or} additionally custom code to change the build
 % process. A number of example scripts are given in Section~\ref{sec:examples}.
 %
-% Earlier releases of \pkg{l3build} required that the last line of
-% \texttt{build.lua} ran the main script, \emph{i.e.}~ that \texttt{build.lua}
-% was what the user called rather than \texttt{l3build.lua}. To allow scripts
-% to support both forms \emph{for the transition}, a simple test may be
-% included as showing in Figure~\ref{fig:build-compat}.
-% \begin{figure}
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
-%     if not release_date then
-%       dofile(kpse.lookup("l3build.lua"))
-%     end
-%   \end{lstlisting}
-% \caption{Final lines for a \texttt{build.lua} script usable with both older
-%   and newer releases of \pkg{l3build}.}
-% \label{fig:build-compat}
-% \end{figure}
-%
 % \subsection{Example build scripts}
 % \label{sec:examples}
 %
 % An example of a standalone build script for a package that uses self-contained |.dtx| files is shown in Figure~\ref{fig:breqn}.
 % Here, the |module| only is defined, and since it doesn't use |.ins| files so the variable \var{unpackfiles} is redefined to run |tex| on the |.dtx| files instead to generate the necessary |.sty| files.
 % There are some PDFs in the repository that shouldn't be part of a CTAN submission, so they're explicitly excluded, and here unpacking is done `quietly' to minimise console output when building the package.
-% Finally, because this is a standalone package, we assume that \pkg{l3build} is installed in the main \TeX{} distribution and find the Lua script by searching for it.
 %
 % \begin{figure}[!b]
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
@@ -628,6 +611,28 @@
 % \caption{The build script for the \pkg{xparse} module.}
 % \label{fig:module}
 % \end{figure}
+%
+% \subsection{Backward compatibly}
+%
+% Earlier releases of \pkg{l3build} required that the last line of
+% \texttt{build.lua} ran the main script, \emph{i.e.}~ that \texttt{build.lua}
+% was what the user called rather than \texttt{l3build.lua}. To allow scripts
+% to support both forms \emph{for the transition}, a simple test may be
+% included as showing in Figure~\ref{fig:build-compat}.
+% \begin{figure}
+%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
+%     if not release_date then
+%       dofile(kpse.lookup("l3build.lua"))
+%     end
+%   \end{lstlisting}
+% \caption{Final lines for a \texttt{build.lua} script usable with both older
+%   and newer releases of \pkg{l3build}.}
+% \label{fig:build-compat}
+% \end{figure}
+%
+% Note that in time support for loading \pkg{l3build} by calling the
+% \texttt{build.lua} script \emph{may} be removed: the recommended approach for
+% new scripts is to run \pkg{l3build}.
 %
 % \subsection{Variables}
 %
