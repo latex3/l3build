@@ -595,7 +595,7 @@ function compare_tlg(name, engine)
   local logfile  = testdir .. "/" .. testname .. logext
   local tlgfile  = locate({testdir}, {testname .. tlgext, name .. tlgext})
   if not tlgfile then
-    return
+    return 1
   end
   -- Do additional log formatting if the engine is LuaTeX, there is no
   -- LuaTeX-specific .tlg file and the default engine is not LuaTeX
