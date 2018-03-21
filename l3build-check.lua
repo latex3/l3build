@@ -698,7 +698,7 @@ function runtest(name, engine, hide, ext, makepdf)
       runtest_tasks(jobname(lvtfile))
     )
     -- Break the loop if the result is stable
-    if checkruns < 0 then
+    if checkruns < 0  and i < abs(checkruns) then
       formatlog(logfile, newfile, engine, errlevels)
       if compare_tlg(name,engine) == 0 then
         break
