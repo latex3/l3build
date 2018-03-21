@@ -28,6 +28,7 @@ local close            = io.close
 local write            = io.write
 local output           = io.output
 
+local abs              = math.abs
 local rnd              = math.random
 
 local luatex_version   = status.luatex_version
@@ -676,7 +677,7 @@ function runtest(name, engine, hide, ext, makepdf)
     end
   end
   local errlevels = {}
-  for i = 1, checkruns do
+  for i = 1, abs(checkruns) do
     errlevels[i] = run(
       testdir,
       -- No use of localdir here as the files get copied to testdir:
@@ -696,6 +697,13 @@ function runtest(name, engine, hide, ext, makepdf)
         .. os_concat ..
       runtest_tasks(jobname(lvtfile))
     )
+    -- Break the loop if the result is stable
+    if checkruns < 0 then
+      formatlog(logfile, newfile, engine, errlevels)
+      if compare_tlg(name,engine) == 0 then
+        break
+      end
+    end
   end
   if makepdf and fileexists(testdir .. "/" .. name .. dviext) then
     dvitopdf(name, testdir, engine, hide)
