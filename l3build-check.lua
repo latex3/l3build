@@ -654,8 +654,12 @@ function runtest(name, engine, hide, ext, makepdf, breakout)
     checkopts = checkopts .. " -no-pdf"
   end
   -- Special casing for ConTeXt
+  local function setup(file)
+    return " -jobname=" .. name .. " " .. ' "\\input ' .. file .. '" '
+  end
   if match(checkformat, "^context$") then
     format = ""
+    function setup(file) return ' "' .. file .. '" '  end
     if engine == "luatex" or engine == "luajittex" then
       realengine = "context"
     elseif engine == "pdftex" then
@@ -691,8 +695,9 @@ function runtest(name, engine, hide, ext, makepdf, breakout)
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
-      realengine .. format .. " -jobname=" .. name .. " "
-        .. asciiopt .. " " .. checkopts .. " \"\\input " .. lvtfile .. "\" "
+      realengine .. format 
+        .. asciiopt .. " " .. checkopts
+        .. setup(lvtfile)
         .. (hide and (" > " .. os_null) or "")
         .. os_concat ..
       runtest_tasks(jobname(lvtfile))
