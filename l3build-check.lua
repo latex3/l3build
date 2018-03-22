@@ -696,7 +696,7 @@ function runtest(name, engine, hide, ext, makepdf, breakout)
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
       realengine .. format 
-        .. asciiopt .. " " .. checkopts
+        .. " " .. asciiopt .. " " .. checkopts
         .. setup(lvtfile)
         .. (hide and (" > " .. os_null) or "")
         .. os_concat ..
