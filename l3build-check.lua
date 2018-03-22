@@ -28,7 +28,6 @@ local close            = io.close
 local write            = io.write
 local output           = io.output
 
-local abs              = math.abs
 local rnd              = math.random
 
 local luatex_version   = status.luatex_version
@@ -497,7 +496,7 @@ function runcheck(name, hide)
       engine = "luatex"
     end
     checkpdf = setup_check(name, engine)
-    runtest(name, i, hide, lvtext, checkpdf)
+    runtest(name, i, hide, lvtext, checkpdf, true)
     -- Generation of results depends on test type
     local errlevel
     if checkpdf then
@@ -537,7 +536,7 @@ function setup_check(name, engine)
       )
       exit(1)
     end
-    runtest(name, engine, true, lveext, true)
+    runtest(name, engine, true, lveext, true, false)
     pdffile = testdir .. "/" .. testname .. pdfext
     -- If a PDF is generated use it for comparisons
     if not fileexists(pdffile) then
@@ -622,7 +621,7 @@ end
 
 -- Run one of the test files: doesn't check the result so suitable for
 -- both creating and verifying .tlg files
-function runtest(name, engine, hide, ext, makepdf)
+function runtest(name, engine, hide, ext, makepdf, breakout)
   local lvtfile = name .. (ext or lvtext)
   cp(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
     and testfiledir or unpackdir, testdir)
@@ -678,7 +677,7 @@ function runtest(name, engine, hide, ext, makepdf)
     end
   end
   local errlevels = {}
-  for i = 1, abs(checkruns) do
+  for i = 1, checkruns do
     errlevels[i] = run(
       testdir,
       -- No use of localdir here as the files get copied to testdir:
@@ -699,7 +698,7 @@ function runtest(name, engine, hide, ext, makepdf)
       runtest_tasks(jobname(lvtfile))
     )
     -- Break the loop if the result is stable
-    if checkruns < 0  and i < abs(checkruns) then
+    if breakout and i < checkruns then
       formatlog(logfile, newfile, engine, errlevels)
       if compare_tlg(name,engine) == 0 then
         break
