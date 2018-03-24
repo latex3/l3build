@@ -589,7 +589,7 @@ function compare_pdf(name, engine)
   return errorlevel
 end
 
-function compare_tlg(name, engine)
+function compare_tlg(name, engine,cleanup)
   local errorlevel
   local testname = name .. "." .. engine
   local difffile = testdir .. "/" .. testname .. os_diffext
@@ -605,15 +605,24 @@ function compare_tlg(name, engine)
     and stdengine ~= "luatex"
     and stdengine ~= "luajittex"
     then
-    local luatlgfile = testdir .. "/" .. name .. ".luatex" ..  tlgext
+    local lualogfile = logfile
+    if cleanup then
+      lualogfile = testdir .. "/" .. testname .. ".tmp" .. logext
+    end
+    local luatlgfile = testdir .. "/" .. testname .. tlgext
     formatlualog(tlgfile, luatlgfile, false)
-    formatlualog(logfile, logfile, true)
-    -- This allows code sharing below: we only need the .tlg name in one place
-    tlgfile = luatlgfile
+    formatlualog(logfile, lualogfile, true)
+    errorlevel = execute(os_diffexe .. " "
+      .. normalize_path(luatlgfile .. " " .. lualogfile .. " > " .. difffile))
+    if cleanup then
+      remove(lualogfile)
+      remove(luatlgfile)
+    end
+  else
+    errorlevel = execute(os_diffexe .. " "
+      .. normalize_path(tlgfile .. " " .. logfile .. " > " .. difffile))
   end
-  errorlevel = execute(os_diffexe .. " "
-    .. normalize_path(tlgfile .. " " .. logfile .. " > " .. difffile))
-  if errorlevel == 0 then
+  if errorlevel == 0 or cleanup then
     remove(difffile)
   end
   return errorlevel
@@ -705,7 +714,7 @@ function runtest(name, engine, hide, ext, makepdf, breakout)
     -- Break the loop if the result is stable
     if breakout and i < checkruns then
       formatlog(logfile, newfile, engine, errlevels)
-      if compare_tlg(name,engine) == 0 then
+      if compare_tlg(name,engine,true) == 0 then
         break
       end
     end
