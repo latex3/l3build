@@ -90,8 +90,7 @@ local function formatlog(logfile, newfile, engine, errlevels)
   end
   local function killcheck(line)
       -- Skip lines containing file dates
-      if match(line, "[^<]%d%d%d%d/%d%d/%d%d") 
-         or match(line, "[^<]%d%d%d%d%-%d%d%-%d%d") then
+      if match(line, "[^<]%d%d%d%d/%d%d/%d%d") then
         return true
       elseif
       -- Skip \openin/\openout lines in web2c 7.x
