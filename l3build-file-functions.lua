@@ -283,9 +283,7 @@ function tree(path, glob)
       for _, file in ipairs(filelist(dir, pattern)) do
         local fullpath = path .. "/" .. file
         if file ~= "." and file ~= ".." and
-          fullpath ~= builddir and
-          (sub(pattern, 1, 1) == "."
-            or sub(file, 1, 1) ~= ".")
+          fullpath ~= builddir
         then
           local fulldir = dir .. "/" .. file
           if criterion(fulldir) then
