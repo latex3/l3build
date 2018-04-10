@@ -81,6 +81,7 @@ checksuppfiles     = checksuppfiles     or { }
 cleanfiles         = cleanfiles         or {"*.log", "*.pdf", "*.zip"}
 demofiles          = demofiles          or { }
 docfiles           = docfiles           or { }
+dynamicfiles       = dynamicfiles       or { }
 excludefiles       = excludefiles       or {"*~"}
 installfiles       = installfiles       or {"*.sty","*.cls"}
 makeindexfiles     = makeindexfiles     or {"*.ist"}

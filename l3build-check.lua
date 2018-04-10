@@ -690,6 +690,10 @@ function runtest(name, engine, hide, ext, makepdf, breakout)
       break
     end
   end
+  -- Clean out any dynamic files
+  for _,filetype in pairs(dynamicfiles) do
+    rm(testdir,filetype)
+  end
   local errlevels = {}
   for i = 1, checkruns do
     errlevels[i] = run(
