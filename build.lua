@@ -40,7 +40,7 @@ function update_tag(file,content,tagname,tagdate)
       '\nrelease_date = "' .. iso .. '"\n',
       '\nrelease_date = "' .. tagname .. '"\n')
   end
-  return contents
+  return content
 end
 
 function tag_hook(tagname)
