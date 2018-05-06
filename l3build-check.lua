@@ -89,14 +89,10 @@ local function formatlog(logfile, newfile, engine, errlevels)
     maxprintline = maxprintline + 1 -- Deal with an out-by-one error
   end
   local function killcheck(line)
-      -- Skip lines containing file dates
-      if match(line, "[^<]%d%d%d%d/%d%d/%d%d") then
-        return true
-      elseif
       -- Skip \openin/\openout lines in web2c 7.x
       -- As Lua doesn't allow "(in|out)", a slightly complex approach:
       -- do a substitution to check the line is exactly what is required!
-        match(
+      if match(
           gsub(line, "^\\openin", "\\openout"), "^\\openout%d%d? = "
         ) then
         return true
@@ -137,6 +133,9 @@ local function formatlog(logfile, newfile, engine, errlevels)
         line = gsub(line, pattern, "../%1")
       end
     end
+    -- Print only 'place-marker' (ISO) dates
+    line = gsub(line, "%d%d%d%d%-%d%d%-%d%d", "YYYY-MM-DD")
+    line = gsub(line, "%d%d%d%d/%d%d/%d%d", "YYYY-MM-DD")
     -- Deal with the fact that "(.aux)" may have still a leading space
     line = gsub(line, "^ %(%.aux%)", "(.aux)")
     -- Merge all of .fd data into one line so will be removed later

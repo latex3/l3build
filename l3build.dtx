@@ -749,14 +749,14 @@
 %   \item Lines before the \cs{START}, after the \cs{END} and within
 %     \cs{OMIT}/\cs{TIMO} blocks
 %   \item Entirely blank lines, including those consisting only of spaces.
-%   \item Lines containing file dates in format
-%    \texttt{\meta{yyyy}/\meta{mm}/\meta{dd}}.
 %  \item Lines starting \cs{openin} or \cs{openout}.
 % \end{itemize}
 % Modifications made in lines are:
 % \begin{itemize}
 %   \item Removal spaces at the start of lines.
 %   \item Removal of |./| at start of file names.
+%   \item Conversion of dates (YYYY-MM-DD or YYYY/MM/DD format) to the
+%     place-holder |YYYY-MM-DD|
 %   \item Standardisation of the list of units known to \TeX{} (\pdfTeX{}
 %     and \LuaTeX{} add a small number of additional units which are not
 %     known to \TeX90 or \XeTeX{}, (u)p\TeX{} adds some additional non-standard
