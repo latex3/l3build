@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added 
+- `CHANGELOG.md`
+
 ## [2018-05-10]
 
 ### Changed
@@ -70,6 +73,13 @@ this project uses date-based 'snapshot' version identifiers.
 - Target `setversion` and variable `versionfiles`
 
 ## [2018-02-20]
+
+### Changed
+- Allow for `checkopts` adding code/files
+
+### Fixed
+- Creation of 'structured' CTAN releases
+- Quote test names correctly
 
 ## [2018-01-27]
 
