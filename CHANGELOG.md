@@ -100,7 +100,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Issue with `recordstatus`
 
 ### Removed
-- Rationalise short option names: removed `-d`, `-E`, `-r
+- Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
 [Unreleased]: https://github.com/latex3/l3build/compare/2018-05-10...HEAD
