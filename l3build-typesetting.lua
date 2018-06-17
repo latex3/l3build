@@ -125,7 +125,7 @@ function makeindex(name, dir, inext, outext, logext, style)
         makeindexexe .. " " .. makeindexopts
           .. " -o " .. name .. outext
           .. (style and (" -s " .. style) or "")
-          .. " -t " .. name .. " "  .. name .. inext
+          .. " -t " .. name .. logext .. " "  .. name .. inext
       )
     )
   end
