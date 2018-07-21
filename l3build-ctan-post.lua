@@ -49,14 +49,23 @@ for those people who are interested.
 -- the main interface is
 -- ctan_upload (c,upload)
 -- with a configuration table c and optional upload parameter
--- if upload is omitted or nil or false, onloy validation is attempted
+-- if upload is omitted or nil or false, only validation is attempted
 -- if upload is true the ctan upload URL will be used  after validation
--- if upload is anything else, the user will beprompted whether to upload.
+-- if upload is anything else, the user will be prompted whether to upload.
 
 local ctan_post_command = ctan_post_command or "curl"
 local curl_debug=false -- posting is disabled while testing
+local ctanconfig = ctanconfig or {}
+local ctanupload= ctanupload or "ask"
 
 function ctan_upload (c,upload)
+
+if type(c) ~= "table" then
+  print ("No ctan upload configuration found.")
+  return 1
+end
+
+print ("ZZZ" .. upload)
 
   c.cfg=ctan_post_command .. " "
 

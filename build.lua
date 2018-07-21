@@ -60,6 +60,8 @@ function tag_hook(tagname)
   os.execute('git tag -a -m "" ' .. tagname)
 end
 
+require("z")
+
 if not release_date then
   dofile("./l3build.lua")
 end
