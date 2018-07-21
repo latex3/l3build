@@ -1,3 +1,27 @@
+--[[
+
+File l3build-unpack.lua Copyright (C) 2018 The LaTeX3 Project
+
+It may be distributed and/or modified under the conditions of the
+LaTeX Project Public License (LPPL), either version 1.3c of this
+license or (at your option) any later version.  The latest version
+of this license is in the file
+
+   http://www.latex-project.org/lppl.txt
+
+This file is part of the "l3build bundle" (The Work in LPPL)
+and all files in that bundle must be distributed together.
+
+-----------------------------------------------------------------------
+
+The development version of the bundle can be found at
+
+   https://github.com/latex3/l3build
+
+for those people who are interested.
+
+--]]
+
 
 -- ctan_upload
 --
@@ -19,19 +43,8 @@
 -- luasec is not included in texlua.
 
 -- Instead an external program is used to post.
--- As Windows (since April 2018) includes curl now default to curl.
-
--- A global variable controls the backend to use.
--- ctan_post_command=="curl"
--- ctan_post_command=="ctan-o-mat"
---
--- ctan-o-mat inroduces a dependency on perl but it is installed with texlive
--- in the default path and is maintained by Gerd Neugebauer of the CTAN team.
---
--- The ctan-o-mat configuration is written out as ctan-upload.txt
--- in the current version it is a fixed name and not deleted after use,
--- as a debugging aid.
-
+-- As Windows (since April 2018) includes curl now use curl.
+-- a version using ctan-o-mat is available in the ctan-post github repo
 
 -- the main interface is
 -- ctan_upload (c,upload)
@@ -40,20 +53,12 @@
 -- if upload is true the ctan upload URL will be used  after validation
 -- if upload is anything else, the user will beprompted whether to upload.
 
-ctan_post_command="curl"
-curl_debug=false -- posting is disabled while testing
+local ctan_post_command = ctan_post_command or "curl"
+local curl_debug=false -- posting is disabled while testing
 
 function ctan_upload (c,upload)
 
-  if ctan_post_command=="ctan-o-mat" then
-    c.cfg = io.open("ctan-upload.txt","w")
-  else
-    if ctan_post_command=="curl" then
-      c.cfg="curl "
-    else
-      error("no https post command set")
-    end
-  end
+  c.cfg=ctan_post_command .. " "
 
 
   --        cfg field max desc                   mandatory multi
@@ -77,17 +82,10 @@ function ctan_upload (c,upload)
   ctan_field(c,"description",4096,"description",  false,false)
   ctan_field(c,"note",4096,"internal note to ctan",false,false)
 
-  if ctan_post_command=="ctan-o-mat" then
-    ctan_field(c,"file",4096,"zip file to upload",  true,false)
-    io.close(c.cfg)
-  else
-    if ctan_post_command=="curl" then
-      c.cfg=c.cfg .. " --form 'file=@" .. tostring(c.file) .. ";filename=" .. tostring(c.file) .. "'"
-      c.cfg=c.cfg ..  " https://ctan.org/submit/"
-    else
-      error("no https post command set")
-    end
-  end
+
+  c.cfg=c.cfg .. " --form 'file=@" .. tostring(c.file) .. ";filename=" .. tostring(c.file) .. "'"
+  c.cfg=c.cfg ..  " https://ctan.org/submit/"
+
 
 
   -- avoid lower level error from post command if zip file missing
@@ -101,25 +99,18 @@ function ctan_upload (c,upload)
   -- call post command to validate the upload at CTAN's validate URL
   local exit_status=0
   local fp_return=""
-  if ctan_post_command=="ctan-o-mat" then
-    exit_status=os.execute("ctan-o-mat --validate ctan-upload.txt")
-  else
-    if ctan_post_command=="curl" then
+
 --    use popen not execute so get the return body local exit_status=os.execute(c.cfg .. "validate")
-      if(curl_debug==false) then
-        local fp = assert(io.popen(c.cfg .. "validate", 'r'))
-        fp_return = assert(fp:read('*a'))
-        fp:close()
-      else
-       fp_return="WARNING: curl_debug==true: posting disabled disabled"
-       print(c.cfg)
-      end
-      if string.match(fp_return,"WARNING") or string.match(fp_return,"ERROR") then
-       exit_status=1
-      end
-    else
-      error("no https post command set")
-    end
+  if(curl_debug==false) then
+    local fp = assert(io.popen(c.cfg .. "validate", 'r'))
+    fp_return = assert(fp:read('*a'))
+    fp:close()
+  else
+   fp_return="WARNING: curl_debug==true: posting disabled disabled"
+   print(c.cfg)
+  end
+  if string.match(fp_return,"WARNING") or string.match(fp_return,"ERROR") then
+   exit_status=1
   end
 
   -- if upload requested and validation succeeded repost to the upload URL
@@ -135,24 +126,15 @@ function ctan_upload (c,upload)
       end
     end
     if(upload==true) then
-      if ctan_post_command=="ctan-o-mat" then
-        exit_status=os.execute("ctan-o-mat ctan-upload.txt")
-      else
-        if ctan_post_command=="curl" then
-          local fp = assert(io.popen(c.cfg .. "upload", 'r'))
-          fp_return = assert(fp:read('*a'))
-          fp:close()
-
---         this is just html, could save to a file
---         or echo a cleaned up version
-          print('Response from CTAN:')
-          print(fp_return)
-          if string.match(fp_return,"WARNING") or string.match(fp_return,"ERROR") then
-            exit_status=1
-          end
-        else
-          error("no https post command set")
-        end
+      local fp = assert(io.popen(c.cfg .. "upload", 'r'))
+      fp_return = assert(fp:read('*a'))
+      fp:close()
+--     this is just html, could save to a file
+--     or echo a cleaned up version
+      print('Response from CTAN:')
+      print(fp_return)
+      if string.match(fp_return,"WARNING") or string.match(fp_return,"ERROR") then
+        exit_status=1
       end
     else
       print("CTAN validation successful")
@@ -179,10 +161,6 @@ function ctan_field(c,f,max,desc,mandatory,multi)
   end
 end
 
--- for URL %-encoding but not used presently
-local char_to_hex = function(c)
-  return string.format("%%%02X", string.byte(c))
-end
 
 function ctan_single_field(c,f,v,max,desc,mandatory)
   if(v==nil or type(v)~="table") then
