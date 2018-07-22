@@ -39,7 +39,7 @@ for those people who are interested.
 
 -- Currently string values are not checked, eg licence names, or URL syntax.
 
--- The input form could be used to constrict a post body but
+-- The input form could be used to construct a post body but
 -- luasec is not included in texlua.
 
 -- Instead an external program is used to post.
@@ -47,7 +47,7 @@ for those people who are interested.
 -- a version using ctan-o-mat is available in the ctan-post github repo
 
 -- the main interface is
--- ctan_upload (c,upload)
+-- ctan_upload (upload)
 -- with a configuration table c and optional upload parameter
 -- if upload is omitted or nil or false, only validation is attempted
 -- if upload is true the ctan upload URL will be used  after validation
@@ -58,65 +58,58 @@ local curl_debug=false -- posting is disabled while testing
 local ctanconfig = ctanconfig or {}
 local ctanupload= ctanupload or "ask"
 
-function ctan_upload (c,upload)
+function ctan_upload (upload)
 
-if type(c) ~= "table" then
-  print ("No ctan upload configuration found.")
-  return 1
-end
-
-print ("ZZZ" .. upload)
-
-  c.cfg=ctan_post_command .. " "
+ctan_post=ctan_post_command .. " "
 
 
-  --        cfg field max desc                   mandatory multi
+  --        field max desc                   mandatory multi
   --        ----------------------------------------------------
-  ctan_field(c,"pkg",32,"the package name",       true,false)
-  ctan_field(c,"version",32,"the package version",true,false)
-  ctan_field(c,"author",128,"the author name",    true,false)
-  ctan_field(c,"email",255,"the email of uploader",true,false)
-  ctan_field(c,"uploader",255,"the name of uploader",true,false)
-  ctan_field(c,"ctanPath",255,"the CTAN path",    false,false)
-  ctan_field(c,"license",2048,"Package License",  true,true)
-  ctan_field(c,"home",255,"URL of home page",     false,false)
-  ctan_field(c,"bugtracker",255,"URL of bug tracker",false,false)
-  ctan_field(c,"support",255,"URL of support channels",false,true)
-  ctan_field(c,"repository",255,"URL of source repositories",false,true)
-  ctan_field(c,"development",255,"URL of development channels",false,true)
-  ctan_field(c,"update",8,",true for an update false otherwise",false,false)
-  ctan_field(c,"topic",1024,"topic",              false,true)
-  ctan_field(c,"announcement",8192,"announcement",false,false)
-  ctan_field(c,"summary",128,"summary",           true,false) -- ctan-o-mat doc says optional
-  ctan_field(c,"description",4096,"description",  false,false)
-  ctan_field(c,"note",4096,"internal note to ctan",false,false)
+  ctan_field("pkg",ctan_pkg,32,"the package name",       true,false)
+  ctan_field("version",ctan_version,32,"the package version",true,false)
+  ctan_field("author",ctan_author,128,"the author name",    true,false)
+  ctan_field("email",ctan_email,255,"the email of uploader",true,false)
+  ctan_field("uploader",ctan_uploader,255,"the name of uploader",true,false)
+  ctan_field("ctanPath",ctan_ctanPath,255,"the CTAN path",    false,false)
+  ctan_field("license",ctan_license,2048,"Package License",  true,true)
+  ctan_field("home",ctan_home,255,"URL of home page",     false,false)
+  ctan_field("bugtracker",ctan_bugtracker,255,"URL of bug tracker",false,false)
+  ctan_field("support",ctan_support,255,"URL of support channels",false,true)
+  ctan_field("repository",ctan_repository,255,"URL of source repositories",false,true)
+  ctan_field("development",ctan_development,255,"URL of development channels",false,true)
+  ctan_field("update",ctan_update,8,",true for an update false otherwise",false,false)
+  ctan_field("topic",ctan_topic,1024,"topic",              false,true)
+  ctan_field("announcement",ctan_announcement,8192,"announcement",false,false)
+  ctan_field("summary",ctan_summary,128,"summary",           true,false) -- ctan-o-mat doc says optional
+  ctan_field("description",ctan_description,4096,"description",  false,false)
+  ctan_field("note",ctan_note,4096,"internal note to ctan",false,false)
 
 
-  c.cfg=c.cfg .. " --form 'file=@" .. tostring(c.file) .. ";filename=" .. tostring(c.file) .. "'"
-  c.cfg=c.cfg ..  " https://ctan.org/submit/"
+  ctan_post=ctan_post .. " --form 'file=@" .. tostring(ctan_file) .. ";filename=" .. tostring(ctan_file) .. "'"
+  ctan_post=ctan_post ..  " https://ctan.org/submit/"
 
 
 
   -- avoid lower level error from post command if zip file missing
-  local zip=io.open(trim_space(tostring(c.file)),"r")
+  local zip=io.open(trim_space(tostring(ctan_file)),"r")
   if zip~=nil then
     io.close(zip)
   else
-    error("missing zip file " .. tostring(c.file))
+    error("missing zip file " .. tostring(ctan_file))
   end
 
   -- call post command to validate the upload at CTAN's validate URL
   local exit_status=0
   local fp_return=""
 
---    use popen not execute so get the return body local exit_status=os.execute(c.cfg .. "validate")
+--    use popen not execute so get the return body local exit_status=os.execute(ctan_post .. "validate")
   if(curl_debug==false) then
-    local fp = assert(io.popen(c.cfg .. "validate", 'r'))
+    local fp = assert(io.popen(ctan_post .. "validate", 'r'))
     fp_return = assert(fp:read('*a'))
     fp:close()
   else
    fp_return="WARNING: curl_debug==true: posting disabled disabled"
-   print(c.cfg)
+   print(ctan_post)
   end
   if string.match(fp_return,"WARNING") or string.match(fp_return,"ERROR") then
    exit_status=1
@@ -135,7 +128,7 @@ print ("ZZZ" .. upload)
       end
     end
     if(upload==true) then
-      local fp = assert(io.popen(c.cfg .. "upload", 'r'))
+      local fp = assert(io.popen(ctan_post .. "upload", 'r'))
       fp_return = assert(fp:read('*a'))
       fp:close()
 --     this is just html, could save to a file
@@ -157,44 +150,31 @@ function trim_space(s)
   return (s:gsub("^%s*(.-)%s*$", "%1"))
 end
 
-function ctan_field(c,f,max,desc,mandatory,multi)
-  if(type(c) ~= "table") then
-    error("The configuration argument must be a Lua table")
-  end
-  if(type(c[f])=="table" and multi==true) then
-    for i, v in pairs(c[f]) do
-      ctan_single_field(c,f,v,max,desc,mandatory and i==1)
+function ctan_field(fname,fvalue,max,desc,mandatory,multi)
+  if(type(fvalue)=="table" and multi==true) then
+    for i, v in pairs(fvalue) do
+      ctan_single_field(fname,v,max,desc,mandatory and i==1)
     end
   else
-    ctan_single_field(c,f,c[f],max,desc,mandatory)
+    ctan_single_field(fname,fvalue,max,desc,mandatory)
   end
 end
 
 
-function ctan_single_field(c,f,v,max,desc,mandatory)
-  if(v==nil or type(v)~="table") then
-    local vs=trim_space(tostring(v))
-    if (mandatory==true and (v == nil or vs=="")) then
-      error("The field " .. f .. " must contain " .. desc)
+function ctan_single_field(fname,fvalue,max,desc,mandatory)
+  if(fvalue==nil or type(fvalue)~="table") then
+    local vs=trim_space(tostring(fvalue))
+    if (mandatory==true and (fvalue == nil or vs=="")) then
+      error("The field " .. fname .. " must contain " .. desc)
     end
-    if(v ~=nil and string.len(vs) > 0) then
+    if(fvalue ~=nil and string.len(vs) > 0) then
       if (max > 0 and string.len(vs) > max) then
-        error("The field " .. f .. " is longer than " .. max)
+        error("The field " .. fname .. " is longer than " .. max)
       end
-      if ctan_post_command=="ctan-o-mat" then
-        c.cfg:write("\n\\begin{" .. f .. "}\n" .. vs .. "\n\\end{" .. f .. "}\n")
-      else
-        if ctan_post_command=="curl" then
--- curl supports using \" in " delimited strings but not \' in ' delimited omes
---          c.cfg=c.cfg .." --form " .. f .. "='" .. vs:gsub("([^%w])",char_to_hex) .. "'"
-          c.cfg=c.cfg .." --form " .. f .. '="' .. vs:gsub('"','\\"') .. '"'
-        else
-          error("no https post command set")
-	end
-      end
+      ctan_post=ctan_post .." --form " .. fname .. '="' .. vs:gsub('"','\\"') .. '"'
     end
   else
-    error("The value of the field '" .. f .."' must be a scalar not a table")
+    error("The value of the field '" .. fname .."' must be a scalar not a table")
   end
 end
 
