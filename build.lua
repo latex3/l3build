@@ -60,7 +60,35 @@ function tag_hook(tagname)
   os.execute('git tag -a -m "" ' .. tagname)
 end
 
-require("z")
+
+-- ctan upload settings
+ctan_pkg="l3build"
+ctan_version=[[2018/05/20]]
+ctan_author=[[latex3 project]]
+ctan_email='me@example.com'
+ctan_uploader=[[me]]
+ctan_ctanPath=[[]]
+ctan_license="lppl"
+
+-- ctan_sumary  is mandatory: not setting it will trigger interaction
+
+ctan_announcement='ask'  -- this is optional: setting it to "ask" forces interaction
+
+ctan_update=true
+
+ctan_note=[[
+this
+is
+a note
+just to myself
+]]
+
+ctan_file="l3build.zip"
+
+ctanupload="ask"
+
+
+-- end of ctan upload settings
 
 if not release_date then
   dofile("./l3build.lua")
