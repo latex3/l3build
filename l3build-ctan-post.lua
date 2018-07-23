@@ -47,18 +47,23 @@ for those people who are interested.
 -- a version using ctan-o-mat is available in the ctan-post github repo
 
 -- the main interface is
--- ctan_upload (upload)
+-- ctan_upload ()
 -- with a configuration table c and optional upload parameter
--- if upload is omitted or nil or false, only validation is attempted
--- if upload is true the ctan upload URL will be used  after validation
--- if upload is anything else, the user will be prompted whether to upload.
+
 
 local ctan_post_command = ctan_post_command or "curl"
 local curl_debug=false -- posting is disabled while testing
-local ctanconfig = ctanconfig or {}
-local ctanupload= ctanupload or "ask"
 
-function ctan_upload (upload)
+
+
+local ctanupload= ctanupload or "ask"
+-- if ctanupload is nil or false, only validation is attempted
+-- if ctanupload is true the ctan upload URL will be used  after validation
+-- if upload is anything else, the user will be prompted whether to upload.
+
+
+
+function ctan_upload ()
 
 ctan_post=ctan_post_command .. " "
 
@@ -117,17 +122,17 @@ ctan_post=ctan_post_command .. " "
 
   -- if upload requested and validation succeeded repost to the upload URL
   if (exit_status==0 or exit_status==nil) then
-    if(upload ~=nil and upload ~=false and upload ~= true) then
+    if(ctanupload ~=nil and ctanupload ~=false and ctanupload ~= true) then
       print("Validation successful, do you want to upload to CTAN?" )
       local answer=""
       io.write("> ")
       io.flush()
       answer=io.read()
       if(string.lower(answer,1,1)=="y") then
-        upload=true
+        ctanupload=true
       end
     end
-    if(upload==true) then
+    if(ctanupload==true) then
       local fp = assert(io.popen(ctan_post .. "upload", 'r'))
       fp_return = assert(fp:read('*a'))
       fp:close()
@@ -144,6 +149,7 @@ ctan_post=ctan_post_command .. " "
   else
     error("Warnings from CTAN package validation:\n" .. fp_return)
   end
+  return exit_status
 end
 
 function trim_space(s)
@@ -162,6 +168,14 @@ end
 
 
 function ctan_single_field(fname,fvalue,max,desc,mandatory)
+print('@@' .. fname .. tostring(fvalue or '??'))
+  if((fvalue==nil and mandatory) or (fvalue == 'ask')) then
+    if (max < 256) then
+      fvalue=input_single_line_field(fname)
+      else
+        fvalue=input_multi_line_field(fname)
+    end      
+  end
   if(fvalue==nil or type(fvalue)~="table") then
     local vs=trim_space(tostring(fvalue))
     if (mandatory==true and (fvalue == nil or vs=="")) then
