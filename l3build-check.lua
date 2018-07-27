@@ -904,6 +904,7 @@ function save(names)
               .. " file overrides unpacked version of the same name"
           )
         end
+        return 0
       elseif locate({unpackdir, testfiledir}, {name .. lveext}) then
         print(
           "Saved " .. tlgext .. " file overrides a "
@@ -914,7 +915,9 @@ function save(names)
           "Test input \"" .. testfiledir .. "/" .. name .. lvtext
             .. "\" not found"
         )
+        return 1
       end
+      return 0
     end
   end
 end
