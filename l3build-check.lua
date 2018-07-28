@@ -489,32 +489,43 @@ function runcheck(name, hide)
   if options["engine"] then
     checkengines = options["engine"]
   end
-  local errorlevel = 0
-  for _,i in ipairs(checkengines) do
-    -- Allow for luatex == luajittex for .tlg purposes
-    local engine = i
-    if i == "luajittex" then
-      engine = "luatex"
-    end
-    checkpdf = setup_check(name, engine)
-    runtest(name, i, hide, lvtext, checkpdf, true)
-    -- Generation of results depends on test type
-    local errlevel
-    if checkpdf then
-      errlevel = compare_pdf(name, engine)
-    else
-      errlevel = compare_tlg(name, engine)
-    end
-    if errlevel ~= 0 and options["halt-on-error"] then
+  -- Used for both .lvt and .pvt tests
+  local function check_and_diff(ext,engine,enginename,comp,pdftest)
+    runtest(name,engine,hide,ext,pdftest,true)
+    local errorlevel = comp(name,enginename)
+    if errorlevel ~= 0 and options["halt-on-error"] then
       showfaileddiff()
-      if errlevel ~= 0 then
+      return 1
+    end
+    return errorlevel
+  end
+  local errorlevel = 0
+  -- First check by log
+  if fileexists(testfiledir .. "/" .. name .. lvtext) then
+    for _,i in pairs(checkengines) do
+    -- Allow for luatex == luajittex for .tlg purposes
+      local engine = i
+      if i == "luajittex" then
+        engine = "luatex"
+      end
+      setup_check(name, engine)
+      local errlevel = 0
+      errlevel = check_and_diff(lvtext,i,engine,compare_tlg)
+      if errlevel ~= 0 and options["halt-on-error"] then
         return 1
       end
-    end
-    if errlevel > errorlevel then
-      errorlevel = errlevel
+      if errlevel > errorlevel then
+        errorlevel = errlevel
+      end
     end
   end
+  -- Then check by PDF
+  if fileexists(testfiledir .. "/" .. name .. pvtext) then
+    setup_check(name, stdengine)
+    errorlevel = check_and_diff(pvtext,stdengine,stdengine,compare_pdf,true)
+      + errorlevel
+  end
+  -- Return everything
   return errorlevel
 end
 
@@ -563,9 +574,6 @@ function setup_check(name, engine)
       pdffile,
       gsub(pdffile, pdfext .. "$", ".ref" .. pdfext)
     )
-    return true
-  else
-    return false
   end
 end
 
@@ -751,7 +759,8 @@ end
 
 -- Look for a test: could be in the testfiledir or the unpackdir
 function testexists(test)
-  return(locate({testfiledir, unpackdir}, {test .. lvtext}))
+  return(locate({testfiledir, unpackdir},
+    {test .. lvtext, test .. pvtext}))
 end
 
 -- Standard versions of the main targets for building modules
@@ -770,6 +779,9 @@ function check(names)
     -- No names passed: find all test files
     if not next(names) then
       for _,i in pairs(filelist(testfiledir, "*" .. lvtext)) do
+        insert(names, jobname(i))
+      end
+      for _,i in pairs(filelist(testfiledir, "*" .. pvtext)) do
         insert(names, jobname(i))
       end
       for _,i in ipairs(filelist(unpackdir, "*" .. lvtext)) do
@@ -880,44 +892,36 @@ function save(names)
   checkinit()
   local engines = options["engine"] or {stdengine}
   for _,name in pairs(names) do
-    local engine
-    for _,engine in pairs(engines) do
-      local tlgengine = ((engine == stdengine and "") or "." .. engine)
-      local tlgfile  = name .. tlgengine .. tlgext
-      local spdffile = name .. tlgengine .. pdfext
-      local newfile  = name .. "." .. engine .. logext
-      local pdffile  = name .. "." .. engine .. pdfext
-      local refext = ((options["pdf"] and pdfext) or tlgext)
-      if testexists(name) then
-        print("Creating and copying " .. refext)
-        runtest(name, engine, false, lvtext, options["pdf"])
-        if options["pdf"] then
-          ren(testdir, pdffile, spdffile)
-          cp(spdffile, testdir, testfiledir)
+    if testexists(name) then
+      for _,engine in pairs(engines) do
+        local testengine = ((engine == stdengine and "") or "." .. engine)
+        if fileexists(testfiledir .. "/" .. name .. lvtext) then
+        -- Create one or more .tlg files        
+          print("Creating and copying " .. tlgext)
+          local tlgfile  = name .. testengine .. tlgext
+          local newfile  = name .. "." .. engine .. logext
+          runtest(name,engine,false,lvtext)
+          ren(testdir,newfile,tlgfile)
+          cp(tlgfile,testdir,testfiledir)
+          if fileexists(unpackdir .. "/" .. tlgfile) then
+            print("Saved " .. tlgext
+              .. " file overrides unpacked version of the same name")
+          end
         else
-          ren(testdir, newfile, tlgfile)
-          cp(tlgfile, testdir, testfiledir)
-        end
-        if fileexists(unpackdir .. "/" .. tlgfile) then
-          print(
-            "Saved " .. tlgext
-              .. " file overrides unpacked version of the same name"
-          )
+          -- Create one or more reference .pdf files
+          print("Creating and copying " .. pdfext)
+          local pdffile  = name .. pdfext
+          runtest(name,engine,false,pvtext,true)
+          cp(pdffile,testdir,testfiledir)
         end
         return 0
-      elseif locate({unpackdir, testfiledir}, {name .. lveext}) then
-        print(
-          "Saved " .. tlgext .. " file overrides a "
-            .. lveext .. " file of the same name"
-        )
-      else
-        print(
-          "Test input \"" .. testfiledir .. "/" .. name .. lvtext
-            .. "\" not found"
-        )
-        return 1
       end
-      return 0
+    elseif locate({unpackdir, testfiledir}, {name .. lveext}) then
+      print("Saved " .. tlgext .. " file overrides a "
+        .. lveext .. " file of the same name")
+    else
+      print('Test "'.. name .. '"not found')
+      return 1     
     end
   end
 end

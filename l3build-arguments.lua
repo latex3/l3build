@@ -85,12 +85,6 @@ option_list =
         short = "h",
         type  = "boolean"
       },
-    pdf =
-      {
-        desc  = "Check/save PDF files",
-        short = "p",
-        type  = "boolean"
-      },
     quiet =
       {
         desc  = "Suppresses TeX output when unpacking",

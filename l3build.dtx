@@ -102,10 +102,11 @@
 \luavarseparator
 \luavarset{bakext}{".bak"}{Extension of backup files}
 \luavarset{dviext}{".dvi"}{Extension of DVI files}
-\luavarset{lvtext}{".lvt"}{Extension of test files}
+\luavarset{lvtext}{".lvt"}{Extension of log-based test files}
 \luavarset{tlgext}{".tlg"}{Extension of test file output}
 \luavarset{lveext}{".lve"}{Extension of auto-generating test file output}
 \luavarset{logext}{".log"}{Extension of checking output, before processing it into a \texttt{.tlg}}
+\luavarset{pvtext}{".pvt"}{Extension of PDF-based test files}
 \luavarset{pdfext}{".pdf"}{Extension of PDF file for checking and saving}
 \luavarset{psext} {".ps"} {Extension of PostScript files}
 \luavarseparator
@@ -328,8 +329,6 @@
 %   should stop as soon as possible, rather than running all requested
 %   tests; the difference file is printed in the terminal directly in the case of failure
 %  \item |--last| Name of the last test to run
-% \item |--pdf| (|-p|) Test PDF file against a reference
-%   version rather than using a log comparison
 % \item |--quiet| (|-q|) Suppresses output from unpacking
 % \item |--rerun| Run tests without unpacking/set up
 % \item |--shuffle| Shuffle the order in which tests run
@@ -380,16 +379,6 @@
 % testing to a single engine. Normally testing is preceded by unpacking
 % source files and copying the result plus any additional support to the
 % test directory: this may be skipped using the |-s| option.
-% \end{buildcmd}
-%
-% \begin{buildcmd}{check -p}
-% Rather than the log-based checking carried out by the standard
-% |check| target, running with the |-p| option carries out a binary
-% comparison of the PDF files produced by typesetting against those
-% saved in \var{testfiledir}.
-%
-% This functionality requires \TeX{} Live 2016 or later as it needs support
-% from the engines not available in earlier releases.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{clean}
@@ -494,15 +483,6 @@
 % typesetting compilation of the \texttt{.lvt} file. If the typesetting compilation
 % completed without throwing an error (due to \TeX\ programming errors, for example),
 % the \enquote{exit status} is zero, else non-zero.
-% \end{buildcmd}
-%
-% \begin{buildcmd}{save -p \meta{name(s)}}
-% This version of |save| will store the PDF files produced from
-% \texttt{\meta{name(s)}.lvt} in addition to the |.tlg| file, and thus allows
-% binary comparison of the result of typesetting.
-%
-% This functionality requires \TeX{} Live 2016 or later as it needs support
-% from the engines not available in earlier releases.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{manifest}
@@ -1115,6 +1095,17 @@
 %     the same name.}
 %   \label{fig:expect-ins}
 % \end{figure}
+%
+% \subsection{PDF-based tests}
+%
+% In most cases, testing is best handled by using the text-based methods
+% outlined above. However, there are cases where the detail of output structure
+% is important. This can only be fully tested by comparing PDF files on a binary
+% level. To support this, \pkg{l3build} can be instructed to build and compare
+% PDF files by setting up tests in \texttt{.pvt} files.
+%
+% Testing on the result of typesetting \texttt{.pvt} files is carried out using
+% only the standard engine, as PDFs are not identical between individual engines.
 %
 % \section{Release-focussed features}
 %

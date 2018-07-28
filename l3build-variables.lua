@@ -172,6 +172,7 @@ logext = logext or ".log"
 lveext = lveext or ".lve"
 lvtext = lvtext or ".lvt"
 pdfext = pdfext or ".pdf"
+pvtext = pvtext or ".pvt"
 psext  = psext  or ".ps"
 tlgext = tlgext or ".tlg"
 
