@@ -573,7 +573,7 @@ function compare_pdf(name, engine)
   local errorlevel
   local testname = name .. "." .. engine
   local cmpfile    = testdir .. "/" .. testname .. os_cmpext
-  local pdffile    = testdir .. "/" .. testname .. pdfext
+  local pdffile    = testdir .. "/" .. name .. pdfext
   local refpdffile = locate(
     {testdir}, {testname .. ".ref" .. pdfext, name .. ".ref" .. pdfext}
   )
