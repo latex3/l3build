@@ -9,6 +9,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added 
 - `CHANGELOG.md`
+- `target_list` table to allow control of targets without redefining
+  `main()`
 
 ## [2018-05-10]
 

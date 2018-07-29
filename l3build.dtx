@@ -1432,6 +1432,24 @@
 %   |target| in this table is ignored.
 % \end{function}
 %
+% \subsection{Customising the target list}
+%
+% The targets known to \pkg{l3build} are stored in the global table
+% |target_list|. Each entry should have at least a |func|, pointing to the
+% function used to implement the target. This function will receive the
+% list of names given at the command line as a table argument.
+% In most cases, targets will also have a |desc|, used to construct |help()|
+% automatically. In addition, the following may also be used:
+% \begin{itemize}
+%   \item |bundle_func| A variant of |func| used when at the top level of
+%     a bundle
+%   \item |bundle_target| A boolean to specify that when passing the target
+%     name in a bundle, it should have |bundle| prepended.
+%   \item |pre| A function executed before the main function, and receiving
+%     the |names| as an argument; this allows checking of the |name| data
+%     without impact on the main |func|.
+% \end{itemize}
+%
 % \subsection{Customising the manifest file}
 % \label{sec:manifest}
 %

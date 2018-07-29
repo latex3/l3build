@@ -45,45 +45,95 @@ end
 
 target_list =
   {
+    -- Some hidden targets
+    bundlecheck =
+      {
+        func = check,
+        pre  = function()
+            if names then
+              print("Bundle checks should not list test names")
+              help()
+              exit(1)
+            end
+            return 0
+          end
+      },
+    bundleunpack =
+      {
+        func = bundleunpack,
+        pre  = function() return(depinstall(unpackdeps)) end
+      },
+    -- Public targets
     check =
       {
-        desc = "Run all automated tests"
+        bundle_target = true,
+        desc = "Run all automated tests",
+        func = check,
       },
     clean =
       {
-        desc = "Clean out directory tree"
+        bundle_func = bundleclean,
+        desc = "Clean out directory tree",
+        func = clean
       },
     ctan =
       {
-        desc = "Create CTAN-ready archive"
+        bundle_func = ctan,
+        desc = "Create CTAN-ready archive",
+        func = ctan
       },
     doc =
       {
-        desc = "Typesets all documentation files"
+        desc = "Typesets all documentation files",
+        func = doc
       },
     install =
       {
-        desc = "Installs files into the local textmf tree"
+        desc = "Installs files into the local textmf tree",
+        func = install
       },
     manifest =
       {
-        desc = "Creates a manifest file"
+        desc = "Creates a manifest file",
+        func = manifest
       },
     save =
       {
-        desc = "Saves test validation log"
+        desc = "Saves test validation log",
+        func = save
       },
     tag =
       {
-        desc = "Updates release tags in files"
+        bundle_func = function(names)
+          local modules = modules or listmodules()
+          local errorlevel = call(modules,"tag")
+          -- Deal with any files in the bundle dir itself
+          if errorlevel == 0 then
+            errorlevel = tag(names[1])
+          end
+          return errorlevel
+        end
+        desc = "Updates release tags in files",
+        func = tag,
+        pre  = function(names)
+           if not names or #names ~=1 then
+             print("Tag name required")
+             help()
+             exit(1)
+           end
+           return 0
+         end
       },
     uninstall =
       {
-        desc = "Uninstalls files from the local textmf tree"
+        desc = "Uninstalls files from the local textmf tree",
+        func = uninstall
       },
     unpack=
       {
-        desc = "Unpacks the source files into the build tree"
+        bundle_target = true,
+        desc = "Unpacks the source files into the build tree",
+        func = unpack
       }
   }
 
@@ -91,87 +141,34 @@ target_list =
 -- The overall main function
 --
 
-function stdmain(target, names)
-  local errorlevel
-  -- If the module name is empty, the script is running in a bundle:
-  -- apart from ctan all of the targets are then just mappings
+function stdmain(target,names)
+  -- Deal with unknown targets up-front
+  if not target_list[target] then
+    help()
+    exit(1)
+  end
+  local errorlevel = 0
   if module == "" then
-    -- Detect all of the modules
-    modules = modules or listmodules()
-    if target == "doc" then
-      errorlevel = call(modules, "doc")
-    elseif target == "check" then
-      errorlevel = call(modules, "bundlecheck")
-      if errorlevel ~=0 then
-        print("There were errors: checks halted!\n")
-      end
-    elseif target == "clean" then
-      errorlevel = bundleclean()
-    elseif target == "ctan" then
-      errorlevel = ctan()
-    elseif target == "install" then
-      errorlevel = call(modules, "install")
-    elseif target == "tag" then
-      if options["names"] and #options["names"] == 1 then
-        errorlevel = call(modules,"tag")
-        -- Deal with any files in the bundle dir itself
-        if errorlevel == 0 then
-          errorlevel = tag(options["names"][1])
-        end
-      else
-        print("Tag name required")
-        help()
-        exit(1)
-      end
-    elseif target == "uninstall" then
-      errorlevel = call(modules, "uninstall")
-    elseif target == "unpack" then
-      errorlevel = call(modules, "bundleunpack")
+    if target_list[target].bundle_func then
+      errorlevel = target_list[target].bundle_func(names)
     else
-      help()
+      -- Detect all of the modules
+      modules = modules or listmodules()
+      if target_list[target].bundle_target then
+        target = "bundle" .. target
+      end
+      errorlevel = call(modules,target)
     end
   else
-    if target == "bundleunpack" then -- 'Hidden' as only needed 'higher up'
-      depinstall(unpackdeps)
-      errorlevel = bundleunpack()
-    elseif target == "bundlecheck" then
-      errorlevel = check()
-    elseif target == "bundlectan" then
-      errorlevel = bundlectan()
-    elseif target == "doc" then
-      errorlevel = doc(names)
-    elseif target == "check" then
-      errorlevel = check(names)
-    elseif target == "clean" then
-      errorlevel = clean()
-    elseif target == "ctan" then
-      errorlevel = ctan()
-    elseif target == "install" then
-      errorlevel = install()
-    elseif target == "manifest" then
-      errorlevel = manifest()
-    elseif target == "save" then
-      if next(names) then
-        errorlevel = save(names)
-      else
-        help()
-      end
-    elseif target == "tag" then
-      if options["names"] and #options["names"] == 1 then
-        errorlevel = tag(options["names"][1])
-      else
-        print("Tag name required")
-        help()
-        exit(1)
-      end
-    elseif target == "uninstall" then
-      errorlevel = uninstall()
-    elseif target == "unpack" then
-      errorlevel = unpack()
-    else
-      help()
+    if target_list[target].pre then
+     errorlevel = target_list[target].pre(names)
+     if errorlevel ~= 0 then
+       exit(1)
+     end
     end
+    errorlevel = target_list[target].func(names)
   end
+  -- All done, finish up
   if errorlevel ~= 0 then
     exit(1)
   else
