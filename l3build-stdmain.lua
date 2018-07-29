@@ -149,11 +149,11 @@ function stdmain(target,names)
   end
   local errorlevel = 0
   if module == "" then
+    modules = modules or listmodules()
     if target_list[target].bundle_func then
       errorlevel = target_list[target].bundle_func(names)
     else
       -- Detect all of the modules
-      modules = modules or listmodules()
       if target_list[target].bundle_target then
         target = "bundle" .. target
       end
