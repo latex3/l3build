@@ -105,14 +105,14 @@ target_list =
     tag =
       {
         bundle_func = function(names)
-          local modules = modules or listmodules()
-          local errorlevel = call(modules,"tag")
-          -- Deal with any files in the bundle dir itself
-          if errorlevel == 0 then
-            errorlevel = tag(names[1])
-          end
-          return errorlevel
-        end
+            local modules = modules or listmodules()
+            local errorlevel = call(modules,"tag")
+            -- Deal with any files in the bundle dir itself
+            if errorlevel == 0 then
+              errorlevel = tag(names[1])
+            end
+            return errorlevel
+          end,
         desc = "Updates release tags in files",
         func = tag,
         pre  = function(names)
