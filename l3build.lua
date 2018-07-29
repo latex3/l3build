@@ -44,7 +44,7 @@ local exit             = os.exit
 
 -- l3build setup and functions
 kpse.set_program_name("kpsewhich")
-build_kpse_path = string.match(lookup("l3build.lua"),"(.*[/])")
+build_kpse_path = match(lookup("l3build.lua"),"(.*[/])")
 local function build_require(s)
   require(lookup("l3build-"..s..".lua", { path = build_kpse_path } ) )
 end

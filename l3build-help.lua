@@ -22,6 +22,11 @@ for those people who are interested.
 
 --]]
 
+local insert = table.insert
+local match  = string.match
+local rep    = string.rep
+local sort   = table.sort
+
 function version()
   print(
     "\n" ..
@@ -32,7 +37,7 @@ end
 
 function help()
   local scriptname = "l3build"
-  if not string.match(arg[0], "l3build(%.lua)$") then
+  if not match(arg[0], "l3build(%.lua)$") then
     scriptname = arg[0]
   end
   print("usage: " .. scriptname .. " <command> [<options>] [<names>]")
@@ -64,12 +69,12 @@ function help()
   -- Sort the options
   local t = { }
   for k,_ in pairs(option_list) do
-    table.insert(t, k)
+    insert(t, k)
   end
-  table.sort(t)
+  sort(t)
   for _,k in ipairs(t) do
     local opt = option_list[k]
-    local filler = string.rep(" ", longest - k:len() + 1)
+    local filler = rep(" ", longest - k:len() + 1)
     if opt["desc"] then -- Skip --help as it has no desc
       if opt["short"] then
         print("   --" .. k .. "|-" .. opt["short"] .. filler .. opt["desc"])

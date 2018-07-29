@@ -22,7 +22,8 @@ for those people who are interested.
 
 --]]
 
-local exit             = os.exit
+local exit   = os.exit
+local insert = table.insert
 
 -- List all modules
 function listmodules()
@@ -34,7 +35,7 @@ function listmodules()
       assert(type(attr) == "table")
       if attr.mode == "directory" then
         if not exclmodules[entry] then
-          table.insert(modules, entry)
+          insert(modules, entry)
         end
       end
     end
