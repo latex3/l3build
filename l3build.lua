@@ -53,15 +53,6 @@ end
 build_require("arguments")
 build_require("help")
 
--- Filter out special cases early
-if options["target"] == "help" then
-  help()
-  exit(0)
-elseif options["target"] == "version" then
-  version()
-  exit(0)
-end
-
 build_require("file-functions")
 build_require("typesetting")
 build_require("aux")
@@ -74,6 +65,16 @@ build_require("manifest")
 build_require("manifest-setup")
 build_require("tagging")
 build_require("stdmain")
+
+-- This has to come after stdmain(),
+-- and that has to come after the functions are defined
+if options["target"] == "help" then
+  help()
+  exit(0)
+elseif options["target"] == "version" then
+  version()
+  exit(0)
+end
 
 -- Allow main function to be disabled 'higher up'
 main = main or stdmain

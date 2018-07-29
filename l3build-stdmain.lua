@@ -43,6 +43,50 @@ function listmodules()
   return modules
 end
 
+target_list =
+  {
+    check =
+      {
+        desc = "Run all automated tests"
+      },
+    clean =
+      {
+        desc = "Clean out directory tree"
+      },
+    ctan =
+      {
+        desc = "Create CTAN-ready archive"
+      },
+    doc =
+      {
+        desc = "Typesets all documentation files"
+      },
+    install =
+      {
+        desc = "Installs files into the local textmf tree"
+      },
+    manifest =
+      {
+        desc = "Creates a manifest file"
+      },
+    save =
+      {
+        desc = "Saves test validation log"
+      },
+    tag =
+      {
+        desc = "Updates release tags in files"
+      },
+    uninstall =
+      {
+        desc = "Uninstalls files from the local textmf tree"
+      },
+    unpack=
+      {
+        desc = "Unpacks the source files into the build tree"
+      }
+  }
+
 --
 -- The overall main function
 --

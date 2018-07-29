@@ -36,6 +36,22 @@ function version()
 end
 
 function help()
+  local function setup_list(list)
+    local longest = 0
+    for k,v in pairs(list) do
+      if k:len() > longest then
+        longest = k:len()
+      end
+    end
+    -- Sort the options
+    local t = { }
+    for k,_ in pairs(list) do
+      insert(t, k)
+    end
+    sort(t)
+    return longest,t
+  end
+
   local scriptname = "l3build"
   if not match(arg[0], "l3build(%.lua)$") then
     scriptname = arg[0]
@@ -43,39 +59,21 @@ function help()
   print("usage: " .. scriptname .. " <command> [<options>] [<names>]")
   print("")
   print("The most commonly used l3build commands are:")
-  if testfiledir ~= "" then
-    print("   check      Run all automated tests")
-  end
-  print("   clean      Clean out directory tree")
-  if module == "" or bundle == "" then
-    print("   ctan       Create CTAN-ready archive")
-  end
-  print("   doc        Typesets all documentation files")
-  print("   install    Installs files into the local texmf tree")
-  if module ~= "" and testfiledir ~= "" then
-    print("   save       Saves test validation log")
-  end
-  print("   tag        Update release tags in files")
-  print("   uninstall  Uninstalls files from the local texmf tree")
-  print("   unpack     Unpacks the source files into the build tree")
-  print("")
-  print("Valid options are:")
-  local longest = 0
-  for k,v in pairs(option_list) do
-    if k:len() > longest then
-      longest = k:len()
+  local longest,t = setup_list(target_list)
+  for _,k in ipairs(t) do
+    local target = target_list[k]
+    local filler = rep(" ", longest - k:len() + 1)
+    if target["desc"] then
+      print("   " .. k .. filler .. target["desc"])
     end
   end
-  -- Sort the options
-  local t = { }
-  for k,_ in pairs(option_list) do
-    insert(t, k)
-  end
-  sort(t)
+  print("")
+  print("Valid options are:")
+  local longest,t = setup_list(option_list)
   for _,k in ipairs(t) do
     local opt = option_list[k]
     local filler = rep(" ", longest - k:len() + 1)
-    if opt["desc"] then -- Skip --help as it has no desc
+    if opt["desc"] then
       if opt["short"] then
         print("   --" .. k .. "|-" .. opt["short"] .. filler .. opt["desc"])
       else
