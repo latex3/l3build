@@ -100,10 +100,7 @@ function call(dirs, target, opts)
     if i == "." then
       text = " with configuration " .. opts["config"][1]
     end
-    print(
-      "Running script " .. scriptname .. " with target \"" .. target
-        .. "\"" .. text
-    )
+    print("Running l3build with target \"" .. target .. "\"" .. text )
     local errorlevel = run(
       i,
       "texlua " .. scriptname .. " " .. target .. s
