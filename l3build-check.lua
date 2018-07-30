@@ -639,7 +639,7 @@ end
 
 -- Run one of the test files: doesn't check the result so suitable for
 -- both creating and verifying .tlg files
-function runtest(name, engine, hide, ext, makepdf, breakout)
+function runtest(name, engine, hide, ext, pdfmode, breakout)
   local lvtfile = name .. (ext or lvtext)
   cp(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
     and testfiledir or unpackdir, testdir)
@@ -668,7 +668,7 @@ function runtest(name, engine, hide, ext, makepdf, breakout)
   end
   -- Special casing for XeTeX engine
   local checkopts = checkopts
-  if match(engine, "xetex") and not makepdf then
+  if match(engine, "xetex") and not pdfmode then
     checkopts = checkopts .. " -no-pdf"
   end
   -- Special casing for ConTeXt
@@ -732,7 +732,7 @@ function runtest(name, engine, hide, ext, makepdf, breakout)
       end
     end
   end
-  if makepdf and fileexists(testdir .. "/" .. name .. dviext) then
+  if pdfmode and fileexists(testdir .. "/" .. name .. dviext) then
     dvitopdf(name, testdir, engine, hide)
   end
   formatlog(logfile, newfile, engine, errlevels)
