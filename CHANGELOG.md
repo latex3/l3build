@@ -13,7 +13,7 @@ this project uses date-based 'snapshot' version identifiers.
   `main()`
 
 ### Changed
-- PDF-based testing now uses 'digested' PDF file for comparison,
+- PDF-based testing now uses PDF file for comparison,
   working from dedicated .pvt input files
 
 ### Removed
