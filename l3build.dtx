@@ -104,6 +104,7 @@
 \luavarset{dviext}{".dvi"}{Extension of DVI files}
 \luavarset{lvtext}{".lvt"}{Extension of log-based test files}
 \luavarset{tlgext}{".tlg"}{Extension of test file output}
+\luavarset{tpfext}{".tpf"}{Extension of PDF-based test output}
 \luavarset{lveext}{".lve"}{Extension of auto-generating test file output}
 \luavarset{logext}{".log"}{Extension of checking output, before processing it into a \texttt{.tlg}}
 \luavarset{pvtext}{".pvt"}{Extension of PDF-based test files}
@@ -1100,12 +1101,15 @@
 %
 % In most cases, testing is best handled by using the text-based methods
 % outlined above. However, there are cases where the detail of output structure
-% is important. This can only be fully tested by comparing PDF files on a binary
-% level. To support this, \pkg{l3build} can be instructed to build and compare
-% PDF files by setting up tests in \texttt{.pvt} files.
+% is important. This can only be fully tested by comparing PDF structure.
+% To support this, \pkg{l3build} can be instructed to build and compare
+% PDF files by setting up tests in \texttt{.pvt} files. The resulting
+% \texttt{.tpf} output is a digested form of the PDF, which can be compared
+% as text.
 %
 % Testing on the result of typesetting \texttt{.pvt} files is carried out using
-% only the standard engine, as PDFs are not identical between individual engines.
+% only the standard engine, as aspects of PDF files are not indentical between
+% engines.
 %
 % \section{Release-focussed features}
 %
@@ -1902,6 +1906,25 @@
         /Producer       (\ifx\XeTeXversion\@undefined\else x\fi dvipdfmx)
       >>
   }
+\fi
+%    \end{macrocode}
+%
+% Disable compression in PDF output.
+%    \begin{macrocode}
+\ifnum 0%
+  \ifx\pdfoutput\@undefined\else\ifnum\pdfoutput>0 1\fi\fi
+  \ifx\outputmode\@undefined\else\ifnum\outputmode>0 1\fi\fi
+  >0 %
+  \ifx\pdfvariable\@undefined
+    \pdfcompresslevel=0 %
+    \pdfobjcompresslevel=0 %
+  \else
+    \pdfvariable compresslevel=0 %
+    \pdfvariable objcompresslevel=0 %
+  \fi
+\else
+  \special{dvipdfmx:config z 0}% Compress level
+  \special{dvipdfmx:config C 0x40}% Object compression
 \fi
 %    \end{macrocode}
 %

@@ -130,8 +130,6 @@ os_setenv  = "export"
 os_yes     = "printf 'y\\n%.0s' {1..200}"
 
 os_ascii   = "echo \"\""
-os_cmpexe  = getenv("cmpexe") or "cmp"
-os_cmpext  = getenv("cmpext") or ".cmp"
 os_diffext = getenv("diffext") or ".diff"
 os_diffexe = getenv("diffexe") or "diff -c --strip-trailing-cr"
 os_grepexe = "grep"
@@ -139,8 +137,6 @@ os_newline = "\n"
 
 if os_type == "windows" then
   os_ascii   = "@echo."
-  os_cmpexe  = getenv("cmpexe") or "fc /b"
-  os_cmpext  = getenv("cmpext") or ".cmp"
   os_concat  = "&"
   os_diffext = getenv("diffext") or ".fc"
   os_diffexe = getenv("diffexe") or "fc /n"

@@ -482,6 +482,31 @@ local function formatlualog(logfile, newfile, luatex)
   close(newfile)
 end
 
+local function normalise_pdf(pdffile,npdffile)
+  local file = assert(open(pdffile, "rb"))
+  local contents = gsub(file:read("*all") .. "\n", "\r\n", "\n")
+  close(file)
+  local newcontent = ""
+  local skip = false
+  for line in gmatch(contents, "([^\n]*)\n") do
+    if skip then
+      if match(line,"endstream") then
+        skip = false
+        line = ""
+      end
+    elseif match(line,"currentfile eexec") then
+      skip = true
+    end
+    if not match(line, "^ *$") and not skip then
+      newcontent = newcontent .. line .. os_newline
+    end
+  end 
+  local newfile = open(npdffile, "w")
+  output(newfile)
+  write(newcontent)
+  close(newfile)
+end
+
 -- Run one test which may have multiple engine-dependent comparisons
 -- Should create a difference file for each failed test
 function runcheck(name, hide)
@@ -531,33 +556,28 @@ end
 
 function setup_check(name, engine)
   local testname = name .. "." .. engine
-  local pdffile = locate(
-    {testfiledir, unpackdir},
-    {testname .. pdfext, name .. pdfext}
-  )
   local tlgfile = locate(
     {testfiledir, unpackdir},
     {testname .. tlgext, name .. tlgext}
   )
+  local tpffile = locate(
+    {testfiledir, unpackdir},
+    {testname .. tpfext, name .. tpfext}
+  )
   -- Attempt to generate missing reference file from expectation
-  if not (pdffile or tlgfile) then
+  if not (tlgfile or tpffile) then
     if not locate({unpackdir, testfiledir}, {name .. lveext}) then
       print(
-        "Error: failed to find " .. pdfext .. ", " .. tlgext .. " or "
+        "Error: failed to find " .. tlgext .. ", " .. tlpext .. " or "
           .. lveext .. " file for " .. name .. "!"
       )
       exit(1)
     end
     runtest(name, engine, true, lveext, true, false)
-    pdffile = testdir .. "/" .. testname .. pdfext
-    -- If a PDF is generated use it for comparisons
-    if not fileexists(pdffile) then
-      pdffile = nil
-      ren(testdir, testname .. logext, testname .. tlgext)
-    end
+    ren(testdir, testname .. logext, testname .. tlgext)
   else
     -- Install comparison files found
-    for _,v in pairs({pdffile, tlgfile}) do
+    for _,v in pairs({tlgfile, tpffile}) do
       if v then
         cp(
           match(v, ".*/(.*)"),
@@ -567,33 +587,21 @@ function setup_check(name, engine)
       end
     end
   end
-  if pdffile then
-    local pdffile = match(pdffile, ".*/(.*)")
-    ren(
-      testdir,
-      pdffile,
-      gsub(pdffile, pdfext .. "$", ".ref" .. pdfext)
-    )
-  end
 end
 
-function compare_pdf(name, engine)
+function compare_pdf(name,engine,cleanup)
   local errorlevel
   local testname = name .. "." .. engine
-  local cmpfile    = testdir .. "/" .. testname .. os_cmpext
-  local pdffile    = testdir .. "/" .. name .. pdfext
-  local refpdffile = locate(
-    {testdir}, {testname .. ".ref" .. pdfext, name .. ".ref" .. pdfext}
-  )
-  if not refpdffile then
-    return
+  local difffile = testdir .. "/" .. name .. os_diffext
+  local pdffile  = testdir .. "/" .. testname .. pdfext
+  local tpffile  = testdir .. "/" .. name .. tpfext
+  if not tpffile then
+    return 1
   end
-  errorlevel = execute(
-    os_cmpexe .. " " .. normalize_path(refpdffile)
-      .. " " .. pdffile .. " > " .. cmpfile
-  )
-  if errorlevel == 0 then
-    remove(cmpfile)
+  errorlevel = execute(os_diffexe .. " "
+    .. normalize_path(tpffile .. " " .. pdffile .. " > " .. difffile))
+  if errorlevel == 0 or cleanup then
+    remove(difffile)
   end
   return errorlevel
 end
@@ -691,6 +699,8 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   end
   local logfile = testdir .. "/" .. name .. logext
   local newfile = testdir .. "/" .. name .. "." .. engine .. logext
+  local pdffile = testdir .. "/" .. name .. pdfext
+  local npffile = testdir .. "/" .. name .. "." .. engine .. pdfext
   local asciiopt = ""
   for _,i in ipairs(asciiengines) do
     if realengine == i then
@@ -726,16 +736,27 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     )
     -- Break the loop if the result is stable
     if breakout and i < checkruns then
-      formatlog(logfile, newfile, engine, errlevels)
-      if compare_tlg(name,engine,true) == 0 then
-        break
+      if pdfmode then
+        normalise_pdf(pdffile,npffile)
+        if compare_pdf(name,engine,true) == 0 then
+          break
+        end
+      else
+        formatlog(logfile, newfile, engine, errlevels)
+        if compare_tlg(name,engine,true) == 0 then
+          break
+        end
       end
     end
   end
   if pdfmode and fileexists(testdir .. "/" .. name .. dviext) then
     dvitopdf(name, testdir, engine, hide)
   end
-  formatlog(logfile, newfile, engine, errlevels)
+  if pdfmode then
+    normalise_pdf(pdffile,npffile)
+  else
+    formatlog(logfile, newfile, engine, errlevels)
+  end
   -- Store secondary files for this engine
   for _,filetype in pairs(auxfiles) do
     for _,file in pairs(filelist(testdir, filetype)) do
@@ -865,9 +886,6 @@ function checkdiff()
   for _,i in ipairs(filelist(testdir, "*" .. os_diffext)) do
     print("  - " .. testdir .. "/" .. i)
   end
-  for _,i in ipairs(filelist(testdir, "*" .. os_cmpext)) do
-    print("  - " .. testdir .. "/" .. i)
-  end
   print("")
 end
 
@@ -882,9 +900,6 @@ function showfaileddiff()
     print("-----------------------------------------------------------------------------------")
     print(content)
     print("-----------------------------------------------------------------------------------")
-  end
-  for _,i in ipairs(filelist(testdir, "*" .. os_cmpext)) do
-    print("  - " .. testdir .. "/" .. i)
   end
 end
 
@@ -908,11 +923,13 @@ function save(names)
               .. " file overrides unpacked version of the same name")
           end
         else
-          -- Create one or more reference .pdf files
-          print("Creating and copying " .. pdfext)
-          local pdffile  = name .. pdfext
+          -- Create one .tpf file
+          print("Creating and copying " .. tpfext)
+          local tpffile  = name .. tpfext
+          local newfile  = name .. "." .. engine .. pdfext
           runtest(name,engine,false,pvtext,true)
-          cp(pdffile,testdir,testfiledir)
+          ren(testdir,newfile,tpffile)
+          cp(tpffile,testdir,testfiledir)
         end
         return 0
       end

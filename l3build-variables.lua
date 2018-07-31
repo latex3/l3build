@@ -172,9 +172,10 @@ logext = logext or ".log"
 lveext = lveext or ".lve"
 lvtext = lvtext or ".lvt"
 pdfext = pdfext or ".pdf"
-pvtext = pvtext or ".pvt"
 psext  = psext  or ".ps"
+pvtext = pvtext or ".pvt"
 tlgext = tlgext or ".tlg"
+tpfext = tpfext or ".tpf"
 
 -- Manifest options
 manifestfile = manifestfile or "MANIFEST.md"
