@@ -595,7 +595,7 @@ end
 function compare_pdf(name,engine,cleanup)
   local errorlevel
   local testname = name .. "." .. engine
-  local difffile = testdir .. "/" .. name .. os_diffext
+  local difffile = testdir .. "/" .. name .. pdfext .. os_diffext
   local pdffile  = testdir .. "/" .. testname .. pdfext
   local tpffile  = testdir .. "/" .. name .. tpfext
   if not tpffile then
