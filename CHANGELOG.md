@@ -15,8 +15,6 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - PDF-based testing now uses 'digested' PDF file for comparison,
   working from dedicated .pvt input files
-- dvips and (x)dvipdfmx .tlg files may need rebuilding to allow for
-  additional normalisation data added at start of output
 
 ### Removed
 - "--pdf" command line switch

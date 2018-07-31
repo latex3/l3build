@@ -207,6 +207,9 @@ local function formatlog(logfile, newfile, engine, errlevels)
     if match(line, "^%.*\\special%{pdf: docinfo << /Creator") then
       return ""
     end
+    if match(line, "^%.*\\special%{dvipdfmx:config") then
+      return ""
+    end
     -- Remove the \special line possibly present in DVI mode for paper size
     if match(line, "^%.*\\special%{papersize") then
       return ""
