@@ -7,8 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
-### Added 
+### Added
 - `CHANGELOG.md`
+- `--dirty` option
 - `target_list` table to allow control of targets without redefining
   `main()`
 

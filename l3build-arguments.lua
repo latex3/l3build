@@ -47,6 +47,11 @@ option_list =
         desc  = "Sets the date to insert into sources",
         type  = "string"
       },
+    dirty =
+      {
+        desc = "Skip cleaning up the test area",
+        type = "boolean"
+      },
     ["dry-run"] =
       {
         desc = "Dry run for install",

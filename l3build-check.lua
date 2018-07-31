@@ -55,7 +55,9 @@ local remove           = os.remove
 -- Set up the check system files: needed for checking one or more tests and
 -- for saving the test files
 function checkinit()
-  cleandir(testdir)
+  if not options["dirty"] then
+    cleandir(testdir)
+  end
   depinstall(checkdeps)
   -- Copy dependencies to the test directory itself: this makes the paths
   -- a lot easier to manage, and is important for dealing with the log and
