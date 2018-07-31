@@ -35,7 +35,7 @@ tlmgr install --no-depends babel ptex uptex ptex-base uptex-base ptex-fonts \
   uptex-fonts platex uplatex
 
 # Font support for PDF tests
-tlmgr install cm-super ec
+tlmgr install amsfonts
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0

@@ -6,7 +6,7 @@
 >>
 stream
 BT
-/F16 9.9626 Tf 92.916 759.927 Td [(#$%&)]TJ 0 -23.91 Td [(#$%&)]TJ
+/F15 9.9626 Tf 92.921 759.927 Td [(#$%&)]TJ 0 -23.91 Td [(#$%&)]TJ
 ET
 endstream
 endobj
@@ -21,76 +21,86 @@ endobj
 endobj
 1 0 obj
 <<
-/Font << /F16 4 0 R >>
+/Font << /F15 4 0 R >>
 /ProcSet [ /PDF /Text ]
 >>
 endobj
+6 0 obj
+[525 525 525 525]
+endobj
 7 0 obj
-[524.9 524.9 524.9 524.9]
+<<
+/Length1 1438
+/Length2 7042
+/Length3 0
+/Length 8480      
+>>
+stream
+%!PS-AdobeFont-1.0: CMTT10 003.002
+%%Title: CMTT10
+%Version: 003.002
+%%CreationDate: Mon Jul 13 16:17:00 2009
+%%Creator: David M. Jones
+%Copyright: Copyright (c) 1997, 2009 American Mathematical Society
+%Copyright: (<http://www.ams.org>), with Reserved Font Name CMTT10.
+% This Font Software is licensed under the SIL Open Font License, Version 1.1.
+% This license is in the accompanying file OFL.txt, and is also
+% available with a FAQ at: http://scripts.sil.org/OFL.
+%%EndComments
+FontDirectory/CMTT10 known{/CMTT10 findfont dup/UniqueID known{dup
+/UniqueID get 5000832 eq exch/FontType get 1 eq and}{pop false}ifelse
+{save true}{false}ifelse}{false}ifelse
+11 dict begin
+/FontType 1 def
+/FontMatrix [0.001 0 0 0.001 0 0 ]readonly def
+/FontName /TZCMOM+CMTT10 def
+/FontBBox {-4 -233 537 696 }readonly def
+/PaintType 0 def
+/FontInfo 9 dict dup begin
+/version (003.002) readonly def
+/Notice (Copyright \050c\051 1997, 2009 American Mathematical Society \050<http://www.ams.org>\051, with Reserved Font Name CMTT10.) readonly def
+/FullName (CMTT10) readonly def
+/FamilyName (Computer Modern) readonly def
+/Weight (Medium) readonly def
+/ItalicAngle 0 def
+/isFixedPitch true def
+/UnderlinePosition -100 def
+/UnderlineThickness 50 def
+end readonly def
+/Encoding 256 array
+0 1 255 {1 index exch /.notdef put} for
+dup 38 /ampersand put
+dup 36 /dollar put
+dup 35 /numbersign put
+dup 37 /percent put
+readonly def
+currentdict end
 endobj
 8 0 obj
 <<
-/Length1 725
-/Length2 16651
-/Length3 0
-/Length 17376     
->>
-stream
-%!FontType1-1.0: SFTT1000 0.3
-%%CreationDate: Wed Sep 12 2001
-% Copyright (c) 2001 Vladimir Volovich <vvv@vsu.ru>.
-% See the file COPYING (GNU General Public License) for license conditions.
-% Converted from METAFONT EC/TC and LH fonts:
-% ectt1000, tctt1000, latt1000, lbtt1000, lctt1000, rxtt1000.
-11 dict begin
-/FontInfo 6 dict dup begin
-/version (0.3) def
-/FullName (Computer Modern Typewriter) def
-/FamilyName (Computer Modern) def
-/ItalicAngle 0 def
-/isFixedPitch true def
-/Weight (Medium) def
-end readonly def
-/FontName /CYASUR+SFTT1000 def
-/Encoding StandardEncoding def
-/PaintType 0 def
-/FontType 1 def
-/FontMatrix [0.001 0 0 0.001 0 0] def
-/FontBBox{-208 -360 1374 838}readonly def
-currentdict end
-endobj
-9 0 obj
-<<
 /Type /FontDescriptor
-/FontName /CYASUR+SFTT1000
+/FontName /TZCMOM+CMTT10
 /Flags 4
-/FontBBox [-208 -360 1374 838]
+/FontBBox [-4 -233 537 696]
 /Ascent 611
 /CapHeight 611
 /Descent -222
 /ItalicAngle 0
-/StemV 50
-/XHeight 430
+/StemV 69
+/XHeight 431
 /CharSet (/ampersand/dollar/numbersign/percent)
-/FontFile 8 0 R
->>
-endobj
-6 0 obj
-<<
-/Type /Encoding
-/Differences [35/numbersign/dollar/percent/ampersand]
+/FontFile 7 0 R
 >>
 endobj
 4 0 obj
 <<
 /Type /Font
 /Subtype /Type1
-/BaseFont /CYASUR+SFTT1000
-/FontDescriptor 9 0 R
+/BaseFont /TZCMOM+CMTT10
+/FontDescriptor 8 0 R
 /FirstChar 35
 /LastChar 38
-/Widths 7 0 R
-/Encoding 6 0 R
+/Widths 6 0 R
 >>
 endobj
 5 0 obj
@@ -100,13 +110,13 @@ endobj
 /Kids [2 0 R]
 >>
 endobj
-10 0 obj
+9 0 obj
 <<
 /Type /Catalog
 /Pages 5 0 R
 >>
 endobj
-11 0 obj
+10 0 obj
 <<
 /Producer (pdfTeX)
 /Creator (TeX)
@@ -114,24 +124,23 @@ endobj
 >>
 endobj
 xref
-0 12
+0 11
 0000000000 65535 f 
 0000000257 00000 n 
 0000000146 00000 n 
 0000000015 00000 n 
-0000018183 00000 n 
-0000018338 00000 n 
-0000018092 00000 n 
+0000009183 00000 n 
+0000009320 00000 n 
 0000000325 00000 n 
-0000000366 00000 n 
-0000017839 00000 n 
-0000018395 00000 n 
-0000018445 00000 n 
+0000000358 00000 n 
+0000008935 00000 n 
+0000009377 00000 n 
+0000009426 00000 n 
 trailer
-<< /Size 12
-/Root 10 0 R
-/Info 11 0 R
+<< /Size 11
+/Root 9 0 R
+/Info 10 0 R
  >>
 startxref
-18517
+9498
 %%EOF

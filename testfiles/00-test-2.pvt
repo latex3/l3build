@@ -2,8 +2,6 @@
 
 \documentclass{minimal}
 
-\usepackage[T1]{fontenc}
-
 \begin{document}
 
 \newtoks\foo % \outer
