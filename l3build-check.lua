@@ -485,6 +485,31 @@ local function formatlualog(logfile, newfile, luatex)
   close(newfile)
 end
 
+local function normalise_pdf(pdffile,npdffile)
+  local file = assert(open(pdffile, "rb"))
+  local contents = gsub(file:read("*all") .. "\n", "\r\n", "\n")
+  close(file)
+  local newcontent = ""
+  local skip = false
+  for line in gmatch(contents, "([^\n]*)\n") do
+    if skip then
+      if match(line,"endstream") then
+        skip = false
+        line = ""
+      end
+    elseif match(line,"currentfile eexec") then
+      skip = true
+    end
+    if not match(line, "^ *$") and not skip then
+      newcontent = newcontent .. line .. os_newline
+    end
+  end 
+  local newfile = open(npdffile, "w")
+  output(newfile)
+  write(newcontent)
+  close(newfile)
+end
+
 -- Run one test which may have multiple engine-dependent comparisons
 -- Should create a difference file for each failed test
 function runcheck(name, hide)
@@ -569,9 +594,10 @@ end
 
 function compare_pdf(name,engine,cleanup)
   local errorlevel
+  local testname = name .. "." .. engine
   local difffile = testdir .. "/" .. name .. os_diffext
-  local pdffile  = testdir .. "/" .. name.. pdfext
-  local tpffile  = testdir .. "/" .. name.. tpfext
+  local pdffile  = testdir .. "/" .. testname .. pdfext
+  local tpffile  = testdir .. "/" .. name .. tpfext
   if not tpffile then
     return 1
   end
@@ -677,6 +703,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   local logfile = testdir .. "/" .. name .. logext
   local newfile = testdir .. "/" .. name .. "." .. engine .. logext
   local pdffile = testdir .. "/" .. name .. pdfext
+  local npffile = testdir .. "/" .. name .. "." .. engine .. pdfext
   local asciiopt = ""
   for _,i in ipairs(asciiengines) do
     if realengine == i then
@@ -713,6 +740,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     -- Break the loop if the result is stable
     if breakout and i < checkruns then
       if pdfmode then
+        normalise_pdf(pdffile,npffile)
         if compare_pdf(name,engine,true) == 0 then
           break
         end
@@ -727,7 +755,9 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   if pdfmode and fileexists(testdir .. "/" .. name .. dviext) then
     dvitopdf(name, testdir, engine, hide)
   end
-  if not pdfmode then
+  if pdfmode then
+    normalise_pdf(pdffile,npffile)
+  else
     formatlog(logfile, newfile, engine, errlevels)
   end
   -- Store secondary files for this engine
@@ -898,10 +928,10 @@ function save(names)
         else
           -- Create one .tpf file
           print("Creating and copying " .. tpfext)
-          local pdffile  = name .. pdfext
           local tpffile  = name .. tpfext
+          local newfile  = name .. "." .. engine .. pdfext
           runtest(name,engine,false,pvtext,true)
-          ren(testdir,pdffile,tpffile)
+          ren(testdir,newfile,tpffile)
           cp(tpffile,testdir,testfiledir)
         end
         return 0
