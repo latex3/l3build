@@ -10,6 +10,8 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 - `CHANGELOG.md`
 - `--dirty` option
+- `includetests` and `excludetests` variables for controlling which tests
+  run
 - `target_list` table to allow control of targets without redefining
   `main()`
 

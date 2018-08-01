@@ -117,6 +117,10 @@ checkengines = checkengines or {"pdftex", "xetex", "luatex"}
 checkformat  = checkformat  or "latex"
 stdengine    = stdengine    or "pdftex"
 
+-- The tests themselves
+includetests = includetests or {"*"}
+excludetests = excludetests or { }
+
 -- Configs for testing
 checkconfigs = checkconfigs or {"build"}
 
