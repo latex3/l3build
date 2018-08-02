@@ -90,6 +90,67 @@ local function glob_to_pattern(glob)
     return match(char, "^%w$") and char or "%" .. char
   end
 
+  -- remove a leading "\" if one is present:
+  -- this can simple be discarded
+  local function unescape()
+    if char == "\\" then
+      i = i + 1
+      char = sub(glob,i,i)
+      if char == "" then
+        pattern = "[^]"
+        return false
+      end
+    end
+    return true
+  end
+
+  -- look for the body of a set:
+  -- char is already the first token
+  local function collect_set()
+    while true do
+      if char == "" then
+        pattern = "[^]"
+        return false
+      elseif char == "]" then
+        pattern = pattern .. "]"
+        break
+      else
+        if not unescape(char) then break end
+        local char_one = char
+        i = i + 1
+        char = sub(glob,i,i)
+        if char == "" then
+          pattern = "[^]"
+          return false
+        elseif char == "-" then
+          i = i + 1
+          char = sub(glob,i,i)
+          if char == "" then
+            pattern = "[^]"
+            return false
+          elseif char == "]" then
+            -- Not a range
+            pattern = pattern .. escape(char_one) .. "%-]"
+            return true
+          else
+            if not unescape(char) then break end
+            pattern = pattern .. escape(char_one) .. "-" .. escape(char)
+          end
+        elseif char == "]" then
+          -- Successfully done
+          pattern = pattern .. escape(char_one) .. "]"
+          return true
+        else
+          pattern = pattern .. escape(char_one)
+          i = i - 1 -- Back up one
+        end
+      end
+      i = i + 1
+      char = sub(glob,i,i)
+    end
+    return true
+  end
+
   -- Convert tokens.
   while true do
     i = i + 1
@@ -102,9 +163,24 @@ local function glob_to_pattern(glob)
     elseif char == "*" then
       pattern = pattern .. ".*"
     elseif char == "[" then
-      -- Ignored
-      print("[...] syntax not supported in globs!")
-    elseif char == "\\" then
+      -- Search inside a charset
+      i = i + 1
+      char = sub(glob,i,i)
+      if char == "" or char == "]" then -- Matches nothing
+        pattern = "[^]"
+        break
+      elseif char == "^" or char == "!" then
+        i = i + 1
+        char = sub(glob,i,i)
+        if char ~= "]" then -- Matches anything so ignore
+          pattern = pattern .. "[^"
+          if not collect_set() then break end
+        end
+      else
+        pattern = pattern .. "["
+        if not collect_set() then break end
+      end
+    elseif char == "\\" then -- Discarded
       i = i + 1
       char = sub(glob, i, i)
       if char == "" then
