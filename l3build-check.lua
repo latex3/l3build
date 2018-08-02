@@ -491,24 +491,39 @@ local function normalise_pdf(pdffile,npdffile)
   local file = assert(open(pdffile, "rb"))
   local contents = gsub(file:read("*all") .. "\n", "\r\n", "\n")
   close(file)
-  local newcontent = ""
-  local skip = false
+  local new_content = ""
+  local stream_content = ""
+  local stream = false
   for line in gmatch(contents, "([^\n]*)\n") do
-    if skip then
+    if stream then
       if match(line,"endstream") then
-        skip = false
-        line = ""
+        stream = false
+        local binary = false
+        for i = 0, 31 do
+          if match(stream_content,char(i)) then
+            binary = true
+            break
+          end
+        end
+        if binary then
+          new_content = new_content .. "[BINARY STREAM]\n"
+        else
+          new_content = new_content .. stream_content
+        end
+      else
+        stream_content = stream_content .. line
       end
-    elseif match(line,"currentfile eexec") then
-      skip = true
+    elseif match(line,"^stream$") then
+      stream = true
+      stream_content = ""
     end
-    if not match(line, "^ *$") and not skip then
-      newcontent = newcontent .. line .. os_newline
+    if not match(line, "^ *$") and not stream then
+      new_content = new_content .. line .. os_newline
     end
-  end 
+  end
   local newfile = open(npdffile, "w")
   output(newfile)
-  write(newcontent)
+  write(new_content)
   close(newfile)
 end
 

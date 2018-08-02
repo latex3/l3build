@@ -4,11 +4,7 @@
 <<
 /Length 73        
 >>
-stream
-BT
-/F15 9.9626 Tf 92.921 759.927 Td [(#$%&)]TJ 0 -23.91 Td [(#$%&)]TJ
-ET
-endstream
+BT/F15 9.9626 Tf 92.921 759.927 Td [(#$%&)]TJ 0 -23.91 Td [(#$%&)]TJETendstream
 endobj
 2 0 obj
 <<
@@ -35,46 +31,8 @@ endobj
 /Length3 0
 /Length 8480      
 >>
-stream
-%!PS-AdobeFont-1.0: CMTT10 003.002
-%%Title: CMTT10
-%Version: 003.002
-%%CreationDate: Mon Jul 13 16:17:00 2009
-%%Creator: David M. Jones
-%Copyright: Copyright (c) 1997, 2009 American Mathematical Society
-%Copyright: (<http://www.ams.org>), with Reserved Font Name CMTT10.
-% This Font Software is licensed under the SIL Open Font License, Version 1.1.
-% This license is in the accompanying file OFL.txt, and is also
-% available with a FAQ at: http://scripts.sil.org/OFL.
-%%EndComments
-FontDirectory/CMTT10 known{/CMTT10 findfont dup/UniqueID known{dup
-/UniqueID get 5000832 eq exch/FontType get 1 eq and}{pop false}ifelse
-{save true}{false}ifelse}{false}ifelse
-11 dict begin
-/FontType 1 def
-/FontMatrix [0.001 0 0 0.001 0 0 ]readonly def
-/FontName /TZCMOM+CMTT10 def
-/FontBBox {-4 -233 537 696 }readonly def
-/PaintType 0 def
-/FontInfo 9 dict dup begin
-/version (003.002) readonly def
-/Notice (Copyright \050c\051 1997, 2009 American Mathematical Society \050<http://www.ams.org>\051, with Reserved Font Name CMTT10.) readonly def
-/FullName (CMTT10) readonly def
-/FamilyName (Computer Modern) readonly def
-/Weight (Medium) readonly def
-/ItalicAngle 0 def
-/isFixedPitch true def
-/UnderlinePosition -100 def
-/UnderlineThickness 50 def
-end readonly def
-/Encoding 256 array
-0 1 255 {1 index exch /.notdef put} for
-dup 38 /ampersand put
-dup 36 /dollar put
-dup 35 /numbersign put
-dup 37 /percent put
-readonly def
-currentdict end
+[BINARY STREAM]
+endstream
 endobj
 8 0 obj
 <<
