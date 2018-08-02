@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2018-08-02]
+
 ### Added
 - `CHANGELOG.md`
 - `--dirty` option
@@ -125,7 +127,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2018-05-10...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2018-08-02...HEAD
+[2018-08-02]: https://github.com/latex3/l3build/compare/2018-05-06...2018-08-02
 [2018-05-10]: https://github.com/latex3/l3build/compare/2018-05-06...2018-05-10
 [2018-05-06]: https://github.com/latex3/l3build/compare/2018-03-26...2018-05-06
 [2018-03-26]: https://github.com/latex3/l3build/compare/2018-03-24...2018-03-26

@@ -2,7 +2,7 @@
 
 --[[
 
-File l3build.lua Copyright (C) 2014-2017 The LaTeX3 Project
+File l3build.lua Copyright (C) 2014-2018 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -25,7 +25,7 @@ for those people who are interested.
 --]]
 
 -- Version information
-release_date = "2018-05-10"
+release_date = "2018-08-02"
 
 -- File operations are aided by the LuaFileSystem module
 local lfs = require("lfs")

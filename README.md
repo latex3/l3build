@@ -1,7 +1,7 @@
 l3build: a testing and building system for LaTeX3
 =================================================
 
-Release 2018-05-10
+Release 2018-08-02
 
 Overview
 --------
@@ -55,6 +55,6 @@ by e-mail: <latex-team@latex-project.org>.
 
 -----
 
-<p>Copyright (C) 2014-2017 The LaTeX3 Project <br />
+<p>Copyright (C) 2014-2018 The LaTeX3 Project <br />
 <a href="http://latex-project.org/">http://latex-project.org/</a> <br />
 All rights reserved.</p>
