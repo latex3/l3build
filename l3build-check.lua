@@ -566,12 +566,9 @@ function runcheck(name, hide)
   end
   -- Then check by PDF
   if fileexists(testfiledir .. "/" .. name .. pvtext) then
-    local engines = options["engine"] or {stdengine}
-    for _,engine in engines do
-      setup_check(name,engine)
-      errorlevel = check_and_diff(pvtext,engine,engine,compare_pdf,true)
-        + errorlevel
-    end
+    setup_check(name, stdengine)
+    errorlevel = check_and_diff(pvtext,stdengine,stdengine,compare_pdf,true)
+      + errorlevel
   end
   -- Return everything
   return errorlevel
