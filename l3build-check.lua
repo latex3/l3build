@@ -493,31 +493,34 @@ local function normalise_pdf(pdffile,npdffile)
   close(file)
   local new_content = ""
   local stream_content = ""
+  local binary = false
   local stream = false
   for line in gmatch(contents, "([^\n]*)\n") do
     if stream then
       if match(line,"endstream") then
         stream = false
-        local binary = false
+        if binary then
+          new_content = new_content .. "[BINARY STREAM]" .. os_newline
+        else
+           new_content = new_content .. stream_content .. line .. os_newline
+        end
+        binary = false
+      else
         for i = 0, 31 do
-          if match(stream_content,char(i)) then
+          if match(line,char(i)) then
             binary = true
             break
           end
         end
-        if binary then
-          new_content = new_content .. "[BINARY STREAM]\n"
-        else
-          new_content = new_content .. stream_content
+        if not binary and not match(line, "^ *$") then
+          stream_content = stream_content .. line .. os_newline
         end
-      else
-        stream_content = stream_content .. line
       end
     elseif match(line,"^stream$") then
+      binary = false
       stream = true
-      stream_content = ""
-    end
-    if not match(line, "^ *$") and not stream then
+      stream_content = "stream" .. os_newline
+    elseif not match(line, "^ *$") then
       new_content = new_content .. line .. os_newline
     end
   end

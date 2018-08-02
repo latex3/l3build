@@ -1115,9 +1115,12 @@
 % outlined above. However, there are cases where the detail of output structure
 % is important. This can only be fully tested by comparing PDF structure.
 % To support this, \pkg{l3build} can be instructed to build and compare
-% PDF files by setting up tests in \texttt{.pvt} files. The resulting
-% \texttt{.tpf} output is a digested form of the PDF, which can be compared
-% as text.
+% PDF files by setting up tests in \texttt{.pvt} files. The following
+% normalization takes place:
+% \begin{itemize}
+%   \item Replacement of binary streams by the marker |[BINARY STREAM]|
+%   \item Removal of blank lines
+% \end{itemize}
 %
 % Testing on the result of typesetting \texttt{.pvt} files is carried out using
 % only the standard engine, as aspects of PDF files are not identical between
