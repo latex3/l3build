@@ -665,13 +665,11 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   local engine = engine or stdengine
   -- Set up the format file name if it's one ending "...tex"
   local realengine = engine
-  local format
+  local format = ""
   if
     match(checkformat, "tex$") and
     not match(engine, checkformat) then
     format = " -fmt=" .. gsub(engine, "(.*)tex$", "%1") .. checkformat
-  else
-    format = ""
   end
   -- Special casing for e-LaTeX format
   if
