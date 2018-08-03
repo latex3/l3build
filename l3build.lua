@@ -126,7 +126,7 @@ if options["target"] == "check" then
     for i = 1, #checkconfigs do
       opts["config"] = {checkconfigs[i]}
       errorlevel = call({"."}, "check", opts)
-      if errorlevel ~= 0 then exit(1) end
+      if errorlevel ~= 0 and options["halt-on-error"] then exit(1) end
     end
     -- Avoid running the 'main' set of tests twice
     exit(0)

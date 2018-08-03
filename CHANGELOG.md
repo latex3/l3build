@@ -10,6 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Run PDF-based tests for all engines
 - Tweaks to PDF-based normalisation: new .tpf files will be required
+- The --halt-on-error|-H setting now applies to multiple configs
 
 ### Fixed
 - Testing using .lve files
