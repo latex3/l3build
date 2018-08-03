@@ -28,18 +28,21 @@ local print = print
 local set_program = kpse.set_program_name
 local var_value   = kpse.var_value
 
+local match = string.match
+
 local function gethome()
   set_program("latex")
   return options["texmfhome"] or var_value("TEXMFHOME")
 end
 
 function uninstall()
-  local function uninstall_files(target)
-    local installdir = gethome() .. target
+  local function uninstall_files(dir,subdir)
+    subdir = subdir or moduledir
+    dir = dir .. "/" .. subdir
+    local installdir = gethome() .. "/" .. dir
     if options["dry-run"] then
       print("\n" .. "Installation root: " .. installdir)
       local files = filelist(installdir)
-      -- Deal with an empty directory
       if next(files) then
         print("\n" .. "Files for removal:")
         for _,file in pairs(filelist(installdir)) do
@@ -50,15 +53,36 @@ function uninstall()
       end
       return 0
     else
-      return rmdir(installdir)
+      if direxists(installdir) then
+        return rmdir(installdir)
+      end
+    end
+    return 0
+  end
+  local errorlevel = 0
+  -- Any script man files need special handling
+  for _,glob in pairs(scriptmanfiles) do
+    for file,_ in pairs(tree(docfiledir,glob)) do
+      -- Man files should have a single-digit extension: the type
+      local installdir = gethome() .. "/doc/man/man"  .. match(file,".$")
+      if fileexists(installdir .. "/" .. file) then
+        if options["dry-run"] then
+          print("- " .. file)
+        else
+          errorlevel = errorlevel + rm(installdir,file)
+        end
+      end
     end
   end
-  return   uninstall_files("/tex/" .. moduledir)
-         + uninstall_files("/scripts/" .. module)
+  return   uninstall_files("doc")
+         + uninstall_files("source")
+         + uninstall_files("tex")
+         + uninstall_files("bibtex/bst",module)
+         + uninstall_files("makeindex",module)
+         + uninstall_files("scripts",module)
+         + errorlevel
 end
 
-
--- Locally install files: only deals with those extracted, not docs etc.
 function install()
   local function install_files(files,target)
     if not next(files) then
