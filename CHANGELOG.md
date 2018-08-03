@@ -9,11 +9,11 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Run PDF-based tests for all engines
-- Tweaks to PDF-based normalisation: new .tpf files will be required
-- The --halt-on-error|-H setting now applies to multiple configs
+- Tweaks to PDF-based normalisation: new `.tpf` files will be required
+- The `--halt-on-error|-H` setting now applies to multiple configs
 
 ### Fixed
-- Testing using .lve files
+- Testing using `.lve` files
 
 ## [2018-08-02]
 
@@ -27,10 +27,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - PDF-based testing now uses 'digested' PDF file for comparison,
-  working from dedicated .pvt input files
+  working from dedicated `.pvt` input files
 
 ### Removed
-- "--pdf" command line switch
+- `--pdf|-p` command line switch
 
 ## [2018-05-10]
 
