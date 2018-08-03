@@ -706,10 +706,11 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
       exit(1)
     end
   end
-  local logfile = testdir .. "/" .. name .. logext
-  local newfile = testdir .. "/" .. name .. "." .. engine .. logext
-  local pdffile = testdir .. "/" .. name .. pdfext
-  local npffile = testdir .. "/" .. name .. "." .. engine .. pdfext
+  local basename = testdir .. "/" .. name
+  local logfile = basename .. logext
+  local newfile = basename .. "." .. engine .. logext
+  local pdffile = basename .. pdfext
+  local npffile = basename .. "." .. engine .. pdfext
   local asciiopt = ""
   for _,i in ipairs(asciiengines) do
     if realengine == i then
