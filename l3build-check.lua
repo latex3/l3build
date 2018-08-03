@@ -795,8 +795,6 @@ function testexists(test)
     {test .. lvtext, test .. pvtext}))
 end
 
--- Standard versions of the main targets for building modules
-
 function check(names)
   local errorlevel = 0
   if testfiledir ~= "" and direxists(testfiledir) then
