@@ -657,7 +657,7 @@ function compare_tlg(name, engine,cleanup)
 end
 
 -- Run one of the test files: doesn't check the result so suitable for
--- both creating and verifying .tlg files
+-- both creating and verifying
 function runtest(name, engine, hide, ext, pdfmode, breakout)
   local lvtfile = name .. (ext or lvtext)
   cp(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
