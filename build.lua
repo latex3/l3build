@@ -7,7 +7,7 @@ module = "l3build"
 bundle = ""
 
 -- Non-standard settings
-checkconfigs = {"build", "config-plain"}
+checkconfigs = {"build", "config-pdf", "config-plain"}
 checkdeps    = { }
 checkengines = {"pdftex", "xetex", "luatex", "ptex", "uptex"}
 cleanfiles   = {"*.pdf", "*.tex", "*.zip"}
