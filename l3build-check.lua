@@ -613,7 +613,6 @@ function setup_check(name, engine)
 end
 
 function compare_pdf(name,engine,cleanup)
-  local errorlevel
   local testname = name .. "." .. engine
   local difffile = testdir .. "/" .. name .. pdfext .. os_diffext
   local pdffile  = testdir .. "/" .. testname .. pdfext
@@ -621,7 +620,7 @@ function compare_pdf(name,engine,cleanup)
   if not tpffile then
     return 1
   end
-  errorlevel = execute(os_diffexe .. " "
+  local errorlevel = execute(os_diffexe .. " "
     .. normalize_path(tpffile .. " " .. pdffile .. " > " .. difffile))
   if errorlevel == 0 or cleanup then
     remove(difffile)
