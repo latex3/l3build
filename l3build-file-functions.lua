@@ -217,7 +217,6 @@ if os_type == "windows" then
   os_diffext = getenv("diffext") or ".fc"
   os_diffexe = getenv("diffexe") or "fc /n"
   os_grepexe = "findstr /r"
-  os_newline = "\n"
   if tonumber(luatex_version) < 100 or
      (tonumber(luatex_version) == 100
        and tonumber(luatex_revision) < 4) then
