@@ -1,0 +1,97 @@
+%PDF-1.5
+%дрнш
+6 0 obj
+<</Length 124>>
+stream
+ q 1 0 0 1 72 769.89 cm BT /F1 9.9626 Tf 15.691 -9.963 Td[<004f00300057001d>]TJ -5.23 -11.955 Td[<004f00300057001d>]TJ ET Q
+endstream
+endobj
+7 0 obj
+<</Font<</F1 5 0 R>>/ProcSet[/PDF/Text/ImageC/ImageB/ImageI]>>
+endobj
+3 0 obj
+<</Resources 7 0 R/Type/Page/Parent 8 0 R/Contents[6 0 R]>>
+endobj
+8 0 obj
+<</Type/Pages/Count 1/Kids[3 0 R]/MediaBox[0 0 595.28 841.89]>>
+endobj
+2 0 obj
+<</Creator(TeX)/Producer(xdvipdfmx)/CreationDate(D:20160520090000-00'00')>>
+endobj
+1 0 obj
+<</Pages 8 0 R/Type/Catalog>>
+endobj
+9 0 obj
+<</Length 450>>
+stream
+/CIDInit /ProcSet findresource begin
+12 dict begin
+begincmap
+/CMapName /c:-texlive-2018-texmf-dist-fonts-opentype-public-lm-lmmono10-regular.otf,000-UTF16 def
+/CMapType 2 def
+/CIDSystemInfo <<
+  /Registry (Adobe)
+  /Ordering (UCS)
+  /Supplement 0
+>> def
+1 begincodespacerange
+<0000> <FFFF>
+endcodespacerange
+4 beginbfchar
+<001D> <0026>
+<0030> <0024>
+<004F> <0023>
+<0057> <0025>
+endbfchar
+endcmap
+CMapName currentdict /CMap defineresource pop
+end
+end
+endstream
+endobj
+11 0 obj
+<</Subtype/CIDFontType0C/Length 1229>>
+[BINARY STREAM]
+endobj
+12 0 obj
+[29[525]48[525]79[525]87[525]]
+endobj
+13 0 obj
+<</Length 11>>
+[BINARY STREAM]
+endobj
+4 0 obj
+<</Type/Font/Subtype/CIDFontType0/BaseFont/APWWDF+LMMono10-Regular/CIDSystemInfo<</Registry(Adobe)/Ordering(Identity)/Supplement
+0>>/FontDescriptor 10 0 R/DW 280/W 12 0 R>>
+endobj
+10 0 obj
+<</Type/FontDescriptor/Ascent 778/Descent -222/StemV 69/CapHeight 778/AvgWidth 500/FontBBox[-451
+-316 731 1016]/ItalicAngle 0/Flags 7/Style<</Panose<000000000509000000000000>>>/FontName/APWWDF+LMMono10-Regular/FontFile3
+11 0 R/CIDSet 13 0 R>>
+endobj
+5 0 obj
+<</Type/Font/Subtype/Type0/BaseFont/APWWDF+LMMono10-Regular-Identity-H/Encoding/Identity-H/DescendantFonts[4 0 R]/ToUnicode
+9 0 R>>
+endobj
+xref
+0 14
+0000000000 65535 f 
+0000000511 00000 n 
+0000000420 00000 n 
+0000000266 00000 n 
+0000002464 00000 n 
+0000002911 00000 n 
+0000000015 00000 n 
+0000000188 00000 n 
+0000000341 00000 n 
+0000000556 00000 n 
+0000002652 00000 n 
+0000001055 00000 n 
+0000002357 00000 n 
+0000002404 00000 n 
+trailer
+<</Root 1 0 R/Info 2 0 R/ID[<8ab21473a2ed67173943f0014488ccf6><8ab21473a2ed67173943f0014488ccf6>]/Size
+14>>
+startxref
+3058
+%%EOF
