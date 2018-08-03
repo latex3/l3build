@@ -7,6 +7,12 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Run PDF-based tests for all engines
+
+### Fixed
+- Testing using .lve files
+
 ## [2018-08-02]
 
 ### Added
