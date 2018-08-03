@@ -4,32 +4,12 @@
 
 \begin{document}
 
-\newtoks\foo % \outer
+\begin{verbatim}
+   #$%&
+\end{verbatim}
 
-\START
-
-\TEST{\afterassignment}{
-  \def\x{\afterassignment{\edef\y{world}}\foo}
-  \x={hello}
-  \showthe\foo
-  \show\y
-}
-
-\newpage
-
-\showoutput
-
-\OMIT
-  % Force font loading
-  \begin{verbatim}
-    #$%&
-  \end{verbatim}
-\TIMO
-
-\BEGINTEST{Enviornment test}
-  \begin{verbatim}
-    #$%&
-  \end{verbatim}
-\ENDTEST
+\begin{verbatim}
+  #$%&
+\end{verbatim}
 
 \end{document}
