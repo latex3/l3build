@@ -557,10 +557,10 @@ function runcheck(name, hide)
     end
     setup_check(name,engine)
     local errlevel = 0
-    if fileexists(testfiledir .. "/" .. name .. lvtext) then
-      errlevel = check_and_diff(lvtext,engine,enginename,compare_tlg)
-    elseif fileexists(testfiledir .. "/" .. name .. pvtext) then
+    if fileexists(testfiledir .. "/" .. name .. pvtext) then
       errlevel = check_and_diff(pvtext,engine,enginename,compare_pdf,true)
+    else
+      errlevel = check_and_diff(lvtext,engine,enginename,compare_tlg)
     end
     if errlevel ~= 0 and options["halt-on-error"] then
       return 1
