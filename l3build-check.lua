@@ -83,9 +83,20 @@ function checkinit()
   execute(os_ascii .. ">" .. testdir .. "/ascii.tcx")
 end
 
+local function rewrite(source,result,processor,...)
+  local file = assert(open(source,"rb"))
+  local content = gsub(file:read("*all") .. "\n","\r\n","\n")
+  close(file)
+  local new_content = processor(content,...)
+  local newfile = open(result,"w")
+  output(newfile)
+  write(new_content)
+  close(newfile)
+end
+
 -- Convert the raw log file into one for comparison/storage: keeps only
 -- the 'business' part from the tests and removes system-dependent stuff
-local function formatlog(logfile, newfile, engine, errlevels)
+local function normalize_log(content,engine,errlevels)
   local maxprintline = maxprintline
   if engine == "luatex" or engine == "luajittex" then
     maxprintline = maxprintline + 1 -- Deal with an out-by-one error
@@ -239,14 +250,10 @@ local function formatlog(logfile, newfile, engine, errlevels)
     return line, lastline
   end
   local lastline = ""
-  local newlog = ""
+  local new_content = ""
   local prestart = true
   local skipping = false
-  -- Read the entire log file as a binary: deals with ^@/^[, etc.
-  local file = assert(open(logfile, "rb"))
-  local contents = gsub(file:read("*all") .. "\n", "\r\n", "\n")
-  close(file)
-  for line in gmatch(contents, "([^\n]*)\n") do
+  for line in gmatch(content, "([^\n]*)\n") do
     if line == "START-TEST-LOG" then
       prestart = false
     elseif line == "END-TEST-LOG" or
@@ -259,24 +266,23 @@ local function formatlog(logfile, newfile, engine, errlevels)
     elseif not prestart and not skipping then
       line, lastline = normalize(line, lastline)
       if not match(line, "^ *$") and not killcheck(line) then
-        newlog = newlog .. line .. os_newline
+        new_content = new_content .. line .. os_newline
       end
     end
   end
-  local newfile = open(newfile, "w")
-  output(newfile)
-  write(newlog)
   if recordstatus then
-    write('***************\n')
+    new_content = new_content .. '***************' .. os_newline
     for i = 1, checkruns do
-      write('Compilation ' .. i .. ' of test file completed with exit status ' .. errlevels[i] .. '\n')
+      new_content = new_content ..
+        'Compilation ' .. i .. ' of test file completed with exit status ' ..
+        errlevels[i] .. os_newline
     end
   end
-  close(newfile)
+  return new_content
 end
 
 -- Additional normalization for LuaTeX
-local function formatlualog(logfile, newfile, luatex)
+local function normalize_lua_log(content,luatex)
   local function normalize(line, lastline, dropping)
     -- Find \discretionary or \whatsit lines:
     -- These may come back later
@@ -468,34 +474,24 @@ local function formatlualog(logfile, newfile, luatex)
     -- uses a different number to the other engines
     return gsub(line, "^%s+", ""), ""
   end
-  local newlog = ""
+  local new_content = ""
   local lastline = ""
   local dropping = false
-  -- Read the entire log file as a binary: deals with ^@/^[, etc.
-  local file = assert(open(logfile, "rb"))
-  local contents = gsub(file:read("*all") .. "\n", "\r\n", "\n")
-  close(file)
-  for line in gmatch(contents, "([^\n]*)\n") do
+  for line in gmatch(content, "([^\n]*)\n") do
     line, lastline, dropping = normalize(line, lastline, dropping)
     if not match(line, "^ *$") then
-      newlog = newlog .. line .. os_newline
+      new_content = new_content .. line .. os_newline
     end
   end
-  local newfile = open(newfile, "w")
-  output(newfile)
-  write(newlog)
-  close(newfile)
+  return new_content
 end
 
-local function normalise_pdf(pdffile,npdffile)
-  local file = assert(open(pdffile, "rb"))
-  local contents = gsub(file:read("*all") .. "\n", "\r\n", "\n")
-  close(file)
+local function normalize_pdf(content)
   local new_content = ""
   local stream_content = ""
   local binary = false
   local stream = false
-  for line in gmatch(contents, "([^\n]*)\n") do
+  for line in gmatch(content,"([^\n]*)\n") do
     if stream then
       if match(line,"endstream") then
         stream = false
@@ -524,10 +520,7 @@ local function normalise_pdf(pdffile,npdffile)
       new_content = new_content .. line .. os_newline
     end
   end
-  local newfile = open(npdffile, "w")
-  output(newfile)
-  write(new_content)
-  close(newfile)
+  return new_content
 end
 
 -- Run one test which may have multiple engine-dependent comparisons
@@ -645,8 +638,8 @@ function compare_tlg(name, engine,cleanup)
       lualogfile = testdir .. "/" .. testname .. ".tmp" .. logext
     end
     local luatlgfile = testdir .. "/" .. testname .. tlgext
-    formatlualog(tlgfile, luatlgfile, false)
-    formatlualog(logfile, lualogfile, true)
+    rewrite(tlgfile,luatlgfile,normalize_lua_log)
+    rewrite(logfile,lualogfile,normalize_lua_log,true)
     errorlevel = execute(os_diffexe .. " "
       .. normalize_path(luatlgfile .. " " .. lualogfile .. " > " .. difffile))
     if cleanup then
@@ -755,12 +748,12 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     -- Break the loop if the result is stable
     if breakout and i < checkruns then
       if pdfmode then
-        normalise_pdf(pdffile,npffile)
+        rewrite(pdffile,npffile,normalize_pdf)
         if compare_pdf(name,engine,true) == 0 then
           break
         end
       else
-        formatlog(logfile, newfile, engine, errlevels)
+        rewrite(logfile,newfile,normalize_log,engine,errlevels)
         if compare_tlg(name,engine,true) == 0 then
           break
         end
@@ -771,9 +764,9 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     dvitopdf(name, testdir, engine, hide)
   end
   if pdfmode then
-    normalise_pdf(pdffile,npffile)
+    rewrite(pdffile,npffile,normalize_pdf)
   else
-    formatlog(logfile, newfile, engine, errlevels)
+    rewrite(logfile,newfile,normalize_log,engine,errlevels)
   end
   -- Store secondary files for this engine
   for _,filetype in pairs(auxfiles) do
