@@ -61,8 +61,9 @@ local function update_file_tag(file,tagname,tagdate)
   return 0
 end
 
-function tag(tagname)
+function tag(tagnames)
   local tagdate = options["date"] or os_date("%Y-%m-%d")
+  local tagname = tagnames[1] or tagdate
   local dirs = remove_duplicates({currentdir, sourcefiledir, docfiledir})
   local errorlevel = 0
   for _,dir in pairs(dirs) do

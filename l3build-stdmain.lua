@@ -109,7 +109,7 @@ target_list =
             local errorlevel = call(modules,"tag")
             -- Deal with any files in the bundle dir itself
             if errorlevel == 0 then
-              errorlevel = tag(names[1])
+              errorlevel = tag(names)
             end
             return errorlevel
           end,

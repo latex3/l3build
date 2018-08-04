@@ -18,6 +18,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Testing using `.lve` files
+- Tagging with new approach to top-level targets
 
 ## [2018-08-02]
 
