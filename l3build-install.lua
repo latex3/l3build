@@ -30,6 +30,8 @@ local var_value   = kpse.var_value
 
 local match = string.match
 
+local insert = table.insert
+
 local function gethome()
   set_program("latex")
   return options["texmfhome"] or var_value("TEXMFHOME")
@@ -41,15 +43,12 @@ function uninstall()
     dir = dir .. "/" .. subdir
     local installdir = gethome() .. "/" .. dir
     if options["dry-run"] then
-      print("\n" .. "Installation root: " .. installdir)
       local files = filelist(installdir)
       if next(files) then
-        print("\n" .. "Files for removal:")
+        print("\n" .. "For removal from " .. installdir .. ":")
         for _,file in pairs(filelist(installdir)) do
           print("- " .. file)
         end
-      else
-        print("No files present")
       end
       return 0
     else
@@ -61,17 +60,25 @@ function uninstall()
   end
   local errorlevel = 0
   -- Any script man files need special handling
+  local manfiles = { }
   for _,glob in pairs(scriptmanfiles) do
     for file,_ in pairs(tree(docfiledir,glob)) do
       -- Man files should have a single-digit extension: the type
       local installdir = gethome() .. "/doc/man/man"  .. match(file,".$")
       if fileexists(installdir .. "/" .. file) then
         if options["dry-run"] then
-          print("- " .. file)
+          insert(manfiles,"man" .. match(file,".$") .. "/" ..
+           select(2,splitpath(file)))
         else
           errorlevel = errorlevel + rm(installdir,file)
         end
       end
+    end
+  end
+  if next(manfiles) then
+    print("\n" .. "For removal from " .. gethome() .. "/doc/man:")
+    for _,v in ipairs(manfiles) do
+      print("- " .. v)
     end
   end
   return   uninstall_files("doc")
