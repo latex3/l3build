@@ -329,6 +329,8 @@
 % \item |--force| (|-f|) Force checks to run even if sanity
 %   checks fail, \emph{e.g.}~when |--engine| is not given in
 %   \luavar{checkengines}
+% \item |--full| Instructs the \texttt{install} target to include the 
+%   \texttt{doc} and \texttt{source} trees
 % \item |--halt-on-error| (|-H|) Specifies that checks
 %   should stop as soon as possible, rather than running all requested
 %   tests; the difference file is printed in the terminal directly in the case of failure
@@ -1259,6 +1261,7 @@
 %       \var{epoch}         & String  \\
 %       \var{first}         & Boolean \\
 %       \var{force}         & Boolean \\
+%       \var{full}          & Boolean \\
 %       \var{halt-on-error} & Boolean \\
 %       \var{help}          & Boolean \\
 %       \var{names}         & Table   \\
@@ -1455,6 +1458,17 @@
 %   same form as the global \meta{options}, described above. If it is
 %   absent then the global list is used. Note that any entry for the
 %   |target| in this table is ignored.
+% \end{function}
+%
+% \begin{function}{install_files()}
+%   \begin{syntax}
+%     |install_files(|\meta{target},\meta{full},\meta{dry-run}|)|
+%   \end{syntax}
+%   Installs the files from the module into the TDS root \meta{target}.
+%   If \meta{full} is \texttt{true}, all files are copied: if it is
+%   \texttt{false}, the \texttt{doc} and \texttt{source} trees are skipped.
+%   If \meta{dry-run} is \texttt{true}, no files are copied, but instead the
+%   files which would be copied are reported.
 % \end{function}
 %
 % \subsection{Customising the target list}

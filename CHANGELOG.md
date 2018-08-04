@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- `--full` option
+
 ### Changed
 - Run PDF-based tests for all engines
 - Tweaks to PDF-based normalisation: new `.tpf` files will be required

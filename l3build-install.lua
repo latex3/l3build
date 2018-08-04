@@ -28,6 +28,7 @@ local print = print
 local set_program = kpse.set_program_name
 local var_value   = kpse.var_value
 
+local gsub  = string.gsub
 local match = string.match
 
 local insert = table.insert
@@ -90,40 +91,128 @@ function uninstall()
          + errorlevel
 end
 
-function install()
-  local function install_files(files,target)
-    if not next(files) then
-      return 0
+function install_files(target,full,dry_run)
+  local function install_files(source,dir,files,subdir,tool)
+    subdir = subdir or moduledir
+    -- For material associated with secondary tools (BibTeX, MakeIndex)
+    -- the structure needed is slightly different from those items going
+    -- into the tex/doc/source trees
+    if tool and module == "base" then
+      subdir = nil
     end
-    local installdir = gethome() .. target
-    if options["dry-run"] then
-      print("\n" .. "Installation root: " .. installdir
-        .. "\n" .. "Installation files:"
-      )
-      for _,filetype in pairs(files) do
-        for _,file in pairs(filelist(unpackdir,filetype)) do
-          print("- " .. file)
+    dir = dir .. (subdir and "/" or "") .. subdir
+    local filenames = { }
+    for _,glob_table in pairs(files) do
+      for _,glob in pairs(glob_table) do
+        for file,_ in pairs(tree(source,glob)) do
+          insert(filenames,file)
         end
       end
-      return 0
-    else
-      errorlevel = cleandir(installdir)
-      if errorlevel ~= 0 then
-        return errorlevel
+    end
+    local errorlevel = 0
+    -- The target is only created if there are actual files to install
+    if next(filenames) then
+      local installdir = target .. "/" .. dir
+      if dry_run then
+        print("\n" .. "For installation in " .. installdir .. ":")
+      else
+        errorlevel = cleandir(installdir)
+        if errorlevel ~= 0 then return errorlevel end
       end
-      for _,filetype in pairs(files) do
-        errorlevel = cp(filetype, unpackdir, installdir)
-        if errorlevel ~= 0 then
-          return errorlevel
+      for _,file in ipairs(filenames) do
+        if dry_run then
+          print("- " .. select(2,splitpath(file)))
+        else
+          errorlevel = cp(file,source,installdir)
+          if errorlevel ~= 0 then return errorlevel end
         end
       end
     end
     return 0
   end
   local errorlevel = unpack()
-  if errorlevel ~= 0 then
-    return errorlevel
+  if errorlevel ~= 0 then return errorlevel end
+  errorlevel = install_files(unpackdir,"tex",{installfiles})
+    + install_files(unpackdir,"bibtex/bst",{bstfiles},module,true)
+    + install_files(unpackdir,"makeindex",{makeindexfiles},module,true)
+    + install_files(unpackdir,"scripts",{scriptfiles},module)
+  if errorlevel ~= 0 then return errorlevel end
+  if full then
+    errorlevel = doc()
+    if errorlevel ~= 0 then return errorlevel end
+
+    -- Creates a 'controlled' list of files
+    local function excludelist(dir,include,exclude)
+      include = include or { }
+      exclude = exclude or { }
+      dir = dir or currentdir
+      local includelist = { }
+      local excludelist = { }
+      for _,glob_table in pairs(exclude) do
+        for _,glob in pairs(glob_table) do
+          for file,_ in pairs(tree(dir,glob)) do
+            excludelist[file] = true
+          end
+        end
+      end
+      for _,glob in pairs(include) do
+        for file,_ in pairs(tree(dir,glob)) do
+          if not excludelist[file] then
+            insert(includelist, file)
+          end
+        end
+      end
+      return includelist
+    end
+
+    -- For the purposes here, any typesetting demo files need to be
+    -- part of the main typesetting list
+    local typesetfiles = typesetfiles
+    for _,glob in pairs(typesetdemofiles) do
+      insert(typesetfiles,glob)
+    end
+
+    -- Find PDF files
+    pdffiles = { }
+    for _,glob in pairs(typesetfiles) do
+      insert(pdffiles,(gsub(glob,"%.%w+$",".pdf")))
+    end
+
+    -- Set up lists: global as they are also needed to do CTAN releases
+    typesetlist = excludelist(docfiledir,typesetfiles,{sourcefiles})
+    sourcelist = excludelist(sourcefiledir,sourcefiles,
+      {bstfiles,installfiles,makeindexfiles,scriptfiles})
+    
+    errorlevel = install_files(sourcefiledir,"source",{sourcelist})
+      + install_files(docfiledir,"doc",
+          {bibfiles,demofiles,docfiles,pdffiles,textfiles,typesetlist})
+    if errorlevel ~= 0 then return errorlevel end
+
+    -- Any script man files need special handling
+    local manfiles = { }
+    for _,glob in pairs(scriptmanfiles) do
+      for file,_ in pairs(tree(docfiledir,glob)) do
+        if dry_run then
+          insert(manfiles,"man" .. match(file,".$") .. "/" ..
+            select(2,splitpath(file)))
+        else
+          -- Man files should have a single-digit extension: the type
+          local installdir = target .. "/doc/man/man"  .. match(file,".$")
+          errorlevel = errorlevel + mkdir(installdir)
+          errorlevel = errorlevel + cp(file,docfiledir,installdir)
+        end
+      end
+    end
+    if next(manfiles) then
+      print("\n" .. "For installation in " .. target .. "/doc/man:")
+      for _,v in ipairs(manfiles) do
+        print("- " .. v)
+      end
+    end
   end
-  return   install_files(installfiles, "/tex/" .. moduledir)
-         + install_files(scriptfiles, "/scripts/" .. module)
+  return errorlevel
+end
+
+function install()
+  return install_files(gethome(),options["full"],options["dry-run"])
 end

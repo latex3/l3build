@@ -79,6 +79,11 @@ option_list =
         short = "f",
         type  = "boolean"
       },
+    full =
+      {
+        desc = "Install all files",
+        type = "boolean"
+      },
     ["halt-on-error"] =
       {
         desc  = "Stops running tests after the first failure",
