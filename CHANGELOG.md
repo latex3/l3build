@@ -8,6 +8,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 ### Added
+- `ctanzip` variable
 - `--full` option
 
 ### Changed

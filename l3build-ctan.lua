@@ -128,8 +128,8 @@ function ctan()
     if packtdszip then
       cp(ctanpkg .. ".tds.zip", tdsdir, ctandir)
     end
-    dirzip(ctandir, ctanpkg)
-    cp(ctanpkg .. ".zip", ctandir, currentdir)
+    dirzip(ctandir, ctanzip)
+    cp(ctanzip .. ".zip", ctandir, currentdir)
   else
     print("\n====================")
     print("Typesetting failed, zip stage skipped!")

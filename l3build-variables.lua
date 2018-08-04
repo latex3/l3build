@@ -159,6 +159,7 @@ end
 -- Other required settings
 asciiengines = asciiengines or {"pdftex"}
 checkruns    = checkruns    or 1
+ctanzip      = ctanzip      or ctanpkg .. "-ctan"
 epoch        = epoch        or 1463734800
 if flatten == nil then
   flatten = true
