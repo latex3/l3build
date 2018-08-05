@@ -65,7 +65,17 @@ end
 ctan_pkg="l3build"
 ctan_version=[[2018/05/20]]
 ctan_author=[[latex3 project]]
-ctan_email='me@example.com'
+
+
+-- ctan_email='me@example.com'
+
+-- some people may not want to reveal email in checked in files
+-- email (or other fields) may be set by suitable function, eg
+local handle = io.popen('git config user.email')
+ctan_email = string.gsub(handle:read("*a"),'%s*$','')
+handle:close()
+
+
 ctan_uploader=[[me]]
 ctan_ctanPath=[[]]
 ctan_license="lppl"
