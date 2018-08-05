@@ -580,7 +580,7 @@ function setup_check(name, engine)
   if not (tlgfile or tpffile) then
     if not locate({unpackdir, testfiledir}, {name .. lveext}) then
       print(
-        "Error: failed to find " .. tlgext .. ", " .. tlpext .. " or "
+        "Error: failed to find " .. tlgext .. ", " .. tpfext .. " or "
           .. lveext .. " file for " .. name .. "!"
       )
       exit(1)
