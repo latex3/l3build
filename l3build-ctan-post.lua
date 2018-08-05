@@ -168,7 +168,7 @@ end
 
 
 function ctan_single_field(fname,fvalue,max,desc,mandatory)
-print('@@' .. fname .. tostring(fvalue or '??'))
+print('ctan-post: ' .. fname .. ' ' ..tostring(fvalue or '??'))
   if((fvalue==nil and mandatory) or (fvalue == 'ask')) then
     if (max < 256) then
       fvalue=input_single_line_field(fname)
