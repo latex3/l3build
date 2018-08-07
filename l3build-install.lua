@@ -100,7 +100,7 @@ function install_files(target,full,dry_run)
     if tool and module == "base" then
       subdir = nil
     end
-    dir = dir .. (subdir and "/" or "") .. subdir
+    dir = dir .. (subdir and ("/" .. subdir) or "")
     local filenames = { }
     for _,glob_table in pairs(files) do
       for _,glob in pairs(glob_table) do
