@@ -76,7 +76,7 @@ target_list =
       },
     clean =
       {
-        bundle_target = true,
+        bundle_func = bundleclean,
         desc = "Clean out directory tree",
         func = clean
       },
