@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2018-08-07]
+
 ### Changed
 - Suppress file name info in PDF output for included images, etc.
 
@@ -149,6 +151,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
 [Unreleased]: https://github.com/latex3/l3build/compare/2018-08-04...HEAD
+[2018-08-07]: https://github.com/latex3/l3build/compare/2018-08-04...2018-08-07
 [2018-08-04]: https://github.com/latex3/l3build/compare/2018-08-02...2018-08-04
 [2018-08-02]: https://github.com/latex3/l3build/compare/2018-05-10...2018-08-02
 [2018-05-10]: https://github.com/latex3/l3build/compare/2018-05-06...2018-05-10
