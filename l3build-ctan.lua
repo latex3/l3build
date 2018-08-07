@@ -55,7 +55,12 @@ function copyctan()
   end
 end
 
--- Standard versions of the main targets for building modules
+function bundlectan()
+  local errorlevel = install_files(tdsdir,true)
+  if errorlevel ~=0 then return errorlevel end
+  copyctan()
+  return 0
+end
 
 function ctan()
   -- Always run tests for all engines

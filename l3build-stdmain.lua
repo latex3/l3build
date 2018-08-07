@@ -58,6 +58,10 @@ target_list =
             return 0
           end
       },
+    bundlectan = 
+      {
+        func = bundlectan
+      },
     bundleunpack =
       {
         func = bundleunpack,

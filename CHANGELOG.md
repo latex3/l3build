@@ -10,6 +10,9 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Suppress file name info in PDF output for included images, etc.
 
+### Fixed
+- Issue with creation of CTAN releases for bundles
+
 ## [2018-08-04]
 
 ### Added
