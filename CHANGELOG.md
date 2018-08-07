@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Suppress file name info in PDF output for included images, etc.
+
 ## [2018-08-04]
 
 ### Added

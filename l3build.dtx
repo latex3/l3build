@@ -1920,7 +1920,7 @@
     \pdfinfo{/Producer (\ifx\directlua\@undefined pdf\else Lua\fi TeX)}
     \ifx\pdfinfoomitdate\@undefined\else
       \pdfinfoomitdate     = 1 %
-      \pdfsuppressptexinfo = 1 %
+      \pdfsuppressptexinfo = 3 %
       \pdftrailerid{}
     \fi
   \else
@@ -1928,6 +1928,7 @@
     \pdfvariable suppressoptionalinfo \numexpr
           0
         +   1 % PTEX.Fullbanner
+        +   2 % PTEX.FileName
         +  32 % CreationDate
         +  64 % ModDate
       \relax
