@@ -72,7 +72,7 @@ target_list =
       },
     clean =
       {
-        bundle_func = bundleclean,
+        bundle_target = true,
         desc = "Clean out directory tree",
         func = clean
       },
