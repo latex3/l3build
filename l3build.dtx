@@ -59,7 +59,7 @@
 \luavarseparator
 \luavarset{maindir}     {"."}                      {Top level directory for the module/bundle}
 \luavarset{docfiledir}  {"."}                 {Directory containing documentation files}
-\luavarset{sourcfiledir}{"."}                 {Directory containing source files}
+\luavarset{sourcefiledir}{"."}                 {Directory containing source files}
 \luavarset{supportdir} {maindir .. "/support"}    {Directory containing general support files}
 \luavarset{testfiledir}{"./testfiles"}  {Directory containing test files}
 \luavarset{testsuppdir}{testfiledir .. "/support"}{Directory containing test-specific support files}
@@ -158,7 +158,7 @@
 \luavarset{maxprintline}{79}          {Length of line to use in log files}
 \luavarset{packtdszip}  {false}       {Switch to build a TDS-style zip file for CTAN}
 \luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting.}
-\luavarset{typsetcycles}{3}           {Number of cycles of typesetting to carry out.}
+\luavarset{typesetruns}{3}            {Number of cycles of typesetting to carry out.}
 \luavarset{recordstatus}{false}       {Switch to include error level from test runs in \texttt{.tlg} files}
 \luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file.}
 }
@@ -330,7 +330,7 @@
 % \item |--force| (|-f|) Force checks to run even if sanity
 %   checks fail, \emph{e.g.}~when |--engine| is not given in
 %   \luavar{checkengines}
-% \item |--full| Instructs the \texttt{install} target to include the 
+% \item |--full| Instructs the \texttt{install} target to include the
 %   \texttt{doc} and \texttt{source} trees
 % \item |--halt-on-error| (|-H|) Specifies that checks
 %   should stop as soon as possible, rather than running all requested
@@ -630,7 +630,7 @@
 %
 % Tests are run in a single directory, so whilst they are may be isolated from
 % the system \TeX{} tree they do share files. This may be significant if
-% installation-type files are generated during a test, for example by a 
+% installation-type files are generated during a test, for example by a
 % |filecontents| environment in \LaTeX{}. Typically, you should set up your
 % tests such that they do not use the same names for such files: this may lead
 % to variable outcomes depending on the order in which tests are run.
