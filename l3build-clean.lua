@@ -45,7 +45,7 @@ end
 function bundleclean()
   local errorlevel = call(modules, "clean")
   for _,i in ipairs(cleanfiles) do
-    errorlevel = rm(maindir, i) + errorlevel
+    errorlevel = rm(currentdir, i) + errorlevel
   end
   return (
     errorlevel     +
