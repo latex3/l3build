@@ -1,4 +1,4 @@
-#!/usr/bin/env texlua 
+#!/usr/bin/env texlua
 
 --[[
 
@@ -61,6 +61,7 @@ build_require("clean")
 build_require("check")
 build_require("ctan")
 build_require("ctan-post")
+
 build_require("install")
 build_require("unpack")
 build_require("manifest")
@@ -126,12 +127,12 @@ check_engines()
 --
 -- Deal with multiple configs for tests
 --
- 
+
 -- When we have specific files to deal with, only use explicit configs
 -- (or just the std one)
 if options["names"] then
   checkconfigs = options["config"] or {stdconfig}
-else 
+else
   checkconfigs = options["config"] or checkconfigs
 end
 
