@@ -52,48 +52,42 @@ for those people who are interested.
 
 
 local ctan_post_command = ctan_post_command or "curl"
-local curl_debug=false -- posting is disabled while testing
 
+local curl_debug = curl_debug or false -- to disable posting
 
-
-local ctanupload= ctanupload or "ask"
+local ctanupload = ctanupload or "ask"
 -- if ctanupload is nil or false, only validation is attempted
--- if ctanupload is true the ctan upload URL will be used  after validation
+-- if ctanupload is true the ctan upload URL will be used after validation
 -- if upload is anything else, the user will be prompted whether to upload.
-
 
 
 function ctan_upload ()
 
-ctan_post=ctan_post_command .. " "
+  --         field                               max  desc                               mandatory  multi
+  --         --------------------------------------------------------------------------------------------
+  ctan_field("pkg",          ctan_pkg,            32, "the package name",                     true, false )
+  ctan_field("version",      ctan_version,        32, "the package version",                  true, false )
+  ctan_field("author",       ctan_author,        128, "the author name",                      true, false )
+  ctan_field("email",        ctan_email,         255, "the email of uploader",                true, false )
+  ctan_field("uploader",     ctan_uploader,      255, "the name of uploader",                 true, false )
+  ctan_field("ctanPath",     ctan_ctanPath,      255, "the CTAN path",                       false, false )
+  ctan_field("license",      ctan_license,      2048, "Package License",                      true,  true )
+  ctan_field("home",         ctan_home,          255, "URL of home page",                    false, false )
+  ctan_field("bugtracker",   ctan_bugtracker,    255, "URL of bug tracker",                  false, false )
+  ctan_field("support",      ctan_support,       255, "URL of support channels",             false,  true )
+  ctan_field("repository",   ctan_repository,    255, "URL of source repositories",          false,  true )
+  ctan_field("development",  ctan_development,   255, "URL of development channels",         false,  true )
+  ctan_field("update",       ctan_update,          8, ",true for an update false otherwise", false, false )
+  ctan_field("topic",        ctan_topic,        1024, "topic",                               false,  true )
+  ctan_field("announcement", ctan_announcement, 8192, "announcement",                        false, false )
+  ctan_field("summary",      ctan_summary,       128, "summary",                              true, false ) -- ctan-o-mat doc says optional
+  ctan_field("description",  ctan_description,  4096, "description",                         false, false )
+  ctan_field("note",         ctan_note,         4096, "internal note to ctan",               false, false )
 
-
-  --        field max desc                   mandatory multi
-  --        ----------------------------------------------------
-  ctan_field("pkg",ctan_pkg,32,"the package name",       true,false)
-  ctan_field("version",ctan_version,32,"the package version",true,false)
-  ctan_field("author",ctan_author,128,"the author name",    true,false)
-  ctan_field("email",ctan_email,255,"the email of uploader",true,false)
-  ctan_field("uploader",ctan_uploader,255,"the name of uploader",true,false)
-  ctan_field("ctanPath",ctan_ctanPath,255,"the CTAN path",    false,false)
-  ctan_field("license",ctan_license,2048,"Package License",  true,true)
-  ctan_field("home",ctan_home,255,"URL of home page",     false,false)
-  ctan_field("bugtracker",ctan_bugtracker,255,"URL of bug tracker",false,false)
-  ctan_field("support",ctan_support,255,"URL of support channels",false,true)
-  ctan_field("repository",ctan_repository,255,"URL of source repositories",false,true)
-  ctan_field("development",ctan_development,255,"URL of development channels",false,true)
-  ctan_field("update",ctan_update,8,",true for an update false otherwise",false,false)
-  ctan_field("topic",ctan_topic,1024,"topic",              false,true)
-  ctan_field("announcement",ctan_announcement,8192,"announcement",false,false)
-  ctan_field("summary",ctan_summary,128,"summary",           true,false) -- ctan-o-mat doc says optional
-  ctan_field("description",ctan_description,4096,"description",  false,false)
-  ctan_field("note",ctan_note,4096,"internal note to ctan",false,false)
-
-
-  ctan_post=ctan_post .. " --form 'file=@" .. tostring(ctan_file) .. ";filename=" .. tostring(ctan_file) .. "'"
-  ctan_post=ctan_post ..  " https://ctan.org/submit/"
-
-
+  -- construct the curl command
+  ctan_post = ctan_post_command .. " "
+  ctan_post = ctan_post .. " --form 'file=@" .. tostring(ctan_file) .. ";filename=" .. tostring(ctan_file) .. "'"
+  ctan_post = ctan_post ..  " https://ctan.org/submit/"
 
   -- avoid lower level error from post command if zip file missing
   local zip=io.open(trim_space(tostring(ctan_file)),"r")
@@ -107,22 +101,22 @@ ctan_post=ctan_post_command .. " "
   local exit_status=0
   local fp_return=""
 
---    use popen not execute so get the return body local exit_status=os.execute(ctan_post .. "validate")
-  if(curl_debug==false) then
+  -- use popen not execute so get the return body local exit_status=os.execute(ctan_post .. "validate")
+  if (curl_debug==false) then
     local fp = assert(io.popen(ctan_post .. "validate", 'r'))
     fp_return = assert(fp:read('*a'))
     fp:close()
   else
-   fp_return="WARNING: curl_debug==true: posting disabled disabled"
-   print(ctan_post)
+    fp_return="WARNING: curl_debug==true: posting disabled"
+    print(ctan_post)
   end
   if string.match(fp_return,"WARNING") or string.match(fp_return,"ERROR") then
-   exit_status=1
+    exit_status=1
   end
 
   -- if upload requested and validation succeeded repost to the upload URL
   if (exit_status==0 or exit_status==nil) then
-    if(ctanupload ~=nil and ctanupload ~=false and ctanupload ~= true) then
+    if (ctanupload ~=nil and ctanupload ~=false and ctanupload ~= true) then
       print("Validation successful, do you want to upload to CTAN?" )
       local answer=""
       io.write("> ")
@@ -132,7 +126,7 @@ ctan_post=ctan_post_command .. " "
         ctanupload=true
       end
     end
-    if(ctanupload==true) then
+    if (ctanupload==true) then
       local fp = assert(io.popen(ctan_post .. "upload", 'r'))
       fp_return = assert(fp:read('*a'))
       fp:close()
@@ -152,12 +146,14 @@ ctan_post=ctan_post_command .. " "
   return exit_status
 end
 
+
 function trim_space(s)
   return (s:gsub("^%s*(.-)%s*$", "%1"))
 end
 
+
 function ctan_field(fname,fvalue,max,desc,mandatory,multi)
-  if(type(fvalue)=="table" and multi==true) then
+  if (type(fvalue)=="table" and multi==true) then
     for i, v in pairs(fvalue) do
       ctan_single_field(fname,v,max,desc,mandatory and i==1)
     end
@@ -168,20 +164,20 @@ end
 
 
 function ctan_single_field(fname,fvalue,max,desc,mandatory)
-print('ctan-post: ' .. fname .. ' ' ..tostring(fvalue or '??'))
-  if((fvalue==nil and mandatory) or (fvalue == 'ask')) then
+  print('ctan-post: ' .. fname .. ' ' ..tostring(fvalue or '??'))
+  if ((fvalue==nil and mandatory) or (fvalue == 'ask')) then
     if (max < 256) then
       fvalue=input_single_line_field(fname)
       else
         fvalue=input_multi_line_field(fname)
-    end      
+    end
   end
-  if(fvalue==nil or type(fvalue)~="table") then
+  if (fvalue==nil or type(fvalue)~="table") then
     local vs=trim_space(tostring(fvalue))
     if (mandatory==true and (fvalue == nil or vs=="")) then
       error("The field " .. fname .. " must contain " .. desc)
     end
-    if(fvalue ~=nil and string.len(vs) > 0) then
+    if (fvalue ~=nil and string.len(vs) > 0) then
       if (max > 0 and string.len(vs) > max) then
         error("The field " .. fname .. " is longer than " .. max)
       end
@@ -194,8 +190,6 @@ end
 
 
 -- function for interactive multiline fields
-
-
 function input_multi_line_field (name)
   print("Enter " .. name .. "  three <return> or ctrl-D to stop")
 
