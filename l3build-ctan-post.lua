@@ -63,6 +63,8 @@ local ctanupload = ctanupload or "ask"
 
 function ctan_upload ()
 
+  ctan_post = ctan_post_command .. " "
+
   --         field                               max  desc                               mandatory  multi
   --         --------------------------------------------------------------------------------------------
   ctan_field("pkg",          ctan_pkg,            32, "the package name",                     true, false )
@@ -85,7 +87,6 @@ function ctan_upload ()
   ctan_field("note",         ctan_note,         4096, "internal note to ctan",               false, false )
 
   -- construct the curl command
-  ctan_post = ctan_post_command .. " "
   ctan_post = ctan_post .. " --form 'file=@" .. tostring(ctan_file) .. ";filename=" .. tostring(ctan_file) .. "'"
   ctan_post = ctan_post ..  " https://ctan.org/submit/"
 
@@ -181,7 +182,9 @@ function ctan_single_field(fname,fvalue,max,desc,mandatory)
       if (max > 0 and string.len(vs) > max) then
         error("The field " .. fname .. " is longer than " .. max)
       end
-      ctan_post=ctan_post .." --form " .. fname .. '="' .. vs:gsub('"','\\"') .. '"'
+      vs = vs:gsub('"','\\"')
+      vs = vs:gsub('`','\\`')
+      ctan_post=ctan_post .." --form " .. fname .. '="' .. vs .. '"'
     end
   else
     error("The value of the field '" .. fname .."' must be a scalar not a table")
