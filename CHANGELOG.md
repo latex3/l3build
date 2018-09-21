@@ -157,7 +157,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2018-08-04...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2018-08-07...HEAD
 [2018-08-07]: https://github.com/latex3/l3build/compare/2018-08-04...2018-08-07
 [2018-08-04]: https://github.com/latex3/l3build/compare/2018-08-02...2018-08-04
 [2018-08-02]: https://github.com/latex3/l3build/compare/2018-05-10...2018-08-02
