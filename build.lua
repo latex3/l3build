@@ -34,10 +34,11 @@ function update_tag(file,content,tagname,tagdate)
       "\n%% \\date{Released " .. tagname .. "}\n")
   elseif string.match(file, "%.md$") then
     if string.match(file,"CHANGELOG.md") then
+      local previous = string.match(content,"compare/(" .. iso .. ")%.%.%.HEAD")
+      if tagname == previous then return content end
       content = string.gsub(content,
         "## %[Unreleased%]",
         "## [Unreleased]\n\n## [" .. tagname .."]")
-      local previous = string.match(content,"compare/(" .. iso .. ")%.%.%.HEAD")
       return string.gsub(content,
         iso .. "%.%.%.HEAD",
         tagname .. "...HEAD\n[" .. tagname .. "]: " .. url .. previous
