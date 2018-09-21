@@ -526,7 +526,10 @@ end
 -- Run one test which may have multiple engine-dependent comparisons
 -- Should create a difference file for each failed test
 function runcheck(name, hide)
-  if not testexists(name) then return 1 end
+  if not testexists(name) then
+    print("Failed to find input for test " .. name)
+    return 1
+  end
   local checkengines = checkengines
   if options["engine"] then
     checkengines = options["engine"]
