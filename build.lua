@@ -23,6 +23,7 @@ tagfiles     = {"l3build.1", "l3build.dtx", "*.md", "l3build.lua"}
 -- Detail how to set the version automatically
 function update_tag(file,content,tagname,tagdate)
   local iso = "%d%d%d%d%-%d%d%-%d%d"
+  local url = "https://github.com/latex3/l3build/compare/"
   if string.match(file, "%.1$") then
     return string.gsub(content,
       '%.TH l3build 1 "' .. iso .. '"\n',
@@ -32,6 +33,16 @@ function update_tag(file,content,tagname,tagdate)
       "\n%% \\date{Released " .. iso .. "}\n",
       "\n%% \\date{Released " .. tagname .. "}\n")
   elseif string.match(file, "%.md$") then
+    if string.match(file,"CHANGELOG.md") then
+      content = string.gsub(content,
+        "## %[Unreleased%]",
+        "## [Unreleased]\n\n## [" .. tagname .."]")
+      local previous = string.match(content,"compare/(" .. iso .. ")%.%.%.HEAD")
+      return string.gsub(content,
+        iso .. "%.%.%.HEAD",
+        tagname .. "...HEAD\n[" .. tagname .. "]: " .. url .. previous
+          .. "..." .. tagname)
+    end
     return string.gsub(content,
       "\nRelease " .. iso .. "\n",
       "\nRelease " .. tagname .. "\n")
