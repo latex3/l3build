@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## Changed
+
+- Entries in `scriptfiles` are excluded from `installfiles`
+
 ## [2018-09-21]
 
 ### Changed

@@ -132,14 +132,6 @@ function install_files(target,full,dry_run)
   end
   local errorlevel = unpack()
   if errorlevel ~= 0 then return errorlevel end
-  errorlevel = install_files(unpackdir,"tex",{installfiles})
-    + install_files(unpackdir,"bibtex/bst",{bstfiles},module,true)
-    + install_files(unpackdir,"makeindex",{makeindexfiles},module,true)
-    + install_files(unpackdir,"scripts",{scriptfiles},module)
-  if errorlevel ~= 0 then return errorlevel end
-  if full then
-    errorlevel = doc()
-    if errorlevel ~= 0 then return errorlevel end
 
     -- Creates a 'controlled' list of files
     local function excludelist(dir,include,exclude)
@@ -165,6 +157,16 @@ function install_files(target,full,dry_run)
       return includelist
     end
 
+  local installlist = excludelist(unpackdir,installfiles,{scriptfiles})
+
+  errorlevel = install_files(unpackdir,"tex",{installlist})
+    + install_files(unpackdir,"bibtex/bst",{bstfiles},module,true)
+    + install_files(unpackdir,"makeindex",{makeindexfiles},module,true)
+    + install_files(unpackdir,"scripts",{scriptfiles},module)
+  if errorlevel ~= 0 then return errorlevel end
+  if full then
+    errorlevel = doc()
+    if errorlevel ~= 0 then return errorlevel end
     -- For the purposes here, any typesetting demo files need to be
     -- part of the main typesetting list
     local typesetfiles = typesetfiles
