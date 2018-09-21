@@ -7,6 +7,13 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- Normalise date lines to contain "...-..-.." rather than removing
+  (including normalising version data in such lines): note that
+  `.tlg` file updates may be required after this change
+- Explicitly exclude `.fd` file lines
+
 ## [2018-08-07]
 
 ### Changed

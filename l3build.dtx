@@ -745,8 +745,8 @@
 %   \item Lines before the \cs{START}, after the \cs{END} and within
 %     \cs{OMIT}/\cs{TIMO} blocks
 %   \item Entirely blank lines, including those consisting only of spaces.
-%   \item Lines containing file dates in format
-%    \texttt{\meta{yyyy}/\meta{mm}/\meta{dd}}.
+%   \item Lines related to loading |.fd| files (from \texttt{(\meta{name}.fd}
+%     to the matching \texttt{)}).
 %  \item Lines starting \cs{openin} or \cs{openout}.
 % \end{itemize}
 % Modifications made in lines are:
@@ -762,6 +762,8 @@
 %     years due to a \TeX{} bug).
 %   \item Conversion of \texttt{on line \meta{number}} to \texttt{on line ...}
 %     to allow flexibility in changes to test files.
+%   \item Conversion of file dates to \texttt{....-..-..}, and any version
+%     numbers on the same lines to \texttt{v...}.
 %   \item Conversion of register numbers in assignment lines
 %     \texttt{\cs{\meta{register}}=\cs{\meta{type}}\meta{number}} to
 %     \texttt{\cs{\meta{type}}\meta{...}}

@@ -102,23 +102,23 @@ local function normalize_log(content,engine,errlevels)
     maxprintline = maxprintline + 1 -- Deal with an out-by-one error
   end
   local function killcheck(line)
-      -- Skip lines containing file dates
-      if match(line, "[^<]%d%d%d%d/%d%d/%d%d") 
-         or match(line, "[^<]%d%d%d%d%-%d%d%-%d%d") then
-        return true
-      elseif
       -- Skip \openin/\openout lines in web2c 7.x
       -- As Lua doesn't allow "(in|out)", a slightly complex approach:
       -- do a substitution to check the line is exactly what is required!
-        match(
-          gsub(line, "^\\openin", "\\openout"), "^\\openout%d%d? = "
-        ) then
-        return true
-      end
+    if match(gsub(line, "^\\openin", "\\openout"), "^\\openout%d%d? = ") then
+      return true
+    end
     return false
   end
     -- Substitutions to remove some non-useful changes
-  local function normalize(line, lastline)
+  local function normalize(line,lastline,drop_fd)
+    if drop_fd then
+      if match(line," *%)") then
+        return "",""
+      else
+        return "","",true
+      end
+    end
     -- Zap line numbers from \show, \showbox, \box_show and the like:
     -- do this before wrapping lines
     line = gsub(line, "^l%.%d+ ", "l. ...")
@@ -151,12 +151,16 @@ local function normalize_log(content,engine,errlevels)
         line = gsub(line, pattern, "../%1")
       end
     end
+    -- Deal with dates
+    if match(line, "[^<]%d%d%d%d[/%-]%d%d[/%-]%d%d") then
+        line = gsub(line,"%d%d%d%d[/%-]%d%d[/%-]%d%d","....-..-..")
+        line = gsub(line,"v%d+%.?%d?%d?%w?","v...")
+    end
     -- Deal with the fact that "(.aux)" may have still a leading space
     line = gsub(line, "^ %(%.aux%)", "(.aux)")
-    -- Merge all of .fd data into one line so will be removed later
+    -- Zap .fd lines: drop the first part, and skip to the end
     if match(line, "^ *%([%.%/%w]+%.fd[^%)]*$") then
-      lastline = (lastline or "") .. line
-      return "", (lastline or "") .. line
+      return "","",true
     end
     -- TeX90/XeTeX knows only the smaller set of dimension units
     line = gsub(line,
@@ -250,6 +254,7 @@ local function normalize_log(content,engine,errlevels)
     return line, lastline
   end
   local lastline = ""
+  local drop_fd = false
   local new_content = ""
   local prestart = true
   local skipping = false
@@ -264,7 +269,7 @@ local function normalize_log(content,engine,errlevels)
     elseif match(line, "^%)?TIMO$") then
       skipping = false
     elseif not prestart and not skipping then
-      line, lastline = normalize(line, lastline)
+      line, lastline, drop_fd = normalize(line, lastline,drop_fd)
       if not match(line, "^ *$") and not killcheck(line) then
         new_content = new_content .. line .. os_newline
       end
