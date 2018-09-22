@@ -747,7 +747,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
       os_setenv .. " GUESS_INPUT_KANJI_ENCODING=0"
         .. os_concat ..
       -- Allow for local texmf files
-      os_setenv .. " TEXMFCNF=.;" .. var_value("TEXMFCNF")
+      os_setenv .. " TEXMFCNF=." .. os_pathsep .. var_value("TEXMFCNF")
         .. os_concat ..
       (forcecheckepoch and setepoch() or "") ..
       -- Ensure lines are of a known length

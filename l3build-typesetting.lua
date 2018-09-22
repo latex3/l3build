@@ -62,7 +62,7 @@ function runtool(subdir, dir, envvar, command)
       typesetdir .. "/" .. subdir,
       (forcedocepoch and setepoch() or "") ..
       -- Allow for local texmf files
-      os_setenv .. " TEXMFCNF=.;" .. var_value("TEXMFCNF")
+      os_setenv .. " TEXMFCNF=." .. os_pathsep .. var_value("TEXMFCNF")
         .. os_concat ..
       os_setenv .. " " .. envvar .. "=." .. os_pathsep
         .. abspath(localdir) .. os_pathsep
