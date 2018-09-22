@@ -10,6 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## Changed
 
 - Entries in `scriptfiles` are excluded from `installfiles`
+- Use a per-config directory for running tests
 
 ## [2018-09-21]
 

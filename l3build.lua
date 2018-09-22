@@ -137,9 +137,16 @@ if options["target"] == "check" then
       end
     end
     if next(failed) then
-      print("  Failed tests for configs:")
       for _,config in ipairs(failed) do
-        print("  - " .. config)
+        print("Failed tests for configuration " .. config .. ":")
+        print("\n  Check failed with difference files")
+        if failed ~= "build" then
+          local testdir = testdir .. "-" .. failed
+        end
+        for _,i in ipairs(filelist(testdir,"*" .. os_diffext)) do
+          print("  - " .. testdir .. "/" .. i)
+        end
+        print("")
       end
       exit(1)
     else
@@ -154,6 +161,7 @@ if #checkconfigs == 1 and
    local config = "./" .. checkconfigs[1] .. ".lua"
    if fileexists(config) then
      dofile(config)
+     testdir = testdir .. "-" .. checkconfigs[1]
    else
      print("Error: Cannot find configuration " ..  checkconfigs[1])
      exit(1)
