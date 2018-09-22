@@ -159,11 +159,6 @@ function install_files(target,full,dry_run)
 
   local installlist = excludelist(unpackdir,installfiles,{scriptfiles})
 
-  errorlevel = install_files(unpackdir,"tex",{installlist})
-    + install_files(unpackdir,"bibtex/bst",{bstfiles},module,true)
-    + install_files(unpackdir,"makeindex",{makeindexfiles},module,true)
-    + install_files(unpackdir,"scripts",{scriptfiles},module)
-  if errorlevel ~= 0 then return errorlevel end
   if full then
     errorlevel = doc()
     if errorlevel ~= 0 then return errorlevel end
@@ -212,6 +207,14 @@ function install_files(target,full,dry_run)
       end
     end
   end
+
+  if errorlevel ~= 0 then return errorlevel end
+
+  errorlevel = install_files(unpackdir,"tex",{installlist})
+    + install_files(unpackdir,"bibtex/bst",{bstfiles},module,true)
+    + install_files(unpackdir,"makeindex",{makeindexfiles},module,true)
+    + install_files(unpackdir,"scripts",{scriptfiles},module)
+  
   return errorlevel
 end
 
