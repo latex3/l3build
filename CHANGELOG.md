@@ -11,6 +11,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 - Entries in `scriptfiles` are excluded from `installfiles`
 - Use a per-config directory for running tests
+- Enable use of local `texmf.cnf` file in tests and documentation
 
 ## [2018-09-21]
 

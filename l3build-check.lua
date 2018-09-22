@@ -30,6 +30,9 @@ local output           = io.output
 
 local rnd              = math.random
 
+local var_value        = kpse.var_value
+local set_program_name = kpse.set_program_name
+
 local luatex_version   = status.luatex_version
 
 local len              = string.len
@@ -726,6 +729,8 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
       break
     end
   end
+  -- Deal with TEXMFCNF
+  set_program_name("kpsewhich")
   -- Clean out any dynamic files
   for _,filetype in pairs(dynamicfiles) do
     rm(testdir,filetype)
@@ -740,6 +745,9 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
         .. os_concat ..
       -- Avoid spurious output from (u)pTeX
       os_setenv .. " GUESS_INPUT_KANJI_ENCODING=0"
+        .. os_concat ..
+      -- Allow for local texmf files
+      os_setenv .. " TEXMFCNF=.;" .. var_value("TEXMFCNF")
         .. os_concat ..
       (forcecheckepoch and setepoch() or "") ..
       -- Ensure lines are of a known length

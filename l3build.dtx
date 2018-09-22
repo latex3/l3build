@@ -1054,6 +1054,18 @@
 % takes either a date or raw epoch. When given, this will automatically
 % activate forcing of the epoch in both testing and typesetting.
 %
+% \subsection{Settings in \texttt{texmf.cnf}}
+%
+% To allow application of non-standard \TeX} trees or similar non-standard
+% settings, \pkg{l3build} enables searching for a \texttt{texmf.cnf} file
+% by setting the envirnmental variable \texttt{TEXMFCNF}. This might
+% for example be used with a file containing
+% \begin{verbatim}
+% TEXMFAUXTREES = ../../texmf,
+% \end{verbatim}
+% for adding a local tree within the development repository (assuming the
+% typical \pkg{l3build} layout).
+%
 % \section{Alternative test formats}
 %
 % \subsection{Generating test files with \pkg{DocStrip}}
