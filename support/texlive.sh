@@ -26,8 +26,8 @@ tlmgr install luatex
 # TeX90 plain for unpacking, pdfLaTeX, LuaLaTeX and XeTeX for tests
 # The Lua libs and Latin Modern font avoid a few warnings with more
 # recent LaTeX2e kernels (which load Unicode as standard)
-tlmgr install cm etex etex-pkg knuth-lib latex-bin lm lualibs luaotfload \
-  metafont mfware tex tex-ini-files unicode-data xetex
+tlmgr install etex-pkg latex-bin lm lualibs luaotfload \
+  metafont mfware tex xetex
   
 # Additional requirements for (u)pLaTeX, done with no dependencies to
 # avoid large font payloads
