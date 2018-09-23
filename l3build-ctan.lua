@@ -25,6 +25,9 @@ for those people who are interested.
 local pairs = pairs
 local print = print
 
+local lower = string.lower
+local match = string.match
+
 -- Copy files to the main CTAN release directory
 function copyctan()
   mkdir(ctandir .. "/" .. ctanpkg)
@@ -127,6 +130,15 @@ function ctan()
       for _,j in pairs({unpackdir, currentdir}) do
         cp(i, j, ctandir .. "/" .. ctanpkg)
         cp(i, j, tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle)
+      end
+    end
+    -- Rename README if necessary
+    if ctanreadme ~= "" and not match(lower(ctanreadme),"^readme%.%w+") then
+      for dir in pairs({"ctandir .. "/" .. ctanpkg",
+        "tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle"}) do
+        if fileexists(dir .. "/" .. ctanreadme) then
+          ren(dir,ctanreadme,"README." .. match(ctanreadme,"%.(%w+)$"))
+        end
       end
     end
     dirzip(tdsdir, ctanpkg .. ".tds")

@@ -29,6 +29,7 @@ local set_program = kpse.set_program_name
 local var_value   = kpse.var_value
 
 local gsub  = string.gsub
+local lower = string.lower
 local match = string.match
 
 local insert = table.insert
@@ -184,6 +185,16 @@ function install_files(target,full,dry_run)
       + install_files(docfiledir,"doc",
           {bibfiles,demofiles,docfiles,pdffiles,textfiles,typesetlist})
     if errorlevel ~= 0 then return errorlevel end
+
+    -- Rename README if necessary
+    if not dry_run then
+      if ctanreadme ~= "" and not match(lower(ctanreadme),"^readme%.%w+") then
+        local installdir = target .. "/doc/" .. moduledir
+        if fileexists(installdir .. "/" .. ctanreadme) then
+          ren(installdir,ctanreadme,"README." .. match(ctanreadme,"%.(%w+)$"))
+        end
+      end
+    end
 
     -- Any script man files need special handling
     local manfiles = { }

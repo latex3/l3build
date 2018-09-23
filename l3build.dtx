@@ -152,6 +152,7 @@
 \luavarseparator
 \luavarset{asciiengines}{\{"pdftex"\}}{Engines which should log as sure ASCII}
 \luavarset{checkruns}   {1}           {Number of runs to complete for a test before comparing the log}
+\luavarset{ctanreadme}{"README.md"}   {Name of the file to send to CTAN as \texttt{README.\meta{ext}}}
 \luavarset{ctanzip}{ctanpkg ... "-ctan"}{Name of the zip file created for upload to CTAN}
 \luavarset{epoch}       {1463734800}  {Epoch (Unix date) to set for test runs}
 \luavarset{flatten}     {true}        {Switch to flatten any source structure when sending to CTAN}
@@ -436,6 +437,11 @@
 % \end{itemize}
 % The |source| tree is constructed from all files matched by \var{typesetfiles} and \var{sourcefiles}.
 % The |tex| tree from all files matched by \var{installfiles}.
+%
+% The special case \var{ctanreadme} is used to allow renaming of a local
+% |foo.xyz| file to |README.xyz|. The local |foo.xyz| should be listed in
+% \var{textfiles}, and will be renamed as part of constructing the CTAN
+% structure. The file extension will be unchanged by this process.
 %
 % Files that should always be excluded from the archive are matched against the \var{excludefiles} variable; by default this is \luavar{excludefiles}, which match Emacs' autosave files.
 %
