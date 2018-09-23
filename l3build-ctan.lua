@@ -134,10 +134,12 @@ function ctan()
     end
     -- Rename README if necessary
     if ctanreadme ~= "" and not match(lower(ctanreadme),"^readme%.%w+") then
+      local newfile = "README." .. match(ctanreadme,"%.(%w+)$")
       for _,dir in pairs({ctandir .. "/" .. ctanpkg,
         tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle}) do
         if fileexists(dir .. "/" .. ctanreadme) then
-          ren(dir,ctanreadme,"README." .. match(ctanreadme,"%.(%w+)$"))
+          rm(dir,newfile)
+          ren(dir,ctanreadme,newfile)
         end
       end
     end
