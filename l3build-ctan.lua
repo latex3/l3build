@@ -134,8 +134,8 @@ function ctan()
     end
     -- Rename README if necessary
     if ctanreadme ~= "" and not match(lower(ctanreadme),"^readme%.%w+") then
-      for dir in pairs({"ctandir .. "/" .. ctanpkg",
-        "tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle"}) do
+      for dir in pairs({ctandir .. "/" .. ctanpkg,
+        tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle}) do
         if fileexists(dir .. "/" .. ctanreadme) then
           ren(dir,ctanreadme,"README." .. match(ctanreadme,"%.(%w+)$"))
         end
