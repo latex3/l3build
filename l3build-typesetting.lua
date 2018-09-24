@@ -29,9 +29,6 @@ for those people who are interested.
 local gsub             = string.gsub
 local match            = string.match
 
-local var_value        = kpse.var_value
-local set_program_name = kpse.set_program_name
-
 function dvitopdf(name, dir, engine, hide)
   if match(engine, "^u?ptex$") then
     run(
@@ -62,7 +59,7 @@ function runtool(subdir, dir, envvar, command)
       typesetdir .. "/" .. subdir,
       (forcedocepoch and setepoch() or "") ..
       -- Allow for local texmf files
-      os_setenv .. " TEXMFCNF=." .. os_pathsep .. var_value("TEXMFCNF")
+      os_setenv .. " TEXMFCNF=." .. os_pathsep
         .. os_concat ..
       os_setenv .. " " .. envvar .. "=." .. os_pathsep
         .. abspath(localdir) .. os_pathsep
