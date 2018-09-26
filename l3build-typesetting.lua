@@ -52,7 +52,6 @@ end
 
 -- An auxiliary used to set up the environmental variables
 function runtool(subdir, dir, envvar, command)
-  set_program_name("kpsewhich")
   dir = dir or "."
   return(
     run(
@@ -251,3 +250,4 @@ function doc(files)
   end
   return 0
 end
+
