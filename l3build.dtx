@@ -1824,6 +1824,32 @@
 %    \end{macrocode}
 % \end{macro}
 %
+%
+
+%  \begin{macro}{\SHOWFILE}
+%     Load a file (e.g.,| \jobname.toc|) into the .log file with the usual special
+%     characters rendered harmless. Use as |\SHOWFILE{\jobname.aux}|.
+%    \begin{macrocode}
+\begingroup       % within the scope of this groups each line needs to end in % !
+\catcode`\^^M\active %
+\gdef\SHOWFILE#1{%
+     \typeout{-------- #1 (start) ---------}% 
+\IfFileExists{#1}%
+  {\begingroup %
+     \catcode`\^^M\active %
+     \edef^^M{^\string^M^^J}%
+     \everyeof{\noexpand}%
+     \obeyspaces %
+     \@sanitize %
+     \message{\@@input #1 }%
+   \endgroup }%
+  {\message{Not found}}%
+     \typeout{-------- #1 (end) -----------}% 
+}%
+\endgroup
+%    \end{macrocode}
+%  \end{macro}
+%
 % To allow testing of possible changes, we allow extra code to be read
 % in before the test starts. The necessary code should be placed in a
 % file |regression-test.cfg|.
