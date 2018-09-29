@@ -7,8 +7,6 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
-## [2018-09-26]
-
 ## [2018-09-23]
 
 ## Changed
@@ -112,7 +110,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2018-03-08]
 
 ### Added
-- Target `tag`, variable `tagfiles` and function `update_tag()` 
+- Target `tag`, variable `tagfiles` and function `update_tag()`
 - Variables `scriptfiles` and `scriptmanfiles` to support installation
   of scripts
 
@@ -187,4 +185,3 @@ this project uses date-based 'snapshot' version identifiers.
 [2018-02-20]: https://github.com/latex3/l3build/compare/2018-01-27...2018-02-20
 [2018-01-27]: https://github.com/latex3/l3build/compare/2018-01-10...2018-01-27
 [2018-01-10]: https://github.com/latex3/l3build/compare/2017-12-12...2018-01-10
-
