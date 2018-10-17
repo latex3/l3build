@@ -98,7 +98,7 @@ end
 -- the 'business' part from the tests and removes system-dependent stuff
 local function normalize_log(content,engine,errlevels)
   local maxprintline = maxprintline
-  if match(engine,"^lua") then then
+  if match(engine,"^lua") then
     maxprintline = maxprintline + 1 -- Deal with an out-by-one error
   end
   local function killcheck(line)
