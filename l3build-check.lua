@@ -98,7 +98,7 @@ end
 -- the 'business' part from the tests and removes system-dependent stuff
 local function normalize_log(content,engine,errlevels)
   local maxprintline = maxprintline
-  if engine == "luatex" or engine == "luajittex" then
+  if match(engine,"^lua") then then
     maxprintline = maxprintline + 1 -- Deal with an out-by-one error
   end
   local function killcheck(line)
@@ -553,7 +553,7 @@ function runcheck(name, hide)
   for _,engine in pairs(checkengines) do
     local enginename = engine
     -- Allow for luatex == luajittex for .tlg/.tpf purposes
-    if engine == "luajittex" then
+    if match(engine,"^lua") then
       engine = "luatex"
     end
     setup_check(name,engine)
@@ -638,8 +638,7 @@ function compare_tlg(name, engine,cleanup)
   -- LuaTeX-specific .tlg file and the default engine is not LuaTeX
   if engine == "luatex"
     and not match(tlgfile, "%.luatex" .. "%" .. tlgext)
-    and stdengine ~= "luatex"
-    and stdengine ~= "luajittex"
+    and not match(stdengine,"^lua")
     then
     local lualogfile = logfile
     if cleanup then
@@ -703,7 +702,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   if match(checkformat, "^context$") then
     format = ""
     function setup(file) return ' "' .. file .. '" '  end
-    if engine == "luatex" or engine == "luajittex" then
+    if match(engine,"^lua") then
       realengine = "context"
     elseif engine == "pdftex" then
       realengine = "texexec"
