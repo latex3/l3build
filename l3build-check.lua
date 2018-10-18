@@ -678,17 +678,15 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     not match(engine, checkformat) then
     format = " -fmt=" .. gsub(engine, "(.*)tex$", "%1") .. checkformat
   end
-  -- Special casing for e-LaTeX format
-  if
-    match(checkformat, "^latex$") and
-    match(engine, "^etex$") then
-    format = " -fmt=latex"
-  end
-  -- Special casing for (u)pTeX LaTeX formats
-  if
-    match(checkformat, "^latex$") and
-    match(engine, "^u?ptex$") then
-    realengine = "e" .. engine
+  if checkformat == "latex" then
+    -- Special case for e-LaTeX format
+    if engine == "etex" then
+      format = " -fmt=latex"
+    end
+    -- Special case for (u)pTeX LaTeX
+    if match(engine,"^u?ptex$") then
+      realengine = "e" .. engine
+    end
   end
   -- Special casing for XeTeX engine
   local checkopts = checkopts
