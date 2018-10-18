@@ -670,18 +670,15 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   cp(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
     and testfiledir or unpackdir, testdir)
   local engine = engine or stdengine
-  -- Set up the format file name if it's one ending "...tex"
   local realengine = engine
   local format = ""
-  if
-    match(checkformat, "tex$") and
-    not match(engine, checkformat) then
-    format = " -fmt=" .. gsub(engine, "(.*)tex$", "%1") .. checkformat
-  end
   if checkformat == "latex" then
     -- Special case for e-LaTeX format
     if engine == "etex" then
       format = " -fmt=latex"
+    -- Use "...latex" formats for other engines
+    elseif not match(engine,"latex") then
+      format = " -fmt=" .. gsub(engine,"tex","latex")
     end
     -- Special case for (u)pTeX LaTeX
     if match(engine,"^u?ptex$") then
