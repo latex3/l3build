@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## Fixed
+
+- Support relative directories as argument to `--texmfhome`
+
 ## [2018-09-23]
 
 ## Changed
