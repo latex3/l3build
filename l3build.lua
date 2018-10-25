@@ -95,6 +95,20 @@ end
 -- comes after any user versions
 build_require("variables")
 
+-- Ensure that directories are 'space safe'
+maindir       = escapepath(maindir) 
+docfiledir    = escapepath(docfiledir)
+sourcefiledir = escapepath(sourcefiledir)
+supportdir    = escapepath(escapepath(supportdir)
+testfiledir   = escapepath(testfiledir)
+testsuppdir   = escapepath(testsuppdir)
+builddir      = escapepath(builddir)
+distribdir    = escapepath(distribdir)
+localdir      = escapepath(localdir)
+testdir       = escapepath(testdir)
+typesetdir    = escapepath(typesetdir)
+unpackdir     = escapepath(unpackdir)
+
 -- Tidy up the epoch setting
 -- Force an epoch if set at the command line
 -- Must be done after loading variables, etc.

@@ -33,6 +33,7 @@ local chdir            = lfs.chdir
 local lfs_dir          = lfs.dir
 
 local execute          = os.execute
+local exit             = os.exit
 local getenv           = os.getenv
 local remove           = os.remove
 local os_time          = os.time
@@ -246,7 +247,23 @@ function abspath(path)
   chdir(path)
   local result = currentdir()
   chdir(oldpwd)
-  return gsub(result, "\\", "/")
+  return escapepath(gsub(result, "\\", "/"))
+end
+
+function escapepath(path)
+  if os_type == "windows" then
+    local path,count = gsub(path,'"','')
+    if count % 2 ~= 0 then
+      print("Unbalanced quotes in path")
+      exit(0)
+    else
+      return '"' .. path .. '"'
+    end
+  else
+    path = gsub(path,"\\ ","[PATH-SPACE]")
+    path = gsub(path," ","\\ ")
+    return gsub(path,"[PATH-SPACE]","\\ ")
+  end
 end
 
 -- For cleaning out a directory, which also ensures that it exists

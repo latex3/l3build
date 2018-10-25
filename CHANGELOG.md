@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## Fixed
 
+- Support for spaces in directory names (fixes #76)
 - Support relative directories as argument to `--texmfhome`
 
 ## [2018-09-23]
