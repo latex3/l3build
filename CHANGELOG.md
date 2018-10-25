@@ -11,6 +11,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 - `\SHOWFILE` command
 
+## Changed
+
+- Better support for multiple LuaTeX engines (see #75)
+
 ## Fixed
 
 - Support for spaces in directory names (fixes #76)
