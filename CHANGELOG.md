@@ -9,14 +9,14 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [2018-10-25]
 
-## Added
+### Added
 
 - `\SHOWFILE` command
 
-## Changed
+### Changed
 
 - Better support for multiple LuaTeX engines (see #75)
-
+#
 ## Fixed
 
 - Support for spaces in directory names (fixes #76)
@@ -24,7 +24,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [2018-09-23]
 
-## Changed
+### Changed
 
 - Entries in `scriptfiles` are excluded from `installfiles`
 - Use a per-config directory for running tests
