@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2018-10-25]
+
 ## Added
 
 - `\SHOWFILE` command
@@ -181,7 +183,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2018-09-26...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2018-10-25...HEAD
+[2018-10-25]: https://github.com/latex3/l3build/compare/2018-09-26...2018-10-25
 [2018-09-26]: https://github.com/latex3/l3build/compare/2018-09-23...2018-09-26
 [2018-09-23]: https://github.com/latex3/l3build/compare/2018-09-21...2018-09-23
 [2018-09-21]: https://github.com/latex3/l3build/compare/2018-08-07...2018-09-21
