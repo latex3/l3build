@@ -194,7 +194,7 @@ function escapepath(path)
   else
     path = gsub(path,"\\ ","[PATH-SPACE]")
     path = gsub(path," ","\\ ")
-    return gsub(path,"[PATH-SPACE]","\\ ")
+    return gsub(path,"%[PATH-SPACE%]","\\ ")
   end
 end
 

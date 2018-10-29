@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Substitution of spaces in Unix paths (see #76)
+
 ## [2018-10-25]
 
 ### Added
