@@ -13,7 +13,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 
-- Print tet failures correctly per-config (see #77)
+- Print test failures correctly per-config (see #77)
 
 ## [2018-10-30]
 
