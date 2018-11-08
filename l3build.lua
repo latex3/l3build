@@ -154,8 +154,9 @@ if options["target"] == "check" then
       for _,config in ipairs(failed) do
         print("Failed tests for configuration " .. config .. ":")
         print("\n  Check failed with difference files")
+        local testdir = testdir
         if config ~= "build" then
-          local testdir = testdir .. "-" .. config
+          testdir = testdir .. "-" .. config
         end
         for _,i in ipairs(filelist(testdir,"*" .. os_diffext)) do
           print("  - " .. testdir .. "/" .. i)

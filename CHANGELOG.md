@@ -11,6 +11,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 - Strip leading spaces from file loading/page number lines (see #78)
 
+### Fixed
+
+- Print tet failures correctly per-config (see #77)
+
 ## [2018-10-30]
 
 ### Fixed
