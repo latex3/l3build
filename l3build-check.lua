@@ -156,8 +156,9 @@ local function normalize_log(content,engine,errlevels)
         line = gsub(line,"%d%d%d%d[/%-]%d%d[/%-]%d%d","....-..-..")
         line = gsub(line,"v%d+%.?%d?%d?%w?","v...")
     end
-    -- Deal with the fact that "(.aux)" may have still a leading space
-    line = gsub(line, "^ %(%.aux%)", "(.aux)")
+    -- Deal with leading spaces for file and page number lines
+    line = gsub(line,"^ *%[(%d)","[%1")
+    line = gsub(line,"^ *%(","(")
     -- Zap .fd lines: drop the first part, and skip to the end
     if match(line, "^ *%([%.%/%w]+%.fd[^%)]*$") then
       return "","",true

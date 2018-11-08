@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- Strip leading spaces from file loading/page number lines (see #78)
+
 ## [2018-10-30]
 
 ### Fixed
