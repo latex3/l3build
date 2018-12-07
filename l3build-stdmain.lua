@@ -58,7 +58,7 @@ target_list =
             return 0
           end
       },
-    bundlectan = 
+    bundlectan =
       {
         func = bundlectan
       },
@@ -85,6 +85,11 @@ target_list =
         bundle_func = ctan,
         desc = "Create CTAN-ready archive",
         func = ctan
+      },
+    ctanupload =
+      {
+        desc = "Send archive to CTAN for public release",
+        func = ctan_upload
       },
     doc =
       {
