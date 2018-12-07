@@ -1,6 +1,6 @@
 --[[
 
-File l3build-unpack.lua Copyright (C) 2018 The LaTeX3 Project
+File l3build-ctan-post.lua Copyright (C) 2018 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -60,31 +60,38 @@ local ctanupload = ctanupload or "ask"
 -- if ctanupload is true the ctan upload URL will be used after validation
 -- if upload is anything else, the user will be prompted whether to upload.
 
+ctandata = ctandata or {}
 
 function ctan_upload ()
 
+  local bundle = bundle or ""
+  if bundle == "" then
+    bundle = nil
+  end
+  ctandata.pkg = ctandata.pkg or bundle or module or nil
+
   ctan_post = ctan_post_command .. " "
 
-  --         field                               max  desc                               mandatory  multi
-  --         --------------------------------------------------------------------------------------------
-  ctan_field("pkg",          ctan_pkg,            32, "the package name",                     true, false )
-  ctan_field("version",      ctan_version,        32, "the package version",                  true, false )
-  ctan_field("author",       ctan_author,        128, "the author name",                      true, false )
-  ctan_field("email",        ctan_email,         255, "the email of uploader",                true, false )
-  ctan_field("uploader",     ctan_uploader,      255, "the name of uploader",                 true, false )
-  ctan_field("ctanPath",     ctan_ctanPath,      255, "the CTAN path",                       false, false )
-  ctan_field("license",      ctan_license,      2048, "Package License",                      true,  true )
-  ctan_field("home",         ctan_home,          255, "URL of home page",                    false, false )
-  ctan_field("bugtracker",   ctan_bugtracker,    255, "URL of bug tracker",                  false, false )
-  ctan_field("support",      ctan_support,       255, "URL of support channels",             false,  true )
-  ctan_field("repository",   ctan_repository,    255, "URL of source repositories",          false,  true )
-  ctan_field("development",  ctan_development,   255, "URL of development channels",         false,  true )
-  ctan_field("update",       ctan_update,          8, ",true for an update false otherwise", false, false )
-  ctan_field("topic",        ctan_topic,        1024, "topic",                               false,  true )
-  ctan_field("announcement", ctan_announcement, 8192, "announcement",                        false, false )
-  ctan_field("summary",      ctan_summary,       128, "summary",                              true, false ) -- ctan-o-mat doc says optional
-  ctan_field("description",  ctan_description,  4096, "description",                         false, false )
-  ctan_field("note",         ctan_note,         4096, "internal note to ctan",               false, false )
+  --         field                                   max  desc                               mandatory  multi
+  --         -------------------------------------------------------------------------------------------------
+  ctan_field("pkg",          ctandata.pkg,            32, "Package name",                        true,  false )
+  ctan_field("version",      ctandata.version,        32, "Package version",                     true,  false )
+  ctan_field("author",       ctandata.author,        128, "Author name",                         true,  false )
+  ctan_field("email",        ctandata.email,         255, "Email of uploader",                   true,  false )
+  ctan_field("uploader",     ctandata.uploader,      255, "Name of uploader",                    true,  false )
+  ctan_field("ctanPath",     ctandata.ctanPath,      255, "CTAN path",                           false, false )
+  ctan_field("license",      ctandata.license,      2048, "Package license(s); see https://ctan.org/license", true,  true )
+  ctan_field("home",         ctandata.home,          255, "URL of home page",                    false, false )
+  ctan_field("bugtracker",   ctandata.bugtracker,    255, "URL of bug tracker",                  false, false )
+  ctan_field("support",      ctandata.support,       255, "URL of support channels",             false, true  )
+  ctan_field("repository",   ctandata.repository,    255, "URL of source repositories",          false, true  )
+  ctan_field("development",  ctandata.development,   255, "URL of development channels",         false, true  )
+  ctan_field("update",       ctandata.update,          8, "Boolean: true for an update false otherwise",     false, false )
+  ctan_field("topic",        ctandata.topic,        1024, "Topic(s); see https://ctan.org/topics/highscore", false, true  )
+  ctan_field("announcement", ctandata.announcement, 8192, "Announcement",                        false, false )
+  ctan_field("summary",      ctandata.summary,       128, "One-line summary of package",         true,  false ) -- ctan-o-mat doc says optional
+  ctan_field("description",  ctandata.description,  4096, "Short description of package",        false, false )
+  ctan_field("note",         ctandata.note,         4096, "Internal note to ctan",               false, false )
 
   -- construct the curl command
   ctan_post = ctan_post .. " --form 'file=@" .. tostring(ctan_file) .. ";filename=" .. tostring(ctan_file) .. "'"
