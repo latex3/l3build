@@ -62,6 +62,13 @@ local ctanupload = ctanupload or "ask"
 
 ctandata = ctandata or {}
 
+--[[
+     Q: If we are asking people to use a table, is "ctandata" okay?
+        I'm not attached to anything here.
+        I considered more generic, like "metadata", and more simple, like "ctan"
+        and not really sure.
+--]]
+
 function ctan_upload ()
 
   local bundle = bundle or ""
@@ -69,6 +76,20 @@ function ctan_upload ()
     bundle = nil
   end
   ctandata.pkg = ctandata.pkg or bundle or module or nil
+
+  --[[
+       Q: I think we need some sensible defaults. I'm wondering whether a more
+          generic opening to an l3build file might be better, like
+
+              metadata = {
+                module = "foobar",
+                author = {"Will Robertson", "Joseph Wright"},
+                license = {"lppl1.3c"},
+                ...
+              }
+
+          which we can then grab data out of for ctan, rather than vice versa.
+  --]]
 
   ctan_post = ctan_post_command .. " "
 
@@ -92,6 +113,16 @@ function ctan_upload ()
   ctan_field("summary",      ctandata.summary,       128, "One-line summary of package",         true,  false ) -- ctan-o-mat doc says optional
   ctan_field("description",  ctandata.description,  4096, "Short description of package",        false, false )
   ctan_field("note",         ctandata.note,         4096, "Internal note to ctan",               false, false )
+
+  --[[
+       Q: The fields are specific to what the CTAN API needs.
+          I wonder if the l3build interface should deviate from them.
+          E.g., I think "contactname"/"contactemail" are clearer than "uploader"/"email"
+          but I'm not too fussed.
+
+       Q: What about an explicit copyright string? CTAN packages have them
+          listed. TODO: check these are all the fields.
+  --]]
 
   -- construct the curl command
   ctan_post = ctan_post .. " --form 'file=@" .. tostring(ctan_file) .. ";filename=" .. tostring(ctan_file) .. "'"
