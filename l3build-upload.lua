@@ -23,7 +23,7 @@ for those people who are interested.
 --]]
 
 
--- ctan_upload
+-- UPLOAD()
 --
 -- takes a package configuration table and an optional boolean
 --
@@ -60,66 +60,41 @@ local ctanupload = ctanupload or "ask"
 -- if ctanupload is true the ctan upload URL will be used after validation
 -- if upload is anything else, the user will be prompted whether to upload.
 
-ctandata = ctandata or {}
+uploaddata = uploaddata or {}
 
---[[
-     Q: If we are asking people to use a table, is "ctandata" okay?
-        I'm not attached to anything here.
-        I considered more generic, like "metadata", and more simple, like "ctan"
-        and not really sure.
---]]
+function upload()
 
-function ctan_upload ()
-
+  -- try a sensible default for the package name:
   local bundle = bundle or ""
   if bundle == "" then
     bundle = nil
   end
-  ctandata.pkg = ctandata.pkg or bundle or module or nil
-
-  --[[
-       Q: I think we need some sensible defaults. I'm wondering whether a more
-          generic opening to an l3build file might be better, like
-
-              metadata = {
-                module = "foobar",
-                author = {"Will Robertson", "Joseph Wright"},
-                license = {"lppl1.3c"},
-                ...
-              }
-
-          which we can then grab data out of for ctan, rather than vice versa.
-  --]]
+  uploaddata.pkg = uploaddata.pkg or bundle or module or nil
 
   ctan_post = ctan_post_command .. " "
 
   --         field                                   max  desc                               mandatory  multi
   --         -------------------------------------------------------------------------------------------------
-  ctan_field("pkg",          ctandata.pkg,            32, "Package name",                        true,  false )
-  ctan_field("version",      ctandata.version,        32, "Package version",                     true,  false )
-  ctan_field("author",       ctandata.author,        128, "Author name",                         true,  false )
-  ctan_field("email",        ctandata.email,         255, "Email of uploader",                   true,  false )
-  ctan_field("uploader",     ctandata.uploader,      255, "Name of uploader",                    true,  false )
-  ctan_field("ctanPath",     ctandata.ctanPath,      255, "CTAN path",                           false, false )
-  ctan_field("license",      ctandata.license,      2048, "Package license(s); see https://ctan.org/license", true,  true )
-  ctan_field("home",         ctandata.home,          255, "URL of home page",                    false, false )
-  ctan_field("bugtracker",   ctandata.bugtracker,    255, "URL of bug tracker",                  false, false )
-  ctan_field("support",      ctandata.support,       255, "URL of support channels",             false, true  )
-  ctan_field("repository",   ctandata.repository,    255, "URL of source repositories",          false, true  )
-  ctan_field("development",  ctandata.development,   255, "URL of development channels",         false, true  )
-  ctan_field("update",       ctandata.update,          8, "Boolean: true for an update false otherwise",     false, false )
-  ctan_field("topic",        ctandata.topic,        1024, "Topic(s); see https://ctan.org/topics/highscore", false, true  )
-  ctan_field("announcement", ctandata.announcement, 8192, "Announcement",                        false, false )
-  ctan_field("summary",      ctandata.summary,       128, "One-line summary of package",         true,  false ) -- ctan-o-mat doc says optional
-  ctan_field("description",  ctandata.description,  4096, "Short description of package",        false, false )
-  ctan_field("note",         ctandata.note,         4096, "Internal note to ctan",               false, false )
+  ctan_field("pkg",          uploaddata.pkg,            32, "Package name",                        true,  false )
+  ctan_field("version",      uploaddata.version,        32, "Package version",                     true,  false )
+  ctan_field("author",       uploaddata.author,        128, "Author name",                         true,  false )
+  ctan_field("email",        uploaddata.email,         255, "Email of uploader",                   true,  false )
+  ctan_field("uploader",     uploaddata.uploader,      255, "Name of uploader",                    true,  false )
+  ctan_field("ctanPath",     uploaddata.ctanPath,      255, "CTAN path",                           false, false )
+  ctan_field("license",      uploaddata.license,      2048, "Package license(s); see https://ctan.org/license", true,  true )
+  ctan_field("home",         uploaddata.home,          255, "URL of home page",                    false, false )
+  ctan_field("bugtracker",   uploaddata.bugtracker,    255, "URL of bug tracker",                  false, false )
+  ctan_field("support",      uploaddata.support,       255, "URL of support channels",             false, true  )
+  ctan_field("repository",   uploaddata.repository,    255, "URL of source repositories",          false, true  )
+  ctan_field("development",  uploaddata.development,   255, "URL of development channels",         false, true  )
+  ctan_field("update",       uploaddata.update,          8, "Boolean: true for an update false otherwise",     false, false )
+  ctan_field("topic",        uploaddata.topic,        1024, "Topic(s); see https://ctan.org/topics/highscore", false, true  )
+  ctan_field("announcement", uploaddata.announcement, 8192, "Announcement",                        false, false )
+  ctan_field("summary",      uploaddata.summary,       128, "One-line summary of package",         true,  false ) -- ctan-o-mat doc says optional
+  ctan_field("description",  uploaddata.description,  4096, "Short description of package",        false, false )
+  ctan_field("note",         uploaddata.note,         4096, "Internal note to ctan",               false, false )
 
   --[[
-       Q: The fields are specific to what the CTAN API needs.
-          I wonder if the l3build interface should deviate from them.
-          E.g., I think "contactname"/"contactemail" are clearer than "uploader"/"email"
-          but I'm not too fussed.
-
        Q: What about an explicit copyright string? CTAN packages have them
           listed. TODO: check these are all the fields.
   --]]
@@ -133,7 +108,7 @@ function ctan_upload ()
   if zip~=nil then
     io.close(zip)
   else
-    error("missing zip file " .. tostring(ctan_file))
+    error("Missing zip file " .. tostring(ctan_file))
   end
 
   -- call post command to validate the upload at CTAN's validate URL
