@@ -86,10 +86,10 @@ target_list =
         desc = "Create CTAN-ready archive",
         func = ctan
       },
-    ctanupload =
+    upload =
       {
         desc = "Send archive to CTAN for public release",
-        func = ctan_upload
+        func = upload
       },
     doc =
       {
