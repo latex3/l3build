@@ -1,6 +1,6 @@
 --[[
 
-File l3build-ctan-post.lua Copyright (C) 2018 The LaTeX3 Project
+File l3build-upload.lua Copyright (C) 2018 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
