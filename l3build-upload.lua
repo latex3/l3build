@@ -40,18 +40,14 @@ for those people who are interested.
 -- Currently string values are not checked, eg licence names, or URL syntax.
 
 -- The input form could be used to construct a post body but
--- luasec is not included in texlua.
-
--- Instead an external program is used to post.
+-- luasec is not included in texlua. Instead an external program is used to post.
 -- As Windows (since April 2018) includes curl now use curl.
--- a version using ctan-o-mat is available in the ctan-post github repo
+-- A version using ctan-o-mat is available in the ctan-post github repo.
 
 -- the main interface is
--- ctan_upload ()
--- with a configuration table c and optional upload parameter
+--     upload()
+-- with a configuration table `uploaddata`
 
-
-local ctan_post_command = ctan_post_command or "curl"
 
 local curl_debug = curl_debug or false -- to disable posting
 
@@ -59,8 +55,6 @@ local ctanupload = ctanupload or "ask"
 -- if ctanupload is nil or false, only validation is attempted
 -- if ctanupload is true the ctan upload URL will be used after validation
 -- if upload is anything else, the user will be prompted whether to upload.
-
-uploaddata = uploaddata or {}
 
 function upload()
 
@@ -71,7 +65,7 @@ function upload()
   end
   uploaddata.pkg = uploaddata.pkg or bundle or module or nil
 
-  ctan_post = ctan_post_command .. " "
+  ctan_post = uploadexe .. " "
 
   --         field                                   max  desc                               mandatory  multi
   --         -------------------------------------------------------------------------------------------------
