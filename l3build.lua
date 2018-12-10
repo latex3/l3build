@@ -60,13 +60,12 @@ build_require("aux")
 build_require("clean")
 build_require("check")
 build_require("ctan")
-build_require("ctan-post")
-
 build_require("install")
 build_require("unpack")
 build_require("manifest")
 build_require("manifest-setup")
 build_require("tagging")
+build_require("upload")
 build_require("stdmain")
 
 -- This has to come after stdmain(),
