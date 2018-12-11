@@ -40,7 +40,7 @@
 \makeatother
 \newenvironment{buildcmd}[1]{%
   \bigskip\par\noindent\hspace{-\parindent}%
-  \fbox{\ttfamily \textcolor[gray]{0.5}{\$} texlua build.lua #1}%
+  \fbox{\ttfamily \textcolor[gray]{0.5}{\$} l3build #1}%
   \nopagebreak\smallskip\nopagebreak\par\nopagebreak\noindent\ignorespaces
  }
  {}
@@ -236,7 +236,10 @@
 %
 % The \pkg{l3build} system is a Lua script for building \TeX{} packages, with particular emphasis on regression testing.
 % It is written in cross-platform Lua code, so can be used by any modern \TeX{} distribution with the |texlua| interpreter.
-% A package for building with \pkg{l3build} can be written in any \TeX\ dialect; its defaults are set up for \LaTeX\ packages written in the DocStrip style. (Caveat: minimal testing has yet been performed for non-\LaTeX{} packages.)
+% Wrapper functions/binaries are distributed in the standard \TeX{} distributions so that the script can be called using
+% \texttt{l3build} on the command line; run without arguments it prints a brief synopsis of its usage.
+%
+% The \pkg{l3build} system is designed for packages written in any \TeX\ dialect; its defaults are set up for \LaTeX\ packages written in the DocStrip style. (Caveat: minimal testing has yet been performed for non-\LaTeX{} packages.)
 %
 % Test files are written as standalone \TeX{} documents using the |regression-test.tex| setup file; documentation on writing these tests is discussed in Section~\ref{sec:writing-tests}.
 %
@@ -301,31 +304,35 @@
 %
 % \subsection{Main build commands}
 %
-% In the working directory of a bundle or module, the following commands can be executed:
+% In the working directory of a bundle or module, \pkg{l3build} is run by executing
+% \begin{center}
+% \texttt{l3build \meta{command} [\meta{option(s)}]}
+% \end{center}
+% where \texttt{\meta{command}} can be one of the following:
 % \begin{itemize}[noitemsep]\ttfamily
 % \item check
 % \item check \meta{name(s)}
-% \item cmdcheck
 % \item clean
 % \item ctan
 % \item doc \meta{name(s)}
 % \item install
+% \item manifest
 % \item save \meta{name(s)}
 % \item tag
+% \item uninstall
 % \item unpack
+% \item upload
 % \end{itemize}
 % These commands are described below.
 %
 % As well as these commands, the system recognises the options
 % \begin{itemize}
-%   \item |--config| (|-c|) Configuration(s) to use for testing
-% \item |--date| Date to use when tagging
-%   data
+% \item |--config| (|-c|) Configuration(s) to use for testing
+% \item |--date| Date to use when tagging data
 % \item |--dirty| Skip cleaning up of the test area
 % \item |--dry-run| Runs the \texttt{install} target but does not copy
 %   any files: simply lists those that would be installed
-% \item |--engine| (|-e|) Sets the engine to use for
-%   testing
+% \item |--engine| (|-e|) Sets the engine to use for testing
 % \item |--epoch| Sets the epoch for typesetting and testing
 % \item |--first| Name of the first test to run
 % \item |--force| (|-f|) Force checks to run even if sanity
@@ -397,7 +404,7 @@
 %
 %
 % \begin{buildcmd}{ctan}
-% Creates an archive of the package and its documentation, suitable for uploading to CTAN
+% Creates an archive of the package and its documentation, suitable for uploading to CTAN.
 % The archive is compiled in \var{distribdir}, and if the results are successful the resultant |.zip| file is moved into the same directory as the build script.
 % If \var{packtdszip} is set true then  the building process includes a |.tds.zip| file containing the `\TeX\ Directory Structure' layout of the package or bundle.
 % The archive therefore may contain two `views' of the package:
@@ -520,11 +527,11 @@
 % \end{buildcmd}
 %
 % \begin{buildcmd}{tag}
-% Modifies the content of files specified by |tagfiles| to allow
-% automatic updating of the release tag and date. The tag is given as a
+% Modifies the contents of files specified by |tagfiles| using a search pattern
+% to automatically update the `release tag' (or package version) and date. The tag is given as a
 % command line option, whilst the optional date should be passed using
 % |--date| (|-d|); if not given, the date will default to the current date in
-% ISO format (YYYY-MM-DD). As detailed below, the standard set up has no search
+% ISO format (YYYY-MM-DD). As detailed in Section~\ref{sec:tagging}, the standard set up has no search
 % pattern defined for this target and so no action will be taken \emph{unless}
 % tag substitution is set up.
 % \end{buildcmd}
@@ -1158,6 +1165,7 @@
 % \section{Release-focussed features}
 %
 % \subsection{Automatic tagging}
+% \label{sec:tagging}
 %
 % As detailed above, the |tag| target will automatically edit
 % source files to modify date and release tag. As standard, no automatic
@@ -1838,7 +1846,7 @@
 \begingroup       % within the scope of this groups each line needs to end in % !
 \catcode`\^^M\active %
 \gdef\SHOWFILE#1{%
-     \typeout{-------- #1 (start) ---------}% 
+     \typeout{-------- #1 (start) ---------}%
 \IfFileExists{#1}%
   {\begingroup %
      \catcode`\^^M\active %
@@ -1849,7 +1857,7 @@
      \message{\@@input #1 }%
    \endgroup }%
   {\message{Not found}}%
-     \typeout{-------- #1 (end) -----------}% 
+     \typeout{-------- #1 (end) -----------}%
 }%
 \endgroup
 %    \end{macrocode}

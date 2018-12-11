@@ -58,7 +58,7 @@ function help()
   end
   print("usage: " .. scriptname .. " <command> [<options>] [<names>]")
   print("")
-  print("The most commonly used l3build commands are:")
+  print("Valid commands are:")
   local longest,t = setup_list(target_list)
   for _,k in ipairs(t) do
     local target = target_list[k]
