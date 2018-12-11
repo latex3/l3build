@@ -138,7 +138,7 @@ target_list =
         bundle_target = true,
         desc = "Unpacks the source files into the build tree",
         func = unpack
-      }
+      },
     upload =
       {
         desc = "Send archive to CTAN for public release",
