@@ -86,11 +86,6 @@ target_list =
         desc = "Create CTAN-ready archive",
         func = ctan
       },
-    upload =
-      {
-        desc = "Send archive to CTAN for public release",
-        func = upload
-      },
     doc =
       {
         desc = "Typesets all documentation files",
@@ -144,6 +139,11 @@ target_list =
         desc = "Unpacks the source files into the build tree",
         func = unpack
       }
+    upload =
+      {
+        desc = "Send archive to CTAN for public release",
+        func = upload
+      },
   }
 
 --
