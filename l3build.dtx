@@ -548,6 +548,46 @@
 % By default this process allows files to be accessed in all standard |texmf| trees; this can be disabled by setting \var{unpacksearch} to |false|.
 % \end{buildcmd}
 %
+% \begin{buildcmd}{upload}
+% This target uses \texttt{curl} to upload the package zip file (created using \texttt{ctan}) to CTAN.
+% To control the metadata used to upload the package, the \texttt{uploaddata} table should be populated with a number of fields.
+% Missing required fields will result in an interactive prompt for manual entry.
+% \end{buildcmd}
+%
+% \begin{table}
+%   \def\YES{\textbullet}
+%   \caption{Fields used in the \texttt{uploaddata} setup table. Most commands require string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.}
+%   \label{tab:manifest-setup}
+%   \begin{minipage}{\linewidth}
+%   \centering
+%   \begin{tabular}{lccp{8cm}}
+%     \toprule
+%     Field & Req. & Multi & Description \\
+%     \midrule
+%  \texttt{pkg         } & \YES &      & Package name                           \\
+%  \texttt{version     } & \YES &      & Package version                        \\
+%  \texttt{author      } & \YES &      & Author name                            \\
+%  \texttt{email       } & \YES &      & Email of uploader                      \\
+%  \texttt{uploader    } & \YES &      & Name of uploader                       \\
+%  \texttt{license     } & \YES & \YES & Package license(s)\footnote{See \url{https://ctan.org/license}} \\
+%  \texttt{summary     } & \YES &      & One-line summary of package            \\
+%  \midrule
+%  \texttt{description } &      &      & Short description of package           \\
+%  \texttt{topic       } &      & \YES & Topic(s)\footnote{See \url{https://ctan.org/topics/highscore}} \\
+%  \texttt{ctanPath    } &      &      & CTAN path                              \\
+%  \texttt{update      } &      &      & Boolean: True for an update, false for a new package   \\
+%  \texttt{announcement} &      &      & Announcement text                      \\
+%  \texttt{note        } &      &      & Internal note to CTAN                  \\
+%  \texttt{home        } &      &      & URL of home page                       \\
+%  \texttt{bugtracker  } &      &      & URL of bug tracker                     \\
+%  \texttt{support     } &      & \YES & URL(s) of support channels             \\
+%  \texttt{repository  } &      & \YES & URL(s) of source repositories          \\
+%  \texttt{development } &      & \YES & URL(s) of development channels         \\
+%     \bottomrule
+%   \end{tabular}
+%   \end{minipage}
+% \end{table}
+%
 % \subsection{The \texttt{build.lua} file}
 %
 % The \texttt{build.lua} file used to control \pkg{l3build} is a simple Lua file
