@@ -69,24 +69,24 @@ function upload()
 
   ctan_post = curlexe .. " "
 
-  --         field                                   max  desc                               mandatory  multi
-  --         -------------------------------------------------------------------------------------------------
+  --         field                                   max  desc                                 mandatory  multi
+  --         ----------------------------------------------------------------------------------------------------
   ctan_field("announcement", uploaddata.announcement, 8192, "Announcement",                        false, false )
   ctan_field("author",       uploaddata.author,        128, "Author name",                         true,  false )
-  ctan_field("bugtracker",   uploaddata.bugtracker,    255, "URL of bug tracker",                  false, false )
-  ctan_field("ctanPath",     uploaddata.ctanPath,      255, "CTAN path",                           false, false )
+  ctan_field("bugtracker",   uploaddata.bugtracker,    255, "URL(s) of bug tracker",               false, true  )
+  ctan_field("ctanPath",     uploaddata.ctanPath,      255, "CTAN path",                           true,  false )
   ctan_field("description",  uploaddata.description,  4096, "Short description of package",        false, false )
-  ctan_field("development",  uploaddata.development,   255, "URL of development channels",         false, true  )
+  ctan_field("development",  uploaddata.development,   255, "URL(s) of development channels",      false, true  )
   ctan_field("email",        uploaddata.email,         255, "Email of uploader",                   true,  false )
-  ctan_field("home",         uploaddata.home,          255, "URL of home page",                    false, false )
+  ctan_field("home",         uploaddata.home,          255, "URL(s) of home page",                 false, true  )
   ctan_field("license",      uploaddata.license,      2048, "Package license(s)",                  true,  true  )
   ctan_field("note",         uploaddata.note,         4096, "Internal note to ctan",               false, false )
   ctan_field("pkg",          uploaddata.pkg,            32, "Package name",                        true,  false )
-  ctan_field("repository",   uploaddata.repository,    255, "URL of source repositories",          false, true  )
+  ctan_field("repository",   uploaddata.repository,    255, "URL(s) of source repositories",       false, true  )
   ctan_field("summary",      uploaddata.summary,       128, "One-line summary of package",         true,  false )
-  ctan_field("support",      uploaddata.support,       255, "URL of support channels",             false, true  )
-  ctan_field("topic",        uploaddata.topic,        1024, "Topic(s); see https://ctan.org/topics/highscore", false, true  )
-  ctan_field("update",       uploaddata.update,          8, "True for an update, false for a new package", false, false )
+  ctan_field("support",      uploaddata.support,       255, "URL(s) of support channels",          false, true  )
+  ctan_field("topic",        uploaddata.topic,        1024, "Topic(s)",                            false, true  )
+  ctan_field("update",       uploaddata.update,          8, "Boolean: true=update, false=new pkg", false, false )
   ctan_field("uploader",     uploaddata.uploader,      255, "Name of uploader",                    true,  false )
   ctan_field("version",      uploaddata.version,        32, "Package version",                     true,  false )
 

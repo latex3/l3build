@@ -119,7 +119,7 @@
 \luavarset{biberexe}     {"biber"}    {Biber executable}
 \luavarset{bibtexexe}    {"bibtex8"}  {\BibTeX{} executable}
 \luavarset{makeindexexe} {"makeindex"}{MakeIndex executable}
-\luavarset{curlexe} {"curl"}{Curl executable}
+\luavarset{curlexe} {"curl"}{Curl executable for \texttt{upload}}
 \luavarseparator
 \luavarset{checkopts}  {"-interaction=nonstopmode"}{Options based to engine when running checks}
 \luavarset{typesetopts}{"-interaction=nonstopmode"}{Options based to engine when typesetting}
@@ -563,30 +563,29 @@
 %   \caption{Fields used in the \texttt{uploaddata} setup table. The first section of fields are \emph{required} and if they are omitted the user will be interactively prompted for further input. Most commands take string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.}
 %   \label{tab:upload-setup}
 %   \begin{minipage}{\linewidth}
-%   \centering
-%   \begin{tabular}{lccp{8cm}}
+%   \begin{tabular}{@{}lccp{8cm}@{}}
 %     \toprule
 %     Field & Req. & Multi & Description \\
 %     \midrule
-%  \texttt{pkg         } & \YES &      & Package name                           \\
-%  \texttt{version     } & \YES &      & Package version                        \\
-%  \texttt{author      } & \YES &      & Author name                            \\
-%  \texttt{email       } & \YES &      & Email of uploader                      \\
-%  \texttt{uploader    } & \YES &      & Name of uploader                       \\
+%  \texttt{author      } & \YES &      & Author name (semicolon-separated for multiple) \\
+%  \texttt{ctanPath    } & \YES &      & CTAN path                              \\
+%  \texttt{email       } & \YES &      & Email address of uploader              \\
 %  \texttt{license     } & \YES & \YES & Package license(s)\footnote{See \url{https://ctan.org/license}} \\
-%  \texttt{summary     } & \YES &      & One-line summary of package            \\
+%  \texttt{pkg         } & \YES &      & Package name                           \\
+%  \texttt{summary     } & \YES &      & One-line summary                       \\
+%  \texttt{uploader    } & \YES &      & Name of uploader                       \\
+%  \texttt{version     } & \YES &      & Package version                        \\
 %  \midrule
-%  \texttt{description } &      &      & Short description of package           \\
-%  \texttt{topic       } &      & \YES & Topic(s)\footnote{See \url{https://ctan.org/topics/highscore}} \\
-%  \texttt{ctanPath    } &      &      & CTAN path                              \\
-%  \texttt{update      } &      &      & Boolean: True for an update, false for a new package   \\
 %  \texttt{announcement} &      &      & Announcement text                      \\
-%  \texttt{note        } &      &      & Internal note to CTAN                  \\
-%  \texttt{home        } &      &      & URL of home page                       \\
-%  \texttt{bugtracker  } &      &      & URL of bug tracker                     \\
-%  \texttt{support     } &      & \YES & URL(s) of support channels             \\
-%  \texttt{repository  } &      & \YES & URL(s) of source repositories          \\
+%  \texttt{bugtracker  } &      & \YES & URL(s) of bug tracker                  \\
+%  \texttt{description } &      &      & Short description/abstract             \\
 %  \texttt{development } &      & \YES & URL(s) of development channels         \\
+%  \texttt{home        } &      & \YES & URL(s) of home page                       \\
+%  \texttt{note        } &      &      & Internal note to CTAN                  \\
+%  \texttt{repository  } &      & \YES & URL(s) of source repositories          \\
+%  \texttt{support     } &      & \YES & URL(s) of support channels             \\
+%  \texttt{topic       } &      & \YES & Topic(s)\footnote{See \url{https://ctan.org/topics/highscore}} \\
+%  \texttt{update      } &      &      & Boolean \texttt{true} for an update, \texttt{false} for a new package   \\
 %     \bottomrule
 %   \end{tabular}
 %   \end{minipage}
