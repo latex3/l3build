@@ -96,20 +96,9 @@
 \luavarset{typesetdemofiles}  {\{\}}{Files to typeset before the documentation for inclusion in main documentation files}
 \luavarset{typesetfiles}      {\{"*.dtx"\}}{Files to typeset for documentation}
 \luavarset{typesetsuppfiles}  {\{\}}{Files needed to support typesetting when \enquote{sandboxed}}
-\luavarset{typesetsourcefiles}{\{\}}{Files to copy to unpacking when typesetting.}
-\luavarset{unpackfiles}       {\{"*.ins"\}}{Files to run to perform unpacking.}
+\luavarset{typesetsourcefiles}{\{\}}{Files to copy to unpacking when typesetting}
+\luavarset{unpackfiles}       {\{"*.ins"\}}{Files to run to perform unpacking}
 \luavarset{unpacksuppfiles}   {\{\}}{Files needed to support unpacking when \enquote{sandboxed}}
-\luavarseparator
-\luavarset{bakext}{".bak"}{Extension of backup files}
-\luavarset{dviext}{".dvi"}{Extension of DVI files}
-\luavarset{lvtext}{".lvt"}{Extension of log-based test files}
-\luavarset{tlgext}{".tlg"}{Extension of test file output}
-\luavarset{tpfext}{".tpf"}{Extension of PDF-based test output}
-\luavarset{lveext}{".lve"}{Extension of auto-generating test file output}
-\luavarset{logext}{".log"}{Extension of checking output, before processing it into a \texttt{.tlg}}
-\luavarset{pvtext}{".pvt"}{Extension of PDF-based test files}
-\luavarset{pdfext}{".pdf"}{Extension of PDF file for checking and saving}
-\luavarset{psext} {".ps"} {Extension of PostScript files}
 \luavarseparator
 \luavarset{includetests}{\{"*"\}}{Test names to include when checking}
 \luavarset{excludetests}{\{\}}   {Test names to exclude when checking}
@@ -127,11 +116,18 @@
 \luavarset{typesetexe}{"pdflatex"}{Executable for compiling \texttt{doc(s)}}
 \luavarset{unpackexe} {"tex"}     {Executable for running \texttt{unpack}}
 \luavarset{zipexe}    {"zip"}     {Executable for creating archive with \texttt{ctan}}
+\luavarset{biberexe}     {"biber"}    {Biber executable}
+\luavarset{bibtexexe}    {"bibtex8"}  {\BibTeX{} executable}
+\luavarset{makeindexexe} {"makeindex"}{MakeIndex executable}
+\luavarset{curlexe} {"curl"}{Curl executable}
 \luavarseparator
-\luavarset{checkopts}  {"-interaction=nonstopmode"}{Options based to engine when running checks.}
-\luavarset{typesetopts}{"-interaction=nonstopmode"}{Options based to engine when typesetting.}
-\luavarset{unpackopts} {""}                        {Options based to engine when unpacking.}
-\luavarset{zipopts}    {"-v -r -X"}                {Options based to zip program.}
+\luavarset{checkopts}  {"-interaction=nonstopmode"}{Options based to engine when running checks}
+\luavarset{typesetopts}{"-interaction=nonstopmode"}{Options based to engine when typesetting}
+\luavarset{unpackopts} {""}                        {Options based to engine when unpacking}
+\luavarset{zipopts}    {"-v -r -X"}                {Options based to zip program}
+\luavarset{biberopts}    {""}         {Biber options}
+\luavarset{bibtexopts}   {"-W"}       {\BibTeX{} options}
+\luavarset{makeindexopts}{""}         {MakeIndex options}
 \luavarseparator
 \luavarset{checksearch}  {true}{Switch to search the system \texttt{texmf} for during checking}
 \luavarset{typesetsearch}{true}{Switch to search the system \texttt{texmf} for during typesetting}
@@ -140,17 +136,10 @@
 \luavarset{glossarystyle}{"gglo.ist"}{MakeIndex style file for glossary/changes creation}
 \luavarset{indexstyle}   {"gind.ist"}{MakeIndex style for index creation}
 \luavarseparator
-\luavarset{biberexe}     {"biber"}    {Biber executable}
-\luavarset{biberopts}    {""}         {Biber options}
-\luavarset{bibtexexe}    {"bibtex8"}  {\BibTeX{} executable}
-\luavarset{bibtexopts}   {"-W"}       {\BibTeX{} options}
-\luavarset{makeindexexe} {"makeindex"}{MakeIndex executable}
-\luavarset{makeindexopts}{""}         {MakeIndex options}
-\luavarseparator
 \luavarset{forcecheckepoch}{"true"}    {Force epoch when running tests}
 \luavarset{forcedocepoch}  {"false"}   {Force epoch when typesetting}
 \luavarseparator
-\luavarset{asciiengines}{\{"pdftex"\}}{Engines which should log as sure ASCII}
+\luavarset{asciiengines}{\{"pdftex"\}}{Engines which should log as pure ASCII}
 \luavarset{checkruns}   {1}           {Number of runs to complete for a test before comparing the log}
 \luavarset{ctanreadme}{"README.md"}   {Name of the file to send to CTAN as \texttt{README.\meta{ext}}}
 \luavarset{ctanzip}{ctanpkg ... "-ctan"}{Name of the zip file created for upload to CTAN}
@@ -158,10 +147,24 @@
 \luavarset{flatten}     {true}        {Switch to flatten any source structure when sending to CTAN}
 \luavarset{maxprintline}{79}          {Length of line to use in log files}
 \luavarset{packtdszip}  {false}       {Switch to build a TDS-style zip file for CTAN}
-\luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting.}
-\luavarset{typesetruns}{3}            {Number of cycles of typesetting to carry out.}
+\luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting}
+\luavarset{typesetruns}{3}            {Number of cycles of typesetting to carry out}
 \luavarset{recordstatus}{false}       {Switch to include error level from test runs in \texttt{.tlg} files}
-\luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file.}
+\luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file}
+\luavarseparator
+\luavarset{uploaddata}        {\meta{table}} {Metadata to describe the package for CTAN (see Table~\ref{tab:upload-setup})}
+\luavarset{uploaddata.pkg}{ctanpkg}{Name of the CTAN package}
+\luavarseparator
+\luavarset{bakext}{".bak"}{Extension of backup files}
+\luavarset{dviext}{".dvi"}{Extension of DVI files}
+\luavarset{lvtext}{".lvt"}{Extension of log-based test files}
+\luavarset{tlgext}{".tlg"}{Extension of test file output}
+\luavarset{tpfext}{".tpf"}{Extension of PDF-based test output}
+\luavarset{lveext}{".lve"}{Extension of auto-generating test file output}
+\luavarset{logext}{".log"}{Extension of checking output, before processing it into a \texttt{.tlg}}
+\luavarset{pvtext}{".pvt"}{Extension of PDF-based test files}
+\luavarset{pdfext}{".pdf"}{Extension of PDF file for checking and saving}
+\luavarset{psext} {".ps"} {Extension of PostScript files}
 }
 \allluavars
 
@@ -551,13 +554,14 @@
 % \begin{buildcmd}{upload}
 % This target uses \texttt{curl} to upload the package zip file (created using \texttt{ctan}) to CTAN.
 % To control the metadata used to upload the package, the \texttt{uploaddata} table should be populated with a number of fields.
+% These are documented in Table~\ref{tab:upload-setup}.
 % Missing required fields will result in an interactive prompt for manual entry.
 % \end{buildcmd}
 %
 % \begin{table}
 %   \def\YES{\textbullet}
-%   \caption{Fields used in the \texttt{uploaddata} setup table. Most commands require string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.}
-%   \label{tab:manifest-setup}
+%   \caption{Fields used in the \texttt{uploaddata} setup table. The first section of fields are \emph{required} and if they are omitted the user will be interactively prompted for further input. Most commands take string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.}
+%   \label{tab:upload-setup}
 %   \begin{minipage}{\linewidth}
 %   \centering
 %   \begin{tabular}{lccp{8cm}}
@@ -653,7 +657,7 @@
 % \label{fig:module}
 % \end{figure}
 %
-% \subsection{Backward compatibly}
+% \subsection{Backwards compatability}
 %
 % Earlier releases of \pkg{l3build} required that the last line of
 % \texttt{build.lua} ran the main script, \emph{i.e.}~ that \texttt{build.lua}
@@ -673,11 +677,13 @@
 %
 % Note that in time support for loading \pkg{l3build} by calling the
 % \texttt{build.lua} script \emph{may} be removed: the recommended approach for
-% new scripts is to run \pkg{l3build}.
+% new scripts is to run \texttt{l3build}.
 %
 % \subsection{Variables}
 %
 % This section lists all variables defined in the |l3build.lua| script that are available for customisation.
+%
+% \luavartypeset
 %
 % \subsection{Interaction between tests}
 %
@@ -687,8 +693,6 @@
 % |filecontents| environment in \LaTeX{}. Typically, you should set up your
 % tests such that they do not use the same names for such files: this may lead
 % to variable outcomes depending on the order in which tests are run.
-%
-% \luavartypeset
 %
 % \subsection{Selective running of tests}
 %

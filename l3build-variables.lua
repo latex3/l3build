@@ -187,6 +187,6 @@ tpfext = tpfext or ".tpf"
 manifestfile = manifestfile or "MANIFEST.md"
 
 -- Upload settings
-uploadexe  = uploadexe  or "curl"
+curlexe  = curlexe  or "curl"
 uploaddata = uploaddata or {}
 

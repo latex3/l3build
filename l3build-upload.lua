@@ -50,11 +50,13 @@ for those people who are interested.
 
 
 local curl_debug = curl_debug or false -- to disable posting
+-- For now, this is undocumented.
 
 local ctanupload = ctanupload or "ask"
 -- if ctanupload is nil or false, only validation is attempted
 -- if ctanupload is true the ctan upload URL will be used after validation
 -- if upload is anything else, the user will be prompted whether to upload.
+-- For now, this is undocumented. I think I would prefer to keep it always set to ask for the time being.
 
 function upload()
 
@@ -63,35 +65,30 @@ function upload()
   if bundle == "" then
     bundle = nil
   end
-  uploaddata.pkg = uploaddata.pkg or bundle or module or nil
+  uploaddata.pkg = uploaddata.pkg or ctanpkg or nil
 
-  ctan_post = uploadexe .. " "
+  ctan_post = curlexe .. " "
 
   --         field                                   max  desc                               mandatory  multi
   --         -------------------------------------------------------------------------------------------------
-  ctan_field("pkg",          uploaddata.pkg,            32, "Package name",                        true,  false )
-  ctan_field("version",      uploaddata.version,        32, "Package version",                     true,  false )
-  ctan_field("author",       uploaddata.author,        128, "Author name",                         true,  false )
-  ctan_field("email",        uploaddata.email,         255, "Email of uploader",                   true,  false )
-  ctan_field("uploader",     uploaddata.uploader,      255, "Name of uploader",                    true,  false )
-  ctan_field("ctanPath",     uploaddata.ctanPath,      255, "CTAN path",                           false, false )
-  ctan_field("license",      uploaddata.license,      2048, "Package license(s)",                  true,  true )
-  ctan_field("home",         uploaddata.home,          255, "URL of home page",                    false, false )
-  ctan_field("bugtracker",   uploaddata.bugtracker,    255, "URL of bug tracker",                  false, false )
-  ctan_field("support",      uploaddata.support,       255, "URL of support channels",             false, true  )
-  ctan_field("repository",   uploaddata.repository,    255, "URL of source repositories",          false, true  )
-  ctan_field("development",  uploaddata.development,   255, "URL of development channels",         false, true  )
-  ctan_field("update",       uploaddata.update,          8, "True for an update, false for a new package", false, false )
-  ctan_field("topic",        uploaddata.topic,        1024, "Topic(s); see https://ctan.org/topics/highscore", false, true  )
   ctan_field("announcement", uploaddata.announcement, 8192, "Announcement",                        false, false )
-  ctan_field("summary",      uploaddata.summary,       128, "One-line summary of package",         true,  false ) -- ctan-o-mat doc says optional
+  ctan_field("author",       uploaddata.author,        128, "Author name",                         true,  false )
+  ctan_field("bugtracker",   uploaddata.bugtracker,    255, "URL of bug tracker",                  false, false )
+  ctan_field("ctanPath",     uploaddata.ctanPath,      255, "CTAN path",                           false, false )
   ctan_field("description",  uploaddata.description,  4096, "Short description of package",        false, false )
+  ctan_field("development",  uploaddata.development,   255, "URL of development channels",         false, true  )
+  ctan_field("email",        uploaddata.email,         255, "Email of uploader",                   true,  false )
+  ctan_field("home",         uploaddata.home,          255, "URL of home page",                    false, false )
+  ctan_field("license",      uploaddata.license,      2048, "Package license(s)",                  true,  true  )
   ctan_field("note",         uploaddata.note,         4096, "Internal note to ctan",               false, false )
-
-  --[[
-       Q: What about an explicit copyright string? CTAN packages have them
-          listed. TODO: check these are all the fields.
-  --]]
+  ctan_field("pkg",          uploaddata.pkg,            32, "Package name",                        true,  false )
+  ctan_field("repository",   uploaddata.repository,    255, "URL of source repositories",          false, true  )
+  ctan_field("summary",      uploaddata.summary,       128, "One-line summary of package",         true,  false )
+  ctan_field("support",      uploaddata.support,       255, "URL of support channels",             false, true  )
+  ctan_field("topic",        uploaddata.topic,        1024, "Topic(s); see https://ctan.org/topics/highscore", false, true  )
+  ctan_field("update",       uploaddata.update,          8, "True for an update, false for a new package", false, false )
+  ctan_field("uploader",     uploaddata.uploader,      255, "Name of uploader",                    true,  false )
+  ctan_field("version",      uploaddata.version,        32, "Package version",                     true,  false )
 
   -- construct the curl command
   ctan_post = ctan_post .. " --form 'file=@" .. tostring(ctan_file) .. ";filename=" .. tostring(ctan_file) .. "'"
