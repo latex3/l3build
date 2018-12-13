@@ -1212,17 +1212,19 @@
 %
 % As detailed above, the |tag| target will automatically edit
 % source files to modify date and release tag. As standard, no automatic
-% replacement takes place, but setting up a |updae_tag()| function
-% will allow this to happen. This takes four arguments:
-% \begin{itemize}
+% replacement takes place, but setting up a |update_tag()| function
+% will allow this to happen. This function takes four input arguments:
+% \begin{enumerate}[nosep]
 %   \item The file name
 %   \item The full content of the file
 %   \item The tag name
 %   \item The tag date
-% \end{itemize}
-% and should return the (modified) contents for writing to disk.
+% \end{enumerate}
+% The |update_tag()| function should return the (modified) contents
+% for writing to disk.
 % For example, the function used by |l3build| itself is
 % shown in Figure~\ref{fig:update-tag}.
+%
 % \begin{figure}
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
 %     -- Detail how to set the version automatically
@@ -1664,7 +1666,7 @@
 %
 % Within a single group in the manifest listing, files can be matched against multiple variables.
 % For example, for |sourcefiles={*.dtx,*.ins}| the following (unsorted) file listing might result:
-% \begin{itemize}
+% \begin{itemize}[nosep]
 % \item foo.dtx
 % \item bar.dtx
 % \item foo.ins
