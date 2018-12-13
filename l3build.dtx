@@ -1145,10 +1145,15 @@
 %   \item Removal of blank lines
 % \end{itemize}
 %
+% After this normalization takes place, the file can not usually be rendered
+% properly. To check if the build system has produced a correct PDF, the
+% pre-normalization PDF can be found in the \texttt{build} folder.
+%
 % To allow platform-independence, PDF-based tests must use only Type~1 or
 % OpenType fonts: Type3 fonts are system-dependent. PDF files are
 % engine-specific, thus one |.tpf| file should be stored per engine to be
 % tested.
+%
 %
 % \section{Release-focussed features}
 %
