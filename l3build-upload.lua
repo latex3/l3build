@@ -121,7 +121,7 @@ function upload()
   -- if upload requested and validation succeeded repost to the upload URL
   if (exit_status==0 or exit_status==nil) then
     if (ctanupload ~=nil and ctanupload ~=false and ctanupload ~= true) then
-      print("Validation successful, do you want to upload to CTAN?" )
+      print("Validation successful, do you want to upload to CTAN? [y/n]" )
       local answer=""
       io.write("> ")
       io.flush()
