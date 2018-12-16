@@ -535,9 +535,11 @@
 % to automatically update the `release tag' (or package version) and date. The tag is given as a
 % command line option, whilst the optional date should be passed using
 % |--date| (|-d|); if not given, the date will default to the current date in
-% ISO format (YYYY-MM-DD). As detailed in Section~\ref{sec:tagging}, the standard set up has no search
+% ISO format (YYYY-MM-DD). The standard set up has no search
 % pattern defined for this target and so no action will be taken \emph{unless}
 % tag substitution is set up.
+%
+% See Section~\ref{sec:tagging} for full details on this feature.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{unpack}
@@ -557,40 +559,9 @@
 % To control the metadata used to upload the package, the \texttt{uploaddata} table should be populated with a number of fields.
 % These are documented in Table~\ref{tab:upload-setup}.
 % Missing required fields will result in an interactive prompt for manual entry.
-% \end{buildcmd}
 %
-% \begin{table}
-%   \def\YES{\textbullet}
-%   \caption{Fields used in the \texttt{uploaddata} setup table. The first section of fields are \emph{required} and if they are omitted the user will be interactively prompted for further input. Most commands take string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.}
-%   \label{tab:upload-setup}
-%   \begin{minipage}{\linewidth}
-%   \begin{tabular}{@{}lccp{8cm}@{}}
-%     \toprule
-%     Field & Req. & Multi & Description \\
-%     \midrule
-%  \texttt{author      } & \YES &      & Author name (semicolon-separated for multiple) \\
-%  \texttt{ctanPath    } & \YES &      & CTAN path                              \\
-%  \texttt{email       } & \YES &      & Email address of uploader              \\
-%  \texttt{license     } & \YES & \YES & Package license(s)\footnote{See \url{https://ctan.org/license}} \\
-%  \texttt{pkg         } & \YES &      & Package name                           \\
-%  \texttt{summary     } & \YES &      & One-line summary                       \\
-%  \texttt{uploader    } & \YES &      & Name of uploader                       \\
-%  \texttt{version     } & \YES &      & Package version                        \\
-%  \midrule
-%  \texttt{announcement} &      &      & Announcement text                      \\
-%  \texttt{bugtracker  } &      & \YES & URL(s) of bug tracker                  \\
-%  \texttt{description } &      &      & Short description/abstract             \\
-%  \texttt{development } &      & \YES & URL(s) of development channels         \\
-%  \texttt{home        } &      & \YES & URL(s) of home page                       \\
-%  \texttt{note        } &      &      & Internal note to CTAN                  \\
-%  \texttt{repository  } &      & \YES & URL(s) of source repositories          \\
-%  \texttt{support     } &      & \YES & URL(s) of support channels             \\
-%  \texttt{topic       } &      & \YES & Topic(s)\footnote{See \url{https://ctan.org/topics/highscore}} \\
-%  \texttt{update      } &      &      & Boolean \texttt{true} for an update, \texttt{false} for a new package   \\
-%     \bottomrule
-%   \end{tabular}
-%   \end{minipage}
-% \end{table}
+% See Section~\ref{sec:upload} for full details on this feature.
+% \end{buildcmd}
 %
 % \subsection{The \texttt{build.lua} file}
 %
@@ -1206,7 +1177,7 @@
 % \subsection{Automatic tagging}
 % \label{sec:tagging}
 %
-% As detailed above, the |tag| target will automatically edit
+% The |tag| target can automatically edit
 % source files to modify date and release tag. As standard, no automatic
 % replacement takes place, but setting up a |update_tag()| function
 % will allow this to happen. This function takes four input arguments:
@@ -1308,6 +1279,72 @@
 %   \end{lstlisting}
 %   \caption{A customised PDF creation script.}
 %   \label{fig:PDF}
+% \end{figure}
+%
+%
+% \subsection{Automated upload to CTAN}
+% \label{sec:upload}
+%
+% The CTAN upload process is backed by an API, which \pkg{l3build} can use
+% to send zip files for release. Along with the file, a variety of metadata
+% must be specified about the package, including the version, license, and so on.
+% A description of this metadata is outlined in Table~\ref{tab:upload-setup},
+% and a simple example of an extract from a \texttt{build.lua} file using this is shown
+% in Figure~\ref{fig:uploaddata}.
+% Note that the \texttt{upload} target will \emph{not} execute the \texttt{ctan} target first.
+%
+%
+% \begin{table}[p]
+%   \def\YES{\textbullet}
+%   \caption{Fields used in the \texttt{uploaddata} setup table. The first section of fields are \emph{required} and if they are omitted the user will be interactively prompted for further input. Most commands take string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.}
+%   \label{tab:upload-setup}
+%   \begin{minipage}{\linewidth}
+%   \begin{tabular}{@{}lccp{8cm}@{}}
+%     \toprule
+%     Field & Req. & Multi & Description \\
+%     \midrule
+%  \texttt{author      } & \YES &      & Author name (semicolon-separated for multiple) \\
+%  \texttt{ctanPath    } & \YES &      & CTAN path                              \\
+%  \texttt{email       } & \YES &      & Email address of uploader              \\
+%  \texttt{license     } & \YES & \YES & Package license(s)\footnote{See \url{https://ctan.org/license}} \\
+%  \texttt{pkg         } & \YES &      & Package name                           \\
+%  \texttt{summary     } & \YES &      & One-line summary                       \\
+%  \texttt{uploader    } & \YES &      & Name of uploader                       \\
+%  \texttt{version     } & \YES &      & Package version                        \\
+%  \midrule
+%  \texttt{announcement} &      &      & Announcement text                      \\
+%  \texttt{bugtracker  } &      & \YES & URL(s) of bug tracker                  \\
+%  \texttt{description } &      &      & Short description/abstract             \\
+%  \texttt{development } &      & \YES & URL(s) of development channels         \\
+%  \texttt{home        } &      & \YES & URL(s) of home page                       \\
+%  \texttt{note        } &      &      & Internal note to CTAN                  \\
+%  \texttt{repository  } &      & \YES & URL(s) of source repositories          \\
+%  \texttt{support     } &      & \YES & URL(s) of support channels             \\
+%  \texttt{topic       } &      & \YES & Topic(s)\footnote{See \url{https://ctan.org/topics/highscore}} \\
+%  \texttt{update      } &      &      & Boolean \texttt{true} for an update, \texttt{false} for a new package   \\
+%     \bottomrule
+%   \end{tabular}
+%   \end{minipage}
+% \end{table}
+%
+%
+% \begin{figure}[p]
+%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
+%     uploaddata = {
+%       pkg         = "vertbars",
+%       version     = "v1.0c",
+%       author      = "Peter R Wilson; Will Robertson",
+%       license     = "lppl1.3c",
+%       summary     = "Mark vertical rules in margin of text",
+%       ctanPath    = "/macros/latex/contrib/vertbars",
+%       repository  = "https://github.com/wspr/herries-press/",
+%       uploader    = "Will Robertson",
+%       email       = [...],
+%       update      = true,
+%     }
+%   \end{lstlisting}
+%   \caption{Example of \texttt{uploaddata} from the \pkg{vertbars} package.}
+%   \label{fig:uploaddata}
 % \end{figure}
 %
 % \section{Lua interfaces}
