@@ -61,10 +61,6 @@ local ctanupload = ctanupload or "ask"
 function upload()
 
   -- try a sensible default for the package name:
-  local bundle = bundle or ""
-  if bundle == "" then
-    bundle = nil
-  end
   uploaddata.pkg = uploaddata.pkg or ctanpkg or nil
 
   --         field                                   max  desc                                 mandatory  multi
