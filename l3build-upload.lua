@@ -67,8 +67,6 @@ function upload()
   end
   uploaddata.pkg = uploaddata.pkg or ctanpkg or nil
 
-  ctan_post = curlexe .. " "
-
   --         field                                   max  desc                                 mandatory  multi
   --         ----------------------------------------------------------------------------------------------------
   ctan_field("announcement", uploaddata.announcement, 8192, "Announcement",                        false, false )
@@ -91,15 +89,16 @@ function upload()
   ctan_field("version",      uploaddata.version,        32, "Package version",                     true,  false )
 
   -- construct the curl command
-  ctan_post = ctan_post .. " --form 'file=@" .. tostring(ctan_file) .. ";filename=" .. tostring(ctan_file) .. "'"
+  ctan_post = curlexe .. " "
+  ctan_post = ctan_post .. " --form 'file=@" .. tostring(uploadfile) .. ";filename=" .. tostring(uploadfile) .. "'"
   ctan_post = ctan_post ..  " https://ctan.org/submit/"
 
   -- avoid lower level error from post command if zip file missing
-  local zip=io.open(trim_space(tostring(ctan_file)),"r")
+  local zip=io.open(trim_space(tostring(uploadfile)),"r")
   if zip~=nil then
     io.close(zip)
   else
-    error("Missing zip file " .. tostring(ctan_file))
+    error("Missing zip file " .. tostring(uploadfile))
   end
 
   -- call post command to validate the upload at CTAN's validate URL
