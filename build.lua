@@ -93,7 +93,7 @@ a note
 just to myself
 ]]
 
-ctan_file="l3build.zip"
+uploadfile="l3build.zip"
 
 ctanupload="ask"
 
