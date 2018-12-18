@@ -18,7 +18,25 @@ scriptmanfiles = {"l3build.1"}
 sourcefiles  = {"*.dtx", "l3build*.lua", "*.ins"}
 typesetcmds  = "\\AtBeginDocument{\\DisableImplementation}"
 unpackdeps   = { }
-tagfiles     = {"l3build.1", "l3build.dtx", "*.md", "l3build.lua"}
+tagfiles     = {"l3build.1", "l3build.dtx", "*.md", "l3build.lua", "build.lua"}
+
+uploadconfig = {
+  version     = "2018-12-17",
+  author      = "The LaTeX Team",
+  license     = "lppl1.3c",
+  summary     = "A testing and building system for (La)TeX",
+  topics      = {"Macro support", "Package development"},
+  ctanPath    = "/macros/latex/contrib/l3build",
+  repository  = "https://github.com/latex3/l3build/",
+  bugtracker  = "https://github.com/latex3/l3build/issues",
+  description = [[
+The build system supports testing and building (La)TeX code, on
+Linux, macOS, and Windows systems. The package offers:
+* A unit testing system for (La)TeX code;
+* A system for typesetting package documentation; and
+* An automated process for creating CTAN releases.
+  ]]
+}
 
 -- Detail how to set the version automatically
 function update_tag(file,content,tagname,tagdate)
@@ -47,6 +65,11 @@ function update_tag(file,content,tagname,tagdate)
     return string.gsub(content,
       "\nRelease " .. iso .. "\n",
       "\nRelease " .. tagname .. "\n")
+  elseif string.match(file, "build.lua$") then
+    return string.gsub(content,
+      '\n  version     = "' .. iso .. '",\n',
+      '\n  version     = "' .. tagdate .. '",\n',
+      )
   elseif string.match(file, "%.lua$") then
     return string.gsub(content,
       '\nrelease_date = "' .. iso .. '"\n',
@@ -59,42 +82,6 @@ function tag_hook(tagname)
   os.execute('git commit -a -m "Step release tag"')
   os.execute('git tag -a -m "" ' .. tagname)
 end
-
-
--- ctan upload settings
-ctan_pkg="l3build"
-ctan_version=[[2018/05/20]]
-ctan_author=[[latex3 project]]
-
-
--- ctan_email='me@example.com'
-
--- some people may not want to reveal email in checked in files
--- email (or other fields) may be set by suitable function, eg
-local handle = io.popen('git config user.email')
-ctan_email = string.gsub(handle:read("*a"),'%s*$','')
-handle:close()
-
-
-ctan_uploader=[[me]]
-ctan_ctanPath=[[]]
-ctan_license="lppl"
-
--- ctan_sumary  is mandatory: not setting it will trigger interaction
-
-ctan_announcement='ask'  -- this is optional: setting it to "ask" forces interaction
-
-ctan_update=true
-
-ctan_note=[[
-this
-is
-a note
-just to myself
-]]
-
-
--- end of ctan upload settings
 
 if not release_date then
   dofile("./l3build.lua")
