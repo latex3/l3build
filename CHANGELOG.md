@@ -7,6 +7,13 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2018-12-18]
+
+### Changed
+
+- Add new `upload` target which uses `curl` with the CTAN API to send a package
+  for release (see #1)
+
 ## [2018-11-08]
 
 ### Changed
