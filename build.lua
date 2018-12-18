@@ -63,16 +63,15 @@ function update_tag(file,content,tagname,tagdate)
           .. "..." .. tagname)
     end
     return string.gsub(content,
-      "\nRelease " .. iso .. "\n",
+      "\nRelease " .. iso     .. "\n",
       "\nRelease " .. tagname .. "\n")
   elseif string.match(file, "build.lua$") then
     return string.gsub(content,
-      '\n  version     = "' .. iso .. '",\n',
-      '\n  version     = "' .. tagdate .. '",\n',
-      )
+      '\n  version     = "' .. iso     .. '",\n',
+      '\n  version     = "' .. tagdate .. '",\n')
   elseif string.match(file, "%.lua$") then
     return string.gsub(content,
-      '\nrelease_date = "' .. iso .. '"\n',
+      '\nrelease_date = "' .. iso     .. '"\n',
       '\nrelease_date = "' .. tagname .. '"\n')
   end
   return content
