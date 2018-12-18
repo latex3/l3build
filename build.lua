@@ -21,7 +21,7 @@ unpackdeps   = { }
 tagfiles     = {"l3build.1", "l3build.dtx", "*.md", "l3build.lua", "build.lua"}
 
 uploadconfig = {
-  version     = "2018-12-17",
+  version     = "2018-12-18",
   author      = "The LaTeX Team",
   license     = "lppl1.3c",
   summary     = "A testing and building system for (La)TeX",

@@ -1,7 +1,7 @@
 l3build: a testing and building system for LaTeX3
 =================================================
 
-Release 2018-11-08
+Release 2018-12-18
 
 Overview
 --------
