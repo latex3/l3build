@@ -25,10 +25,11 @@ uploadconfig = {
   author      = "The LaTeX Team",
   license     = "lppl1.3c",
   summary     = "A testing and building system for (La)TeX",
-  topics      = {"Macro support", "Package development"},
+  topic       = {"macro-supp", "package-devel"},
   ctanPath    = "/macros/latex/contrib/l3build",
   repository  = "https://github.com/latex3/l3build/",
   bugtracker  = "https://github.com/latex3/l3build/issues",
+  update      = true,
   description = [[
 The build system supports testing and building (La)TeX code, on
 Linux, macOS, and Windows systems. The package offers:
