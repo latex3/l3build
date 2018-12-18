@@ -152,8 +152,8 @@
 \luavarset{recordstatus}{false}       {Switch to include error level from test runs in \texttt{.tlg} files}
 \luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file}
 \luavarseparator
-\luavarset{uploaddata}        {\meta{table}} {Metadata to describe the package for CTAN (see Table~\ref{tab:upload-setup})}
-\luavarset{uploaddata.pkg}{ctanpkg}{Name of the CTAN package}
+\luavarset{uploadconfig}        {\meta{table}} {Metadata to describe the package for CTAN (see Table~\ref{tab:upload-setup})}
+\luavarset{uploadconfig.pkg}{ctanpkg}{Name of the CTAN package}
 \luavarseparator
 \luavarset{bakext}{".bak"}{Extension of backup files}
 \luavarset{dviext}{".dvi"}{Extension of DVI files}
@@ -555,7 +555,7 @@
 %
 % \begin{buildcmd}{upload}
 % This target uses \texttt{curl} to upload the package zip file (created using \texttt{ctan}) to CTAN.
-% To control the metadata used to upload the package, the \texttt{uploaddata} table should be populated with a number of fields.
+% To control the metadata used to upload the package, the \texttt{uploadconfig} table should be populated with a number of fields.
 % These are documented in Table~\ref{tab:upload-setup}.
 % Missing required fields will result in an interactive prompt for manual entry.
 %
@@ -1294,13 +1294,13 @@
 % must be specified about the package, including the version, license, and so on.
 % A description of this metadata is outlined in Table~\ref{tab:upload-setup},
 % and a simple example of an extract from a \texttt{build.lua} file using this is shown
-% in Figure~\ref{fig:uploaddata}.
+% in Figure~\ref{fig:uploadconfig}.
 % Note that the \texttt{upload} target will \emph{not} execute the \texttt{ctan} target first.
 %
 %
 % \begin{table}[p]
 %   \def\YES{\textbullet}
-%   \caption{Fields used in the \texttt{uploaddata} setup table. The first section of fields are \emph{required} and if they are omitted the user will be interactively prompted for further input. Most commands take string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.}
+%   \caption{Fields used in the \texttt{uploadconfig} setup table. The first section of fields are \emph{required} and if they are omitted the user will be interactively prompted for further input. Most commands take string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.}
 %   \label{tab:upload-setup}
 %   \begin{minipage}{\linewidth}
 %   \begin{tabular}{@{}lccp{8cm}@{}}
@@ -1334,7 +1334,7 @@
 %
 % \begin{figure}[p]
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
-%     uploaddata = {
+%     uploadconfig = {
 %       pkg         = "vertbars",
 %       version     = "v1.0c",
 %       author      = "Peter R Wilson; Will Robertson",
@@ -1347,8 +1347,8 @@
 %       update      = true,
 %     }
 %   \end{lstlisting}
-%   \caption{Example of \texttt{uploaddata} from the \pkg{vertbars} package.}
-%   \label{fig:uploaddata}
+%   \caption{Example of \texttt{uploadconfig} from the \pkg{vertbars} package.}
+%   \label{fig:uploadconfig}
 % \end{figure}
 %
 % \section{Lua interfaces}
