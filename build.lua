@@ -93,10 +93,6 @@ a note
 just to myself
 ]]
 
-uploadfile="l3build.zip"
-
-ctanupload="ask"
-
 
 -- end of ctan upload settings
 

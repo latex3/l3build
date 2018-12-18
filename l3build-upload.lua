@@ -58,6 +58,8 @@ local ctanupload = ctanupload or "ask"
 -- if upload is anything else, the user will be prompted whether to upload.
 -- For now, this is undocumented. I think I would prefer to keep it always set to ask for the time being.
 
+local uploadfile = ctanzip..".zip"
+
 function upload()
 
   -- try a sensible default for the package name:
