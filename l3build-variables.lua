@@ -188,4 +188,4 @@ manifestfile = manifestfile or "MANIFEST.md"
 
 -- Upload settings
 curlexe  = curlexe  or "curl"
-uploaddata = uploaddata or {}
+uploadconfig = uploadconfig or {}

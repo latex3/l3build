@@ -46,7 +46,7 @@ for those people who are interested.
 
 -- the main interface is
 --     upload()
--- with a configuration table `uploaddata`
+-- with a configuration table `uploadconfig`
 
 
 local curl_debug = curl_debug or false -- to disable posting
@@ -63,7 +63,7 @@ local uploadfile = ctanzip..".zip"
 function upload()
 
   -- try a sensible default for the package name:
-  uploaddata.pkg = uploaddata.pkg or ctanpkg or nil
+  uploadconfig.pkg = uploadconfig.pkg or ctanpkg or nil
 
   -- start building the curl command:
   ctan_post = curlexe .. " "
@@ -72,24 +72,24 @@ function upload()
 
   --         field                                   max  desc                                 mandatory  multi
   --         ----------------------------------------------------------------------------------------------------
-  ctan_field("announcement", uploaddata.announcement, 8192, "Announcement",                        false, false )
-  ctan_field("author",       uploaddata.author,        128, "Author name",                         true,  false )
-  ctan_field("bugtracker",   uploaddata.bugtracker,    255, "URL(s) of bug tracker",               false, true  )
-  ctan_field("ctanPath",     uploaddata.ctanPath,      255, "CTAN path",                           true,  false )
-  ctan_field("description",  uploaddata.description,  4096, "Short description of package",        false, false )
-  ctan_field("development",  uploaddata.development,   255, "URL(s) of development channels",      false, true  )
-  ctan_field("email",        uploaddata.email,         255, "Email of uploader",                   true,  false )
-  ctan_field("home",         uploaddata.home,          255, "URL(s) of home page",                 false, true  )
-  ctan_field("license",      uploaddata.license,      2048, "Package license(s)",                  true,  true  )
-  ctan_field("note",         uploaddata.note,         4096, "Internal note to ctan",               false, false )
-  ctan_field("pkg",          uploaddata.pkg,            32, "Package name",                        true,  false )
-  ctan_field("repository",   uploaddata.repository,    255, "URL(s) of source repositories",       false, true  )
-  ctan_field("summary",      uploaddata.summary,       128, "One-line summary of package",         true,  false )
-  ctan_field("support",      uploaddata.support,       255, "URL(s) of support channels",          false, true  )
-  ctan_field("topic",        uploaddata.topic,        1024, "Topic(s)",                            false, true  )
-  ctan_field("update",       uploaddata.update,          8, "Boolean: true=update, false=new pkg", false, false )
-  ctan_field("uploader",     uploaddata.uploader,      255, "Name of uploader",                    true,  false )
-  ctan_field("version",      uploaddata.version,        32, "Package version",                     true,  false )
+  ctan_field("announcement", uploadconfig.announcement, 8192, "Announcement",                        false, false )
+  ctan_field("author",       uploadconfig.author,        128, "Author name",                         true,  false )
+  ctan_field("bugtracker",   uploadconfig.bugtracker,    255, "URL(s) of bug tracker",               false, true  )
+  ctan_field("ctanPath",     uploadconfig.ctanPath,      255, "CTAN path",                           true,  false )
+  ctan_field("description",  uploadconfig.description,  4096, "Short description of package",        false, false )
+  ctan_field("development",  uploadconfig.development,   255, "URL(s) of development channels",      false, true  )
+  ctan_field("email",        uploadconfig.email,         255, "Email of uploader",                   true,  false )
+  ctan_field("home",         uploadconfig.home,          255, "URL(s) of home page",                 false, true  )
+  ctan_field("license",      uploadconfig.license,      2048, "Package license(s)",                  true,  true  )
+  ctan_field("note",         uploadconfig.note,         4096, "Internal note to ctan",               false, false )
+  ctan_field("pkg",          uploadconfig.pkg,            32, "Package name",                        true,  false )
+  ctan_field("repository",   uploadconfig.repository,    255, "URL(s) of source repositories",       false, true  )
+  ctan_field("summary",      uploadconfig.summary,       128, "One-line summary of package",         true,  false )
+  ctan_field("support",      uploadconfig.support,       255, "URL(s) of support channels",          false, true  )
+  ctan_field("topic",        uploadconfig.topic,        1024, "Topic(s)",                            false, true  )
+  ctan_field("update",       uploadconfig.update,          8, "Boolean: true=update, false=new pkg", false, false )
+  ctan_field("uploader",     uploadconfig.uploader,      255, "Name of uploader",                    true,  false )
+  ctan_field("version",      uploadconfig.version,        32, "Package version",                     true,  false )
 
   -- finish constructing the curl command:
   ctan_post = ctan_post .. " --form 'file=@" .. tostring(uploadfile) .. ";filename=" .. tostring(uploadfile) .. "'"
