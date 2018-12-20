@@ -11,6 +11,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 - Switch `-m|--message` for providing upload announcement from command line
 
+### Changed
+
+- Enable `--dry-run` option for `upload` target
+
 ### Fixed
 
 - Packaging of some team-specific files

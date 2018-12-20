@@ -53,6 +53,9 @@ local curl_debug = curl_debug or false -- to disable posting
 -- For now, this is undocumented.
 
 local ctanupload = ctanupload or "ask"
+if options["dry-run"] then
+  ctanupload = false
+end
 -- if ctanupload is nil or false, only validation is attempted
 -- if ctanupload is true the ctan upload URL will be used after validation
 -- if upload is anything else, the user will be prompted whether to upload.
