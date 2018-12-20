@@ -14,6 +14,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 
 - Enable `--dry-run` option for `upload` target
+- Require (possibly empty) announcement text for uploads
 
 ### Fixed
 

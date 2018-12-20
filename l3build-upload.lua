@@ -92,7 +92,7 @@ function upload()
 
   --         field                                   max  desc                                 mandatory  multi
   --         ----------------------------------------------------------------------------------------------------
-  ctan_field("announcement", uploadconfig.announcement, 8192, "Announcement",                        false, false )
+  ctan_field("announcement", uploadconfig.announcement, 8192, "Announcement",                        true,  false )
   ctan_field("author",       uploadconfig.author,        128, "Author name",                         true,  false )
   ctan_field("bugtracker",   uploadconfig.bugtracker,    255, "URL(s) of bug tracker",               false, true  )
   ctan_field("ctanPath",     uploadconfig.ctanPath,      255, "CTAN path",                           true,  false )
