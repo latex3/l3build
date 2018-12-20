@@ -83,6 +83,7 @@ function upload()
   uploadconfig.pkg = uploadconfig.pkg or ctanpkg or nil
 
   -- Get data from command line if appropriate
+  local uploadconfig.announcement = uploadconfig.announcement
   if options["file"] then
     local f = open(file)
     uploadconfig.announcement = assert(f:read('*a'))
