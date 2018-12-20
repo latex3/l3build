@@ -78,12 +78,14 @@ end
 function upload(tagnames)
 
   local uploadfile = ctanzip..".zip"
+  
+  -- Keep data local
+  local uploadconfig = uploadconfig
 
   -- try a sensible default for the package name:
   uploadconfig.pkg = uploadconfig.pkg or ctanpkg or nil
 
   -- Get data from command line if appropriate
-  local uploadconfig.announcement = uploadconfig.announcement
   if options["file"] then
     local f = open(file)
     uploadconfig.announcement = assert(f:read('*a'))
@@ -91,7 +93,7 @@ function upload(tagnames)
   end
   uploadconfig.announcement = options["message"] or uploadconfig.announcement
 
-  local uploadconfig.version = tagnames[1] or uploadconfig.version
+  uploadconfig.version = tagnames[1] or uploadconfig.version
 
   -- start building the curl command:
   ctan_post = curlexe .. " "
