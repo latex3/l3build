@@ -22,6 +22,20 @@ for those people who are interested.
 
 --]]
 
+local pairs    = pairs
+local print    = print
+local tostring = tostring
+
+local close = io.close
+local flush = io.flush
+local open  = io.open
+local popen = io.popen
+local read  = io.read
+local write = io.write
+
+local len   = string.len
+local lower = string.lower
+local match = string.match
 
 -- UPLOAD()
 --
@@ -102,9 +116,9 @@ function upload()
   ctan_post = ctan_post ..  " https://ctan.org/submit/"
 
   -- avoid lower level error from post command if zip file missing
-  local zip=io.open(trim_space(tostring(uploadfile)),"r")
+  local zip=open(trim_space(tostring(uploadfile)),"r")
   if zip~=nil then
-    io.close(zip)
+    close(zip)
   else
     error("Missing zip file '" .. tostring(uploadfile) .. "'")
   end
@@ -115,14 +129,14 @@ function upload()
 
   -- use popen not execute so get the return body local exit_status=os.execute(ctan_post .. "validate")
   if (curl_debug==false) then
-    local fp = assert(io.popen(ctan_post .. "validate", 'r'))
+    local fp = assert(popen(ctan_post .. "validate", 'r'))
     fp_return = assert(fp:read('*a'))
     fp:close()
   else
     fp_return="WARNING: curl_debug==true: posting disabled"
     print(ctan_post)
   end
-  if string.match(fp_return,"WARNING") or string.match(fp_return,"ERROR") then
+  if match(fp_return,"WARNING") or match(fp_return,"ERROR") then
     exit_status=1
   end
 
@@ -131,22 +145,22 @@ function upload()
     if (ctanupload ~=nil and ctanupload ~=false and ctanupload ~= true) then
       print("Validation successful, do you want to upload to CTAN? [y/n]" )
       local answer=""
-      io.write("> ")
-      io.flush()
-      answer=io.read()
-      if(string.lower(answer,1,1)=="y") then
+      write("> ")
+      flush()
+      answer=read()
+      if(lower(answer,1,1)=="y") then
         ctanupload=true
       end
     end
     if (ctanupload==true) then
-      local fp = assert(io.popen(ctan_post .. "upload", 'r'))
+      local fp = assert(popen(ctan_post .. "upload", 'r'))
       fp_return = assert(fp:read('*a'))
       fp:close()
 --     this is just html, could save to a file
 --     or echo a cleaned up version
       print('Response from CTAN:')
       print(fp_return)
-      if string.match(fp_return,"WARNING") or string.match(fp_return,"ERROR") then
+      if match(fp_return,"WARNING") or match(fp_return,"ERROR") then
         exit_status=1
       end
     else
@@ -189,8 +203,8 @@ function ctan_single_field(fname,fvalue,max,desc,mandatory)
     if (mandatory==true and (fvalue == nil or vs=="")) then
       error("The field " .. fname .. " must contain " .. desc)
     end
-    if (fvalue ~=nil and string.len(vs) > 0) then
-      if (max > 0 and string.len(vs) > max) then
+    if (fvalue ~=nil and len(vs) > 0) then
+      if (max > 0 and len(vs) > max) then
         error("The field " .. fname .. " is longer than " .. max)
       end
       vs = vs:gsub('"','\\"')
@@ -212,9 +226,9 @@ function input_multi_line_field (name)
   local answer_line
   local return_count=0
   repeat
-    io.write("> ")
-    io.flush()
-    answer_line=io.read()
+    write("> ")
+    flush()
+    answer_line=read()
     if answer_line=="" then
       return_count=return_count+1
     else
@@ -235,9 +249,9 @@ function input_single_line_field(name)
 
   local field=""
 
-  io.write("> ")
-  io.flush()
-  field=io.read()
+  write("> ")
+  flush()
+  field=read()
   return field
 end
 
