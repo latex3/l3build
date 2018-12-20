@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Packaging of some team-specific files
+
 ## [2018-12-18]
 
 ### Changed

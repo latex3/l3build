@@ -93,13 +93,13 @@ function uninstall()
 end
 
 function install_files(target,full,dry_run)
-  local function install_files(source,dir,files,subdir,tool)
+  local function install_files(source,dir,files,subdir)
     subdir = subdir or moduledir
     -- For material associated with secondary tools (BibTeX, MakeIndex)
     -- the structure needed is slightly different from those items going
     -- into the tex/doc/source trees
-    if tool and module == "base" then
-      subdir = nil
+    if (dir == "makeindex" or match(dir,"$bibtex")) and module == "base" then
+      subdir = "latex"
     end
     dir = dir .. (subdir and ("/" .. subdir) or "")
     local filenames = { }
@@ -222,8 +222,8 @@ function install_files(target,full,dry_run)
   if errorlevel ~= 0 then return errorlevel end
 
   errorlevel = install_files(unpackdir,"tex",{installlist})
-    + install_files(unpackdir,"bibtex/bst",{bstfiles},module,true)
-    + install_files(unpackdir,"makeindex",{makeindexfiles},module,true)
+    + install_files(unpackdir,"bibtex/bst",{bstfiles},module)
+    + install_files(unpackdir,"makeindex",{makeindexfiles},module)
     + install_files(unpackdir,"scripts",{scriptfiles},module)
   
   return errorlevel
