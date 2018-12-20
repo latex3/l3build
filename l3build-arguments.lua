@@ -106,6 +106,12 @@ option_list =
         desc  = "Name of last test to run",
         type  = "string"
       },
+    message =
+      {
+        desc  = "Text for upload announcement message",
+        short = "m",
+        type  = "string"
+      },
     rerun =
       {
         desc  = "Skip setup: simply rerun tests",

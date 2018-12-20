@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- Switch `-m|--message` for providing upload announcement from command line
+
 ### Fixed
 
 - Packaging of some team-specific files

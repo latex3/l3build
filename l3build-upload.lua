@@ -65,6 +65,9 @@ function upload()
   -- try a sensible default for the package name:
   uploadconfig.pkg = uploadconfig.pkg or ctanpkg or nil
 
+  -- Get data from command line if appropriate
+  uploadconfig.announcement = options["message"] or uploadconfig.announcement
+
   -- start building the curl command:
   ctan_post = curlexe .. " "
 
