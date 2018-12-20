@@ -15,6 +15,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 
 - Enable `--dry-run` option for `upload` target
+- Enable tag/version to be passed as optional argument to `upload` target
 
 ### Fixed
 

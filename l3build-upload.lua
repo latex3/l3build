@@ -75,7 +75,7 @@ end
 -- if upload is anything else, the user will be prompted whether to upload.
 -- For now, this is undocumented. I think I would prefer to keep it always set to ask for the time being.
 
-function upload()
+function upload(tagnames)
 
   local uploadfile = ctanzip..".zip"
 
@@ -90,6 +90,8 @@ function upload()
     close(f)
   end
   uploadconfig.announcement = options["message"] or uploadconfig.announcement
+
+  local uploadconfig.version = tagnames[1] or uploadconfig.version
 
   -- start building the curl command:
   ctan_post = curlexe .. " "
