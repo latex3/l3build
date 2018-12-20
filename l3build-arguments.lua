@@ -68,6 +68,12 @@ option_list =
         desc  = "Sets the epoch for tests and typesetting",
         type  = "string"
       },
+    file =
+      {
+        desc  = "Take the upload announcement from the given file",
+        short = "F",
+        type  = "string"
+      },
     first =
       {
         desc  = "Name of first test to run",

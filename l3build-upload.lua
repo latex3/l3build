@@ -83,6 +83,11 @@ function upload()
   uploadconfig.pkg = uploadconfig.pkg or ctanpkg or nil
 
   -- Get data from command line if appropriate
+  if options["file"] then
+    local f = open(file)
+    uploadconfig.announcement = assert(f:read('*a'))
+    close(f)
+  end
   uploadconfig.announcement = options["message"] or uploadconfig.announcement
 
   -- start building the curl command:
