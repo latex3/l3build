@@ -87,7 +87,7 @@ function upload(tagnames)
 
   -- Get data from command line if appropriate
   if options["file"] then
-    local f = open(file,"r")
+    local f = open(options["file"],"r")
     uploadconfig.announcement = assert(f:read('*a'))
     close(f)
   end
