@@ -94,6 +94,7 @@ function upload(tagnames)
   uploadconfig.announcement = options["message"] or uploadconfig.announcement
   uploadconfig.email = options["email"] or uploadconfig.email
 
+  local tagnames = tagnames or { }
   uploadconfig.version = tagnames[1] or uploadconfig.version
 
   -- start building the curl command:
