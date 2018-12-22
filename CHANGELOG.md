@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2018-12-22]
+
 ### Added
 
 - Switch `--email` for providing upload email address
@@ -221,7 +223,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2018-12-18...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2018-12-22...HEAD
+[2018-12-22]: https://github.com/latex3/l3build/compare/2018-12-18...2018-12-22
 [2018-12-18]: https://github.com/latex3/l3build/compare/2018-11-08...2018-12-18
 [2018-11-08]: https://github.com/latex3/l3build/compare/2018-10-30...2018-11-08
 [2018-10-30]: https://github.com/latex3/l3build/compare/2018-10-25...2018-10-30
