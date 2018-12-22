@@ -337,6 +337,7 @@
 % \item |--dirty| Skip cleaning up of the test area
 % \item |--dry-run| Runs the \texttt{install} target but does not copy
 %   any files: simply lists those that would be installed
+% \item |--email| Sets the email address for CTAN upload
 % \item |--engine| (|-e|) Sets the engine to use for testing
 % \item |--epoch| Sets the epoch for typesetting and testing
 % \item |--file| (|-F|) Take the upload announcement from the given file
@@ -1301,6 +1302,8 @@
 % in Figure~\ref{fig:uploadconfig}.
 % Note that the \texttt{upload} target will \emph{not} execute the \texttt{ctan} target first.
 %
+% To pass the 
+%
 %
 % \begin{table}[p]
 %   \def\YES{\textbullet}
@@ -1377,6 +1380,7 @@
 %       \var{date}          & String  \\
 %       \var{dirty}         & Boolean \\
 %       \var{dry-run}       & Boolean \\
+%       \var{email}         & String  \\
 %       \var{engine}        & Table   \\
 %       \var{epoch}         & String  \\
 %       \var{file}          & string  \\

@@ -57,6 +57,11 @@ option_list =
         desc = "Dry run for install",
         type = "boolean"
       },
+    email =
+      {
+        desc = "Email address of CTAN uploader",
+        type = "string"
+      },
     engine =
       {
         desc  = "Sets the engine(s) to use for running test",

@@ -92,6 +92,7 @@ function upload(tagnames)
     close(f)
   end
   uploadconfig.announcement = options["message"] or uploadconfig.announcement
+  uploadconfig.email = options["email"] or uploadconfig.email
 
   uploadconfig.version = tagnames[1] or uploadconfig.version
 

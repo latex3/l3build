@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 
+- Switch `--email` for providing upload email address
 - Switch `-m|--message` for providing upload announcement from command line
 - Switch `-F|--file` for providing upload announcement from file
 
