@@ -18,10 +18,9 @@ scriptmanfiles = {"l3build.1"}
 sourcefiles  = {"*.dtx", "l3build*.lua", "*.ins"}
 typesetcmds  = "\\AtBeginDocument{\\DisableImplementation}"
 unpackdeps   = { }
-tagfiles     = {"l3build.1", "l3build.dtx", "*.md", "l3build.lua", "build.lua"}
+tagfiles     = {"l3build.1", "l3build.dtx", "*.md", "l3build.lua"}
 
 uploadconfig = {
-  version     = "2018-12-18",
   author      = "The LaTeX Team",
   license     = "lppl1.3c",
   summary     = "A testing and building system for (La)TeX",
@@ -66,10 +65,6 @@ function update_tag(file,content,tagname,tagdate)
     return string.gsub(content,
       "\nRelease " .. iso     .. "\n",
       "\nRelease " .. tagname .. "\n")
-  elseif string.match(file, "build.lua$") then
-    return string.gsub(content,
-      '\n  version     = "' .. iso     .. '",\n',
-      '\n  version     = "' .. tagdate .. '",\n')
   elseif string.match(file, "%.lua$") then
     return string.gsub(content,
       '\nrelease_date = "' .. iso     .. '"\n',
