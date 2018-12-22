@@ -123,7 +123,7 @@ function upload(tagnames)
   ctan_field("version",      uploadconfig.version,        32, "Package version",                     true,  false )
 
   -- finish constructing the curl command:
-  ctan_post = ctan_post .. " --form 'file=@" .. tostring(uploadfile) .. ";filename=" .. tostring(uploadfile) .. "'"
+  ctan_post = ctan_post .. ' --form "file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
   ctan_post = ctan_post ..  " https://ctan.org/submit/"
 
   -- avoid lower level error from post command if zip file missing
