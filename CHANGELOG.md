@@ -23,6 +23,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Fixed
 
 - Packaging of some team-specific files
+- Handling of upload data containing newlines (Windows only)
 
 ## [2018-12-18]
 
