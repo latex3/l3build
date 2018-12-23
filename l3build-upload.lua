@@ -221,6 +221,7 @@ function ctan_single_field(fname,fvalue,max,desc,mandatory)
       end
       vs = vs:gsub('"','\\"')
       vs = vs:gsub('`','\\`')
+      vs = vs:gsub('\n','\\n')
       ctan_post=ctan_post .. ' --form "' .. fname .. "=" .. vs .. '"'
     end
   else
