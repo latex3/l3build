@@ -7,6 +7,17 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- The `uploadconfig.update` field by default now automatically detects whether it
+  needs to be `true` or `false`
+- The `tag` target now allows no tag name to allow for setting this programmatically
+  within a `build.lua` script
+
+### Fixed
+
+- Uploading via Windows should now work
+
 ## [2018-12-23]
 
 ### Added
