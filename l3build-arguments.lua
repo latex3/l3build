@@ -47,6 +47,11 @@ option_list =
         desc  = "Sets the date to insert into sources",
         type  = "string"
       },
+    debug =
+      {
+        desc = "Runs target in debug mode (not supported by all targets)",
+        type = "boolean"
+      },
     dirty =
       {
         desc = "Skip cleaning up the test area",

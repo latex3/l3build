@@ -334,6 +334,7 @@
 % \begin{itemize}
 % \item |--config| (|-c|) Configuration(s) to use for testing
 % \item |--date| Date to use when tagging data
+% \item |--debug| Runs the target in debug mode (not supported by all targets)
 % \item |--dirty| Skip cleaning up of the test area
 % \item |--dry-run| Runs the \texttt{install} target but does not copy
 %   any files: simply lists those that would be installed
@@ -1327,6 +1328,9 @@
 % directly to CTAN in all circumstances, leading to errors if you attempt to update a
 % non-existing package or if you attempt to upload a new package with the same name as a
 % pre-existing one.
+%
+% If you have have difficulty with the upload process, add the option |--debug| to divert
+% the request from CTAN to a service that redirects the input back again so it can be examined.
 %
 % \begin{table}[p]
 %   \def\YES{\textbullet}

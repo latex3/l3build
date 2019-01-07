@@ -113,7 +113,16 @@ function upload(tagnames)
     error("Missing zip file '" .. tostring(uploadfile) .. "'")
   end
 
-  ctan_post = construct_ctan_post(uploadfile)
+  ctan_post = construct_ctan_post(uploadfile,options["debug"])
+
+  if options["debug"] then
+    fp_return = shell(ctan_post)
+    print('\n\nCURL COMMAND:')
+    print(ctan_post)
+    print("\n\nHTTP RESPONSE:")
+    print(fp_return)
+    return 1
+  end
 
   -- call post command to validate the upload at CTAN's validate URL
   local exit_status=0
@@ -183,7 +192,7 @@ function shell(s)
   return t
 end
 
-function construct_ctan_post(uploadfile)
+function construct_ctan_post(uploadfile,debug)
 
   -- start building the curl command:
   ctan_post = curlexe .. " "
@@ -217,7 +226,11 @@ function construct_ctan_post(uploadfile)
     qq = '\"'
   end
   ctan_post = ctan_post .. ' --form ' .. qq .. 'file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. qq
-  ctan_post = ctan_post ..  ' https://ctan.org/submit/'
+  if debug then
+    ctan_post = ctan_post ..  ' https://httpbin.org/post'
+  else
+    ctan_post = ctan_post ..  ' https://ctan.org/submit/'
+  end
 
   return ctan_post
 
