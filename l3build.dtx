@@ -1313,10 +1313,20 @@
 % is performed; this should usually be performed for minor bug or documentation fixes only.
 %
 % \paragraph{Uploader details}
-% The CTAN team use the uploader details (name and email) as a form of low-security sanity
+% The CTAN team use the uploader email address as a form of low-security sanity
 % check that the upload is coming from a reputable source. Therefore, it is advisable not
-% to store this information within a public |build.lua| file and instead use a private
-% configuration file to add this information at upload time.
+% to store this information within a public |build.lua| file. It can be set on the command
+% line with the |--email| option to \texttt{l3build}; alternatively, a private
+% configuration file could be used to add this information at upload time.
+%
+% \paragraph{The \texttt{update} field}
+% In most scenarios the |update| field does not need to be explicitly set. By default
+% \pkg{l3build} assumes that the package being uploaded already exists on CTAN
+% (|update=true|). If it does not, this is caught in the validation process before
+% uploading and automatically corrected. If you set |update| explicitly this will be passed
+% directly to CTAN in all circumstances, leading to errors if you attempt to update a
+% non-existing package or if you attempt to upload a new package with the same name as a
+% pre-existing one.
 %
 % \begin{table}[p]
 %   \def\YES{\textbullet}
