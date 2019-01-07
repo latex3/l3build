@@ -33,6 +33,8 @@ local popen = io.popen
 local read  = io.read
 local write = io.write
 
+local os_type = os.type
+
 local len   = string.len
 local lower = string.lower
 local match = string.match
@@ -210,8 +212,12 @@ function construct_ctan_post(uploadfile)
   ctan_field("version",      uploadconfig.version,        32, "Package version",                     true,  false )
 
   -- finish constructing the curl command:
-  ctan_post = ctan_post .. ' --form "file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
-  ctan_post = ctan_post ..  " https://ctan.org/submit/"
+  local qq = '"'
+  if os_type == "windows" then
+    qq = '\"'
+  end
+  ctan_post = ctan_post .. ' --form ' .. qq .. 'file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. qq
+  ctan_post = ctan_post ..  ' https://ctan.org/submit/'
 
   return ctan_post
 
