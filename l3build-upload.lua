@@ -120,9 +120,7 @@ function upload(tagnames)
   -- use popen not execute so get the return body local exit_status=os.execute(ctan_post .. "validate")
   if (curl_debug==false) then
     print("Contacting CTAN for validation:")
-    local fp = assert(popen(ctan_post .. "validate", 'r'))
-    fp_return = assert(fp:read('*a'))
-    fp:close()
+    fp_return = shell(ctan_post .. "validate")
   else
     fp_return="WARNING: curl_debug==true: posting disabled"
     print(ctan_post)
@@ -133,9 +131,7 @@ function upload(tagnames)
       print("Package not found on CTAN; re-validating as new package:")
       uploadconfig.update = false
       ctan_post = construct_ctan_post(uploadfile)
-      local fp = assert(popen(ctan_post .. "validate", 'r'))
-      fp_return = assert(fp:read('*a'))
-      fp:close()
+      fp_return = shell(ctan_post .. "validate")
     end
   end
   if match(fp_return,"WARNING") or match(fp_return,"ERROR") then
@@ -155,9 +151,7 @@ function upload(tagnames)
       end
     end
     if (ctanupload==true) then
-      local fp = assert(popen(ctan_post .. "upload", 'r'))
-      fp_return = assert(fp:read('*a'))
-      fp:close()
+      fp_return = shell(ctan_post .. "upload")
 --     this is just html, could save to a file
 --     or echo a cleaned up version
       print('Response from CTAN:')
@@ -179,6 +173,13 @@ function trim_space(s)
   return (s:gsub("^%s*(.-)%s*$", "%1"))
 end
 
+
+function shell(s)
+  local h = assert(popen(s, 'r'))
+  t = assert(h:read('*a'))
+  h:close()
+  return t
+end
 
 function construct_ctan_post(uploadfile)
 
