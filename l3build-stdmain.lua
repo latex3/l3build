@@ -120,9 +120,8 @@ target_list =
         desc = "Updates release tags in files",
         func = tag,
         pre  = function(names)
-           if not names or #names ~=1 then
-             print("Tag name required")
-             help()
+           if names and #names > 1 then
+             print("Too many tags specified; exactly one required")
              exit(1)
            end
            return 0

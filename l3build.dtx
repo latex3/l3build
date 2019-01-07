@@ -536,14 +536,15 @@
 %
 % \begin{buildcmd}{tag}
 % Modifies the contents of files specified by |tagfiles| using a search pattern
-% to automatically update the `release tag' (or package version) and date. The tag is given as a
-% command line option, whilst the optional date should be passed using
-% |--date| (|-d|); if not given, the date will default to the current date in
-% ISO format (YYYY-MM-DD). The standard set up has no search
-% pattern defined for this target and so no action will be taken \emph{unless}
-% tag substitution is set up.
+% to automatically update the `release tag' (or package version) and date.
+% The tag is given as the command line option and the date using
+% |--date| (|-d|). If not given, the date will default to the current date in
+% ISO format (YYYY-MM-DD). If no option is given (i.e., no tag specified) the tag
+% is passed through as |nil| to allow setting the tag programmatically.
 %
-% See Section~\ref{sec:tagging} for full details on this feature.
+% The standard setup has no search pattern defined for this target and so no action
+% will be taken \emph{unless} tag substitution is set up by defining the Lua function
+% |update_tag()|. See Section~\ref{sec:tagging} for full details on this feature.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{unpack}
