@@ -1191,10 +1191,10 @@
 % replacement takes place, but setting up a |update_tag()| function
 % will allow this to happen. This function takes four input arguments:
 % \begin{enumerate}[nosep]
-%   \item The file name
-%   \item The full content of the file
-%   \item The tag name
-%   \item The tag date
+%   \item file name
+%   \item full content of the file
+%   \item tag name
+%   \item tag date
 % \end{enumerate}
 % The |update_tag()| function should return the (modified) contents
 % for writing to disk.
@@ -1227,8 +1227,9 @@
 %
 % To allow more complex tasks to take place, a hook |tag_hook()| is also
 % available. It will receive the tag name and date as arguments, and
-% may be used to carry out arbitrary tasks during tagging (for example,
-% setting a version control tag for an entire repository).
+% may be used to carry out arbitrary tasks after the main tagging process.
+% For example, this can be used to set a version control tag for an entire repository.
+%
 %
 % \subsection{Typesetting documentation}
 %
