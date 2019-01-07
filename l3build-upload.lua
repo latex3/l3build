@@ -78,7 +78,7 @@ end
 function upload(tagnames)
 
   local uploadfile = ctanzip..".zip"
-  
+
   -- Keep data local
   local uploadconfig = uploadconfig
 
@@ -97,35 +97,11 @@ function upload(tagnames)
   local tagnames = tagnames or { }
   uploadconfig.version = tagnames[1] or uploadconfig.version
 
-  -- start building the curl command:
-  ctan_post = curlexe .. " "
-
-  -- build up the curl command field-by-field:
-
-  --         field                                   max  desc                                 mandatory  multi
-  --         ----------------------------------------------------------------------------------------------------
-  ctan_field("announcement", uploadconfig.announcement, 8192, "Announcement",                        true,  false )
-  ctan_field("author",       uploadconfig.author,        128, "Author name",                         true,  false )
-  ctan_field("bugtracker",   uploadconfig.bugtracker,    255, "URL(s) of bug tracker",               false, true  )
-  ctan_field("ctanPath",     uploadconfig.ctanPath,      255, "CTAN path",                           true,  false )
-  ctan_field("description",  uploadconfig.description,  4096, "Short description of package",        false, false )
-  ctan_field("development",  uploadconfig.development,   255, "URL(s) of development channels",      false, true  )
-  ctan_field("email",        uploadconfig.email,         255, "Email of uploader",                   true,  false )
-  ctan_field("home",         uploadconfig.home,          255, "URL(s) of home page",                 false, true  )
-  ctan_field("license",      uploadconfig.license,      2048, "Package license(s)",                  true,  true  )
-  ctan_field("note",         uploadconfig.note,         4096, "Internal note to ctan",               false, false )
-  ctan_field("pkg",          uploadconfig.pkg,            32, "Package name",                        true,  false )
-  ctan_field("repository",   uploadconfig.repository,    255, "URL(s) of source repositories",       false, true  )
-  ctan_field("summary",      uploadconfig.summary,       128, "One-line summary of package",         true,  false )
-  ctan_field("support",      uploadconfig.support,       255, "URL(s) of support channels",          false, true  )
-  ctan_field("topic",        uploadconfig.topic,        1024, "Topic(s)",                            false, true  )
-  ctan_field("update",       uploadconfig.update,          8, "Boolean: true=update, false=new pkg", false, false )
-  ctan_field("uploader",     uploadconfig.uploader,      255, "Name of uploader",                    true,  false )
-  ctan_field("version",      uploadconfig.version,        32, "Package version",                     true,  false )
-
-  -- finish constructing the curl command:
-  ctan_post = ctan_post .. ' --form "file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
-  ctan_post = ctan_post ..  " https://ctan.org/submit/"
+  local override_update_check = false
+  if uploadconfig.update == nil then
+    uploadconfig.update = true
+    override_update_check = true
+  end
 
   -- avoid lower level error from post command if zip file missing
   local zip=open(trim_space(tostring(uploadfile)),"r")
@@ -135,18 +111,32 @@ function upload(tagnames)
     error("Missing zip file '" .. tostring(uploadfile) .. "'")
   end
 
+  ctan_post = construct_ctan_post(uploadfile)
+
   -- call post command to validate the upload at CTAN's validate URL
   local exit_status=0
   local fp_return=""
 
   -- use popen not execute so get the return body local exit_status=os.execute(ctan_post .. "validate")
   if (curl_debug==false) then
+    print("Contacting CTAN for validation:")
     local fp = assert(popen(ctan_post .. "validate", 'r'))
     fp_return = assert(fp:read('*a'))
     fp:close()
   else
     fp_return="WARNING: curl_debug==true: posting disabled"
     print(ctan_post)
+    return 1
+  end
+  if override_update_check then
+    if match(fp_return,"non%-existent%spackage") then
+      print("Package not found on CTAN; re-validating as new package:")
+      uploadconfig.update = false
+      ctan_post = construct_ctan_post(uploadfile)
+      local fp = assert(popen(ctan_post .. "validate", 'r'))
+      fp_return = assert(fp:read('*a'))
+      fp:close()
+    end
   end
   if match(fp_return,"WARNING") or match(fp_return,"ERROR") then
     exit_status=1
@@ -189,6 +179,42 @@ function trim_space(s)
   return (s:gsub("^%s*(.-)%s*$", "%1"))
 end
 
+
+function construct_ctan_post(uploadfile)
+
+  -- start building the curl command:
+  ctan_post = curlexe .. " "
+
+  -- build up the curl command field-by-field:
+
+  --         field                                   max  desc                                 mandatory  multi
+  --         ----------------------------------------------------------------------------------------------------
+  ctan_field("announcement", uploadconfig.announcement, 8192, "Announcement",                        true,  false )
+  ctan_field("author",       uploadconfig.author,        128, "Author name",                         true,  false )
+  ctan_field("bugtracker",   uploadconfig.bugtracker,    255, "URL(s) of bug tracker",               false, true  )
+  ctan_field("ctanPath",     uploadconfig.ctanPath,      255, "CTAN path",                           true,  false )
+  ctan_field("description",  uploadconfig.description,  4096, "Short description of package",        false, false )
+  ctan_field("development",  uploadconfig.development,   255, "URL(s) of development channels",      false, true  )
+  ctan_field("email",        uploadconfig.email,         255, "Email of uploader",                   true,  false )
+  ctan_field("home",         uploadconfig.home,          255, "URL(s) of home page",                 false, true  )
+  ctan_field("license",      uploadconfig.license,      2048, "Package license(s)",                  true,  true  )
+  ctan_field("note",         uploadconfig.note,         4096, "Internal note to ctan",               false, false )
+  ctan_field("pkg",          uploadconfig.pkg,            32, "Package name",                        true,  false )
+  ctan_field("repository",   uploadconfig.repository,    255, "URL(s) of source repositories",       false, true  )
+  ctan_field("summary",      uploadconfig.summary,       128, "One-line summary of package",         true,  false )
+  ctan_field("support",      uploadconfig.support,       255, "URL(s) of support channels",          false, true  )
+  ctan_field("topic",        uploadconfig.topic,        1024, "Topic(s)",                            false, true  )
+  ctan_field("update",       uploadconfig.update,          8, "Boolean: true=update, false=new pkg", false, false )
+  ctan_field("uploader",     uploadconfig.uploader,      255, "Name of uploader",                    true,  false )
+  ctan_field("version",      uploadconfig.version,        32, "Package version",                     true,  false )
+
+  -- finish constructing the curl command:
+  ctan_post = ctan_post .. ' --form "file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
+  ctan_post = ctan_post ..  " https://ctan.org/submit/"
+
+  return ctan_post
+
+end
 
 function ctan_field(fname,fvalue,max,desc,mandatory,multi)
   if (type(fvalue)=="table" and multi==true) then
