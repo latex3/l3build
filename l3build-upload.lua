@@ -202,7 +202,9 @@ end
 
 
 function ctan_single_field(fname,fvalue,max,desc,mandatory)
-  print('ctan-post: ' .. fname .. ' ' ..tostring(fvalue or '??'))
+  local fvalueprint = fvalue
+  if fvalue == nil then fvalueprint = '??' end
+  print('ctan-upload | ' .. fname .. ': ' ..tostring(fvalueprint))
   if ((fvalue==nil and mandatory) or (fvalue == 'ask')) then
     if (max < 256) then
       fvalue=input_single_line_field(fname)
