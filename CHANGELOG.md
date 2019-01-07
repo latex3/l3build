@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- Switch `--debug` for chasing problems with the `upload` target
+
 ### Changed
 
 - The `uploadconfig.update` field by default now automatically detects whether it
