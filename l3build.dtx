@@ -1305,11 +1305,18 @@
 %
 % Note that the \texttt{upload} target will \emph{not} execute the \texttt{ctan} target first.
 %
+% \paragraph{Announcement text}
 % It can be convenient not to include the announcement text within the |build.lua| file
 % directly. The command line argument |--message| (|-m|) allows the announcement to be
 % included as part of the |l3build| arguments, and |--file| (|-F|) reads the announcement
 % from a specified file. Note that if the announcement text is omitted a `silent update'
 % is performed; this should usually be performed for minor bug or documentation fixes only.
+%
+% \paragraph{Uploader details}
+% The CTAN team use the uploader details (name and email) as a form of low-security sanity
+% check that the upload is coming from a reputable source. Therefore, it is advisable not
+% to store this information within a public |build.lua| file and instead use a private
+% configuration file to add this information at upload time.
 %
 % \begin{table}[p]
 %   \def\YES{\textbullet}
@@ -1355,7 +1362,6 @@
 %       summary     = "Mark vertical rules in margin of text",
 %       ctanPath    = "/macros/latex/contrib/vertbars",
 %       repository  = "https://github.com/wspr/herries-press/",
-%       uploader    = "Will Robertson",
 %       update      = true,
 %     }
 %   \end{lstlisting}
