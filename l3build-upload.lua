@@ -115,6 +115,11 @@ function upload(tagnames)
 
   ctan_post = construct_ctan_post(uploadfile,options["debug"])
 
+-- curl file version
+  io.output(ctanzip .. ".curlopt")
+  io.write(ctan_post)
+  ctan_post=curlexe .. " --config " .. ctanzip .. ".curlopt"
+  
   if options["debug"] then
     fp_return = shell(ctan_post)
     print('\n\nCURL COMMAND:')
@@ -195,8 +200,9 @@ end
 function construct_ctan_post(uploadfile,debug)
 
   -- start building the curl command:
-  ctan_post = curlexe .. " "
-
+-- commandline  ctan_post = curlexe .. " "
+  ctan_post=""
+  
   -- build up the curl command field-by-field:
 
   --         field                                   max  desc                                 mandatory  multi
@@ -225,11 +231,14 @@ function construct_ctan_post(uploadfile,debug)
   if os_type == "windows" then
     qq = '\"'
   end
-  ctan_post = ctan_post .. ' --form ' .. qq .. 'file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. qq
+-- commandline   ctan_post = ctan_post .. ' --form ' .. qq .. 'file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. qq
+  ctan_post = ctan_post .. '\nform="file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
   if debug then
-    ctan_post = ctan_post ..  ' https://httpbin.org/post'
+-- commandline    ctan_post = ctan_post ..  ' https://httpbin.org/post'
+    ctan_post = ctan_post ..  '\nurl=https://httpbin.org/post'
   else
-    ctan_post = ctan_post ..  ' https://ctan.org/submit/'
+-- commandline    ctan_post = ctan_post ..  ' https://ctan.org/submit/'
+    ctan_post = ctan_post ..  '\nurl=https://ctan.org/submit/'
   end
 
   return ctan_post
@@ -270,7 +279,8 @@ function ctan_single_field(fname,fvalue,max,desc,mandatory)
       vs = vs:gsub('"','\\"')
       vs = vs:gsub('`','\\`')
       vs = vs:gsub('\n','\\n')
-      ctan_post=ctan_post .. ' --form "' .. fname .. "=" .. vs .. '"'
+-- for strings on commandline version      ctan_post=ctan_post .. ' --form "' .. fname .. "=" .. vs .. '"'
+      ctan_post=ctan_post .. '\nform="' .. fname .. '=' .. vs .. '"'
     end
   else
     error("The value of the field '" .. fname .."' must be a scalar not a table")
