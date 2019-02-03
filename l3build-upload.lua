@@ -29,6 +29,7 @@ local tostring = tostring
 local close = io.close
 local flush = io.flush
 local open  = io.open
+local output = io.output
 local popen = io.popen
 local read  = io.read
 local write = io.write
@@ -116,8 +117,11 @@ function upload(tagnames)
   ctan_post = construct_ctan_post(uploadfile,options["debug"])
 
 -- curl file version
-  io.output(ctanzip .. ".curlopt")
-  io.write(ctan_post)
+  local curlopt=open(ctanzip .. ".curlopt","w")
+  output(curlopt)
+  write(ctan_post)
+  close(curlopt)
+  
   ctan_post=curlexe .. " --config " .. ctanzip .. ".curlopt"
   
   if options["debug"] then
