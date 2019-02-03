@@ -94,8 +94,11 @@ function upload(tagnames)
     uploadconfig.announcement = assert(f:read('*a'))
     close(f)
   end
-  uploadconfig.announcement = options["message"] or uploadconfig.announcement
+  uploadconfig.announcement = options["message"] or uploadconfig.announcement or file_contents(uploadconfig.announcement_file)
   uploadconfig.email = options["email"] or uploadconfig.email
+
+
+  uploadconfig.note =   uploadconfig.note  or file_contents(uploadconfig.note_file)
 
   local tagnames = tagnames or { }
   uploadconfig.version = tagnames[1] or uploadconfig.version
@@ -330,3 +333,19 @@ function input_single_line_field(name)
   return field
 end
 
+
+-- if filename is non nil and file readable return contents otherwise nil
+function file_contents (filename)
+  if filename ~= nil then
+    local f= open(filename,"r")
+    if f==nil then
+      return nil
+    else 
+      local s = f:read("*all")
+      close(f)
+      return s
+    end
+  else
+    return nil
+  end
+end
