@@ -115,6 +115,17 @@ zipopts     = zipopts     or "-v -r -X"
 -- Engines for testing
 checkengines = checkengines or {"pdftex", "xetex", "luatex"}
 checkformat  = checkformat  or "latex"
+specialformats = specialformats or { }
+specialformats.context = specialformats.context or {
+    luatex = {binary = "context", format = ""},
+    pdftex = {binary = "texexec", format = ""},
+    xetex  = {binary = "texexec", format = "", options = "--xetex"}
+  }
+specialformats.latex = specialformats.latex or {
+    etex  = {format = "latex"},
+    ptex  = {binary = "eptex"},
+    uptex = {binary = "euptex"}
+  }
 stdengine    = stdengine    or "pdftex"
 
 -- The tests themselves

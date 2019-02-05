@@ -9,6 +9,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 
+- Table-based control of binary/format combinations: `specialformats`
+  (see #84)
 - Switch `--debug` for chasing problems with the `upload` target
 
 ### Changed

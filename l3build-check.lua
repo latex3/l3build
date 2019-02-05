@@ -670,24 +670,25 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   local lvtfile = name .. (ext or lvtext)
   cp(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
     and testfiledir or unpackdir, testdir)
+  local checkopts = checkopts
   local engine = engine or stdengine
-  local realengine = engine
-  local format = ""
-  if checkformat == "latex" then
-    -- Special case for e-LaTeX format
-    if engine == "etex" then
-      format = " -fmt=latex"
-    -- Use "...latex" formats for other engines
-    elseif not match(engine,"latex") then
-      format = " -fmt=" .. gsub(engine,"tex","latex")
-    end
-    -- Special case for (u)pTeX LaTeX
-    if match(engine,"^u?ptex$") then
-      realengine = "e" .. engine
+  local binary = engine
+  local format = gsub(engine,"tex$",checkformat)
+  -- Special binary/format combos
+  if specialformats[checkformat] and next(specialformats[checkformat]) then
+    local t = specialformats[checkformat]
+    if t[engine] and next(t[engine]) then
+      local t = t[engine]
+      binary    = t.binary  or binary
+      checkopts = t.options or checkopts
+      format    = t.format  or format
     end
   end
+  -- Finalise format string
+  if format ~= "" then
+    format = " --fmt=" .. format
+  end
   -- Special casing for XeTeX engine
-  local checkopts = checkopts
   if match(engine, "xetex") and not pdfmode then
     checkopts = checkopts .. " -no-pdf"
   end
@@ -695,19 +696,8 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   local function setup(file)
     return " -jobname=" .. name .. " " .. ' "\\input ' .. file .. '" '
   end
-  if match(checkformat, "^context$") then
-    format = ""
+  if match(checkformat,"^context$") then
     function setup(file) return ' "' .. file .. '" '  end
-    if match(engine,"^lua") then
-      realengine = "context"
-    elseif engine == "pdftex" then
-      realengine = "texexec"
-    elseif engine == "xetex" then
-      realengine = "texexec --xetex"
-    else
-      print("Engine incompatible with format")
-      exit(1)
-    end
   end
   local basename = testdir .. "/" .. name
   local logfile = basename .. logext
@@ -743,7 +733,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
-      realengine .. format 
+      binary .. format 
         .. " " .. asciiopt .. " " .. checkopts
         .. setup(lvtfile)
         .. (hide and (" > " .. os_null) or "")

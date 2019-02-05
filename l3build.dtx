@@ -110,6 +110,7 @@
 \luavarset{checkengines}{\{"pdftex", "xetex", "luatex"\}}{Engines to check with \texttt{check} by default}
 \luavarset{stdengine}    {"pdftex"}{Engine to generate \texttt{.tlg} file from}
 \luavarset{checkformat}  {"latex"} {Format to use for tests}
+\luavarset{specialformats}{\meta{table}} {Non-standard engine/format combinations}
 \luavarseparator
 \luavarset{checkconfigs}{\{\}}{Configurations to use for tests}
 \luavarseparator
@@ -764,6 +765,32 @@
 %
 % A series of example layouts and matching |build.lua| files are available from
 % \url{https://github.com/latex3/l3build/tree/master/examples}.
+%
+% \subsection{Non-standard formats/binaries}
+%
+% The standard approach used by \pkg{l3build} is to use a combination
+% of \var{engine} and \var{checkformat} to generate the \emph{binary} and
+% \emph{format} combination used for tests. For example, when |pdftex| is
+% the \var{engine} and |latex| is the \var{checkformat}, the system call
+% used is
+% \begin{verbatim}
+%   pdftex --fmt=pdflatex
+% \end{verbatim}
+% \emph{i.e.}~the binary names is the same as the \var{engine}, and the format
+% is a simple substitution of the \var{checkformat} into \var{engine}, replacing
+% |tex|.
+%
+% For more complex set ups, \var{specialformats} should be used. This is a
+% table with one entry per \var{checkformat}. Each entry is itself a table,
+% and these contain a list of engines and settings for |binary|, |format|
+% and |options|. For example, for Con\TeX{}t and appropriate set up is
+% \begin{verbatim}
+% specialformats.context = {
+%   luatex = {binary = "context", format = ""},
+%   pdftex = {binary = "texexec", format = ""},
+%   xetex  = {binary = "texexec", format = "", options = "--xetex"}
+% }
+% \end{verbatim}
 %
 % \subsection{Output normalisation}
 % \label{sec:norm}
