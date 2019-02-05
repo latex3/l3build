@@ -552,7 +552,7 @@ function runcheck(name, hide)
   end
   local errorlevel = 0
   for _,engine in pairs(checkengines) do
-    local enginename = engine
+    local binary = engine
     -- Allow for luatex == luajittex for .tlg/.tpf purposes
     if match(engine,"^lua") then
       engine = "luatex"
@@ -560,9 +560,9 @@ function runcheck(name, hide)
     setup_check(name,engine)
     local errlevel = 0
     if fileexists(testfiledir .. "/" .. name .. pvtext) then
-      errlevel = check_and_diff(pvtext,engine,enginename,compare_pdf,true)
+      errlevel = check_and_diff(pvtext,engine,binary,compare_pdf,true)
     else
-      errlevel = check_and_diff(lvtext,engine,enginename,compare_tlg)
+      errlevel = check_and_diff(lvtext,engine,binary,compare_tlg)
     end
     if errlevel ~= 0 and options["halt-on-error"] then
       return 1
@@ -610,9 +610,9 @@ function setup_check(name, engine)
   end
 end
 
-function compare_pdf(name,engine,enginename,cleanup)
+function compare_pdf(name,engine,binary,cleanup)
   local testname = name .. "." .. engine
-  local difffile = testdir .. "/" .. name .. "." .. enginename
+  local difffile = testdir .. "/" .. name .. "." .. binary
     .. pdfext .. os_diffext
   local pdffile  = testdir .. "/" .. testname .. pdfext
   local tpffile  = locate({testdir}, {testname .. tpfext, name .. tpfext})
@@ -627,10 +627,10 @@ function compare_pdf(name,engine,enginename,cleanup)
   return errorlevel
 end
 
-function compare_tlg(name,engine,enginename,cleanup)
+function compare_tlg(name,engine,binary,cleanup)
   local errorlevel
   local testname = name .. "." .. engine
-  local difffile = testdir .. "/" .. name .. "." .. enginename .. os_diffext
+  local difffile = testdir .. "/" .. name .. "." .. binary .. os_diffext
   local logfile  = testdir .. "/" .. testname .. logext
   local tlgfile  = locate({testdir}, {testname .. tlgext, name .. tlgext})
   if not tlgfile then
@@ -745,12 +745,12 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     if breakout and i < checkruns then
       if pdfmode then
         rewrite(pdffile,npffile,normalize_pdf)
-        if compare_pdf(name,engine,true) == 0 then
+        if compare_pdf(name,engine,binary,true) == 0 then
           break
         end
       else
         rewrite(logfile,newfile,normalize_log,engine,errlevels)
-        if compare_tlg(name,engine,true) == 0 then
+        if compare_tlg(name,engine,binary,true) == 0 then
           break
         end
       end
