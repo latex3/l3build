@@ -543,7 +543,7 @@ function runcheck(name, hide)
   -- Used for both .lvt and .pvt tests
   local function check_and_diff(ext,engine,enginename,comp,pdftest)
     runtest(name,engine,hide,ext,pdftest,true)
-    local errorlevel = comp(name,enginename)
+    local errorlevel = comp(name,engine,enginename)
     if errorlevel ~= 0 and options["halt-on-error"] then
       showfaileddiff()
       return 1
@@ -610,9 +610,10 @@ function setup_check(name, engine)
   end
 end
 
-function compare_pdf(name,engine,cleanup)
+function compare_pdf(name,engine,enginename,cleanup)
   local testname = name .. "." .. engine
-  local difffile = testdir .. "/" .. testname .. pdfext .. os_diffext
+  local difffile = testdir .. "/" .. name .. "." .. enginename
+    .. pdfext .. os_diffext
   local pdffile  = testdir .. "/" .. testname .. pdfext
   local tpffile  = locate({testdir}, {testname .. tpfext, name .. tpfext})
   if not tpffile then
@@ -626,10 +627,10 @@ function compare_pdf(name,engine,cleanup)
   return errorlevel
 end
 
-function compare_tlg(name, engine,cleanup)
+function compare_tlg(name,engine,enginename,cleanup)
   local errorlevel
   local testname = name .. "." .. engine
-  local difffile = testdir .. "/" .. testname .. os_diffext
+  local difffile = testdir .. "/" .. name .. "." .. enginename .. os_diffext
   local logfile  = testdir .. "/" .. testname .. logext
   local tlgfile  = locate({testdir}, {testname .. tlgext, name .. tlgext})
   if not tlgfile then
