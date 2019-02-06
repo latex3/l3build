@@ -120,12 +120,6 @@ function upload(tagnames)
   ctan_post = construct_ctan_post(uploadfile,options["debug"])
 
 
-  if debug then
-    ctan_post = ctan_post ..  ' https://httpbin.org/post'
-  else
-    ctan_post = ctan_post ..  ' https://ctan.org/submit/'
-  end
-
 -- curl file version
   local curlopt=open(ctanzip .. ".curlopt","w")
   output(curlopt)
@@ -134,14 +128,18 @@ function upload(tagnames)
   
   ctan_post=curlexe .. " --config " .. ctanzip .. ".curlopt"
   
-  if options["debug"] then
+
+if options["debug"] then
+    ctan_post = ctan_post ..  ' https://httpbin.org/post'
     fp_return = shell(ctan_post)
     print('\n\nCURL COMMAND:')
     print(ctan_post)
     print("\n\nHTTP RESPONSE:")
     print(fp_return)
     return 1
-  end
+else
+    ctan_post = ctan_post ..  ' https://ctan.org/submit/'
+end
 
   -- call post command to validate the upload at CTAN's validate URL
   local exit_status=0
@@ -169,12 +167,12 @@ function upload(tagnames)
   end
 
   -- if upload requested and validation succeeded repost to the upload URL
-  if (exit_status==0 or exit_status==nil) then
+    if (exit_status==0 or exit_status==nil) then
     if (ctanupload ~=nil and ctanupload ~=false and ctanupload ~= true) then
       print("Validation successful, do you want to upload to CTAN? [y/n]" )
       local answer=""
-      write("> ")
-      flush()
+      io.stdout:write("> ")
+      io.stdout:flush()
       answer=read()
       if(lower(answer,1,1)=="y") then
         ctanupload=true
@@ -318,7 +316,7 @@ function input_multi_line_field (name)
         field = field .. "\n" .. answer_line
       end
      end
-  until (return_count==3 or answer_line==nil)
+  until (return_count==3 or answer_line==nil or answer_line=='\004')
   return field
 end
 
