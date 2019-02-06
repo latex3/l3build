@@ -102,7 +102,7 @@ function ctan()
     standalone = true
   end
   if standalone then
-    errorlevel = check()
+    errorlevel = call({"."},"check")
     bundle = module
   else
     errorlevel = call(modules, "bundlecheck")

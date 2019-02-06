@@ -97,7 +97,7 @@ function call(dirs, target, opts)
   local scriptname = getscriptname()
   for _,i in ipairs(dirs) do
     local text = " for module " .. i
-    if i == "." then
+    if i == "." and opts["config"] then
       text = " with configuration " .. opts["config"][1]
     end
     print("Running l3build with target \"" .. target .. "\"" .. text )

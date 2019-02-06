@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Execution of all tests by `ctan` target (see #85)
+
 ## [2019-02-06]
 
 ### Added
