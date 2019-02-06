@@ -541,9 +541,9 @@ function runcheck(name, hide)
     checkengines = options["engine"]
   end
   -- Used for both .lvt and .pvt tests
-  local function check_and_diff(ext,engine,enginename,comp,pdftest)
+  local function check_and_diff(ext,engine,comp,pdftest)
     runtest(name,engine,hide,ext,pdftest,true)
-    local errorlevel = comp(name,engine,enginename)
+    local errorlevel = comp(name,engine)
     if errorlevel ~= 0 and options["halt-on-error"] then
       showfaileddiff()
       return 1
@@ -552,17 +552,12 @@ function runcheck(name, hide)
   end
   local errorlevel = 0
   for _,engine in pairs(checkengines) do
-    local enginename = engine
-    -- Allow for luatex == luajittex for .tlg/.tpf purposes
-    if match(engine,"^lua") then
-      engine = "luatex"
-    end
     setup_check(name,engine)
     local errlevel = 0
     if fileexists(testfiledir .. "/" .. name .. pvtext) then
-      errlevel = check_and_diff(pvtext,engine,enginename,compare_pdf,true)
+      errlevel = check_and_diff(pvtext,engine,compare_pdf,true)
     else
-      errlevel = check_and_diff(lvtext,engine,enginename,compare_tlg)
+      errlevel = check_and_diff(lvtext,engine,compare_tlg)
     end
     if errlevel ~= 0 and options["halt-on-error"] then
       return 1
@@ -610,10 +605,9 @@ function setup_check(name, engine)
   end
 end
 
-function compare_pdf(name,engine,enginename,cleanup)
+function compare_pdf(name,engine,cleanup)
   local testname = name .. "." .. engine
-  local difffile = testdir .. "/" .. name .. "." .. enginename
-    .. pdfext .. os_diffext
+  local difffile = testdir .. "/" .. testname .. pdfext .. os_diffext
   local pdffile  = testdir .. "/" .. testname .. pdfext
   local tpffile  = locate({testdir}, {testname .. tpfext, name .. tpfext})
   if not tpffile then
@@ -627,10 +621,10 @@ function compare_pdf(name,engine,enginename,cleanup)
   return errorlevel
 end
 
-function compare_tlg(name,engine,enginename,cleanup)
+function compare_tlg(name,engine,cleanup)
   local errorlevel
   local testname = name .. "." .. engine
-  local difffile = testdir .. "/" .. name .. "." .. enginename .. os_diffext
+  local difffile = testdir .. "/" .. testname .. os_diffext
   local logfile  = testdir .. "/" .. testname .. logext
   local tlgfile  = locate({testdir}, {testname .. tlgext, name .. tlgext})
   if not tlgfile then
@@ -638,7 +632,7 @@ function compare_tlg(name,engine,enginename,cleanup)
   end
   -- Do additional log formatting if the engine is LuaTeX, there is no
   -- LuaTeX-specific .tlg file and the default engine is not LuaTeX
-  if engine == "luatex"
+  if match(engine,"^lua")
     and not match(tlgfile, "%.luatex" .. "%" .. tlgext)
     and not match(stdengine,"^lua")
     then
