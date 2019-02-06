@@ -19,6 +19,7 @@ this project uses date-based 'snapshot' version identifiers.
   needs to be `true` or `false`
 - The `tag` target now allows no tag name to allow for setting this programmatically
   within a `build.lua` script
+- Better support for multiple LuaTeX-like engines
 
 ### Fixed
 
