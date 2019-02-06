@@ -119,6 +119,13 @@ function upload(tagnames)
 
   ctan_post = construct_ctan_post(uploadfile,options["debug"])
 
+
+  if debug then
+    ctan_post = ctan_post ..  ' https://httpbin.org/post'
+  else
+    ctan_post = ctan_post ..  ' https://ctan.org/submit/'
+  end
+
 -- curl file version
   local curlopt=open(ctanzip .. ".curlopt","w")
   output(curlopt)
@@ -240,13 +247,6 @@ function construct_ctan_post(uploadfile,debug)
   end
 -- commandline   ctan_post = ctan_post .. ' --form ' .. qq .. 'file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. qq
   ctan_post = ctan_post .. '\nform="file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
-  if debug then
--- commandline    ctan_post = ctan_post ..  ' https://httpbin.org/post'
-    ctan_post = ctan_post ..  '\nurl=https://httpbin.org/post'
-  else
--- commandline    ctan_post = ctan_post ..  ' https://ctan.org/submit/'
-    ctan_post = ctan_post ..  '\nurl=https://ctan.org/submit/'
-  end
 
   return ctan_post
 
