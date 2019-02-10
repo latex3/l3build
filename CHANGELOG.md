@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 
+- Handling of ASCII engines
 - Execution of all tests by `ctan` target (see #85)
 
 ## [2019-02-06]

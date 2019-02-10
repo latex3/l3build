@@ -1,6 +1,6 @@
 --[[
 
-File l3build-check.lua Copyright (C) 2018 The LaTeX3 Project
+File l3build-check.lua Copyright (C) 2018,2019 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -701,7 +701,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   local npffile = basename .. "." .. engine .. pdfext
   local asciiopt = ""
   for _,i in ipairs(asciiengines) do
-    if realengine == i then
+    if binary == i then
       asciiopt = "-translate-file ./ascii.tcx "
       break
     end
