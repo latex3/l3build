@@ -1331,7 +1331,14 @@
 % and a simple example of an extract from a \texttt{build.lua} file using this is shown
 % in Figure~\ref{fig:uploadconfig}.
 %
-% Note that the \texttt{upload} target will \emph{not} execute the \texttt{ctan} target first.
+% Note that the \texttt{upload} target will \emph{not} execute the
+% \texttt{ctan} target first.
+%
+% This upload facility assumes availablity of |curl| on your
+% system. In the case of Windows, the system curl will not be
+% available if you are using a 32 bit \TeX\ implementation. Curl
+% executables are available for a variety of operating systems from
+% \url{https://curl.haxx.se/download.html}.
 %
 % \paragraph{Announcement text}
 % It can be convenient not to include the announcement text within the |build.lua| file
@@ -1396,9 +1403,16 @@
 %
 % \begin{table}[p]
 %   \def\YES{\textbullet}
-%   \caption{Fields used in the \texttt{uploadconfig} setup table. The first section of fields are \emph{required} and if they are omitted the user will be interactively prompted for further input. Most commands take string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.
-% Most of the fields correspond directly to the fields in the CTAN upload API, the last group relate to file use by \pkg{l3build}.}
+%   \caption{Fields used in the \texttt{uploadconfig} setup table. The
+%   first section of fields are \emph{required} and if they are
+%   omitted the user will be interactively prompted for further
+%   input. Most commands take string input, but those that are
+%   indicated with `Multi' accept more than one entry using an array
+%   of strings.  Most of the fields correspond directly to the fields
+%   in the CTAN upload API, the last group relate to file use by
+%   \pkg{l3build}.}
 %   \label{tab:upload-setup}
+% \medskip
 %   \begin{minipage}{\linewidth}
 %   \begin{tabular}{@{}lccp{8cm}@{}}
 %     \toprule
