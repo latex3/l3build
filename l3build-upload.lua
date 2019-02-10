@@ -121,12 +121,13 @@ function upload(tagnames)
 
 
 -- curl file version
-  local curlopt=open(ctanzip .. ".curlopt","w")
+  local curloptfile = uploadconfig.curlopt_file or (ctanzip .. ".curlopt")
+  local curlopt=open(curloptfile,"w")
   output(curlopt)
   write(ctan_post)
   close(curlopt)
   
-  ctan_post=curlexe .. " --config " .. ctanzip .. ".curlopt"
+  ctan_post=curlexe .. " --config " .. curloptfile
   
 
 if options["debug"] then
