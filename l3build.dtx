@@ -1337,8 +1337,23 @@
 % It can be convenient not to include the announcement text within the |build.lua| file
 % directly. The command line argument |--message| (|-m|) allows the announcement to be
 % included as part of the |l3build| arguments, and |--file| (|-F|) reads the announcement
-% from a specified file. Note that if the announcement text is omitted a `silent update'
+% from a specified file. The \texttt{build.lua} file may also specify that this text is to
+% be taken from the file specified by
+% |uploadconfig.announcement_file|, this allows the release-specific announcement to be
+% specified outside the main |build.lua| file. If 
+% |uploadconfig.announcement_file| is |nil| or specifies a file that
+% can not be read, and no announcement is provided by the
+% |announcement| field or commandline arguments, |l3build| will
+% interactively prompt for text (which may be empty).
+%
+% Note that if the announcement text is empty a `silent update'
 % is performed; this should usually be performed for minor bug or documentation fixes only.
+%
+% \paragraph{Note text}
+% This optional field is for passing notes to the CTAN maintainers. As
+% for announcements, the text may be set in |uploadconfig.note| or
+% perhaps more usefully, if |uploadconfig.note_file| is the filename of a
+% readable file the file text is used as the note.
 %
 % \paragraph{Uploader details}
 % The CTAN team use the uploader email address as a form of low-security sanity
@@ -1356,12 +1371,33 @@
 % non-existing package or if you attempt to upload a new package with the same name as a
 % pre-existing one.
 %
+% \paragraph{The \texttt{curl} options file}
+%
+% The \pkg{l3build} upload options are passed to |curl| by writing the
+% fields to a text file with a default name being
+% \meta{package}|-ctan.curlopt|. This is then passed to curl using its
+% |--config| commandline option.  (Using an intermediate file helps
+% keep \pkg{l3build} portable between systems using different
+% commandline quoting conventions.)
+%
+% By default the file is written into the current directory alongside
+% the zip file to be uploaded. You may wish to specify that this file
+% is ignored by any version control in that directory (using
+% |.gitignore| or similar). Or alternatively you can use the
+% |uploadconfig.curl_file| field in the |build.lua| file to specify an
+% alternative name or location for this file.
+%
+% \paragraph{Debugging}
 % If you have have difficulty with the upload process, add the option |--debug| to divert
-% the request from CTAN to a service that redirects the input back again so it can be examined.
+% the request from CTAN to a service that redirects the input back
+% again so it can be examined.
+% It can also be useful to check in the |curlopts| file which has a
+% record of the options passed to curl.
 %
 % \begin{table}[p]
 %   \def\YES{\textbullet}
-%   \caption{Fields used in the \texttt{uploadconfig} setup table. The first section of fields are \emph{required} and if they are omitted the user will be interactively prompted for further input. Most commands take string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.}
+%   \caption{Fields used in the \texttt{uploadconfig} setup table. The first section of fields are \emph{required} and if they are omitted the user will be interactively prompted for further input. Most commands take string input, but those that are indicated with `Multi' accept more than one entry using an array of strings.
+% Most of the fields correspond directly to the fields in the CTAN upload API, the last group relate to file use by \pkg{l3build}.}
 %   \label{tab:upload-setup}
 %   \begin{minipage}{\linewidth}
 %   \begin{tabular}{@{}lccp{8cm}@{}}
@@ -1387,6 +1423,10 @@
 %  \texttt{support     } &      & \YES & URL(s) of support channels             \\
 %  \texttt{topic       } &      & \YES & Topic(s)\footnote{See \url{https://ctan.org/topics/highscore}} \\
 %  \texttt{update      } &      &      & Boolean \texttt{true} for an update, \texttt{false} for a new package   \\
+% \midrule
+%  \texttt{announcement\_file} &  &      & Announcement text  file                    \\
+%  \texttt{note\_file} &  &      & Note text file              \\
+%  \texttt{curlopt\_file} &  &      & The filename containing the options passed to curl    \\
 %     \bottomrule
 %   \end{tabular}
 %   \end{minipage}
