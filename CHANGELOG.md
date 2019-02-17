@@ -7,6 +7,11 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- Switch `--show-log-on-error` for use with `--halt-on-error`. Results in the `.log` file
+  being show in full on the console to aid in non-interactive debugging.
+
 ## [2019-02-10]
 
 ### Fixed

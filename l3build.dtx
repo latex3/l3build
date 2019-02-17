@@ -352,10 +352,12 @@
 % \item |--halt-on-error| (|-H|) Specifies that checks
 %   should stop as soon as possible, rather than running all requested
 %   tests; the difference file is printed in the terminal directly in the case of failure
-%  \item |--last| Name of the last test to run
+% \item |--last| Name of the last test to run
 % \item |--message| (|-m|) Text for upload announcement
 % \item |--quiet| (|-q|) Suppresses output from unpacking
 % \item |--rerun| Run tests without unpacking/set up
+% \item |--show-log-on-error| To be used in addition to \textt{--halt-on-error} and results
+%   in the full \texttt{.log} file of a failed test to be shown on the console
 % \item |--shuffle| Shuffle the order in which tests run
 % \item |--texmfhome| Sets the location of the user tree for installing
 % \end{itemize}
@@ -1347,7 +1349,7 @@
 % from a specified file. The \texttt{build.lua} file may also specify that this text is to
 % be taken from the file specified by
 % |uploadconfig.announcement_file|, this allows the release-specific announcement to be
-% specified outside the main |build.lua| file. If 
+% specified outside the main |build.lua| file. If
 % |uploadconfig.announcement_file| is |nil| or specifies a file that
 % can not be read, and no announcement is provided by the
 % |announcement| field or commandline arguments, |l3build| will

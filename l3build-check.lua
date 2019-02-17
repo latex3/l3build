@@ -544,9 +544,14 @@ function runcheck(name, hide)
   local function check_and_diff(ext,engine,comp,pdftest)
     runtest(name,engine,hide,ext,pdftest,true)
     local errorlevel = comp(name,engine)
-    if errorlevel ~= 0 and options["halt-on-error"] then
+    if errorlevel == 0 then
+      return errorlevel
+    end
+    if options["show-log-on-error"] then
+      showfailedlog(name)
+    end
+    if options["halt-on-error"] then
       showfaileddiff()
-      return 1
     end
     return errorlevel
   end
@@ -728,7 +733,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
-      binary .. format 
+      binary .. format
         .. " " .. asciiopt .. " " .. checkopts
         .. setup(lvtfile)
         .. (hide and (" > " .. os_null) or "")
@@ -907,6 +912,20 @@ function checkdiff()
   print("")
 end
 
+function showfailedlog(name)
+  print("\nCheck failed with log file")
+  for _,i in ipairs(filelist(testdir, name..".log")) do
+    print("  - " .. testdir .. "/" .. i)
+    print("")
+    local f = open(testdir .. "/" .. i,"r")
+    local content = f:read("*all")
+    close(f)
+    print("-----------------------------------------------------------------------------------")
+    print(content)
+    print("-----------------------------------------------------------------------------------")
+  end
+end
+
 function showfaileddiff()
   print("\nCheck failed with difference file")
   for _,i in ipairs(filelist(testdir, "*" .. os_diffext)) do
@@ -927,7 +946,7 @@ function save(names)
   for _,name in pairs(names) do
     if testexists(name) then
       for _,engine in pairs(engines) do
-        local testengine = ((engine == stdengine and "") or "." .. engine)        
+        local testengine = ((engine == stdengine and "") or "." .. engine)
         local function save_test(test_ext,gen_ext,out_ext,pdfmode)
           local out_file = name .. testengine .. out_ext
           local gen_file = name .. "." .. engine .. gen_ext
@@ -956,7 +975,7 @@ function save(names)
       return 1
     else
       print('Test "'.. name .. '"not found')
-      return 1     
+      return 1
     end
   end
   return 0

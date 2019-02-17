@@ -133,6 +133,11 @@ option_list =
         desc  = "Skip setup: simply rerun tests",
         type  = "boolean"
       },
+    ["show-log-on-error"] =
+      {
+        desc  = "If 'halt-on-error' stops, show the full log of the failure",
+        type  = "boolean"
+      },
     shuffle =
       {
         desc  = "Shuffle order of tests",
