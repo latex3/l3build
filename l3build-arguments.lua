@@ -111,12 +111,6 @@ option_list =
         short = "h",
         type  = "boolean"
       },
-    quiet =
-      {
-        desc  = "Suppresses TeX output when unpacking",
-        short = "q",
-        type  = "boolean"
-      },
     last =
       {
         desc  = "Name of last test to run",
@@ -127,6 +121,12 @@ option_list =
         desc  = "Text for upload announcement message",
         short = "m",
         type  = "string"
+      },
+    quiet =
+      {
+        desc  = "Suppresses TeX output when unpacking",
+        short = "q",
+        type  = "boolean"
       },
     rerun =
       {
