@@ -12,6 +12,10 @@ this project uses date-based 'snapshot' version identifiers.
 - Switch `--show-log-on-error` for use with `--halt-on-error`. Results in the `.log` file
   being show in full on the console to aid in non-interactive debugging.
 
+### Changed
+
+- Moved LuaTeX-specific font cache normalisation
+
 ## [2019-02-10]
 
 ### Fixed

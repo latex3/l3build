@@ -243,6 +243,9 @@ local function normalize_log(content,engine,errlevels)
        match(line, "^used structure  >") then
        return ""
     end
+    -- The first time a new font is used by LuaTeX, it shows up
+    -- as being cached: make it appear loaded every time
+    line = gsub(line, "save cache:", "load cache:")
     -- A tidy-up to keep LuaTeX and other engines in sync
     line = gsub(line, utf8_char(127), "^^?")
     -- Unicode engines display chars in the upper half of the 8-bit range:
@@ -345,9 +348,6 @@ local function normalize_lua_log(content,luatex)
         "Missing character: There is no (%^%^..) %(U%+(....)%)",
         "Missing character: There is no %1"
       )
-    -- The first time a new font is used, it shows up
-    -- as being cached
-    line = gsub(line, "(save cache:", "(load cache:")
     -- LuaTeX from v1.07 logs kerns differently ...
     -- This block only applies to the output of LuaTeX itself,
     -- hence needing a flag to skip the case of the reference log
