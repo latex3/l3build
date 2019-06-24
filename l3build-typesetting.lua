@@ -1,6 +1,6 @@
 --[[
 
-File l3build-typesetting.lua Copyright (C) 2018 The LaTeX3 Project
+File l3build-typesetting.lua Copyright (C) 2018,2019 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -153,7 +153,7 @@ function typesetpdf(file, dir)
   local errorlevel = typeset(file, dir)
   if errorlevel == 0 then
     name = name .. ".pdf"
-    os.remove(jobname(name))
+    rm(docfiledir,name)
     cp(name, typesetdir, docfiledir)
   else
     print(" ! Compilation failed")
