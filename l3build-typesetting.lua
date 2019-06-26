@@ -57,7 +57,7 @@ function dvitopdf(name, dir, engine, hide)
 end
 
 -- An auxiliary used to set up the environmental variables
-local function runcmd(cmd,dir,vars)
+function runcmd(cmd,dir,vars)
   local dir = dir or "."
   local dir = abspath(dir)
   local vars = vars or {}

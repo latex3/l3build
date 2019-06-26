@@ -1743,6 +1743,16 @@
 %   Runs \luavar{typesetexe} on the \meta{name} inside the \meta{dir}.
 % \end{function}
 %
+% \begin{function}{runcmd()}
+%   \begin{syntax}
+%     |runcmd(|\meta{cmd},\meta{dir},|{|\meta{envvars}|})|
+%   \end{syntax}
+%   A generic function which runs the \meta{cmd} in the \meta{dir}, first
+%   setting up all of the environmental variables specified to
+%   point to the |local| and |working| directories. This function is useful
+%   when creating non-standard typesetting steps.
+% \end{function}
+%
 % \subsection{Customising the target list}
 %
 % The targets known to \pkg{l3build} are stored in the global table
