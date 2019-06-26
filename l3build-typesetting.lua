@@ -68,7 +68,7 @@ local function runcmd(cmd,dir,vars)
     .. dir .. (typesetsearch and os_pathsep or "")
   -- Deal with spaces in paths
   if os_type == "windows" and match(envpaths," ") then
-    envpaths = '"' .. gsub(envpaths,'"','') .. '"'
+    envpaths = gsub(envpaths,'"','')
   end
   for _,var in pairs(vars) do
     env = env .. os_concat .. os_setenv .. " " .. var .. "=" .. envpaths
