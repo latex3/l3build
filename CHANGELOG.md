@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Support for spaces in paths when typesetting (see #91)
+
 ## [2019-06-18]
 
 ### Added
