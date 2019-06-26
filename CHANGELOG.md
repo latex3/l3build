@@ -11,6 +11,11 @@ this project uses date-based 'snapshot' version identifiers.
 
 - Support for HarfTeX (see #92)
 
+### Changed
+
+- Support for normalisation of LuaTeX v1.10 stack information
+  (may require new `.tlg` files)
+
 ### Fixed
 
 - Support for spaces in paths when typesetting (see #91)
