@@ -98,7 +98,7 @@ end
 -- the 'business' part from the tests and removes system-dependent stuff
 local function normalize_log(content,engine,errlevels)
   local maxprintline = maxprintline
-  if match(engine,"^lua") then
+  if match(engine,"^lua") or match(engine,"^harf") then
     maxprintline = maxprintline + 1 -- Deal with an out-by-one error
   end
   local function killcheck(line)
@@ -637,7 +637,7 @@ function compare_tlg(name,engine,cleanup)
   end
   -- Do additional log formatting if the engine is LuaTeX, there is no
   -- LuaTeX-specific .tlg file and the default engine is not LuaTeX
-  if match(engine,"^lua")
+  if match(engine,"^lua") or match(engine,"harf")
     and not match(tlgfile, "%.luatex" .. "%" .. tlgext)
     and not match(stdengine,"^lua")
     then
