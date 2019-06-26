@@ -1705,6 +1705,44 @@
 %   files which would be copied are reported.
 % \end{function}
 %
+% \subsection{Typesetting functions}
+%
+% All typetting functions return $0$ on a successful completion.
+%
+% \begin{function}{biber()}
+%   \begin{syntax}
+%     |biber(|\meta{name},\meta{dir}|)|
+%   \end{syntax}
+%   Runs Biber on the \meta{name} (\emph{i.e.}~a jobname lacking any
+%   extension) inside the \meta{dir}. If there is no |.bcf| file then
+%   no action is taken with a return value of $0$. 
+% \end{function}
+%
+% \begin{function}{bibtex()}
+%   \begin{syntax}
+%     |bibtex(|\meta{name},\meta{dir}|)|
+%   \end{syntax}
+%   Runs Bib\TeX{} on the \meta{name} (\emph{i.e.}~a jobname lacking any
+%   extension) inside the \meta{dir}. If there are no |\citation| lines in
+%   the |.aux| file then no action is taken with a return value of $0$. 
+% \end{function}
+%
+% \begin{function}{makeindex()}
+%   \begin{syntax}
+%     |makeindex(|\meta{name},\meta{dir},\meta{inext},\meta{outext},\meta{logext},\meta{style}|)|
+%   \end{syntax}
+%   Runs MakeIndex on the \meta{name} (\emph{i.e.}~a jobname lacking any
+%   extension) inside the \meta{dir}. The various extensions and the \meta{style}
+%   should normally be given as it standard for MakeIndex.
+% \end{function}
+%
+% \begin{function}{tex()}
+%   \begin{syntax}
+%     |tex(|\meta{file},\meta{dir}|)|
+%   \end{syntax}
+%   Runs \luavar{typesetexe} on the \meta{name} inside the \meta{dir}.
+% \end{function}
+%
 % \subsection{Customising the target list}
 %
 % The targets known to \pkg{l3build} are stored in the global table
