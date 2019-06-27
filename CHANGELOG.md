@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Correct test for LuaTeX (see #93)
+
 ## [2019-06-26]
 
 ### Added

@@ -639,7 +639,7 @@ function compare_tlg(name,engine,cleanup)
   end
   -- Do additional log formatting if the engine is LuaTeX, there is no
   -- LuaTeX-specific .tlg file and the default engine is not LuaTeX
-  if match(engine,"^lua") or match(engine,"harf")
+  if (match(engine,"^lua") or match(engine,"^harf"))
     and not match(tlgfile, "%.luatex" .. "%" .. tlgext)
     and not match(stdengine,"^lua")
     then
