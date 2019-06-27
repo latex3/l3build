@@ -123,9 +123,7 @@ local function normalize_log(content,engine,errlevels)
     -- do this before wrapping lines
     line = gsub(line, "^l%.%d+ ", "l. ...")
     -- Also from lua stack traces.
-    for str,_ in pairs({"field","function","upvalue"}) do
-      line = gsub(line, "lua:%d+: in " .. str, "lua:...: in " .. str)
-    end
+    line = gsub(line, "lua:%d+: in function", "lua:...: in function")
     -- Allow for wrapped lines: preserve the content and wrap
     -- Skip lines that have an explicit marker for truncation
     if len(line) == maxprintline  and

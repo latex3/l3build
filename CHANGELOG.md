@@ -7,6 +7,11 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- Back out change for normalisation of LuaTeX v1.10 stack information
+  (timing issue: will reintroduce later)
+
 ### Fixed
 
 - Correct test for LuaTeX (see #93)
