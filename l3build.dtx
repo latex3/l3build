@@ -2246,15 +2246,20 @@
       \relax
   \fi
 \else
-  \special{%
-    pdf: docinfo
-      <<
-        /Creator        (TeX)
-        /CreationDate   ()
-        /ModDate        ()
-        /Producer       (\ifx\XeTeXversion\@undefined\else x\fi dvipdfmx)
-      >>
-  }
+  \ifnum 0%
+  \ifx\XeTeXversion\@undefined\else 1\fi
+  \ifx\kanjiskip\@undefined\else 1\fi
+  >0 %
+    \special{%
+      pdf: docinfo
+        <<
+          /Creator        (TeX)
+          /CreationDate   ()
+          /ModDate        ()
+          /Producer       (\ifx\XeTeXversion\@undefined\else x\fi dvipdfmx)
+        >>
+    }
+  \fi
 \fi
 %    \end{macrocode}
 %
@@ -2272,8 +2277,13 @@
     \pdfvariable objcompresslevel=0 %
   \fi
 \else
-  \special{dvipdfmx:config z 0}% Compress level
-  \special{dvipdfmx:config C 0x40}% Object compression
+  \ifnum 0%
+  \ifx\XeTeXversion\@undefined\else 1\fi
+  \ifx\kanjiskip\@undefined\else 1\fi
+  >0 %
+    \special{dvipdfmx:config z 0}% Compress level
+    \special{dvipdfmx:config C 0x40}% Object compression
+  \fi
 \fi
 %    \end{macrocode}
 %

@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- Only write (x)dvipdfmx specials for XeTeX and (u)pTeX (see #94)
+
 ## [2019-06-27]
 
 ### Changed
