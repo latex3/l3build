@@ -1,6 +1,6 @@
 --[[
 
-File l3build-variables.lua Copyright (C) 2018 The LaTeX3 Project
+File l3build-variables.lua Copyright (C) 2018,2019 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -196,6 +196,9 @@ tpfext = tpfext or ".tpf"
 
 -- Manifest options
 manifestfile = manifestfile or "MANIFEST.md"
+
+-- Non-standard installation locations
+tdslocations = tdslocations or { }
 
 -- Upload settings
 curlexe  = curlexe  or "curl"

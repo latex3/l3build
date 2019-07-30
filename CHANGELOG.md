@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- Support for non-standard file layouts via `tdslocations` table
+
 ### Changed
 
 - Only write (x)dvipdfmx specials for XeTeX and (u)pTeX (see #94)

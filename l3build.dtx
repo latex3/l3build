@@ -153,6 +153,8 @@
 \luavarset{recordstatus}{false}       {Switch to include error level from test runs in \texttt{.tlg} files}
 \luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file}
 \luavarseparator
+\luavarset{tdslocations}{\{ \}}{Map for non-standard file installations}
+\luavarseparator
 \luavarset{uploadconfig}        {\meta{table}} {Metadata to describe the package for CTAN (see Table~\ref{tab:upload-setup})}
 \luavarset{uploadconfig.pkg}{ctanpkg}{Name of the CTAN package}
 \luavarseparator
@@ -1214,6 +1216,47 @@
 %
 % \section{Release-focussed features}
 %
+% \subsection{Installation structure}
+%
+% With the standard settings, \pkg{l3build} will install files within
+% the \TeX{} directory structure (TDS) as follows
+% \begin{itemize}
+%   \item \var{installfiles} within a \texttt{\meta{bundle}/\meta{module}}
+%     (or \texttt{\meta{module}}) directory inside \texttt{tex/\meta{format}}
+%   \item \var{sourcefiles} within a \texttt{\meta{bundle}/\meta{module}}
+%     (or \texttt{\meta{module}}) directory inside \texttt{source/\meta{format}}
+%   \item Typeset PDFs within a \texttt{\meta{bundle}/\meta{module}}
+%     (or \texttt{\meta{module}}) directory inside \texttt{doc/\meta{format}}
+%   \item \var{bstfiles} within a \texttt{\meta{bundle}/\meta{module}}
+%     (or \texttt{\meta{module}}) directory inside \texttt{bibtex/bst}
+%   \item \var{bibfiles} within a \texttt{\meta{bundle}/\meta{module}}
+%     (or \texttt{\meta{module}}) directory inside \texttt{bibtex/bib}
+%   \item \var{makeindexfiles} within a \texttt{\meta{bundle}/\meta{module}}
+%     (or \texttt{\meta{module}}) directory inside \texttt{makeindex}
+% \end{itemize}
+%
+% For more complex set ups, this can be customised using the
+% \luavar{tdslocations} table. Each entry there should be a glob specifying the
+% TDS position of a file or files. Any files not specified in the table
+% will use the standard locations above. For example, to place some files
+% in the generic tree, some in the plain \TeX{} tree and some in the \LaTeX{}
+% tree, one might use the set up shown in Figure~\ref{fig:tds}.
+% \begin{figure}
+%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
+%     tdslocations = 
+%       {
+%         "tex/generic/mypkg/*.generic.tex" ,
+%         "tex/plain/mypkg/*.plain.tex"    ,
+%         "tex/latex/mypkg/*.latex.tex"
+%       }
+%   \end{lstlisting}
+%   \caption{Example \texttt{tdslocations} table.}
+%   \label{fig:tds}
+% \end{figure}
+%
+% The table is read in order, and thus specific file names should come before
+% potential wild-card matches.
+%
 % \subsection{Automatic tagging}
 % \label{sec:tagging}
 %
@@ -1578,6 +1621,13 @@
 %   Returns a table containing all of the files with the \meta{path}
 %   which match the \meta{glob}; if the latter is absent returns a list of
 %   all files in the \meta{path}.
+% \end{function}
+%
+% \begin{function}{glob_to_pattern()}
+%   \begin{syntax}
+%     |glob_to_pattern(|\meta{glob}|)|
+%   \end{syntax}
+%   Returns the \meta{glob} converted to a Lua pattern.
 % \end{function}
 %
 % \begin{function}{jobname()}

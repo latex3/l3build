@@ -1,6 +1,6 @@
 --[[
 
-File l3build-install.lua Copyright (C) 2018 The LaTeX3 Project
+File l3build-install.lua Copyright (C) 2018,2019 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -22,8 +22,9 @@ for those people who are interested.
 
 --]]
 
-local pairs = pairs
-local print = print
+local ipairs = ipairs
+local pairs  = pairs
+local print  = print
 
 local set_program = kpse.set_program_name
 local var_value   = kpse.var_value
@@ -40,9 +41,7 @@ local function gethome()
 end
 
 function uninstall()
-  local function uninstall_files(dir,subdir)
-    subdir = subdir or moduledir
-    dir = dir .. "/" .. subdir
+  local function zapdir(dir)
     local installdir = gethome() .. "/" .. dir
     if options["dry-run"] then
       local files = filelist(installdir)
@@ -59,6 +58,11 @@ function uninstall()
       end
     end
     return 0
+  end
+  local function uninstall_files(dir,subdir)
+    subdir = subdir or moduledir
+    dir = dir .. "/" .. subdir
+    return zapdir(dir)
   end
   local errorlevel = 0
   -- Any script man files need special handling
@@ -83,13 +87,21 @@ function uninstall()
       print("- " .. v)
     end
   end
-  return   uninstall_files("doc")
+  errorlevel = uninstall_files("doc")
          + uninstall_files("source")
          + uninstall_files("tex")
          + uninstall_files("bibtex/bst",module)
          + uninstall_files("makeindex",module)
          + uninstall_files("scripts",module)
          + errorlevel
+  if errorlevel ~= 0 then return errorlevel end
+  -- Finally, clean up special locations
+  for _,location in ipairs(tdslocations) do
+    local path,glob = splitpath(location)
+    errorlevel = zapdir(path)
+    if errorlevel ~= 0 then return errorlevel end
+  end
+  return 0
 end
 
 function install_files(target,full,dry_run)
@@ -103,28 +115,47 @@ function install_files(target,full,dry_run)
     end
     dir = dir .. (subdir and ("/" .. subdir) or "")
     local filenames = { }
+    local paths = { }
+    -- Generate a file list and include the directory
     for _,glob_table in pairs(files) do
       for _,glob in pairs(glob_table) do
         for file,_ in pairs(tree(source,glob)) do
-          insert(filenames,file)
+          -- Just want the name
+          local file = gsub(file,"^%./","")
+          local matched = false
+          for _,location in ipairs(tdslocations) do
+            local path,glob = splitpath(location)
+            local pattern = glob_to_pattern(glob)
+            if match(file,pattern) then
+              insert(paths,path)
+              insert(filenames,path .. "/" .. file)
+              matched = true
+              break
+            end
+          end
+          if not matched then
+            insert(paths,dir)
+            insert(filenames,dir .. "/" .. file)
+          end
         end
       end
     end
+
     local errorlevel = 0
     -- The target is only created if there are actual files to install
     if next(filenames) then
-      local installdir = target .. "/" .. dir
-      if dry_run then
-        print("\n" .. "For installation in " .. installdir .. ":")
-      else
-        errorlevel = cleandir(installdir)
-        if errorlevel ~= 0 then return errorlevel end
+      if not dry_run then
+        for _,path in pairs(paths) do
+          errorlevel = cleandir(target .. "/" .. path)
+          if errorlevel ~= 0 then return errorlevel end
+        end
       end
       for _,file in ipairs(filenames) do
         if dry_run then
-          print("- " .. select(2,splitpath(file)))
+          print("- " .. file)
         else
-          errorlevel = cp(file,source,installdir)
+          local path,file = splitpath(file)
+          errorlevel = cp(file,source,target .. "/" .. path)
           if errorlevel ~= 0 then return errorlevel end
         end
       end
@@ -180,6 +211,10 @@ function install_files(target,full,dry_run)
     typesetlist = excludelist(docfiledir,typesetfiles,{sourcefiles})
     sourcelist = excludelist(sourcefiledir,sourcefiles,
       {bstfiles,installfiles,makeindexfiles,scriptfiles})
+ 
+  if dry_run then
+    print("\nFor installation inside " .. target .. ":")
+  end 
     
     errorlevel = install_files(sourcefiledir,"source",{sourcelist})
       + install_files(docfiledir,"doc",
@@ -212,9 +247,8 @@ function install_files(target,full,dry_run)
       end
     end
     if next(manfiles) then
-      print("\n" .. "For installation in " .. target .. "/doc/man:")
       for _,v in ipairs(manfiles) do
-        print("- " .. v)
+        print("- doc/man/" .. v)
       end
     end
   end

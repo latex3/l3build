@@ -1,6 +1,6 @@
 --[[
 
-File l3build-file-functions.lua Copyright (C) 2018 The LaTeX3 Project
+File l3build-file-functions.lua Copyright (C) 2018,2019 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -80,7 +80,7 @@ local insert           = table.insert
   (end license)
 
 --]]
-local function glob_to_pattern(glob)
+function glob_to_pattern(glob)
 
   local pattern = "^" -- pattern being built
   local i = 0 -- index in glob
