@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Interaction between secondary files in some tests
+
 ## [2019-07-30]
 
 ### Added
