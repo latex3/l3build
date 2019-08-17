@@ -24,37 +24,13 @@ Issues
 The issue tracker for LaTeX3 is currently located
 [on GitHub](https://github.com/latex3/l3build/issues).
 
-The LaTeX3 Project
-------------------
+Development team
+----------------
 
-Development of LaTeX3 is carried out by
-[The LaTeX3 Project](http://www.latex-project.org/latex3.html). Currently,
-the team members are
-
-* Johannes Braams
-* David Carlisle
-* Robin Fairbairns
-* Morten Høgholm
-* Bruno Le Floch
-* Thomas Lotze
-* Frank Mittelbach
-* Will Robertson
-* Chris Rowley
-* Rainer Schöpf
-* Joseph Wright
-
-Former members of The LaTeX3 Project team were
-
-* Michael Downes
-* Denys Duchier
-* Alan Jeffrey
-* Martin Schröder
-
-The development team can be contacted
-by e-mail: <latex-team@latex-project.org>.
+The LaTeX kernel is developed by [The LaTeX3 Project](https://latex-project.org).
 
 -----
 
-<p>Copyright (C) 2014-2018 The LaTeX3 Project <br />
+<p>Copyright (C) 2014-2019 The LaTeX3 Project <br />
 <a href="http://latex-project.org/">http://latex-project.org/</a> <br />
 All rights reserved.</p>
