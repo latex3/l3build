@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## Fixed
+
+- Remove `.log` file before each check run: prevent inter-engine confusion
+
 ## [2019-07-31]
 
 ### Fixed
