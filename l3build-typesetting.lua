@@ -127,7 +127,7 @@ function tex(file,dir)
   local dir = dir or "."
   return runcmd(typesetexe .. " " .. typesetopts .. " \"" .. typesetcmds
     .. "\\input " .. file .. "\"",
-    dir,{"TEXINPUTS"})
+    dir,{"TEXINPUTS","LUAINPUTS"})
 end
 
 local function typesetpdf(file,dir)

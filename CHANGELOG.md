@@ -7,7 +7,11 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
-## Fixed
+### Changed
+
+- Include `LUAINPUTS` when setting `TEXINPUTS` for `checksearch = false`, etc.
+
+### Fixed
 
 - Remove `.log` file before each check run: prevent inter-engine confusion
 

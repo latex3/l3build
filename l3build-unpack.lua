@@ -85,6 +85,8 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
         unpackdir .. "/" .. path,
         os_setenv .. " TEXINPUTS=." .. os_pathsep
           .. localdir .. (unpacksearch and os_pathsep or "") ..
+        os_setenv .. " LUAINPUTS=." .. os_pathsep
+          .. localdir .. (unpacksearch and os_pathsep or "") ..
         os_concat ..
         unpackexe .. " " .. unpackopts .. " " .. name .. " < "
           .. localdir .. "/yes"

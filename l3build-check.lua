@@ -725,6 +725,8 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
       -- avoids any paths in the logs
       os_setenv .. " TEXINPUTS=." .. (checksearch and os_pathsep or "")
         .. os_concat ..
+      os_setenv .. " LUAINPUTS=." .. (checksearch and os_pathsep or "")
+        .. os_concat ..
       -- Avoid spurious output from (u)pTeX
       os_setenv .. " GUESS_INPUT_KANJI_ENCODING=0"
         .. os_concat ..
