@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2019-08-24]
+
 ### Changed
 
 - Include `LUAINPUTS` when setting `TEXINPUTS` for `checksearch = false`, etc.
@@ -312,7 +314,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2019-07-31...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2019-08-24...HEAD
+[2019-08-24]: https://github.com/latex3/l3build/compare/2019-07-31...2019-08-24
 [2019-07-31]: https://github.com/latex3/l3build/compare/2019-07-30...2019-07-31
 [2019-07-30]: https://github.com/latex3/l3build/compare/2019-06-27...2019-07-30
 [2019-06-27]: https://github.com/latex3/l3build/compare/2019-06-26...2019-06-27
