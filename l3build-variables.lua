@@ -179,7 +179,7 @@ end
 maxprintline = maxprintline or 79
 packtdszip   = packtdszip   or false
 typesetcmds  = typesetcmds  or ""
-typesetruns  = typesetruns  or 2
+typesetruns  = typesetruns  or 3
 recordstatus = recordstatus or false
 
 -- Extensions for various file types: used to abstract out stuff a bit
