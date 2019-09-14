@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 
+- Use three typesetting runs as-standard
 - Use `pdftex` not `tex` for unpacking
 
 ## [2019-08-24]
