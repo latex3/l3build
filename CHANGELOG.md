@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- Use `pdftex` not `tex` for unpacking
+
 ## [2019-08-24]
 
 ### Changed

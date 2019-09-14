@@ -104,7 +104,7 @@ unpackdeps  = unpackdeps  or { }
 
 -- Executable names plus following options
 typesetexe = typesetexe or "pdflatex"
-unpackexe  = unpackexe  or "tex"
+unpackexe  = unpackexe  or "pdftex"
 zipexe     = zipexe     or "zip"
 
 checkopts   = checkopts   or "-interaction=nonstopmode"
