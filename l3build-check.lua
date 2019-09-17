@@ -81,7 +81,10 @@ function checkinit()
     cp(i, supportdir, testdir)
   end
   execute(os_ascii .. ">" .. testdir .. "/ascii.tcx")
+  return checkinit_hook()
 end
+
+checkinit_hook = checkinit_hook or function() return 0 end
 
 local function rewrite(source,result,processor,...)
   local file = assert(open(source,"rb"))

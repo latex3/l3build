@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- `checkinit_hook()`
+
 ## [2019-09-14]
 
 ### Changed
