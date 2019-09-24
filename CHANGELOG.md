@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Clean out all configuration test dirs (see #98)
+
 ## [2019-09-18]
 
 ### Added
