@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2019-09-25]
+
 ### Added
 
 - New `texmfdir` variable for more complex local additions
@@ -335,7 +337,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2019-09-18...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2019-09-25...HEAD
+[2019-09-25]: https://github.com/latex3/l3build/compare/2019-09-18...2019-09-25
 [2019-09-18]: https://github.com/latex3/l3build/compare/2019-09-14...2019-09-18
 [2019-09-14]: https://github.com/latex3/l3build/compare/2019-08-24...2019-09-14
 [2019-08-24]: https://github.com/latex3/l3build/compare/2019-07-31...2019-08-24
