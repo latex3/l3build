@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- New `texmfdir` variable for more complex local additions
+
 ### Fixed
 
 - Clean out all configuration test dirs (see #98)

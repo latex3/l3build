@@ -46,6 +46,7 @@ sourcefiledir = sourcefiledir or currentdir
 supportdir    = supportdir    or maindir .. "/support"
 testfiledir   = testfiledir   or currentdir .. "/testfiles"
 testsuppdir   = testsuppdir   or testfiledir .. "/support"
+texmfdir      = texmfdir      or maindir .. "/texmf"
 
 -- Structure within a development area
 builddir   = builddir   or maindir .. "/build"

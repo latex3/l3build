@@ -63,6 +63,7 @@
 \luavarset{supportdir} {maindir .. "/support"}    {Directory containing general support files}
 \luavarset{testfiledir}{"./testfiles"}  {Directory containing test files}
 \luavarset{testsuppdir}{testfiledir .. "/support"}{Directory containing test-specific support files}
+\luavarset{texmfdir}{maindir .. "/texmf"}{Directory containing support files in tree form}
 \luavarseparator
 \luavarset{builddir}  {maindir .. "/build"}   {Directory for building and testing}
 \luavarset{distribdir}{builddir .. "/distrib"}{Directory for generating distribution structure}
@@ -387,6 +388,8 @@
 % \item any files in the directory \var{testsuppdir};
 % \item any files that match \var{checksuppfiles} in the \var{supportdir}.
 % \end{itemize}
+% The \var{texmfdir} is also made available to the tests (if defined and
+% non-empty).
 % This range of possibilities allow sensible defaults but significant flexibility for defining your own test setups.
 %
 % Checking can be performed with any or all of the `engines' \texttt{pdftex}, \texttt{xetex}, and \texttt{luatex}.

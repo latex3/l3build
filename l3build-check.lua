@@ -721,14 +721,21 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   -- Ensure there is no stray .log file
   rm(testdir,name .. logext)
   local errlevels = {}
+  local localtexmf = ""
+  if texmfdir and texmfdir ~= "" then
+    localtexmf = os_pathsep .. abspath(texmfdir) .. "//"
+  end
+  local texmfdir = abspath(texmfdir) .. "//"
   for i = 1, checkruns do
     errlevels[i] = run(
       testdir,
       -- No use of localdir here as the files get copied to testdir:
       -- avoids any paths in the logs
-      os_setenv .. " TEXINPUTS=." .. (checksearch and os_pathsep or "")
+      os_setenv .. " TEXINPUTS=." .. localtexmf
+        .. (checksearch and os_pathsep or "")
         .. os_concat ..
-      os_setenv .. " LUAINPUTS=." .. (checksearch and os_pathsep or "")
+      os_setenv .. " LUAINPUTS=." .. localtexmf
+        .. (checksearch and os_pathsep or "")
         .. os_concat ..
       -- Avoid spurious output from (u)pTeX
       os_setenv .. " GUESS_INPUT_KANJI_ENCODING=0"
