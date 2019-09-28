@@ -67,8 +67,7 @@ function runcmd(cmd,dir,vars)
   if texmfdir and texmfdir ~= "" then
     localtexmf = os_pathsep .. abspath(texmfdir) .. "//"
   end
-  local envpaths = "." .. os_pathsep
-    .. localtexmf
+  local envpaths = "." .. localtexmf .. os_pathsep
     .. abspath(localdir) .. os_pathsep
     .. dir .. (typesetsearch and os_pathsep or "")
   -- Deal with spaces in paths

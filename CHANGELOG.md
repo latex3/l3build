@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Typesetting when using an isolated system (use of texmfdir)
+
 ## [2019-09-25]
 
 ### Added
