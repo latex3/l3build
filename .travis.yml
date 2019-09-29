@@ -7,7 +7,7 @@ cache:
     - $HOME/.texlive
 
 script:
- - texlua l3build.lua check -q -H
+ - texlua l3build.lua ctan -H --show-log-on-error
 
 notifications:
   email:

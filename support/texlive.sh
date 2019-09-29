@@ -37,6 +37,34 @@ tlmgr install --no-depends babel ptex uptex ptex-base uptex-base ptex-fonts \
 # Font support for PDF tests
 tlmgr install amsfonts
 
+# Support for typesetting the docs
+tlmgr install \
+  amsmath \
+  booktabs \
+  colortbl \
+  csquotes \
+  ec \
+  enumitem \
+  etoolbox \
+  fancyvrb \
+  graphics \
+  graphics-def \
+  hyperref \
+  ifluatex \
+  ifxetex \
+  l3kernel \
+  l3packages \
+  listings \
+  makeindex \
+  needspace \
+  oberdiek \
+  psnfss \
+  symbol \
+  tools \
+  underscore \
+  url \
+  zapfding
+
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
 
