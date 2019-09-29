@@ -401,6 +401,12 @@
 % Options passed to the binary are defined in the variable \var{checkopts}.
 %
 % By default, |texmf| trees are searched for input files when checking. This can be disabled by setting \var{checksearch} to |false|: isolation provides confidence that the tests cannot accidentally be running with incorrect files installed in the main distribution or |hometexmf|.
+%
+% The \var{texmfdir} variable sets a directory which is made available for
+% recursive searching \emph{in addition} to any files copied from
+% \var{supportdir}. No subdivison of \var{texmfdir} is attempted, thus it
+% should not contain multiple files with the same name. The \var{texmfdir}
+% is made available both to checking and typesetting.
 % \end{buildcmd}
 %
 %
