@@ -722,10 +722,9 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   rm(testdir,name .. logext)
   local errlevels = {}
   local localtexmf = ""
-  if texmfdir and texmfdir ~= "" then
+  if texmfdir and texmfdir ~= "" and direxists(texmfdir) then
     localtexmf = os_pathsep .. abspath(texmfdir) .. "//"
   end
-  local texmfdir = abspath(texmfdir) .. "//"
   for i = 1, checkruns do
     errlevels[i] = run(
       testdir,

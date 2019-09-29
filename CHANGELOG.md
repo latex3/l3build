@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Path searching if `texmfdir` is set but does not exist
+
 ## [2019-09-28]
 
 ### Fixed
