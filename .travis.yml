@@ -29,4 +29,3 @@ deploy:
       tags: true
       branch: master
     prerelease: false
-    draft: true
