@@ -115,27 +115,34 @@ function install_files(target,full,dry_run)
     end
     dir = dir .. (subdir and ("/" .. subdir) or "")
     local filenames = { }
+    local sourcepaths = { }
     local paths = { }
     -- Generate a file list and include the directory
     for _,glob_table in pairs(files) do
       for _,glob in pairs(glob_table) do
         for file,_ in pairs(tree(source,glob)) do
           -- Just want the name
-          local file = gsub(file,"^%./","")
+          local path,filename = splitpath(file)
+          if path == "." then
+            sourcepaths[filename] = source
+          else
+            path = gsub(path,"^%.","")
+            sourcepaths[filename] = source .. path
+          end
           local matched = false
           for _,location in ipairs(tdslocations) do
             local path,glob = splitpath(location)
             local pattern = glob_to_pattern(glob)
-            if match(file,pattern) then
+            if match(filename,pattern) then
               insert(paths,path)
-              insert(filenames,path .. "/" .. file)
+              insert(filenames,path .. "/" .. filename)
               matched = true
               break
             end
           end
           if not matched then
             insert(paths,dir)
-            insert(filenames,dir .. "/" .. file)
+            insert(filenames,dir .. "/" .. filename)
           end
         end
       end

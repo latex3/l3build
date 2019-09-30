@@ -11,6 +11,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 - Additional notes on `texmfdir`
 
+### Fixed
+
+- Copy TDS files inside subdirectories (fixes #100)
+
 ## [2019-09-29]
 
 ### Fixed
