@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2019-09-30]
+
 ### Added
 
 - New `flattentds` variable for controlling complex TDS structures
@@ -358,7 +360,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2019-09-29...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2019-09-30...HEAD
+[2019-09-30]: https://github.com/latex3/l3build/compare/2019-09-29...2019-09-30
 [2019-09-29]: https://github.com/latex3/l3build/compare/2019-09-28...2019-09-29
 [2019-09-28]: https://github.com/latex3/l3build/compare/2019-09-25...2019-09-28
 [2019-09-25]: https://github.com/latex3/l3build/compare/2019-09-18...2019-09-25
