@@ -177,6 +177,9 @@ epoch        = epoch        or 1463734800
 if flatten == nil then
   flatten = true
 end
+if flattentds == nil then
+  flattentds = true
+end
 maxprintline = maxprintline or 79
 packtdszip   = packtdszip   or false
 typesetcmds  = typesetcmds  or ""

@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 
+- New `flattentds` variable for controlling complex TDS structures
 - Additional notes on `texmfdir`
 
 ### Fixed

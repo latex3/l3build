@@ -147,6 +147,7 @@
 \luavarset{ctanzip}{ctanpkg ... "-ctan"}{Name of the zip file (without extension) created for upload to CTAN}
 \luavarset{epoch}       {1463734800}  {Epoch (Unix date) to set for test runs}
 \luavarset{flatten}     {true}        {Switch to flatten any source structure when sending to CTAN}
+\luavarset{flattentds}  {true}        {Switch to flatten any source structure when creating a TDS structure}
 \luavarset{maxprintline}{79}          {Length of line to use in log files}
 \luavarset{packtdszip}  {false}       {Switch to build a TDS-style zip file for CTAN}
 \luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting}
@@ -774,7 +775,8 @@
 % be useful in these cases: this enables recursive searching in the appropriate
 % tree locations. With the standard settings, this structure will be removed
 % when creating a CTAN release: the variable \var{flatten} may be
-% used to control this behavior.
+% used to control this behavior. The \var{flattentds} setting controls
+% the same concept for TDS creation.
 %
 % A series of example layouts and matching |build.lua| files are available from
 % \url{https://github.com/latex3/l3build/tree/master/examples}.

@@ -123,11 +123,13 @@ function install_files(target,full,dry_run)
         for file,_ in pairs(tree(source,glob)) do
           -- Just want the name
           local path,filename = splitpath(file)
+          local sourcepath = "/"
           if path == "." then
             sourcepaths[filename] = source
           else
             path = gsub(path,"^%.","")
             sourcepaths[filename] = source .. path
+            if not flattentds then sourcepath = path .. "/" end
           end
           local matched = false
           for _,location in ipairs(tdslocations) do
@@ -135,14 +137,14 @@ function install_files(target,full,dry_run)
             local pattern = glob_to_pattern(glob)
             if match(filename,pattern) then
               insert(paths,path)
-              insert(filenames,path .. "/" .. filename)
+              insert(filenames,path .. sourcepath .. filename)
               matched = true
               break
             end
           end
           if not matched then
             insert(paths,dir)
-            insert(filenames,dir .. "/" .. filename)
+            insert(filenames,dir .. sourcepath .. filename)
           end
         end
       end
@@ -162,7 +164,9 @@ function install_files(target,full,dry_run)
           print("- " .. file)
         else
           local path,file = splitpath(file)
-          errorlevel = cp(file,source,target .. "/" .. path)
+          local installpath = target .. "/" .. path
+          mkdir(installpath)
+          errorlevel = cp(file,sourcepaths[file],installpath)
           if errorlevel ~= 0 then return errorlevel end
         end
       end
