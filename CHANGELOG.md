@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- Normalise out file paths in all cases
+
 ## [2019-09-30]
 
 ### Added

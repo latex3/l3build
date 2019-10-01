@@ -137,22 +137,20 @@ local function normalize_log(content,engine,errlevels)
     lastline = ""
     -- Zap ./ at begin of filename
     line = gsub(line, "%(%.%/", "(")
-    -- Zap paths if places other than 'here' are accessible
-    if checksearch then
-      -- The pattern excludes < and > as the image part can have
-      -- several entries on one line
-      local pattern = "%w?:?/[^ %<%>]*/([^/%(%)]*%.%w*)"
-      -- Files loaded from TeX: all start ( -- )
-      line = gsub(line, "%(" .. pattern, "(../%1")
-      -- Images
-      line = gsub(line, "<" .. pattern .. ">", "<../%1>")
-      -- luaotfload files start with keywords
-      line = gsub(line, "from " .. pattern .. "%(", "from. ./%1(")
-      line = gsub(line, ": " .. pattern .. "%)", ": ../%1)")
-      -- Deal with XeTeX specials
-      if match(line, "^%.+\\XeTeX.?.?.?file") then
-        line = gsub(line, pattern, "../%1")
-      end
+    -- Zap paths
+    -- The pattern excludes < and > as the image part can have
+    -- several entries on one line
+    local pattern = "%w?:?/[^ %<%>]*/([^/%(%)]*%.%w*)"
+    -- Files loaded from TeX: all start ( -- )
+    line = gsub(line, "%(" .. pattern, "(../%1")
+    -- Images
+    line = gsub(line, "<" .. pattern .. ">", "<../%1>")
+    -- luaotfload files start with keywords
+    line = gsub(line, "from " .. pattern .. "%(", "from. ./%1(")
+    line = gsub(line, ": " .. pattern .. "%)", ": ../%1)")
+    -- Deal with XeTeX specials
+    if match(line, "^%.+\\XeTeX.?.?.?file") then
+      line = gsub(line, pattern, "../%1")
     end
     -- Deal with dates
     if match(line, "[^<]%d%d%d%d[/%-]%d%d[/%-]%d%d") then
