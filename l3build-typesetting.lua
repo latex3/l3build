@@ -174,9 +174,7 @@ typeset_demo_tasks = typeset_demo_tasks or function()
   return 0
 end
 
--- Typeset all required documents
--- Uses a set of dedicated auxiliaries that need to be available to others
-function doc(files)
+local function docinit()
   -- Set up
   cleandir(typesetdir)
   for _,filetype in pairs(
@@ -199,6 +197,16 @@ function doc(files)
   if errorlevel ~= 0 then
     return errorlevel
   end
+  return docinit_hook()
+end
+
+docinit_hook = docinit_hook or function() return 0 end
+
+-- Typeset all required documents
+-- Uses a set of dedicated auxiliaries that need to be available to others
+function doc(files)
+  local errorlevel = docinit()
+  if errorlevel ~= 0 then return errorlevel end
   local done = {}
   for _,typesetfiles in ipairs({typesetdemofiles,typesetfiles}) do
     for _,glob in pairs(typesetfiles) do

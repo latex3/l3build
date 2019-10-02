@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- `docinit_hook()`
+
 ### Changed
 
 - Normalise out file paths in all cases
