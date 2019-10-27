@@ -215,7 +215,7 @@ local function normalize_log(content,engine,errlevels)
     if match(line, "^> \\box%d+=$") or match(line, "^> \\box%d+=(void)$") then
       line = gsub(line, "%d+=", "...=")
     end
-    if not match(stdengine,"^u?ptex$") then
+    if not match(stdengine,"^e?u?ptex$") then
       -- Remove 'normal' direction information on boxes with (u)pTeX
       line = gsub(line, ",? yoko direction,?", "")
       line = gsub(line, ",? yoko%(math%) direction,?", "")
