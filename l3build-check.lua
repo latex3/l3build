@@ -215,12 +215,14 @@ local function normalize_log(content,engine,errlevels)
     if match(line, "^> \\box%d+=$") or match(line, "^> \\box%d+=(void)$") then
       line = gsub(line, "%d+=", "...=")
     end
-    -- Remove 'normal' direction information on boxes with (u)pTeX
-    line = gsub(line, ",? yoko direction,?", "")
-    line = gsub(line, ",? yoko%(math%) direction,?", "")
-    -- Remove '\displace 0.0' lines in (u)pTeX
-    if match(line,"^%.*\\displace 0%.0$") then
-      return ""
+    if not match(stdengine,"^u?ptex$") then
+      -- Remove 'normal' direction information on boxes with (u)pTeX
+      line = gsub(line, ",? yoko direction,?", "")
+      line = gsub(line, ",? yoko%(math%) direction,?", "")
+      -- Remove '\displace 0.0' lines in (u)pTeX
+      if match(line,"^%.*\\displace 0%.0$") then
+        return ""
+       end
      end
      -- Remove the \special line that in DVI mode keeps PDFs comparable
     if match(line, "^%.*\\special%{pdf: docinfo << /Creator") then
