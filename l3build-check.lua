@@ -960,6 +960,10 @@ end
 function save(names)
   checkinit()
   local engines = options["engine"] or {stdengine}
+  if names == nil then
+    print("Arguments are required for the save command")
+    return 1
+  end
   for _,name in pairs(names) do
     if testexists(name) then
       for _,engine in pairs(engines) do
@@ -991,7 +995,7 @@ function save(names)
         .. lveext .. " file of the same name")
       return 1
     else
-      print('Test "'.. name .. '"not found')
+      print('Test "' .. name .. '" not found')
       return 1
     end
   end
