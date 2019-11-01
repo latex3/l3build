@@ -11,6 +11,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 - Avoid normalisation of (u)pTeX data when this is standard engine
   (fixes #103)
+- Normalise Lua data references (#107)
 
 ## [2019-10-02]
 
