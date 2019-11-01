@@ -13,6 +13,7 @@ this project uses date-based 'snapshot' version identifiers.
   (fixes #103)
 - Normalise Lua data references (#107)
 - Extend `runtest_task()` to pass run number
+- Allow `regression-test` to load when e-TeX is unavailable (fixes #105)
 
 ## [2019-10-02]
 

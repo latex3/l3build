@@ -2036,12 +2036,11 @@
 %
 % \subsection{Preliminaries}
 %
-% We require \eTeX{}.
+% We require \eTeX{} for some features.
 %    \begin{macrocode}
 \begingroup\expandafter\expandafter\expandafter\endgroup
 \expandafter\ifx\csname eTeXversion\endcsname\relax
-  \errmessage{e-TeX is required to use regression-test.tex}%
-  \expandafter\endinput
+  \message{e-TeX is required by some regression-test.tex features}%
 \fi
 %    \end{macrocode}
 %
@@ -2163,7 +2162,14 @@
 \def\OMIT{\LONGTYPEOUT{OMIT}}
 \def\TIMO{\LONGTYPEOUT{TIMO}}
 %    \end{macrocode}
-% \end{macro}
+% \end{macro}% We require \eTeX{}.
+%    \begin{macrocode}
+\begingroup\expandafter\expandafter\expandafter\endgroup
+\expandafter\ifx\csname eTeXversion\endcsname\relax
+  \errmessage{e-TeX is required to use regression-test.tex}%
+  \expandafter\endinput
+\fi
+%    \end{macrocode}
 %
 %  \begin{macro}{\SHOWFILE}
 %     Load a file (e.g.,| \jobname.toc|) into the .log file with the usual special
@@ -2186,6 +2192,10 @@
      \typeout{-------- #1 (end) -----------}%
 }%
 \endgroup
+\begingroup\expandafter\expandafter\expandafter\endgroup
+\expandafter\ifx\csname \everyeof\endcsname\relax
+  \def\SHOWFILE#1{\TYPE{FEATURE UNAVAILABLE}}
+\fi
 %    \end{macrocode}
 %  \end{macro}
 %
@@ -2240,7 +2250,7 @@
     ============================================================%
   }%
 }
-\protected\long\def\BEGINTEST#1{%
+\csname protected\endcsname\long\def\BEGINTEST#1{%
   \global\advance\gTESTint by 1 %
   \SEPARATOR
   \LONGTYPEOUT{TEST \the\gTESTint: \detokenize{#1}}%
@@ -2248,7 +2258,7 @@
   \begingroup
     \let\TYPE\LONGTYPEOUT
 }
-\protected\long\def\ENDTEST{%
+\csname protected\endcsname\long\def\ENDTEST{%
   \endgroup
   \SEPARATOR
   \LONGTYPEOUT{}%
@@ -2367,6 +2377,10 @@
 %
 % Finish up.
 %    \begin{macrocode}
+\begingroup\expandafter\expandafter\expandafter\endgroup
+\expandafter\ifx\csname protected\endcsname\relax
+  \let\protected\undefined
+\fi
 \reset@catcodes
 %    \end{macrocode}
 %
