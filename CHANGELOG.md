@@ -15,6 +15,10 @@ this project uses date-based 'snapshot' version identifiers.
 - Extend `runtest_task()` to pass run number
 - Allow `regression-test` to load when e-TeX is unavailable (fixes #105)
 
+### Fixed
+
+- Location of `testsuppdir` when multiple configurations are used
+
 ## [2019-10-02]
 
 ### Added

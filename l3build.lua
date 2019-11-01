@@ -177,8 +177,14 @@ if #checkconfigs == 1 and
    (options["target"] == "check" or options["target"] == "save" or options["target"] == "clean") then
    local config = "./" .. gsub(checkconfigs[1],".lua$","") .. ".lua"
    if fileexists(config) then
+     local savedtestfiledir = testfiledir
      dofile(config)
      testdir = testdir .. "-" .. checkconfigs[1]
+     -- Reset testsuppdir if required
+     if savedtestfiledir ~= testfiledir and
+       testsuppdir == savedtestfiledir .. "/support" then
+       testsuppdir = testfiledir .. "/support"
+     end
    else
      print("Error: Cannot find configuration " ..  checkconfigs[1])
      exit(1)
