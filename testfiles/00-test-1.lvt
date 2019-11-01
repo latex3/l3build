@@ -32,4 +32,15 @@
   \end{verbatim}
 \ENDTEST
 
+\begingroup
+  \catcode`Q=4 %
+  \gdef\ODD{Q}%
+\endgroup
+
+\TEST{Assertions}{%
+  \ASSERT{A}{A}%
+  \ASSERT{Q}{\ODD}%
+  \ASSERTSTR{Q}{\ODD}%
+}
+
 \end{document}

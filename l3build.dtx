@@ -929,6 +929,10 @@
 % \item
 % \cs{SHOWFILE} (\eTeX{} only) Shows the content of the file given as an
 % argument.
+% \item
+% \cs{ASSERT} and \cs{ASSERTSTR} (\eTeX{} only) Asserts if the full expansion
+% of the two required arguments are the same: the \cs{ASSERT} function is
+% token-based, the \cs{ASSERTSTR} works on a string basis.
 % \end{itemize}
 % An example of some of these commands is shown following.
 % \begin{Verbatim}
@@ -2233,7 +2237,9 @@
 %     \FALSE,
 %     \YES,
 %     \NO,
-%     \NEWLINE
+%     \NEWLINE,
+%     \ASSERT,
+%     \ASSERTSTR
 %   }
 %   We are not starved for space in the log file output, so let's make it as
 %   verbose as is useful when reading the |.diff|'s.
@@ -2285,6 +2291,36 @@
 \def \YES   {\TYPE{YES}}
 \def \NO    {\TYPE{NO}}
 \def \NEWLINE {\TYPE{^^J}}
+\csname protected\endcsname\long\def\ASSERT#1#2{%
+  \begingroup
+    \edef\@tempa{#1}%
+    \edef\@tempb{#2}%
+    \ifx\@tempa\@tempb
+      \TYPE{PASSED}%
+    \else
+      \TYPE{FAILED}%
+    \fi
+  \endgroup
+}
+\csname protected\endcsname\long\def\ASSERTSTR#1#2{%
+  \begingroup
+    \edef\@tempa{#1}%
+    \edef\@tempb{#2}%
+    \edef\@tempa{\detokenize\expandafter{\@tempa}}%
+    \edef\@tempb{\detokenize\expandafter{\@tempb}}%
+    \ifx\@tempa\@tempb
+      \TYPE{PASSED}%
+    \else
+      \TYPE{FAILED}%
+    \fi
+  \endgroup
+}
+\begingroup\expandafter\expandafter\expandafter\endgroup
+\expandafter\ifx\csname detokenize\endcsname\relax
+  \long\def\ASSERTSTR#1#2{%
+    \TYPE{FEATURE UNAVAILABLE}%
+  }
+\fi
 %    \end{macrocode}
 % \end{macro}
 %

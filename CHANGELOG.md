@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- New `\ASSERT` and `\ASSERTSTR` functions (issue #102)
+
 ### Changed
 
 - Avoid normalisation of (u)pTeX data when this is standard engine
