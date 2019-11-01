@@ -2064,7 +2064,11 @@
 % Put \TeX{} into scroll mode, and stop it showing the
 % implementation details of macros in error messages.
 %    \begin{macrocode}
-\ifnum\interactionmode>1 \scrollmode\fi
+\begingroup\expandafter\expandafter\expandafter\endgroup
+\expandafter\ifx\csname interactionmode\endcsname\relax
+\else
+  \ifnum\interactionmode>1 \scrollmode\fi
+\fi
 \errorcontextlines=-1 %
 %    \end{macrocode}
 %
@@ -2146,6 +2150,13 @@
   \LONGTYPEOUT{^^JEND-TEST-LOG^^J}%
   \@@@end
 }
+\begingroup\expandafter\expandafter\expandafter\endgroup
+\expandafter\ifx\csname currentgrouplevel\endcsname\relax
+  \def\END{%
+    \LONGTYPEOUT{^^JEND-TEST-LOG^^J}%
+    \@@@end
+  }
+\fi
 \ifx\@@end\@undefined
   \let\end\END
 \else
@@ -2161,14 +2172,7 @@
 \def\OMIT{\LONGTYPEOUT{OMIT}}
 \def\TIMO{\LONGTYPEOUT{TIMO}}
 %    \end{macrocode}
-% \end{macro}% We require \eTeX{}.
-%    \begin{macrocode}
-\begingroup\expandafter\expandafter\expandafter\endgroup
-\expandafter\ifx\csname eTeXversion\endcsname\relax
-  \errmessage{e-TeX is required to use regression-test.tex}%
-  \expandafter\endinput
-\fi
-%    \end{macrocode}
+% \end{macro}
 %
 %  \begin{macro}{\SHOWFILE}
 %     Load a file (e.g.,| \jobname.toc|) into the .log file with the usual special
@@ -2192,7 +2196,7 @@
 }%
 \endgroup
 \begingroup\expandafter\expandafter\expandafter\endgroup
-\expandafter\ifx\csname \everyeof\endcsname\relax
+\expandafter\ifx\csname everyeof\endcsname\relax
   \def\SHOWFILE#1{\TYPE{FEATURE UNAVAILABLE}}
 \fi
 %    \end{macrocode}
@@ -2257,6 +2261,20 @@
   \begingroup
     \let\TYPE\LONGTYPEOUT
 }
+\begingroup\expandafter\expandafter\expandafter\endgroup
+\expandafter\ifx\csname detokenize\endcsname\relax
+  \long\def\BEGINTEST#1{%
+    \global\advance\gTESTint by 1 %
+    \SEPARATOR
+    \begingroup
+      \toks0={#1}%
+      \LONGTYPEOUT{TEST \the\gTESTint: \the\toks0 }%
+    \endgroup
+    \SEPARATOR
+    \begingroup
+      \let\TYPE\LONGTYPEOUT
+  }
+\fi
 \csname protected\endcsname\long\def\ENDTEST{%
   \endgroup
   \SEPARATOR
@@ -2281,6 +2299,39 @@
 % \end{macro}
 %
 % \subsection{Suppressing variable data in output}
+%
+% Disable compression in PDF output.
+%    \begin{macrocode}
+\ifnum 0%
+  \ifx\pdfoutput\@undefined\else\ifnum\pdfoutput>0 1\fi\fi
+  \ifx\outputmode\@undefined\else\ifnum\outputmode>0 1\fi\fi
+  >0 %
+  \ifx\pdfvariable\@undefined
+    \pdfcompresslevel=0 %
+    \pdfobjcompresslevel=0 %
+  \else
+    \pdfvariable compresslevel=0 %
+    \pdfvariable objcompresslevel=0 %
+  \fi
+\else
+  \ifnum 0%
+  \ifx\XeTeXversion\@undefined\else 1\fi
+  \ifx\kanjiskip\@undefined\else 1\fi
+  >0 %
+    \special{dvipdfmx:config z 0}% Compress level
+    \special{dvipdfmx:config C 0x40}% Object compression
+  \fi
+\fi
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\begingroup\expandafter\expandafter\expandafter\endgroup
+\expandafter\ifx\csname protected\endcsname\relax
+  \reset@catcodes
+  \let\protected\undefined
+  \expandafter\endinput
+\fi
+%    \end{macrocode}
 %
 % Load the map file early so it does not appear in the log.
 %    \begin{macrocode}
@@ -2350,36 +2401,8 @@
 \fi
 %    \end{macrocode}
 %
-% Disable compression in PDF output.
-%    \begin{macrocode}
-\ifnum 0%
-  \ifx\pdfoutput\@undefined\else\ifnum\pdfoutput>0 1\fi\fi
-  \ifx\outputmode\@undefined\else\ifnum\outputmode>0 1\fi\fi
-  >0 %
-  \ifx\pdfvariable\@undefined
-    \pdfcompresslevel=0 %
-    \pdfobjcompresslevel=0 %
-  \else
-    \pdfvariable compresslevel=0 %
-    \pdfvariable objcompresslevel=0 %
-  \fi
-\else
-  \ifnum 0%
-  \ifx\XeTeXversion\@undefined\else 1\fi
-  \ifx\kanjiskip\@undefined\else 1\fi
-  >0 %
-    \special{dvipdfmx:config z 0}% Compress level
-    \special{dvipdfmx:config C 0x40}% Object compression
-  \fi
-\fi
-%    \end{macrocode}
-%
 % Finish up.
 %    \begin{macrocode}
-\begingroup\expandafter\expandafter\expandafter\endgroup
-\expandafter\ifx\csname protected\endcsname\relax
-  \let\protected\undefined
-\fi
 \reset@catcodes
 %    \end{macrocode}
 %
