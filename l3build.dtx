@@ -896,16 +896,6 @@
 %
 % Any commands that write content to the |.log| file that should be ignored can be surrounded by |\OMIT| \dots\ |\TIMO|.
 % At the appropriate location in the document where the |.log| comparisons should start (say, after |\begin{document}|), the test suite must contain the |\START| macro.
-% The test should then include \cs{AUTHOR}\marg{authors details} in case a test file fails in the future and needs to be re-analysed.
-%
-% Some additional diagnostic information can then be included as metadata for the conditions of the test.
-% The desired format can be indicated with \cs{FORMAT}\marg{format name}, and any packages or classes loaded can be indicated with
-%
-% \noindent\hspace*{2\parindent} \cs{CLASS}\oarg{options}\marg{class name, version}\par
-% \noindent\hspace*{2\parindent} \cs{PACKAGE}\oarg{options}\marg{package name, version}
-%
-% \noindent These do not provide information that is useful for automated checking; after all, packages change their version numbers frequently.
-% Rather, including this information in a test indicates the conditions under which the test was definitely known to pass at a certain time in the past.
 %
 % The |\END| command signals the end of the test (but read on).
 % Some additional diagnostic information is printed at this time to debug if the test did not complete `properly' in terms of mismatched brace groups or \cs{if}\dots\cs{fi} groups.
@@ -915,9 +905,6 @@
 % (See the \var{checkruns} variable for how these tests would be test up.)
 %
 % \subsection{Commands to help write tests}
-%
-% A simple command \cs{CHECKCOMMAND}\cs{\meta{macro}} is provided to check whether a particular \cs{\meta{macro}} is defined, undefined, or equivalent to \cs{relax}.
-% This is useful to flag either that internal macros are remaining local to their definitions, or that defined commands definitely are defined, or even as a reminder that commands you intend to define in a future package need to be tested once they appear.
 %
 % \cs{TYPE} is used to write material to the \texttt{.log} file, like \LaTeX's \cs{typeout}, but it allows `long' input.
 % The following commands are defined to use \cs{TYPE} to output strings to the \texttt{.log} file.
@@ -939,6 +926,9 @@
 % \item
 % \cs{BEGINTEST}\marg{title} \dots \cs{ENDTEST} is an environment form of
 % \cs{TEST}, allowing verbatim material, \emph{etc.} to appear.
+% \item
+% \cs{SHOWFILE} (\eTeX{} only) Shows the content of the file given as an
+% argument.
 % \end{itemize}
 % An example of some of these commands is shown following.
 % \begin{Verbatim}
