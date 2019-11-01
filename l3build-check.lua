@@ -754,7 +754,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
         .. setup(lvtfile)
         .. (hide and (" > " .. os_null) or "")
         .. os_concat ..
-      runtest_tasks(jobname(lvtfile))
+      runtest_tasks(jobname(lvtfile),i)
     )
     -- Break the loop if the result is stable
     if breakout and i < checkruns then
@@ -801,7 +801,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
 end
 
 -- A hook to allow additional tasks to run for the tests
-runtest_tasks = runtest_tasks or function(name)
+runtest_tasks = runtest_tasks or function(name,run)
   return ""
 end
 
