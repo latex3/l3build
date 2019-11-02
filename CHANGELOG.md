@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- `\ASSERTSTR` no longer needs e-TeX
+
 ## [2019-11-01]
 
 ### Added

@@ -930,7 +930,7 @@
 % \cs{SHOWFILE} (\eTeX{} only) Shows the content of the file given as an
 % argument.
 % \item
-% \cs{ASSERT} and \cs{ASSERTSTR} (\eTeX{} only) Asserts if the full expansion
+% \cs{ASSERT} and \cs{ASSERTSTR} Asserts if the full expansion
 % of the two required arguments are the same: the \cs{ASSERT} function is
 % token-based, the \cs{ASSERTSTR} works on a string basis.
 % \end{itemize}
@@ -2306,8 +2306,8 @@
   \begingroup
     \edef\@tempa{#1}%
     \edef\@tempb{#2}%
-    \edef\@tempa{\detokenize\expandafter{\@tempa}}%
-    \edef\@tempb{\detokenize\expandafter{\@tempb}}%
+    \edef\@tempa{\meaning\@tempa}%
+    \edef\@tempb{\meaning\@tempb}%
     \ifx\@tempa\@tempb
       \TYPE{PASSED}%
     \else
