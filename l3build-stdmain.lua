@@ -93,7 +93,7 @@ target_list =
       },
     install =
       {
-        desc = "Installs files into the local textmf tree",
+        desc = "Installs files into the local texmf tree",
         func = install
       },
     manifest =
@@ -129,7 +129,7 @@ target_list =
       },
     uninstall =
       {
-        desc = "Uninstalls files from the local textmf tree",
+        desc = "Uninstalls files from the local texmf tree",
         func = uninstall
       },
     unpack=
