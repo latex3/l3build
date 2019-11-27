@@ -25,46 +25,38 @@ tlmgr update --self
 # Needed for any use of texlua even if not testing LuaTeX
 tlmgr install luatex
 
-# Required to build plain and LaTeX formats:
-# TeX90 plain for unpacking, pdfLaTeX, LuaLaTeX and XeTeX for tests
-# The Lua libs and Latin Modern font avoid a few warnings with more
-# recent LaTeX2e kernels (which load Unicode as standard)
-tlmgr install etex-pkg latex-bin lm lualibs luaotfload \
-  metafont mfware tex xetex
-  
-# Additional requirements for (u)pLaTeX, done with no dependencies to
-# avoid large font payloads
-tlmgr install --no-depends babel ptex uptex ptex-base uptex-base ptex-fonts \
-  uptex-fonts platex uplatex
+# Required to build plain and LaTeX formats including (u)pLaTeX
+tlmgr install latex-bin platex uplatex tex xetex
 
-# Font support for PDF tests
-tlmgr install amsfonts
+# Requirements for the tests
+tlmgr install amsfonts etex-pkg
 
 # Support for typesetting the docs
 tlmgr install \
-  amsmath \
-  booktabs \
-  colortbl \
-  csquotes \
+  amsmath    \
+  booktabs   \
+  colortbl   \
+  csquotes   \
+  enumitem   \
+  fancyvrb   \
+  graphics   \
+  iftex      \
+  l3packages \
+  oberdiek   \
+  pdftexcmds \
+  psnfss     \
+  hyperref   \
+  tools      \
+  underscore
+
   ec \
   enumitem \
   etoolbox \
-  fancyvrb \
-  graphics \
-  graphics-def \
-  hyperref \
-  iftex \
-  l3kernel \
-  l3packages \
   listings \
   makeindex \
   needspace \
-  oberdiek \
-  psnfss \
   symbol \
-  tools \
   underscore \
-  url \
   zapfding
 
 # Keep no backups (not required, simply makes cache bigger)
