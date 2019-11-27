@@ -35,6 +35,7 @@ tlmgr install amsfonts etex-pkg
 tlmgr install \
   amsmath    \
   booktabs   \
+  ec         \
   colortbl   \
   csquotes   \
   enumitem   \
@@ -42,22 +43,15 @@ tlmgr install \
   graphics   \
   iftex      \
   l3packages \
+  listings   \
+  makeindex  \
+  needspace  \
   oberdiek   \
   pdftexcmds \
   psnfss     \
   hyperref   \
   tools      \
   underscore
-
-  ec \
-  enumitem \
-  etoolbox \
-  listings \
-  makeindex \
-  needspace \
-  symbol \
-  underscore \
-  zapfding
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
