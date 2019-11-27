@@ -105,6 +105,10 @@ function uninstall()
 end
 
 function install_files(target,full,dry_run)
+
+  -- Needed so paths are only cleaned out once
+  local cleanpaths = { }
+
   local function install_files(source,dir,files,subdir)
     subdir = subdir or moduledir
     -- For material associated with secondary tools (BibTeX, MakeIndex)
@@ -155,8 +159,12 @@ function install_files(target,full,dry_run)
     if next(filenames) then
       if not dry_run then
         for _,path in pairs(paths) do
-          errorlevel = cleandir(target .. "/" .. path)
-          if errorlevel ~= 0 then return errorlevel end
+          local dir = target .. "/" .. path
+          if not cleanpaths[dir] then
+            errorlevel = cleandir(dir)
+            if errorlevel ~= 0 then return errorlevel end
+          end
+          cleanpaths[dir] = true
         end
       end
       for _,file in ipairs(filenames) do
@@ -164,9 +172,7 @@ function install_files(target,full,dry_run)
           print("- " .. file)
         else
           local path,file = splitpath(file)
-          local installpath = target .. "/" .. path
-          mkdir(installpath)
-          errorlevel = cp(file,sourcepaths[file],installpath)
+          errorlevel = cp(file,sourcepaths[file],target .. "/" .. path)
           if errorlevel ~= 0 then return errorlevel end
         end
       end

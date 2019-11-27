@@ -11,6 +11,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 - `\ASSERTSTR` no longer needs e-TeX
 
+### Fixed
+
+- Installation of files using the `--full` switch
+
 ## [2019-11-01]
 
 ### Added
