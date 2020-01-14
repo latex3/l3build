@@ -2,7 +2,7 @@
 
 --[[
 
-File l3build.lua Copyright (C) 2014-2019 The LaTeX3 Project
+File l3build.lua Copyright (C) 2014-2020 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this

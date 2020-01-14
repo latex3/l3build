@@ -31,6 +31,6 @@ The LaTeX kernel is developed by [The LaTeX3 Project](https://latex-project.org)
 
 -----
 
-<p>Copyright (C) 2014-2019 The LaTeX3 Project <br />
+<p>Copyright (C) 2014-2020 The LaTeX3 Project <br />
 <a href="http://latex-project.org/">http://latex-project.org/</a> <br />
 All rights reserved.</p>
