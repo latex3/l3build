@@ -128,7 +128,7 @@ os_concat  = ";"
 os_null    = "/dev/null"
 os_pathsep = ":"
 os_setenv  = "export"
-os_yes     = "printf 'y\\n%.0s' {1..200}"
+os_yes     = "printf 'y\\n%.0s' {1..300}"
 
 os_ascii   = "echo \"\""
 os_cmpexe  = getenv("cmpexe") or "cmp"
@@ -155,7 +155,7 @@ if os_type == "windows" then
   os_null    = "nul"
   os_pathsep = ";"
   os_setenv  = "set"
-  os_yes     = "for /l %I in (1,1,200) do @echo y"
+  os_yes     = "for /l %I in (1,1,300) do @echo y"
 end
 
 -- Deal with the fact that Windows and Unix use different path separators

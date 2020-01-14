@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Allow for more extracted files from DocStrip
+
 ## [2019-11-27]
 
 ### Changed
