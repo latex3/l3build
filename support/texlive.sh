@@ -33,25 +33,43 @@ tlmgr install amsfonts etex-pkg
 
 # Support for typesetting the docs
 tlmgr install \
+  alphalph   \
+  atbegshi   \
+  atveryend  \
   amsmath    \
+  bigintcalc \
+  bitset     \
   booktabs   \
   ec         \
   colortbl   \
   csquotes   \
   enumitem   \
+  etexcmds   \
   fancyvrb   \
+  gettitlestring \
   graphics   \
+  hologo     \
+  hycolor    \
   iftex      \
+  intcalc    \
+  kvdefinekeys \
+  kvsetkeys  \
   l3packages \
+  letltxmacro \
   listings   \
+  ltxcmds    \
   makeindex  \
   needspace  \
   oberdiek   \
+  pdfesape   \
   pdftexcmds \
   psnfss     \
+  refcount   \
+  rerunfilecheck \
   hyperref   \
   tools      \
-  underscore
+  underscore \
+  uniquecounter
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
