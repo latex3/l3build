@@ -61,7 +61,7 @@ tlmgr install \
   makeindex  \
   needspace  \
   oberdiek   \
-  pdfesape   \
+  pdfescape  \
   pdftexcmds \
   psnfss     \
   refcount   \
