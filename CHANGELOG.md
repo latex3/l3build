@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2020-01-14]
+
 ### Fixed
 
 - Allow for more extracted files from DocStrip
@@ -402,7 +404,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2019-11-27...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2020-01-14...HEAD
+[2020-01-14]: https://github.com/latex3/l3build/compare/2019-11-27...2020-01-14
 [2019-11-27]: https://github.com/latex3/l3build/compare/2019-11-01...2019-11-27
 [2019-11-01]: https://github.com/latex3/l3build/compare/2019-10-02...2019-11-01
 [2019-10-02]: https://github.com/latex3/l3build/compare/2019-09-30...2019-10-02
