@@ -276,7 +276,11 @@ function ctan_single_field(fname,fvalue,max,desc,mandatory)
   if (fvalue==nil or type(fvalue)~="table") then
     local vs=trim_space(tostring(fvalue))
     if (mandatory==true and (fvalue == nil or vs=="")) then
-      error("The field " .. fname .. " must contain " .. desc)
+      if (fname=="announcement") then
+        print("Empty announcement: No ctan announcement will be made")
+      else
+        error("The field " .. fname .. " must contain " .. desc)
+      end
     end
     if (fvalue ~=nil and len(vs) > 0) then
       if (max > 0 and len(vs) > max) then

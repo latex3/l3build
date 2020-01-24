@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+- Allow announcement field to be empty
+  (with a warning this suppresses the CTAN announcement)
+
 ## [2020-01-14]
 
 ### Fixed
