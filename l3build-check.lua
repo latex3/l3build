@@ -228,6 +228,10 @@ local function normalize_log(content,engine,errlevels)
     if match(line, "^%.*\\special%{pdf: docinfo << /Creator") then
       return ""
     end
+     -- Remove \special lines for DVI .pro files
+    if match(line, "^%.*\\special%{header=") then
+      return ""
+    end
     if match(line, "^%.*\\special%{dvipdfmx:config") then
       return ""
     end

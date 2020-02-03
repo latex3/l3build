@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Normalise out DVI header lines
+
 ### Fixed
 - Allow announcement field to be empty
   (with a warning this suppresses the CTAN announcement)
