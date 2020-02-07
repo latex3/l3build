@@ -510,7 +510,7 @@
 %
 % \begin{buildcmd}{install}
 % Copies all package files (defined by \var{installfiles}) into the user's home \texttt{texmf} tree in the form of the \TeX\ Directory Structure.
-% The location of the user tree can be adjusted using the |--texmfhome| swtich:
+% The location of the user tree can be adjusted using the |--texmfhome| switch:
 % the standard setting is the location set as |TEXMFHOME|.
 % \end{buildcmd}
 %
@@ -1263,7 +1263,7 @@
 % tree, one might use the set up shown in Figure~\ref{fig:tds}.
 % \begin{figure}
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
-%     tdslocations = 
+%     tdslocations =
 %       {
 %         "tex/generic/mypkg/*.generic.tex" ,
 %         "tex/plain/mypkg/*.plain.tex"    ,
@@ -1790,7 +1790,7 @@
 %   \end{syntax}
 %   Runs Biber on the \meta{name} (\emph{i.e.}~a jobname lacking any
 %   extension) inside the \meta{dir}. If there is no |.bcf| file then
-%   no action is taken with a return value of $0$. 
+%   no action is taken with a return value of $0$.
 % \end{function}
 %
 % \begin{function}{bibtex()}
@@ -1799,7 +1799,7 @@
 %   \end{syntax}
 %   Runs Bib\TeX{} on the \meta{name} (\emph{i.e.}~a jobname lacking any
 %   extension) inside the \meta{dir}. If there are no |\citation| lines in
-%   the |.aux| file then no action is taken with a return value of $0$. 
+%   the |.aux| file then no action is taken with a return value of $0$.
 % \end{function}
 %
 % \begin{function}{makeindex()}
