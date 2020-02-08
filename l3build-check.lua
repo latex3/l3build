@@ -292,9 +292,14 @@ local function normalize_log(content,engine,errlevels)
   if recordstatus then
     new_content = new_content .. '***************' .. os_newline
     for i = 1, checkruns do
-      new_content = new_content ..
-        'Compilation ' .. i .. ' of test file completed with exit status ' ..
-        errlevels[i] .. os_newline
+      if (errlevels[i]==nil) then
+        new_content = new_content ..
+          'Compilation ' .. i .. ' of test file skipped ' .. os_newline
+      else
+        new_content = new_content ..
+          'Compilation ' .. i .. ' of test file completed with exit status ' ..
+          errlevels[i] .. os_newline
+      end
     end
   end
   return new_content
