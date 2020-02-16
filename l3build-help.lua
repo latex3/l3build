@@ -1,6 +1,6 @@
 --[[
 
-File l3build-help.lua Copyright (C) 2018 The LaTeX3 Project
+File l3build-help.lua Copyright (C) 2018,2020 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -53,7 +53,7 @@ function help()
   end
 
   local scriptname = "l3build"
-  if not match(arg[0], "l3build(%.lua)$") then
+  if not (match(arg[0], "l3build%.lua$") or match(arg[0],"l3build$")) then
     scriptname = arg[0]
   end
   print("usage: " .. scriptname .. " <command> [<options>] [<names>]")
