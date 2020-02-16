@@ -31,7 +31,8 @@ function version()
   print(
     "\n" ..
     "l3build: A testing and building system for LaTeX\n\n" ..
-    "Release " .. release_date
+    "Release " .. release_date .. "\n"
+    "Copy (C) 2014-2020 The LaTeX3 Project"
   )
 end
 
@@ -56,9 +57,9 @@ function help()
   if not (match(arg[0], "l3build%.lua$") or match(arg[0],"l3build$")) then
     scriptname = arg[0]
   end
-  print("usage: " .. scriptname .. " <command> [<options>] [<names>]")
+  print("usage: " .. scriptname .. " <target> [<options>] [<names>]")
   print("")
-  print("Valid commands are:")
+  print("Valid targets are:")
   local longest,t = setup_list(target_list)
   for _,k in ipairs(t) do
     local target = target_list[k]
@@ -82,5 +83,9 @@ function help()
     end
   end
   print("")
-  print("See l3build.pdf for further details.")
+  print("Full manual available via 'texdoc l3build'.")
+  print("")
+  print("Repository  : https://github.com/latex3/l3build")
+  print("Bug tracker : https://github.com/latex3/l3build/issues")
+  print("Copyright (C) 2014-2020 The LaTeX3 Project")
 end

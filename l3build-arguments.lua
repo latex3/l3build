@@ -108,6 +108,7 @@ option_list =
       },
     help =
       {
+        desc  = "Print this message and exit",
         short = "h",
         type  = "boolean"
       },
@@ -147,6 +148,11 @@ option_list =
       {
         desc = "Location of user texmf tree",
         type = "string"
+      },
+    version =
+      {
+        desc = "Print this message and exit",
+        type = "boolean"
       }
   }
 
