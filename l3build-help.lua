@@ -31,8 +31,8 @@ function version()
   print(
     "\n" ..
     "l3build: A testing and building system for LaTeX\n\n" ..
-    "Release " .. release_date .. "\n"
-    "Copy (C) 2014-2020 The LaTeX3 Project"
+    "Release " .. release_date .. "\n" ..
+    "Copyright (C) 2014-2020 The LaTeX3 Project"
   )
 end
 
