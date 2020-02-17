@@ -151,7 +151,7 @@ option_list =
       },
     version =
       {
-        desc = "Print this message and exit",
+        desc = "Print version information and exit",
         type = "boolean"
       }
   }
