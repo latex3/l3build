@@ -142,7 +142,7 @@ local function typesetpdf(file,dir)
   local fn = typeset
   local cmd = typesetexe .. typesetopts
   if specialtypesetting and specialtypesetting[file] then
-    fn = specialtypesetting[file].function or fn
+    fn = specialtypesetting[file].func or fn
     cmd = specialtypesetting[file].cmd or cmd
   end
   local errorlevel = fn(file,dir,cmd)
