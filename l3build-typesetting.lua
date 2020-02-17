@@ -140,7 +140,7 @@ local function typesetpdf(file,dir)
   local name = jobname(file)
   print("Typesetting " .. name)
   local fn = typeset
-  local cmd = typesetexe .. typesetopts
+  local cmd = typesetexe .. " " .. typesetopts
   if specialtypesetting and specialtypesetting[file] then
     fn = specialtypesetting[file].func or fn
     cmd = specialtypesetting[file].cmd or cmd
