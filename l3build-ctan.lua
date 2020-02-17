@@ -1,6 +1,6 @@
 --[[
 
-File l3build-ctan.lua Copyright (C) 2018 The LaTeX3 Project
+File l3build-ctan.lua Copyright (C) 2018-2020 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -54,7 +54,7 @@ function copyctan()
   end
   copyfiles(sourcefiles,sourcefiledir)
   for _,file in pairs(textfiles) do
-    cp(file, currentdir, ctandir .. "/" .. ctanpkg)
+    cp(file, textfiledir, ctandir .. "/" .. ctanpkg)
   end
 end
 
@@ -127,7 +127,7 @@ function ctan()
   end
   if errorlevel == 0 then
     for _,i in ipairs(textfiles) do
-      for _,j in pairs({unpackdir, currentdir}) do
+      for _,j in pairs({unpackdir, textfiledir}) do
         cp(i, j, ctandir .. "/" .. ctanpkg)
         cp(i, j, tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle)
       end

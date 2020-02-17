@@ -64,6 +64,7 @@
 \luavarset{testfiledir}{"./testfiles"}  {Directory containing test files}
 \luavarset{testsuppdir}{testfiledir .. "/support"}{Directory containing test-specific support files}
 \luavarset{texmfdir}{maindir .. "/texmf"}{Directory containing support files in tree form}
+\luavarset{textfiledir}{"."}                 {Directory containing plain text files}
 \luavarseparator
 \luavarset{builddir}  {maindir .. "/build"}   {Directory for building and testing}
 \luavarset{distribdir}{builddir .. "/distrib"}{Directory for generating distribution structure}
@@ -773,13 +774,19 @@
 % A variety of source layouts are supported. In general, a \enquote{flat}
 % layout with all source files \enquote{here} is most convenient. However,
 % \pkg{l3build} supports placement of both code and documentation source
-% files in other locations using the \var{sourcefiledir} and \var{docfiledir}
+% files in other locations using the \var{sourcefiledir}, \var{docfiledir}
+% and \var{textfiledir}
 % variables. For pre-built trees, the glob syntax \texttt{**/*.\meta{ext}} may
 % be useful in these cases: this enables recursive searching in the appropriate
 % tree locations. With the standard settings, this structure will be removed
 % when creating a CTAN release: the variable \var{flatten} may be
 % used to control this behavior. The \var{flattentds} setting controls
 % the same concept for TDS creation.
+%
+% Notice that text files are treated separately from documentation files when
+% splitting trees: this is to allow for the common case where files such
+% as |README| and |LICENSE| are at the top level even when other documentation
+% files are in a sub-directory.
 %
 % A series of example layouts and matching |build.lua| files are available from
 % \url{https://github.com/latex3/l3build/tree/master/examples}.

@@ -43,6 +43,7 @@ maindir    = maindir or currentdir
 -- Substructure for file locations
 docfiledir    = docfiledir    or currentdir
 sourcefiledir = sourcefiledir or currentdir
+textfiledir   = textfiledir   or currentdir
 supportdir    = supportdir    or maindir .. "/support"
 testfiledir   = testfiledir   or currentdir .. "/testfiles"
 testsuppdir   = testsuppdir   or testfiledir .. "/support"
