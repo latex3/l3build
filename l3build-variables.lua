@@ -152,6 +152,7 @@ end
 -- Additional settings to fine-tune typesetting
 glossarystyle = glossarystyle or "gglo.ist"
 indexstyle    = indexstyle    or "gind.ist"
+specialtypesetting = specialtypesetting or { }
 
 -- Supporting binaries and options
 biberexe      = biberexe      or "biber"

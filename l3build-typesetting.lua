@@ -127,9 +127,10 @@ function makeindex(name,dir,inext,outext,logext,style)
   return 0
 end
 
-function tex(file,dir)
+function tex(file,dir,cmd)
   local dir = dir or "."
-  return runcmd(typesetexe .. " " .. typesetopts .. " \"" .. typesetcmds
+  local cmd = cmd or typesetexe .. typesetopts
+  return runcmd(cmd .. " \"" .. typesetcmds
     .. "\\input " .. file .. "\"",
     dir,{"TEXINPUTS","LUAINPUTS"})
 end
@@ -138,7 +139,13 @@ local function typesetpdf(file,dir)
   local dir = dir or "."
   local name = jobname(file)
   print("Typesetting " .. name)
-  local errorlevel = typeset(file,dir)
+  local fn = typeset
+  local cmd = typesetexe .. typesetopts
+  if specialtypesetting and specialtypesetting[file] then
+    fn = specialtypesetting[file].function or fn
+    cmd = specialtypesetting[file].cmd or cmd
+  end
+  local errorlevel = fn(file,dir,cmd)
   if errorlevel ~= 0 then
     print(" ! Compilation failed")
     return errorlevel
@@ -148,9 +155,9 @@ local function typesetpdf(file,dir)
   return cp(pdfname,dir,docfiledir)
 end
 
-typeset = typeset or function(file,dir)
+typeset = typeset or function(file,dir,exe)
   dir = dir or "."
-  local errorlevel = tex(file,dir)
+  local errorlevel = tex(file,dir,exe)
   if errorlevel ~= 0 then
     return errorlevel
   end
@@ -163,7 +170,7 @@ typeset = typeset or function(file,dir)
     errorlevel =
       makeindex(name,dir,".glo",".gls",".glg",glossarystyle) +
       makeindex(name,dir,".idx",".ind",".ilg",indexstyle)    +
-      tex(file,dir)
+      tex(file,dir,exe)
     if errorlevel ~= 0 then break end
   end
   return errorlevel

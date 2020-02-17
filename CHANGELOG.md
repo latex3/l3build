@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 - Variable `textfiledir`
+- Table `specialtypesetting` and support data
 
 ### Changed
 - Documentation improvements

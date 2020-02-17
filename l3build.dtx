@@ -138,6 +138,7 @@
 \luavarseparator
 \luavarset{glossarystyle}{"gglo.ist"}{MakeIndex style file for glossary/changes creation}
 \luavarset{indexstyle}   {"gind.ist"}{MakeIndex style for index creation}
+\luavarset{specialtypesetting}{\meta{table}} {Non-standard typesetting combinations}
 \luavarseparator
 \luavarset{forcecheckepoch}{"true"}    {Force epoch when running tests}
 \luavarset{forcedocepoch}  {"false"}   {Force epoch when typesetting}
@@ -1400,6 +1401,22 @@
 % to be executed once all standard set up is complete but before any typesetting
 % is run.
 %
+% \subsection{Non-standard typesetting}
+%
+% To allow non-standard typesetting combinations, for example per-file
+% choice of engines, the table \var{specialtypesetting} may be used.
+% This is a table with one entry per file. Each entry is itself a table,
+% and these contain a list of engines and settings for |cmd| and |function|.
+% For example, to choose to use \LuaTeX{} for one file when \var{typesetexe}
+% is |pdftex|
+% \begin{verbatim}
+% specialtypesetting.foo = {cmd = "luatex -interaction=nonstopmode"}
+% \end{verbatim}
+% or to select an entirely different typesetting function
+% \begin{verbatim}
+% specialtypesetting.foo = {function = typeset_foo}
+% \end{verbatim}
+%
 % \subsection{Automated upload to CTAN}
 % \label{sec:upload}
 %
@@ -1822,9 +1839,10 @@
 %
 % \begin{function}{tex()}
 %   \begin{syntax}
-%     |tex(|\meta{file},\meta{dir}|)|
+%     |tex(|\meta{file},\meta{dir},\meta{cmd}|)|
 %   \end{syntax}
-%   Runs \luavar{typesetexe} on the \meta{name} inside the \meta{dir}.
+%   Runs \meta{cmd} (by default \luavar{typestexe} \luavar{typesetopts}) on the
+%   \meta{name} inside the \meta{dir}.
 % \end{function}
 %
 % \begin{function}{runcmd()}
