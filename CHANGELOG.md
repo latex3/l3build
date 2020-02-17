@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Documentation improvements
+
 ### Fixed
 
 - When `checkruns` > 1 and `recordstatus=true`, testing code would crash. (fixes #90)
