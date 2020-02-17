@@ -310,13 +310,22 @@
 % For a module, this build folder can be in the main directory of the package itself, but for a bundle it should be common for the bundle itself and for all modules within that bundle.
 % A |build/| folder can be safety deleted; all material within is re-generated for each command of the \pkg{l3build} system.
 %
-% \subsection{Main build commands}
+% \subsection{The \texttt{build.lua} file}
+%
+% The \texttt{build.lua} file used to control \pkg{l3build} is a simple Lua file
+% which is read during execution. In the current release of \pkg{l3build},
+% \texttt{build.lua} is read automatically and can access all of the global
+% functions provided by the script. Thus it may contain a simple list of
+% variable settings \emph{or} additionally custom code to change the build
+% process. A number of example scripts are given in Section~\ref{sec:examples}.
+%
+% \subsection{Main build targets}
 %
 % In the working directory of a bundle or module, \pkg{l3build} is run by executing
 % \begin{center}
-% \texttt{l3build \meta{command} [\meta{option(s)}]}
+% \texttt{l3build \meta{targets} [\meta{option(s)}]}
 % \end{center}
-% where \texttt{\meta{command}} can be one of the following:
+% where \texttt{\meta{targets}} can be one of the following:
 % \begin{itemize}[noitemsep]\ttfamily
 % \item check
 % \item check \meta{name(s)}
@@ -333,9 +342,9 @@
 % \item upload
 % \item upload \meta{tag}
 % \end{itemize}
-% These commands are described below.
+% These targets are described below.
 %
-% As well as these commands, the system recognises the options
+% As well as these targets, the system recognises the options
 % \begin{itemize}
 % \item |--config| (|-c|) Configuration(s) to use for testing
 % \item |--date| Date to use when tagging data
@@ -583,15 +592,6 @@
 %
 % See Section~\ref{sec:upload} for full details on this feature.
 % \end{buildcmd}
-%
-% \subsection{The \texttt{build.lua} file}
-%
-% The \texttt{build.lua} file used to control \pkg{l3build} is a simple Lua file
-% which is read during execution. In the current release of \pkg{l3build},
-% \texttt{build.lua} is read automatically and can access all of the global
-% functions provided by the script. Thus it may contain a simple list of
-% variable settings \emph{or} additionally custom code to change the build
-% process. A number of example scripts are given in Section~\ref{sec:examples}.
 %
 % \subsection{Example build scripts}
 % \label{sec:examples}
