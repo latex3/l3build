@@ -1777,9 +1777,14 @@
 %
 % \begin{variable}{os_yes}
 %   \textbf{DEPRECATED}
-%   A command to generate a series of $200$ lines each containing the
+%   A command to generate a series of $300$ lines each containing the
 %   character |y|: this is useful as the Unix |yes| command cannot be
 %   used inside |os.execute| (it does not terminate).
+%
+%  Rather than use this function, we recommend the replacement construct
+%  \begin{verbatim}
+%    io.popen(<cmd>,"w"):write(string.rep("y\n", 300)):close()
+%  \end{verbatim}   
 % \end{variable}
 %
 % \subsection{Components of \texttt{l3build}}
