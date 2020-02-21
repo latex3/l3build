@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2020-02-21]
+
 ### Changed
 - Avoid temporary file when unpacking
 
@@ -432,7 +434,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2020-02-17...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2020-02-21...HEAD
+[2020-02-21]: https://github.com/latex3/l3build/compare/2020-02-17...2020-02-21
 [2020-02-17]: https://github.com/latex3/l3build/compare/2020-02-03...2020-02-17
 [2020-02-03]: https://github.com/latex3/l3build/compare/2020-01-14...2020-02-03
 [2020-01-14]: https://github.com/latex3/l3build/compare/2019-11-27...2020-01-14
