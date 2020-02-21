@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Avoid temporary file when unpacking
+
 ## [2020-02-17]
 
 ### Added
