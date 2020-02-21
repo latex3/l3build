@@ -10,6 +10,9 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Avoid temporary file when unpacking
 
+### Deprecated
+- `os_yes`: use `io.popen(...,w)` instead
+
 ## [2020-02-17]
 
 ### Added
