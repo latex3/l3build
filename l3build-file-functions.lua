@@ -204,7 +204,7 @@ function cleandir(dir)
   if errorlevel ~= 0 then
     return errorlevel
   end
-  return rm(dir, "*")
+  return rm(dir, "**")
 end
 
 -- Copy files 'quietly'
@@ -376,7 +376,7 @@ end
 
 -- Remove file(s) based on a glob
 function rm(source, glob)
-  for _,i in ipairs(filelist(source, glob)) do
+  for i,_ in pairs(tree(source, glob)) do
     rmfile(source,i)
   end
   -- os.remove doesn't give a sensible errorlevel

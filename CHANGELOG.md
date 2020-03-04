@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Enable `cleandir()` recursively
+
 ## [2020-02-21]
 
 ### Changed
