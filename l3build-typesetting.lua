@@ -36,24 +36,15 @@ local match = string.match
 local os_type = os.type
 
 function dvitopdf(name, dir, engine, hide)
-  if match(engine, "^u?ptex$") then
-    run(
-      dir,
-      (forcecheckepoch and setepoch() or "") ..
-     "dvipdfmx  " .. name .. dviext
-       .. (hide and (" > " .. os_null) or "")
-    )
-  else
-    run(
-      dir,
-      (forcecheckepoch and setepoch() or "") ..
-     "dvips " .. name .. dviext
-       .. (hide and (" > " .. os_null) or "")
-       .. os_concat ..
-     "ps2pdf " .. ps2pdfopt .. name .. psext
-        .. (hide and (" > " .. os_null) or "")
-    )
-  end
+  run(
+    dir,
+    (forcecheckepoch and setepoch() or "") ..
+    "dvips " .. name .. dviext
+      .. (hide and (" > " .. os_null) or "")
+      .. os_concat ..
+   "ps2pdf " .. ps2pdfopt .. name .. psext
+      .. (hide and (" > " .. os_null) or "")
+  )
 end
 
 -- An auxiliary used to set up the environmental variables
