@@ -768,6 +768,9 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     -- Break the loop if the result is stable
     if breakout and i < checkruns then
       if pdfmode then
+        if fileexists(testdir .. "/" .. name .. dviext) then
+          dvitopdf(name, testdir, engine, hide)
+        end
         rewrite(pdffile,npffile,normalize_pdf)
         if compare_pdf(name,engine,true) == 0 then
           break
