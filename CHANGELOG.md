@@ -10,6 +10,9 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 - Option `ps2pdfopt`
 
+### Changed
+- Normalise `/ID` lines in PDF comparisons
+
 ### Fixed
 - Enable `cleandir()` recursively
 

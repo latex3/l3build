@@ -538,6 +538,7 @@ local function normalize_pdf(content)
       stream = true
       stream_content = "stream" .. os_newline
     elseif not match(line, "^ *$") then
+      line = gsub(line,"%/ID %[<[^>]+><[^>]+>]","/ID [<ID-STRING><ID-STRING>]")
       new_content = new_content .. line .. os_newline
     end
   end
