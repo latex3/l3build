@@ -50,7 +50,7 @@ function dvitopdf(name, dir, engine, hide)
      "dvips " .. name .. dviext
        .. (hide and (" > " .. os_null) or "")
        .. os_concat ..
-     "ps2pdf " .. name .. psext
+     "ps2pdf " .. ps2pdfopt .. name .. psext
         .. (hide and (" > " .. os_null) or "")
     )
   end

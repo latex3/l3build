@@ -184,6 +184,7 @@ if flattentds == nil then
 end
 maxprintline = maxprintline or 79
 packtdszip   = packtdszip   or false
+ps2pdfopt    = ps2pdfopt    or ""
 typesetcmds  = typesetcmds  or ""
 typesetruns  = typesetruns  or 3
 recordstatus = recordstatus or false
