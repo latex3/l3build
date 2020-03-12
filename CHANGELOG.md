@@ -12,6 +12,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Normalise `/ID` lines in PDF comparisons
+- Normalise `%%` lines in PDF comparisons
 
 ### Fixed
 - Enable `cleandir()` recursively
