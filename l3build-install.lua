@@ -108,8 +108,11 @@ function install_files(target,full,dry_run)
 
   -- Needed so paths are only cleaned out once
   local cleanpaths = { }
+  -- Collect up all file data before copying:
+  -- ensures no files are lost during clean-up
+  local installmap = { }
 
-  local function install_files(source,dir,files,subdir)
+  local function create_install_map(source,dir,files,subdir)
     subdir = subdir or moduledir
     -- For material associated with secondary tools (BibTeX, MakeIndex)
     -- the structure needed is slightly different from those items going
@@ -172,13 +175,14 @@ function install_files(target,full,dry_run)
           print("- " .. file)
         else
           local path,file = splitpath(file)
-          errorlevel = cp(file,sourcepaths[file],target .. "/" .. path)
-          if errorlevel ~= 0 then return errorlevel end
+          insert(installmap,
+            {file = file, source = sourcepaths[file], dest = target .. "/" .. path})
         end
       end
     end
     return 0
   end
+
   local errorlevel = unpack()
   if errorlevel ~= 0 then return errorlevel end
 
@@ -233,8 +237,8 @@ function install_files(target,full,dry_run)
     print("\nFor installation inside " .. target .. ":")
   end 
     
-    errorlevel = install_files(sourcefiledir,"source",{sourcelist})
-      + install_files(docfiledir,"doc",
+    errorlevel = create_install_map(sourcefiledir,"source",{sourcelist})
+      + create_install_map(docfiledir,"doc",
           {bibfiles,demofiles,docfiles,pdffiles,textfiles,typesetlist})
     if errorlevel ~= 0 then return errorlevel end
 
@@ -272,12 +276,21 @@ function install_files(target,full,dry_run)
 
   if errorlevel ~= 0 then return errorlevel end
 
-  errorlevel = install_files(unpackdir,"tex",{installlist})
-    + install_files(unpackdir,"bibtex/bst",{bstfiles},module)
-    + install_files(unpackdir,"makeindex",{makeindexfiles},module)
-    + install_files(unpackdir,"scripts",{scriptfiles},module)
+  errorlevel = create_install_map(unpackdir,"tex",{installlist})
+    + create_install_map(unpackdir,"bibtex/bst",{bstfiles},module)
+    + create_install_map(unpackdir,"makeindex",{makeindexfiles},module)
+    + create_install_map(unpackdir,"scripts",{scriptfiles},module)
+
+  if errorlevel ~= 0 then return errorlevel end
+
+  -- Files are all copied in one shot: this ensures that cleandir()
+  -- can't be an issue even if there are complex set-ups
+  for _,v in ipairs(installmap) do
+    errorlevel = cp(v.file,v.source,v.dest)
+    if errorlevel ~= 0  then return errorlevel end
+  end 
   
-  return errorlevel
+  return 0
 end
 
 function install()
