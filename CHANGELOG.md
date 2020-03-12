@@ -15,6 +15,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Enable `cleandir()` recursively
+- Install files after *all* directory cleaning/creation
 
 ## [2020-02-21]
 
