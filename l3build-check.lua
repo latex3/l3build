@@ -537,7 +537,9 @@ local function normalize_pdf(content)
       binary = false
       stream = true
       stream_content = "stream" .. os_newline
-    elseif not match(line, "^ *$") and not match(line,"^%%%%") then
+    elseif not match(line, "^ *$") and
+      not match(line,"^%%%%Invocation") and 
+      not match(line,"^%%%%%+") then
       line = gsub(line,"%/ID %[<[^>]+><[^>]+>]","/ID [<ID-STRING><ID-STRING>]")
       new_content = new_content .. line .. os_newline
     end

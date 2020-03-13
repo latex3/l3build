@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Refinement of PDF test normalisation
+
 ## [2020-03-12]
 
 ### Added
