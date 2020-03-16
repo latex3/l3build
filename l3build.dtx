@@ -2420,8 +2420,7 @@
 %
 % To make any PDF file produced comparable we need to suppress various
 % pieces of data. This works in concert with setting the epoch from the
-% environment side (as not all output can be controlled here). We are
-% somewhat stuck if \texttt{dvips} is being used so just hope for the best!
+% environment side (as not all output can be controlled here).
 % There is a limit to what can be done with the underlying PDF structure so
 % there is no point entirely suppressing \texttt{Producer}: simply avoid
 % any version numbers.
@@ -2453,7 +2452,10 @@
       \relax
   \fi
 \else
-  \ifx\XeTeXversion\@undefined\else
+  \ifx\XeTeXversion\@undefined
+    \special{! <</DocumentUUID (DocumentUUID)>> setpagedevice}
+    \special{! <</InstanceUUID (InstanceUUID)>> setpagedevice}
+  \else
     \special{%
       pdf: docinfo
         <<
