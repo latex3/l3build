@@ -226,7 +226,7 @@ local function normalize_log(content,engine,errlevels)
      end
      -- Remove the \special line that in DVI mode keeps PDFs comparable
     if match(line, "^%.*\\special%{pdf: docinfo << /Creator") or
-      match(line, "^%.*\\special%{ps: /setdistillerparams") then
+      match(line, "^%.*\\special%{/setdistillerparams") then
       return ""
     end
      -- Remove \special lines for DVI .pro files
@@ -541,7 +541,7 @@ local function normalize_pdf(content)
     elseif not match(line, "^ *$") and
       not match(line,"^%%%%Invocation") and 
       not match(line,"^%%%%%+") then
-      line = gsub(line,"%/ID %[<[^>]+><[^>]+>]","/ID [<ID-STRING><ID-STRING>]")
+      line = gsub(line,"%/ID( ?)%[<[^>]+><[^>]+>]","/ID%1[<ID-STRING><ID-STRING>]")
       new_content = new_content .. line .. os_newline
     end
   end

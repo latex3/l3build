@@ -10,6 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Suppress PDF compression in DVI route
 - Default to `dvips` for (p)TeX
+- Refinement of `/ID` line suppression
 
 ## [2020-03-13]
 
