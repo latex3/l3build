@@ -2378,10 +2378,14 @@
     \pdfvariable objcompresslevel=0 %
   \fi
 \else
-  \ifnum 0%
-  \ifx\XeTeXversion\@undefined\else 1\fi
-  \ifx\kanjiskip\@undefined\else 1\fi
-  >0 %
+  \ifx\XeTeXversion\@undefined
+  \special{%
+      /setdistillerparams
+      where
+        {pop << /CompressPages false /CompressStreams false >> setdistillerparams}
+      if
+    }%
+  \else
     \special{dvipdfmx:config z 0}% Compress level
     \special{dvipdfmx:config C 0x40}% Object compression
   \fi

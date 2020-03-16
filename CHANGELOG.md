@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Suppress PDF compression in DVI route
+
 ## [2020-03-13]
 
 ### Changed
