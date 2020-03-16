@@ -226,7 +226,7 @@ local function normalize_log(content,engine,errlevels)
      end
      -- Remove the \special line that in DVI mode keeps PDFs comparable
     if match(line, "^%.*\\special%{pdf: docinfo << /Creator") or
-      match(line, "^%.*\\special%{/setdistillerparams") then
+      match(line, "^%.*\\special%{ps: /setdistillerparams") then
       return ""
     end
      -- Remove \special lines for DVI .pro files
