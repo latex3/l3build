@@ -2392,6 +2392,7 @@
 \fi
 %    \end{macrocode}
 %
+%
 %    \begin{macrocode}
 \begingroup\expandafter\expandafter\expandafter\endgroup
 \expandafter\ifx\csname protected\endcsname\relax
@@ -2452,17 +2453,14 @@
       \relax
   \fi
 \else
-  \ifnum 0%
-  \ifx\XeTeXversion\@undefined\else 1\fi
-  \ifx\kanjiskip\@undefined\else 1\fi
-  >0 %
+  \ifx\XeTeXversion\@undefined\else
     \special{%
       pdf: docinfo
         <<
           /Creator        (TeX)
           /CreationDate   ()
           /ModDate        ()
-          /Producer       (\ifx\XeTeXversion\@undefined\else x\fi dvipdfmx)
+          /Producer       (xdvipdfmx)
         >>
     }
   \fi
