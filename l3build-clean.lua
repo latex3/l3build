@@ -1,6 +1,6 @@
 --[[
 
-File l3build-clean.lua Copyright (C) 2018 The LaTeX3 Project
+File l3build-clean.lua Copyright (C) 2018,2020 The LaTeX3 Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -34,12 +34,28 @@ function clean()
     cleandir(testdir)    +
     cleandir(typesetdir) +
     cleandir(unpackdir)
-  for _,i in ipairs(cleanfiles) do
-    for _,dir in pairs(remove_duplicates({maindir, sourcefiledir, docfiledir})) do
-      errorlevel = rm(dir, i) + errorlevel
+
+  if errorlevel ~= 0 then return errorlevel end
+
+  local clean_list = { }
+  for _,dir in pairs(remove_duplicates({maindir,sourcefiledir,docfiledir})) do
+    for _,glob in pairs(cleanfiles) do
+      for file,_ in pairs(tree(dir,glob)) do
+        clean_list[file] = true
+      end
+    end
+    for _,glob in pairs(sourcefiles) do
+      for file,_ in pairs(tree(dir,glob)) do
+        clean_list[file] = nil
+      end
+    end
+    for file,_ in pairs(clean_list) do
+      errorlevel = rm(dir,file)
+      if errorlevel ~= 0 then return errorlevel end
     end
   end
-  return errorlevel
+
+  return 0
 end
 
 function bundleclean()
