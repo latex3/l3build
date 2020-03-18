@@ -241,7 +241,7 @@ function direxists(dir)
     errorlevel =
       execute("if not exist \"" .. unix_to_win(dir) .. "\" exit 1")
   else
-    errorlevel = execute("[ -d " .. dir .. " ]")
+    errorlevel = execute("[ -d '" .. dir .. "' ]")
   end
   if errorlevel ~= 0 then
     return false
