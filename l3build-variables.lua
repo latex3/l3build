@@ -128,6 +128,13 @@ specialformats.latex = specialformats.latex or {
     ptex  = {binary = "eptex"},
     uptex = {binary = "euptex"}
   }
+if not string.find(status.banner,"2019") then
+  specialformats.latex.luatex = specialformats.latex.luatex or
+    {binary = "luahbtex",format = "lualatex"}
+  specialformats["latex-dev"] = specialformats["latex-dev"] or
+    {luatex = {binary="luahbtex",format = "lualatex-dev"}}
+end
+
 stdengine    = stdengine    or "pdftex"
 
 -- The tests themselves

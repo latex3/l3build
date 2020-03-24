@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Exclude `sourcefiles` entries from file clean-up
+- Adjust defaults for TeX Live 2020 LuaHBTeX usage
 
 ## [2020-03-16]
 
