@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2020-03-25]
+
 ### Changed
 - Exclude `sourcefiles` entries from file clean-up
 - Adjust defaults for TeX Live 2020 LuaHBTeX usage
@@ -464,7 +466,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2020-03-16...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2020-03-25...HEAD
+[2020-03-25]: https://github.com/latex3/l3build/compare/2020-03-16...2020-03-25
 [2020-03-16]: https://github.com/latex3/l3build/compare/2020-03-13...2020-03-16
 [2020-03-13]: https://github.com/latex3/l3build/compare/2020-03-12...2020-03-13
 [2020-03-12]: https://github.com/latex3/l3build/compare/2020-02-21...2020-03-12
