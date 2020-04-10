@@ -26,7 +26,7 @@ tlmgr update --self
 tlmgr install luatex
 
 # Required to build plain and LaTeX formats including (u)pLaTeX
-tlmgr install latex-bin platex uplatex tex xetex
+tlmgr install latex-bin luahbtex platex uplatex tex xetex
 
 # Requirements for the tests
 tlmgr install amsfonts etex-pkg
