@@ -67,7 +67,7 @@ tlmgr install \
   refcount   \
   rerunfilecheck \
   hyperref   \
-  titletoc   \
+  titlesec   \
   tools      \
   underscore \
   uniquecounter
