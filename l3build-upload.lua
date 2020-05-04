@@ -163,14 +163,19 @@ end
       fp_return = shell(ctan_post .. "validate")
     end
   end
-  if match(fp_return,"WARNING") or match(fp_return,"ERROR") then
+  if (match(fp_return,"ERROR")) then
     exit_status=1
   end
 
   -- if upload requested and validation succeeded repost to the upload URL
     if (exit_status==0 or exit_status==nil) then
     if (ctanupload ~=nil and ctanupload ~=false and ctanupload ~= true) then
-      print("Validation successful, do you want to upload to CTAN? [y/n]" )
+      if (match(fp_return,"WARNING")) then
+       print("Warnings from CTAN package validation:" .. fp_return:gsub("%[","\n["):gsub("%]%]","]\n]"))
+      else
+       print("Validation successful." )
+      end
+      print("Do you want to upload to CTAN? [y/n]" )
       local answer=""
       io.stdout:write("> ")
       io.stdout:flush()
@@ -189,7 +194,11 @@ end
         exit_status=1
       end
     else
-      print("CTAN validation successful")
+      if (match(fp_return,"WARNING")) then
+        print("Warnings from CTAN package validation:" .. fp_return:gsub("%[","\n["):gsub("%]%]","]\n]"))
+      else
+        print("CTAN validation successful")
+      end
     end
   else
     error("Warnings from CTAN package validation:\n" .. fp_return)
