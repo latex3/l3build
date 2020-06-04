@@ -793,7 +793,8 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     dvitopdf(name, testdir, engine, hide)
   end
   if pdfmode then
-    cp(name .. "." .. engine .. pdfext,testdir,resultdir)
+    cp(name .. pdfext,testdir,resultdir)
+    ren(resultdir,name .. pdfext,name .. "." .. engine .. pdfext)
     rewrite(pdffile,npffile,normalize_pdf)
   else
     rewrite(logfile,newfile,normalize_log,engine,errlevels)
