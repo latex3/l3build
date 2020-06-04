@@ -57,6 +57,7 @@ local remove           = os.remove
 function checkinit()
   if not options["dirty"] then
     cleandir(testdir)
+    cleandir(resultdir)
   end
   depinstall(checkdeps)
   -- Copy dependencies to the test directory itself: this makes the paths
@@ -792,6 +793,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     dvitopdf(name, testdir, engine, hide)
   end
   if pdfmode then
+    cp(name .. "." .. engine .. pdfext,testdir,resultdir)
     rewrite(pdffile,npffile,normalize_pdf)
   else
     rewrite(logfile,newfile,normalize_log,engine,errlevels)

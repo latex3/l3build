@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Store 'raw' PDF files when testing using PDFs, to allow further checks
+  with e.g. PDF validators
+
 ## [2020-03-25]
 
 ### Changed
