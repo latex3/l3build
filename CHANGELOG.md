@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2020-06-04]
+
 ### Added
 - Store 'raw' PDF files when testing using PDFs, to allow further checks
   with e.g. PDF validators
@@ -470,7 +472,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX3 kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2020-03-25...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2020-06-04...HEAD
+[2020-06-04]: https://github.com/latex3/l3build/compare/2020-03-25...2020-06-04
 [2020-03-25]: https://github.com/latex3/l3build/compare/2020-03-16...2020-03-25
 [2020-03-16]: https://github.com/latex3/l3build/compare/2020-03-13...2020-03-16
 [2020-03-13]: https://github.com/latex3/l3build/compare/2020-03-12...2020-03-13
