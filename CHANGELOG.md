@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- Normal Lua function calls (issue #127)
+
 ## [2020-06-04]
 
 ### Added

@@ -325,6 +325,10 @@ local function normalize_lua_log(content,luatex)
     if match(line, "^%.+\\mathon$") then
       return line, line
     end
+    -- Deal with Lua function calls
+    if match(line, "^Lua function") then
+      line = gsub(line,"= %d+$","= ...")
+    end
     -- LuaTeX has a flexible output box
     line = gsub(line,"\\box\\outputbox", "\\box255")
     -- LuaTeX identifies spaceskip glue
