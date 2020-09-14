@@ -225,6 +225,10 @@ local function normalize_log(content,engine,errlevels)
         return ""
        end
      end
+    -- Deal with Lua function calls
+    if match(line, "^Lua function") then
+      line = gsub(line,"= %d+$","= ...")
+    end
      -- Remove the \special line that in DVI mode keeps PDFs comparable
     if match(line, "^%.*\\special%{pdf: docinfo << /Creator") or
       match(line, "^%.*\\special%{ps: /setdistillerparams") or
@@ -324,10 +328,6 @@ local function normalize_lua_log(content,luatex)
     -- may be affected
     if match(line, "^%.+\\mathon$") then
       return line, line
-    end
-    -- Deal with Lua function calls
-    if match(line, "^Lua function") then
-      line = gsub(line,"= %d+$","= ...")
     end
     -- LuaTeX has a flexible output box
     line = gsub(line,"\\box\\outputbox", "\\box255")
