@@ -207,6 +207,25 @@ pvtext = pvtext or ".pvt"
 tlgext = tlgext or ".tlg"
 tpfext = tpfext or ".tpf"
 
+test_types = setmetatable(test_types or {}, { __index = {
+   log = {
+      test = lvtext,
+      generated = logext,
+      reference = tlgext,
+      expectation = lveext,
+      compare = compare_tlg,
+      rewrite = rewrite_log,
+   },
+   pdf = {
+      test = pvtext,
+      generated = pdfext,
+      reference = tpfext,
+      compare = compare_pdf,
+      rewrite = rewrite_pdf,
+   },
+}})
+test_order = test_order or {"log", "pdf"}
+
 -- Manifest options
 manifestfile = manifestfile or "MANIFEST.md"
 
