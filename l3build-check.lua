@@ -577,7 +577,7 @@ function runcheck(name, hide)
   -- Used for both .lvt and .pvt tests
   local function check_and_diff(test_type, engine)
     runtest(name, engine, hide, test_type.test, test_type, true)
-    local errorlevel = test_type.compare(name,engine)
+    local errorlevel = base_compare(test_type,name,engine)
     if errorlevel == 0 then
       return errorlevel
     end
@@ -657,31 +657,29 @@ function setup_check(name, engine)
   exit(1)
 end
 
-function compare_pdf(name,engine,cleanup)
+function base_compare(test_type,name,engine,cleanup)
   local testname = name .. "." .. engine
-  local difffile = testdir .. "/" .. testname .. pdfext .. os_diffext
-  local pdffile  = testdir .. "/" .. testname .. pdfext
-  local tpffile  = locate({testdir}, {testname .. tpfext, name .. tpfext})
-  if not tpffile then
+  local difffile = testdir .. "/" .. testname .. test_type.generated .. os_diffext
+  local genfile  = testdir .. "/" .. testname .. test_type.generated
+  local reffile  = locate({testdir}, {testname .. test_type.reference, name .. test_type.reference})
+  if not reffile then
     return 1
   end
+  local compare = test_type.compare
+  if compare then
+    return compare(difffile, reffile, genfile, cleanup, name, engine)
+  end
   local errorlevel = execute(os_diffexe .. " "
-    .. normalize_path(tpffile .. " " .. pdffile .. " > " .. difffile))
+    .. normalize_path(reffile .. " " .. genfile .. " > " .. difffile))
   if errorlevel == 0 or cleanup then
     remove(difffile)
   end
   return errorlevel
 end
 
-function compare_tlg(name,engine,cleanup)
+function compare_tlg(difffile, tlgfile, logfile, cleanup, name, engine)
   local errorlevel
   local testname = name .. "." .. engine
-  local difffile = testdir .. "/" .. testname .. os_diffext
-  local logfile  = testdir .. "/" .. testname .. logext
-  local tlgfile  = locate({testdir}, {testname .. tlgext, name .. tlgext})
-  if not tlgfile then
-    return 1
-  end
   -- Do additional log formatting if the engine is LuaTeX, there is no
   -- LuaTeX-specific .tlg file and the default engine is not LuaTeX
   if (match(engine,"^lua") or match(engine,"^harf"))
@@ -803,7 +801,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
         end
       end
       test_type.rewrite(gen_file,new_file,engine,errlevels)
-      if test_type.compare(name,engine,true) == 0 then
+      if base_compare(test_type,name,engine,true) == 0 then
         break
       end
     end
