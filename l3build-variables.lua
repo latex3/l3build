@@ -220,7 +220,6 @@ test_types = setmetatable(test_types or {}, { __index = {
       test = pvtext,
       generated = pdfext,
       reference = tpfext,
-      compare = compare_pdf,
       rewrite = rewrite_pdf,
    },
 }})
