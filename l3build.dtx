@@ -114,6 +114,8 @@
 \luavarset{stdengine}    {"pdftex"}{Engine to generate \texttt{.tlg} file from}
 \luavarset{checkformat}  {"latex"} {Format to use for tests}
 \luavarset{specialformats}{\meta{table}} {Non-standard engine/format combinations}
+\luavarset{test_types}        {\meta{table}} {Custom test variants}
+\luavarset{test_order}        {\{"log", "pdf"\}} {Which kinds of tests to evaluate}
 \luavarseparator
 \luavarset{checkconfigs}{\{\}}{Configurations to use for tests}
 \luavarseparator
@@ -1245,6 +1247,38 @@
 % engine-specific, thus one |.tpf| file should be stored per engine to be
 % tested.
 %
+% \subsection{Custom tests}
+%
+% If neither the text-based methods nor PDF-based tests are sufficient,
+% there is the additional option of defining custom variants with individual
+% normalization rules.
+%
+% For this, the variant has to be registered in the \texttt{test_types} table
+% and then activated in \texttt{test_order}.
+%
+% Every element in \texttt{test_types} is a table with fields \texttt{test}
+% (the extension of the test file), \texttt{reference} (the extension of the
+% file the output is compared with), \texttt{generated} (extension of the
+% analyzed \LaTeX{} output file) and \texttt{rewrite} (A Lua function for
+% normalizing the output file, taking as parameters the name of the unnormalized
+% \LaTeX{} output file to be read, the name of the normalized file to be written,
+% the engine name and a potential errorcode).
+%
+% For example:
+% \begin{verbatim}
+% test_types = {
+%   mytest = {
+%     test = ".mylvt",
+%     reference = ".mytlg",
+%     generated = ".log",
+%     rewrite = function(source, normalized, engine, errorcode)
+%       -- In this example we just copy the logfile without any normalization
+%       os.execute(string.format("cp %s %s", source, normalized)
+%     end,
+%   },
+% }
+% test_order = {"mylvt", "log", "pdf"}
+% \end{verbatim}
 %
 % \section{Release-focussed features}
 %
