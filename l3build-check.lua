@@ -565,7 +565,7 @@ end
 -- Run one test which may have multiple engine-dependent comparisons
 -- Should create a difference file for each failed test
 function runcheck(name, hide)
-  local test_filename = testexists(name)
+  local test_filename, kind = testexists(name)
   if not test_filename then
     print("Failed to find input for test " .. name)
     return 1
@@ -575,7 +575,8 @@ function runcheck(name, hide)
     checkengines = options["engine"]
   end
   -- Used for both .lvt and .pvt tests
-  local function check_and_diff(test_type, engine)
+  local test_type = test_types[kind]
+  local function check_and_diff(engine)
     runtest(name, engine, hide, test_type.test, test_type, true)
     local errorlevel = base_compare(test_type,name,engine)
     if errorlevel == 0 then
@@ -592,14 +593,7 @@ function runcheck(name, hide)
   local errorlevel = 0
   for _,engine in pairs(checkengines) do
     setup_check(name,engine)
-    local errlevel
-    for _, kind in ipairs(test_order) do
-      local test_type = test_types[kind]
-      if test_filename == testfiledir .. "/" .. name .. test_type.test then
-        errlevel = check_and_diff(test_type, engine)
-        break
-      end
-    end
+    local errlevel = check_and_diff(engine)
     if errlevel ~= 0 and options["halt-on-error"] then
       return 1
     end
@@ -840,8 +834,15 @@ function testexists(test)
   for i, kind in ipairs(test_order) do
     filenames[i] = test .. test_types[kind].test
   end
-  return locate({testfiledir, unpackdir},
-    filenames)
+  local found = locate({testfiledir, unpackdir}, filenames)
+  if found then
+    for i, kind in ipairs(test_order) do
+      local filename = filenames[i]
+      if found:sub(-#filename) == filename then
+        return found, kind
+      end
+    end
+  end
 end
 
 function check(names)
@@ -1002,42 +1003,30 @@ function save(names)
     return 1
   end
   for _,name in pairs(names) do
-    local test_filename = testexists(name)
-    if test_filename then
-      for _,engine in pairs(engines) do
-        local testengine = ((engine == stdengine and "") or "." .. engine)
-        local function save_test(test_type)
-          local out_file = name .. testengine .. test_type.reference
-          local gen_file = name .. "." .. engine .. test_type.generated
-          print("Creating and copying " .. out_file)
-          runtest(name, engine, false, test_type.test, test_type)
-          ren(testdir, gen_file, out_file)
-          cp(out_file, testdir, testfiledir)
-          if fileexists(unpackdir .. "/" .. test_type.reference) then
-            print("Saved " .. test_type.reference
-              .. " file overrides unpacked version of the same name")
-            return 1
-          end
-          return 0
-        end
-        local errorlevel
-        for _, kind in ipairs(test_order) do
-          local test_type = test_types[kind]
-          if test_filename == testfiledir .. "/" .. name .. test_type.test then
-            errorlevel = save_test(test_type)
-            break
-          end
-        end
-        if errorlevel ~= 0 then return errorlevel end
-      end
-    elseif locate({unpackdir, testfiledir}, {name .. lveext}) then
-      -- FIXME: This doesn't look like it does what it claims to do.
-      print("Saved " .. tlgext .. " file overrides a "
-        .. lveext .. " file of the same name")
-      return 1
-    else
+    local test_filename, kind = testexists(name)
+    if not test_filename then
       print('Test "' .. name .. '" not found')
       return 1
+    end
+    local test_type = test_types[kind]
+    if locate({unpackdir, testfiledir}, {name .. test_type.expectation}) then
+      print("Saved " .. test_type.test .. " file would override a "
+        .. test_type.expectation .. " file of the same name")
+      return 1
+    end
+    for _,engine in pairs(engines) do
+      local testengine = ((engine == stdengine and "") or "." .. engine)
+      local out_file = name .. testengine .. test_type.reference
+      local gen_file = name .. "." .. engine .. test_type.generated
+      print("Creating and copying " .. out_file)
+      runtest(name, engine, false, test_type.test, test_type)
+      ren(testdir, gen_file, out_file)
+      cp(out_file, testdir, testfiledir)
+      if fileexists(unpackdir .. "/" .. test_type.reference) then
+        print("Saved " .. test_type.reference
+          .. " file overrides unpacked version of the same name")
+        return 1
+      end
     end
   end
   return 0
