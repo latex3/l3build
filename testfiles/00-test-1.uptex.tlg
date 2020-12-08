@@ -1,0 +1,125 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: \afterassignment 
+============================================================
+> hello.
+<argument> ...d}}\foo } \x ={hello} \showthe \foo 
+                                                  \show \y 
+l. ...}
+> \y=macro:
+->world.
+<argument> ... \x ={hello} \showthe \foo \show \y 
+l. ...}
+============================================================
+============================================================
+TEST 2: Enviornment test
+============================================================
+============================================================
+============================================================
+TEST 3: Assertions
+============================================================
+PASSED
+FAILED
+PASSED
+============================================================
+Completed box being shipped out [1]
+\vbox(578.15999+0.0)x469.75499
+.\hbox(0.0+0.0)x0.0
+.\glue 0.0
+.\vbox(578.15999+0.0)x469.75499
+..\vbox(0.0+0.0)x469.75499
+...\glue 0.0 plus 1.0fil
+...\hbox(0.0+0.0)x469.75499
+..\glue 0.0
+..\glue(\lineskip) 0.0
+..\vbox(578.15999+0.0)x469.75499, glue set 532.15999fil
+...\glue(\topskip) 3.05556
+...\hbox(6.94444+0.83333)x469.75499, glue set 427.75536fil
+....\hbox(0.0+0.0)x0.0
+.....\glue 0.0
+.....\glue 0.0
+.....\glue 0.0
+.....\hbox(0.0+0.0)x0.0
+.....\glue 0.0
+....\penalty 10000
+....\glue 5.24995
+....\penalty 10000
+....\glue 5.24995
+....\penalty 10000
+....\glue 5.24995
+....\penalty 10000
+....\glue 5.24995
+....\OT1/cmtt/m/n/10 #
+....\OT1/cmtt/m/n/10 $
+....\OT1/cmtt/m/n/10 %
+....\OT1/cmtt/m/n/10 &
+....\hbox(0.0+0.0)x0.0
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 11.16667
+...\hbox(0.0+0.0)x469.75499, glue set 464.50504fil
+....\hbox(0.0+0.0)x0.0
+....\penalty 10000
+....\glue 5.24995
+....\penalty 10000
+....\hbox(0.0+0.0)x0.0
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\penalty 0
+...\glue 0.0
+...\penalty 0
+...\glue 0.0 plus 1.0
+...\glue 0.0 plus -1.0
+...\glue 0.0 plus 1.0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 5.05556
+...\hbox(6.94444+0.83333)x469.75499, glue set 427.75536fil
+....\hbox(0.0+0.0)x0.0
+.....\glue 0.0
+.....\glue 0.0
+.....\glue 0.0
+.....\hbox(0.0+0.0)x0.0
+.....\glue 0.0
+....\penalty 10000
+....\glue 5.24995
+....\penalty 10000
+....\glue 5.24995
+....\penalty 10000
+....\glue 5.24995
+....\penalty 10000
+....\glue 5.24995
+....\OT1/cmtt/m/n/10 #
+....\OT1/cmtt/m/n/10 $
+....\OT1/cmtt/m/n/10 %
+....\OT1/cmtt/m/n/10 &
+....\hbox(0.0+0.0)x0.0
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 11.16667
+...\hbox(0.0+0.0)x469.75499, glue set 464.50504fil
+....\hbox(0.0+0.0)x0.0
+....\penalty 10000
+....\glue 5.24995
+....\penalty 10000
+....\hbox(0.0+0.0)x0.0
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 0
+...\penalty 0
+...\glue 0.0
+...\glue 0.0 plus 1.0fil
+...\glue 0.0
+..\glue(\baselineskip) 0.0
+..\hbox(0.0+0.0)x469.75499
+.\kern 0.0
+(00-test-1.aux)
