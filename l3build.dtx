@@ -340,11 +340,10 @@
 % \item install
 % \item manifest
 % \item save \meta{name(s)}
-% \item tag \meta{tag}
+% \item tag [\meta{tag name}]
 % \item uninstall
 % \item unpack
-% \item upload
-% \item upload \meta{tag}
+% \item upload [\meta{version}]
 % \end{itemize}
 % These targets are described below.
 %
@@ -563,17 +562,14 @@
 % Improvements to this process are planned for the future.
 % \end{buildcmd}
 %
-% \begin{buildcmd}{tag}
-% Modifies the contents of files specified by |tagfiles| using a search pattern
-% to automatically update the `release tag' (or package version) and date.
-% The tag is given as the command line option and the date using
-% |--date| (|-d|). If not given, the date will default to the current date in
-% ISO format (YYYY-MM-DD). If no option is given (i.e., no tag specified) the tag
-% is passed through as |nil| to allow setting the tag programmatically.
+% \begin{buildcmd}{tag [\meta{tag name}]}
+% Apply the Lua |update_tag()| function to modify the contents of files specified by |tagfiles| to update the `release tag' (or package version) and date.
+% The tag is given as the optional command line argument \meta{tag name} and the date using
+% |--date| (or |-d|). If not given, the date will default to the current date in
+% ISO format (YYYY-MM-DD). If no \meta{tag name} is given, the tag will default to |nil|.
+% Both are passed as arguments to the |update_tag()| function.
 %
-% The standard setup has no search pattern defined for this target and so no action
-% will be taken \emph{unless} tag substitution is set up by defining the Lua function
-% |update_tag()|. See Section~\ref{sec:tagging} for full details on this feature.
+% The standard setup does nothing unless tag update is set up by defining |update_tag()|. See Section~\ref{sec:tagging} for full details on this feature.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{unpack}
@@ -588,11 +584,11 @@
 % By default this process allows files to be accessed in all standard |texmf| trees; this can be disabled by setting \var{unpacksearch} to |false|.
 % \end{buildcmd}
 %
-% \begin{buildcmd}{upload}
+% \begin{buildcmd}{upload [\meta{version}]}
 % This target uses \texttt{curl} to upload the package zip file (created using \texttt{ctan}) to CTAN.
 % To control the metadata used to upload the package, the \texttt{uploadconfig} table should be populated with a number of fields.
 % These are documented in Table~\ref{tab:upload-setup}.
-% Missing required fields will result in an interactive prompt for manual entry.
+% Missing required fields will result in an interactive prompt for manual entry. When given, \meta{version} overrides \texttt{uploadconfig.version}.
 %
 % See Section~\ref{sec:upload} for full details on this feature.
 % \end{buildcmd}
@@ -1294,7 +1290,7 @@
 % \label{sec:tagging}
 %
 % The |tag| target can automatically edit
-% source files to modify date and release tag. As standard, no automatic
+% source files to modify date and release tag name. As standard, no automatic
 % replacement takes place, but setting up a |update_tag()| function
 % will allow this to happen. This function takes four input arguments:
 % \begin{enumerate}[nosep]
@@ -1334,7 +1330,7 @@
 %
 % To allow more complex tasks to take place, a hook |tag_hook()| is also
 % available. It will receive the tag name and date as arguments, and
-% may be used to carry out arbitrary tasks after the main tagging process.
+% may be used to carry out arbitrary tasks after all files have been updated.
 % For example, this can be used to set a version control tag for an entire repository.
 %
 %
