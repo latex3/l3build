@@ -70,7 +70,7 @@ function help()
   end
   print("")
   print("Valid options are:")
-  local longest,t = setup_list(option_list)
+  local longest,t = setup_list(A.option_list)
   for _,k in ipairs(t) do
     local opt = A.option_list[k]
     local filler = rep(" ", longest - k:len() + 1)
