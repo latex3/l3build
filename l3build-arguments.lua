@@ -21,8 +21,8 @@ The development version of the bundle can be found at
 for those people who are interested.
 
 --]]
+local A = {}
 
-local exit             = os.exit
 local stderr           = io.stderr
 
 local find             = string.find
@@ -34,7 +34,7 @@ local insert           = table.insert
 
 -- Parse command line options
 
-option_list =
+A.option_list =
   {
     config =
       {
@@ -158,39 +158,38 @@ option_list =
 
 -- This is done as a function (rather than do ... end) as it allows early
 -- termination (break)
-local function argparse()
-  local result = { }
-  local names  = { }
-  local long_options =  { }
-  local short_options = { }
+A.argparse = function (arg)
+  local result = {}
+  local names  = {}
+  local long_options =  {}
+  local short_options = {}
   -- Turn long/short options into two lookup tables
-  for k,v in pairs(option_list) do
-    if v["short"] then
-      short_options[v["short"]] = k
+  for k,v in pairs(A.option_list) do
+    if v.short then
+      short_options[v.short] = k
     end
     long_options[k] = k
   end
-  local args = args
   -- arg[1] is a special case: must be a command or "-h"/"--help"
   -- Deal with this by assuming help and storing only apparently-valid
   -- input
   local a = arg[1]
-  result["target"] = "help"
+  result.target = "help"
   if a then
     -- No options are allowed in position 1, so filter those out
     if a == "--version" then
-      result["target"] = "version"
+      result.target = "version"
     elseif not match(a, "^%-") then
-      result["target"] = a
+      result.target = a
     end
   end
   -- Stop here if help or version is required
-  if result["target"] == "help" or result["target"] == "version" then
+  if result.target == "help" or result.target == "version" then
     return result
   end
   -- An auxiliary to grab all file names into a table
   local function remainder(num)
-    local names = { }
+    local names = {}
     for i = num, #arg do
       insert(names, arg[i])
     end
@@ -235,7 +234,7 @@ local function argparse()
       local optname = opts[opt]
       if optname then
         -- Tidy up arguments
-        if option_list[optname]["type"] == "boolean" then
+        if A.option_list[optname].type == "boolean" then
           if optarg then
             local opt = "-" .. (match(a, "^%-%-") and "-" or "") .. opt
             stderr:write("Value not allowed for option " .. opt .."\n")
@@ -257,10 +256,10 @@ local function argparse()
       end
       -- Store the result
       if optarg then
-        if option_list[optname]["type"] == "string" then
+        if A.option_list[optname].type == "string" then
           result[optname] = optarg
         else
-          local opts = result[optname] or { }
+          local opts = result[optname] or {}
           for hit in gmatch(optarg, "([^,%s]+)") do
             insert(opts, hit)
           end
@@ -277,22 +276,20 @@ local function argparse()
     end
   end
   if next(names) then
-   result["names"] = names
+   result.names = names
   end
   return result
 end
 
-options = argparse()
-
 -- Sanity check
-function check_engines()
-  if options["engine"] and not options["force"] then
-     -- Make a lookup table
-     local t = { }
+A.check_engines = function (options, checkengines)
+  if options.engine and not options.force then
+    -- Make a lookup table
+    local t = {}
     for _, engine in pairs(checkengines) do
       t[engine] = true
     end
-    for _, engine in pairs(options["engine"]) do
+    for _, engine in pairs(options.engine) do
       if not t[engine] then
         print("\n! Error: Engine \"" .. engine .. "\" not set up for testing!")
         print("\n  Valid values are:")
@@ -300,8 +297,10 @@ function check_engines()
           print("  - " .. engine)
         end
         print("")
-        exit(1)
+        os.exit(1)
       end
     end
   end
 end
+
+return A

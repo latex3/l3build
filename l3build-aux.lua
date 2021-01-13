@@ -72,7 +72,7 @@ function call(dirs, target, opts)
   local s = ""
   for k,v in pairs(opts) do
     if k ~= "names" and k ~= "target" then -- Special cases
-      local t = option_list[k] or { }
+      local t = A.option_list[k] or { }
       local arg = ""
       if t["type"] == "string" then
         arg = arg .. "=" .. v

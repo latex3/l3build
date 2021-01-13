@@ -32,7 +32,6 @@ local lfs = require("lfs")
 
 -- Local access to functions
 
-local assert           = assert
 local ipairs           = ipairs
 local insert           = table.insert
 local lookup           = kpse.lookup
@@ -40,19 +39,17 @@ local match            = string.match
 local gsub             = string.gsub
 local next             = next
 local print            = print
-local select           = select
-local tonumber         = tonumber
 local exit             = os.exit
 
 -- l3build setup and functions
 kpse.set_program_name("kpsewhich")
-build_kpse_path = match(lookup("l3build.lua"),"(.*[/])")
+local build_kpse_path = match(lookup("l3build.lua"),"(.*[/])")
 local function build_require(s)
-  require(lookup("l3build-"..s..".lua", { path = build_kpse_path } ) )
+  return require(lookup("l3build-"..s..".lua", { path = build_kpse_path } ) )
 end
 
 -- Minimal code to do basic checks
-build_require("arguments")
+local A = build_require("arguments")
 build_require("help")
 
 build_require("file-functions")
@@ -69,12 +66,14 @@ build_require("tagging")
 build_require("upload")
 build_require("stdmain")
 
+local options = A.argparse(arg)
+
 -- This has to come after stdmain(),
 -- and that has to come after the functions are defined
-if options["target"] == "help" then
+if options.target == "help" then
   help()
   exit(0)
-elseif options["target"] == "version" then
+elseif options.target == "version" then
   version()
   exit(0)
 end
@@ -115,15 +114,15 @@ unpackdir     = escapepath(unpackdir)
 -- Tidy up the epoch setting
 -- Force an epoch if set at the command line
 -- Must be done after loading variables, etc.
-if options["epoch"] then
-  epoch           = options["epoch"]
+if options.epoch then
+  epoch           = options.epoch
   forcecheckepoch = true
   forcedocepoch   = true
 end
 normalise_epoch()
 
 -- Sanity check
-check_engines()
+A.check_engines(options, checkengines)
 
 --
 -- Deal with multiple configs for tests
@@ -131,20 +130,19 @@ check_engines()
 
 -- When we have specific files to deal with, only use explicit configs
 -- (or just the std one)
-if options["names"] then
-  checkconfigs = options["config"] or {stdconfig}
+if options.names then
+  checkconfigs = options.config or {stdconfig} -- What is stdconfig?
 else
-  checkconfigs = options["config"] or checkconfigs
+  checkconfigs = options.config or checkconfigs
 end
 
-if options["target"] == "check" then
+if options.target == "check" then
   if #checkconfigs > 1 then
     local errorlevel = 0
-    local opts = options
     local failed = { }
     for i = 1, #checkconfigs do
-      opts["config"] = {checkconfigs[i]}
-      errorlevel = call({"."}, "check", opts)
+      options.config = {checkconfigs[i]}
+      errorlevel = call({"."}, "check", options)
       if errorlevel ~= 0 then
         if options["halt-on-error"] then
           exit(1)
@@ -153,7 +151,7 @@ if options["target"] == "check" then
         end
       end
     end
-    if next(failed) then
+    if #failed > 0 then
       for _,config in ipairs(failed) do
         print("Failed tests for configuration " .. config .. ":")
         print("\n  Check failed with difference files")
@@ -176,7 +174,7 @@ if options["target"] == "check" then
 end
 if #checkconfigs == 1 and
    checkconfigs[1] ~= "build" and
-   (options["target"] == "check" or options["target"] == "save" or options["target"] == "clean") then
+   (options.target == "check" or options.target == "save" or options.target == "clean") then
    local config = "./" .. gsub(checkconfigs[1],".lua$","") .. ".lua"
    if fileexists(config) then
      local savedtestfiledir = testfiledir
@@ -194,4 +192,4 @@ if #checkconfigs == 1 and
 end
 
 -- Call the main function
-main(options["target"], options["names"])
+main(options.target, options.names)
