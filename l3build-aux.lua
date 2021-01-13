@@ -68,7 +68,7 @@ end
 -- Do some subtarget for all modules in a bundle
 function call(dirs, target, opts)
   -- Turn the option table into a string
-  local opts = opts or options
+  local opts = opts or Opts
   local s = ""
   for k,v in pairs(opts) do
     if k ~= "names" and k ~= "target" then -- Special cases

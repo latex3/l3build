@@ -28,6 +28,7 @@ for those people who are interested.
 release_date = "2020-06-04"
 
 -- File operations are aided by the LuaFileSystem module
+-- Next might be unnecessary on modern `texlua`
 local lfs = require("lfs")
 
 -- Local access to functions
@@ -37,7 +38,6 @@ local insert           = table.insert
 local lookup           = kpse.lookup
 local match            = string.match
 local gsub             = string.gsub
-local next             = next
 local print            = print
 local exit             = os.exit
 
@@ -49,7 +49,10 @@ local function build_require(s)
 end
 
 -- Minimal code to do basic checks
-local A = build_require("arguments")
+A = build_require("arguments")
+-- global options
+Opts = A.argparse(arg)
+
 build_require("help")
 
 build_require("file-functions")
@@ -66,14 +69,12 @@ build_require("tagging")
 build_require("upload")
 build_require("stdmain")
 
-local options = A.argparse(arg)
-
 -- This has to come after stdmain(),
 -- and that has to come after the functions are defined
-if options.target == "help" then
+if Opts.target == "help" then
   help()
   exit(0)
-elseif options.target == "version" then
+elseif Opts.target == "version" then
   version()
   exit(0)
 end
@@ -114,15 +115,15 @@ unpackdir     = escapepath(unpackdir)
 -- Tidy up the epoch setting
 -- Force an epoch if set at the command line
 -- Must be done after loading variables, etc.
-if options.epoch then
-  epoch           = options.epoch
+if Opts.epoch then
+  epoch           = Opts.epoch
   forcecheckepoch = true
   forcedocepoch   = true
 end
 normalise_epoch()
 
 -- Sanity check
-A.check_engines(options, checkengines)
+A.check_engines(Opts, checkengines)
 
 --
 -- Deal with multiple configs for tests
@@ -130,21 +131,21 @@ A.check_engines(options, checkengines)
 
 -- When we have specific files to deal with, only use explicit configs
 -- (or just the std one)
-if options.names then
-  checkconfigs = options.config or {stdconfig} -- What is stdconfig?
+if Opts.names then
+  checkconfigs = Opts.config or {stdconfig} -- What is stdconfig?
 else
-  checkconfigs = options.config or checkconfigs
+  checkconfigs = Opts.config or checkconfigs
 end
 
-if options.target == "check" then
+if Opts.target == "check" then
   if #checkconfigs > 1 then
     local errorlevel = 0
     local failed = { }
     for i = 1, #checkconfigs do
-      options.config = {checkconfigs[i]}
-      errorlevel = call({"."}, "check", options)
+      Opts.config = {checkconfigs[i]}
+      errorlevel = call({"."}, "check", Opts) -- remove the 3rd argument
       if errorlevel ~= 0 then
-        if options["halt-on-error"] then
+        if Opts["halt-on-error"] then
           exit(1)
         else
           insert(failed,checkconfigs[i])
@@ -174,7 +175,7 @@ if options.target == "check" then
 end
 if #checkconfigs == 1 and
    checkconfigs[1] ~= "build" and
-   (options.target == "check" or options.target == "save" or options.target == "clean") then
+   (Opts.target == "check" or Opts.target == "save" or Opts.target == "clean") then
    local config = "./" .. gsub(checkconfigs[1],".lua$","") .. ".lua"
    if fileexists(config) then
      local savedtestfiledir = testfiledir
@@ -192,4 +193,4 @@ if #checkconfigs == 1 and
 end
 
 -- Call the main function
-main(options.target, options.names)
+main(Opts.target, Opts.names)

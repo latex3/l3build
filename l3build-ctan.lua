@@ -67,7 +67,7 @@ end
 
 function ctan()
   -- Always run tests for all engines
-  options["engine"] = nil
+  Opts.engine = nil
   local function dirzip(dir, name)
     local zipname = name .. ".zip"
     local function tab_to_str(table)

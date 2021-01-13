@@ -70,7 +70,7 @@ local curl_debug = curl_debug or false -- to disable posting
 -- For now, this is undocumented.
 
 local ctanupload = ctanupload or "ask"
-if options["dry-run"] then
+if Opts["dry-run"] then
   ctanupload = false
 end
 -- if ctanupload is nil or false, only validation is attempted
@@ -89,13 +89,13 @@ function upload(tagnames)
   uploadconfig.pkg = uploadconfig.pkg or ctanpkg or nil
 
   -- Get data from command line if appropriate
-  if options["file"] then
-    local f = open(options["file"],"r")
+  if Opts.file then
+    local f = open(Opts.file,"r")
     uploadconfig.announcement = assert(f:read('*a'))
     close(f)
   end
-  uploadconfig.announcement = options["message"] or uploadconfig.announcement or file_contents(uploadconfig.announcement_file)
-  uploadconfig.email = options["email"] or uploadconfig.email
+  uploadconfig.announcement = Opts.message or uploadconfig.announcement or file_contents(uploadconfig.announcement_file)
+  uploadconfig.email = Opts.email or uploadconfig.email
 
 
   uploadconfig.note =   uploadconfig.note  or file_contents(uploadconfig.note_file)
@@ -117,7 +117,7 @@ function upload(tagnames)
     error("Missing zip file '" .. tostring(uploadfile) .. "'")
   end
 
-  ctan_post = construct_ctan_post(uploadfile,options["debug"])
+  ctan_post = construct_ctan_post(uploadfile,Opts.debug)
 
 
 -- curl file version
@@ -130,7 +130,7 @@ function upload(tagnames)
   ctan_post=curlexe .. " --config " .. curloptfile
   
 
-if options["debug"] then
+if Opts.debug then
     ctan_post = ctan_post ..  ' https://httpbin.org/post'
     fp_return = shell(ctan_post)
     print('\n\nCURL COMMAND:')

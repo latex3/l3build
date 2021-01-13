@@ -55,7 +55,7 @@ local remove           = os.remove
 -- Set up the check system files: needed for checking one or more tests and
 -- for saving the test files
 function checkinit()
-  if not options["dirty"] then
+  if not Opts.dirty then
     cleandir(testdir)
     cleandir(resultdir)
   end
@@ -562,8 +562,8 @@ function runcheck(name, hide)
     return 1
   end
   local checkengines = checkengines
-  if options["engine"] then
-    checkengines = options["engine"]
+  if Opts.engine then
+    checkengines = Opts.engine
   end
   -- Used for both .lvt and .pvt tests
   local function check_and_diff(ext,engine,comp,pdftest)
@@ -572,10 +572,10 @@ function runcheck(name, hide)
     if errorlevel == 0 then
       return errorlevel
     end
-    if options["show-log-on-error"] then
+    if Opts["show-log-on-error"] then
       showfailedlog(name)
     end
-    if options["halt-on-error"] then
+    if Opts["halt-on-error"] then
       showfaileddiff()
     end
     return errorlevel
@@ -589,7 +589,7 @@ function runcheck(name, hide)
     else
       errlevel = check_and_diff(lvtext,engine,compare_tlg)
     end
-    if errlevel ~= 0 and options["halt-on-error"] then
+    if errlevel ~= 0 and Opts["halt-on-error"] then
       return 1
     end
     if errlevel > errorlevel then
@@ -838,7 +838,7 @@ end
 function check(names)
   local errorlevel = 0
   if testfiledir ~= "" and direxists(testfiledir) then
-    if not options["rerun"] then
+    if not Opts.rerun then
       checkinit()
     end
     local hide = true
@@ -882,10 +882,10 @@ function check(names)
       end
       sort(names)
       -- Deal limiting range of names
-      if options["first"] then
+      if Opts.first then
         local allnames = names
         local active = false
-        local firstname = options["first"]
+        local firstname = Opts.first
         names = { }
         for _,name in ipairs(allnames) do
           if name == firstname then
@@ -896,9 +896,9 @@ function check(names)
           end
         end
       end
-      if options["last"] then
+      if Opts.last then
         local allnames = names
-        local lastname = options["last"]
+        local lastname = Opts.last
         names = { }
         for _,name in ipairs(allnames) do
           insert(names,name)
@@ -917,7 +917,7 @@ function check(names)
       end
       return tbl
     end
-    if options["shuffle"] then
+    if Opts.shuffle then
       names = shuffle(names)
     end
     -- Actually run the tests
@@ -929,7 +929,7 @@ function check(names)
       local errlevel = runcheck(name, hide)
       -- Return value must be 1 not errlevel
       if errlevel ~= 0 then
-        if options["halt-on-error"] then
+        if Opts["halt-on-error"] then
           return 1
         else
           errorlevel = 1
@@ -986,7 +986,7 @@ end
 
 function save(names)
   checkinit()
-  local engines = options["engine"] or {stdengine}
+  local engines = Opts.engine or {stdengine}
   if names == nil then
     print("Arguments are required for the save command")
     return 1

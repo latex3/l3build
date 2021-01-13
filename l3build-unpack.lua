@@ -84,7 +84,7 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
           .. localdir .. (unpacksearch and os_pathsep or "") ..
         os_concat ..
         unpackexe .. " " .. unpackopts .. " " .. name
-          .. (options["quiet"] and (" > " .. os_null) or ""),
+          .. (Opts.quiet and (" > " .. os_null) or ""),
         "w"
       ):write(string.rep("y\n", 300)):close()
       if not success then

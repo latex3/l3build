@@ -37,13 +37,13 @@ local insert = table.insert
 
 local function gethome()
   set_program("latex")
-  return abspath(options["texmfhome"] or var_value("TEXMFHOME"))
+  return abspath(Opts.texmfhome or var_value("TEXMFHOME"))
 end
 
 function uninstall()
   local function zapdir(dir)
     local installdir = gethome() .. "/" .. dir
-    if options["dry-run"] then
+    if Opts["dry-run"] then
       local files = filelist(installdir)
       if next(files) then
         print("\n" .. "For removal from " .. installdir .. ":")
@@ -72,7 +72,7 @@ function uninstall()
       -- Man files should have a single-digit extension: the type
       local installdir = gethome() .. "/doc/man/man"  .. match(file,".$")
       if fileexists(installdir .. "/" .. file) then
-        if options["dry-run"] then
+        if Opts["dry-run"] then
           insert(manfiles,"man" .. match(file,".$") .. "/" ..
            select(2,splitpath(file)))
         else
@@ -294,5 +294,5 @@ function install_files(target,full,dry_run)
 end
 
 function install()
-  return install_files(gethome(),options["full"],options["dry-run"])
+  return install_files(gethome(),Opts.full,Opts["dry-run"])
 end
