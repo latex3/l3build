@@ -52,7 +52,7 @@ target_list =
         pre  = function()
             if names then
               print("Bundle checks should not list test names")
-              help()
+              H.help()
               exit(1)
             end
             return 0
@@ -152,7 +152,7 @@ target_list =
 function stdmain(target,names)
   -- Deal with unknown targets up-front
   if not target_list[target] then
-    help()
+    H.help()
     exit(1)
   end
   local errorlevel = 0

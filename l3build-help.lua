@@ -27,53 +27,55 @@ local match  = string.match
 local rep    = string.rep
 local sort   = table.sort
 
-function version()
-  print(
-    "\n" ..
-    "l3build: A testing and building system for LaTeX\n\n" ..
-    "Release " .. release_date .. "\n" ..
-    "Copyright (C) 2014-2020 The LaTeX3 Project"
-  )
+local H = {}
+
+H.version = function ()
+  print([[
+l3build: A testing and building system for LaTeX
+
+Release ]] .. release_date .. [[
+Copyright (C) 2014-2020 The LaTeX3 Project
+]])
 end
 
-function help()
+H.help = function (arg0, target_list)
   local function setup_list(list)
     local longest = 0
-    for k,v in pairs(list) do
-      if k:len() > longest then
-        longest = k:len()
+    for k, _ in pairs(list) do
+      if #k > longest then
+        longest = #k
       end
     end
     -- Sort the options
-    local t = { }
-    for k,_ in pairs(list) do
-      insert(t, k)
+    local t = {}
+    for k, _ in pairs(list) do
+      t[#t+1] = k
     end
     sort(t)
-    return longest,t
+    return longest, t
   end
 
   local scriptname = "l3build"
-  if not (match(arg[0], "l3build%.lua$") or match(arg[0],"l3build$")) then
-    scriptname = arg[0]
+  if not (match(arg0, "l3build%.lua$") or match(arg0,"l3build$")) then
+    scriptname = arg0
   end
-  print("usage: " .. scriptname .. " <target> [<options>] [<names>]")
-  print("")
+  print("usage: " .. scriptname .. [[ <target> [<options>] [<names>]
+]])
   print("Valid targets are:")
-  local longest,t = setup_list(target_list)
+  local longest, t = setup_list(target_list)
   for _,k in ipairs(t) do
     local target = target_list[k]
-    local filler = rep(" ", longest - k:len() + 1)
+    local filler = rep(" ", longest - #k + 1)
     if target["desc"] then
       print("   " .. k .. filler .. target["desc"])
     end
   end
   print("")
   print("Valid options are:")
-  local longest,t = setup_list(A.option_list)
+  longest, t = setup_list(A.option_list)
   for _,k in ipairs(t) do
     local opt = A.option_list[k]
-    local filler = rep(" ", longest - k:len() + 1)
+    local filler = rep(" ", longest - #k + 1)
     if opt["desc"] then
       if opt["short"] then
         print("   --" .. k .. "|-" .. opt["short"] .. filler .. opt["desc"])
@@ -82,10 +84,13 @@ function help()
       end
     end
   end
-  print("")
-  print("Full manual available via 'texdoc l3build'.")
-  print("")
-  print("Repository  : https://github.com/latex3/l3build")
-  print("Bug tracker : https://github.com/latex3/l3build/issues")
-  print("Copyright (C) 2014-2020 The LaTeX3 Project")
+  print([[
+Full manual available via 'texdoc l3build'.
+
+Repository  : https://github.com/latex3/l3build
+Bug tracker : https://github.com/latex3/l3build/issues
+Copyright (C) 2014-2020 The LaTeX3 Project
+]])
 end
+
+return H

@@ -53,7 +53,7 @@ A = build_require("arguments")
 -- global options
 Opts = A.argparse(arg)
 
-build_require("help")
+H = build_require("help")
 
 build_require("file-functions")
 build_require("typesetting")
@@ -72,10 +72,10 @@ build_require("stdmain")
 -- This has to come after stdmain(),
 -- and that has to come after the functions are defined
 if Opts.target == "help" then
-  help()
+  H.help(arg[0], target_list)
   exit(0)
 elseif Opts.target == "version" then
-  version()
+  H.version()
   exit(0)
 end
 
