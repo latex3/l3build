@@ -3,11 +3,3 @@ build/
 *.zip
 !testfiles/*.pdf
 
-l3build.glo
-l3build.hd
-l3build.idx
-l3build.log
-l3build.out
-l3build.synctex.gz
-l3build.toc
-l3build.aux
