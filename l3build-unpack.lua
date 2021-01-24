@@ -27,7 +27,7 @@ local execute          = os.execute
 -- Unpack the package files using an 'isolated' system: this requires
 -- a copy of the 'basic' DocStrip program, which is used then removed
 function unpack(sources, sourcedirs)
-  local errorlevel = depinstall(unpackdeps)
+  local errorlevel = dep_install(unpackdeps)
   if errorlevel ~= 0 then
     return errorlevel
   end

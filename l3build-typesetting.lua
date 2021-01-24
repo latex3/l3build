@@ -38,7 +38,7 @@ local os_type = os.type
 function dvitopdf(name, dir, engine, hide)
   run(
     dir,
-    (forcecheckepoch and setepoch() or "") ..
+    (forcecheckepoch and set_epoch_cmd(epoch) or "") ..
     "dvips " .. name .. dviext
       .. (hide and (" > " .. os_null) or "")
       .. os_concat ..
@@ -68,7 +68,7 @@ function runcmd(cmd,dir,vars)
   for _,var in pairs(vars) do
     env = env .. os_concat .. os_setenv .. " " .. var .. "=" .. envpaths
   end
-  return run(dir,(forcedocepoch and setepoch() or "") .. env .. os_concat .. cmd)
+  return run(dir,(forcedocepoch and set_epoch_cmd(epoch) or "") .. env .. os_concat .. cmd)
 end
 
 function biber(name,dir)
@@ -188,7 +188,7 @@ local function docinit()
   for _,file in pairs(typesetsuppfiles) do
     cp(file, supportdir, typesetdir)
   end
-  depinstall(typesetdeps)
+  dep_install(typesetdeps)
   unpack({sourcefiles, typesetsourcefiles}, {sourcefiledir, docfiledir})
   -- Main loop for doc creation
   local errorlevel = typeset_demo_tasks()

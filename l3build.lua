@@ -120,7 +120,7 @@ if options["epoch"] then
   forcecheckepoch = true
   forcedocepoch   = true
 end
-normalise_epoch()
+epoch = normalise_epoch(epoch)
 
 -- Sanity check
 check_engines()

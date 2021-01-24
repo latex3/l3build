@@ -65,7 +65,7 @@ target_list =
     bundleunpack =
       {
         func = bundleunpack,
-        pre  = function() return(depinstall(unpackdeps)) end
+        pre  = function() return(dep_install(unpackdeps)) end
       },
     -- Public targets
     check =
