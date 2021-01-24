@@ -59,7 +59,7 @@ function checkinit()
     cleandir(testdir)
     cleandir(resultdir)
   end
-  depinstall(checkdeps)
+  dep_install(checkdeps)
   -- Copy dependencies to the test directory itself: this makes the paths
   -- a lot easier to manage, and is important for dealing with the log and
   -- with file input/output tests
@@ -764,7 +764,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
       -- Allow for local texmf files
       os_setenv .. " TEXMFCNF=." .. os_pathsep
         .. os_concat ..
-      (forcecheckepoch and setepoch() or "") ..
+      (forcecheckepoch and set_epoch_cmd(epoch) or "") ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
