@@ -103,7 +103,7 @@ function call(modules, target, opts)
   opts = opts or options
   local cli_opts = ""
   for k,v in pairs(opts) do
-    if k ~= "names" and k ~= "target" then -- Special cases, TODO enhance the design to remove the need for this comment
+    if k ~= l3b.NAMES and k ~= l3b.TARGET then -- Special cases
       local t = option_list[k] or {}
       local value = ""
       if t["type"] == "string" then

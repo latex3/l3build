@@ -175,17 +175,17 @@ local function argparse()
   -- Deal with this by assuming help and storing only apparently-valid
   -- input
   local a = arg[1]
-  result["target"] = "help"
+  result[l3b.TARGET] = "help"
   if a then
     -- No options are allowed in position 1, so filter those out
     if a == "--version" then
-      result["target"] = "version"
+      result[l3b.TARGET] = "version"
     elseif not match(a, "^%-") then
-      result["target"] = a
+      result[l3b.TARGET] = a
     end
   end
   -- Stop here if help or version is required
-  if result["target"] == "help" or result["target"] == "version" then
+  if result[l3b.TARGET] == "help" or result[l3b.TARGET] == "version" then
     return result
   end
   -- An auxiliary to grab all file names into a table
@@ -277,7 +277,7 @@ local function argparse()
     end
   end
   if next(names) then
-   result["names"] = names
+   result[l3b.NAMES] = names
   end
   return result
 end

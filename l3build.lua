@@ -44,6 +44,13 @@ local select           = select
 local tonumber         = tonumber
 local exit             = os.exit
 
+-- global namespace and constants
+
+l3b = {
+  TARGET = {}, -- see https://www.lua.org/pil/13.4.3.html
+  NAMES  = {}, -- `--names` and `--target` are now available
+}
+
 -- l3build setup and functions
 kpse.set_program_name("kpsewhich")
 build_kpse_path = match(lookup("l3build.lua"),"(.*[/])")
@@ -53,6 +60,10 @@ end
 
 -- Minimal code to do basic checks
 build_require("arguments")
+-- `options` is available now
+local target = options[l3b.TARGET]
+local names  = options[l3b.NAMES]
+
 build_require("help")
 
 build_require("file-functions")
@@ -71,10 +82,10 @@ build_require("stdmain")
 
 -- This has to come after stdmain(),
 -- and that has to come after the functions are defined
-if options["target"] == "help" then
+if target == "help" then
   help()
   exit(0)
-elseif options["target"] == "version" then
+elseif target == "version" then
   version()
   exit(0)
 end
@@ -131,13 +142,13 @@ check_engines()
 
 -- When we have specific files to deal with, only use explicit configs
 -- (or just the std one)
-if options["names"] then
+if names then
   checkconfigs = options["config"] or {stdconfig}
 else
   checkconfigs = options["config"] or checkconfigs
 end
 
-if options["target"] == "check" then
+if target == "check" then
   if #checkconfigs > 1 then
     local errorlevel = 0
     local opts = options
@@ -159,7 +170,6 @@ if options["target"] == "check" then
         print("\n  Check failed with difference files")
         local testdir = testdir
         if config ~= "build" then
-          resultdir = resultdir .. "-" .. config
           testdir = testdir .. "-" .. config
         end
         for _,i in ipairs(filelist(testdir,"*" .. os_diffext)) do
@@ -176,7 +186,7 @@ if options["target"] == "check" then
 end
 if #checkconfigs == 1 and
    checkconfigs[1] ~= "build" and
-   (options["target"] == "check" or options["target"] == "save" or options["target"] == "clean") then
+   (target == "check" or target == "save" or target == "clean") then
    local config = "./" .. gsub(checkconfigs[1],".lua$","") .. ".lua"
    if fileexists(config) then
      local savedtestfiledir = testfiledir
@@ -194,4 +204,4 @@ if #checkconfigs == 1 and
 end
 
 -- Call the main function
-main(options["target"], options["names"])
+main(target, names)
