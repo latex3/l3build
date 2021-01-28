@@ -170,7 +170,7 @@ local function argparse()
     end
     long_options[k] = k
   end
-  local args = args
+  local arg = arg
   -- arg[1] is a special case: must be a command or "-h"/"--help"
   -- Deal with this by assuming help and storing only apparently-valid
   -- input
