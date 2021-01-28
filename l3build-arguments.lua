@@ -153,7 +153,15 @@ option_list =
       {
         desc = "Print version information and exit",
         type = "boolean"
-      }
+      },
+      target = 
+        {
+          reserved = true,
+        },
+      names = 
+        {
+          reserved = true,
+        },
   }
 
 -- This is done as a function (rather than do ... end) as it allows early
@@ -165,10 +173,12 @@ local function argparse()
   local short_options = { }
   -- Turn long/short options into two lookup tables
   for k,v in pairs(option_list) do
-    if v["short"] then
-      short_options[v["short"]] = k
+    if not v.reserved then
+      if v["short"] then
+        short_options[v["short"]] = k
+      end
+      long_options[k] = k
     end
-    long_options[k] = k
   end
   local args = args
   -- arg[1] is a special case: must be a command or "-h"/"--help"

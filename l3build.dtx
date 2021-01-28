@@ -1571,32 +1571,34 @@
 %
 % \begin{variable}{options}
 %   The |options| table holds the values passed to \pkg{l3build} at the
-%   command line. The possible entries in the table are given in the table
+%   command line including the target and the trailing list of names if any.
+%   The possible entries in this table are given in the table
 %   below.
 %   \begin{center}
 %   \begin{tabular}{ll}
 %     \toprule
 %     Entry & Type \\
 %     \midrule
-%       \var{config}        & Table   \\
-%       \var{date}          & String  \\
-%       \var{dirty}         & Boolean \\
-%       \var{dry-run}       & Boolean \\
-%       \var{email}         & String  \\
-%       \var{engine}        & Table   \\
-%       \var{epoch}         & String  \\
+%       \var{config}        & table   \\
+%       \var{date}          & string  \\
+%       \var{dirty}         & boolean \\
+%       \var{dry-run}       & boolean \\
+%       \var{email}         & string  \\
+%       \var{engine}        & table   \\
+%       \var{epoch}         & string  \\
 %       \var{file}          & string  \\
-%       \var{first}         & Boolean \\
-%       \var{force}         & Boolean \\
-%       \var{full}          & Boolean \\
-%       \var{halt-on-error} & Boolean \\
-%       \var{help}          & Boolean \\
+%       \var{first}         & boolean \\
+%       \var{force}         & boolean \\
+%       \var{full}          & boolean \\
+%       \var{halt-on-error} & boolean \\
+%       \var{help}          & boolean \\
 %       \var{message}       & string  \\
-%       \var{names}         & Table   \\
-%       \var{quiet}         & Boolean \\
-%       \var{rerun}         & Boolean \\
-%       \var{shuffle}       & Boolean \\
-%       \var{texmfhome}     & String  \\
+%       \var{names}         & table   \\
+%       \var{quiet}         & boolean \\
+%       \var{rerun}         & boolean \\
+%       \var{shuffle}       & boolean \\
+%       \var{target}        & string \\
+%       \var{texmfhome}     & string  \\
 %     \bottomrule
 %     \end{tabular}
 %   \end{center}

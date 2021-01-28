@@ -39,16 +39,16 @@ end
 function help()
   local function setup_list(list)
     local longest = 0
+    local t = {}
     for k,v in pairs(list) do
-      if k:len() > longest then
-        longest = k:len()
+      if not v.reserved then
+        if k:len() > longest then
+          longest = k:len()
+        end
+        insert(t, k)
       end
     end
     -- Sort the options
-    local t = { }
-    for k,_ in pairs(list) do
-      insert(t, k)
-    end
     sort(t)
     return longest,t
   end
