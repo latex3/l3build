@@ -49,7 +49,7 @@ target_list =
     bundlecheck =
       {
         func = check,
-        pre  = function()
+        pre  = function(names)
             if names then
               print("Bundle checks should not list test names")
               help()
