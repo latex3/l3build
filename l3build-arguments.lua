@@ -154,14 +154,14 @@ option_list =
         desc = "Print version information and exit",
         type = "boolean"
       },
-      target = 
-        {
-          reserved = true,
-        },
-      names = 
-        {
-          reserved = true,
-        },
+    target = 
+      {
+        reserved = true,
+      },
+    names = 
+      {
+        reserved = true,
+      },
   }
 
 -- This is done as a function (rather than do ... end) as it allows early
