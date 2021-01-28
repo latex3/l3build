@@ -159,7 +159,6 @@ if options["target"] == "check" then
         print("\n  Check failed with difference files")
         local testdir = testdir
         if config ~= "build" then
-          resultdir = resultdir .. "-" .. config
           testdir = testdir .. "-" .. config
         end
         for _,i in ipairs(filelist(testdir,"*" .. os_diffext)) do
