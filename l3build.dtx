@@ -1863,12 +1863,15 @@
 %
 % \subsection{Customising the target list}
 %
-% The targets known to \pkg{l3build} are stored in the global table
-% |target_list|. Each entry should have at least a |func|, pointing to the
-% function used to implement the target. This function will receive the
+% The builtin targets known to \pkg{l3build} are stored in the global table
+% |target_list|. You can define your own target with
+% \texttt{declare_target(\meta{tgt_1},\meta{def_1},\meta{tgt_2},\meta{def_2},...)}
+% where \meta{tgt_i} are the target names whereas \meta{def_i} are the corresponding definitions.
+% Each such definition must have at least a |func|, pointing to the
+% function used to implement the target action. This function will receive the
 % list of names given at the command line as a table argument.
 % In most cases, targets will also have a |desc|, used to construct |help()|
-% automatically. In addition, the following may also be used:
+% output automatically. In addition, the following may also be used:
 % \begin{itemize}
 %   \item |bundle_func| A variant of |func| used when at the top level of
 %     a bundle

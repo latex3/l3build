@@ -43,10 +43,98 @@ function listmodules()
   return modules
 end
 
-target_list =
-  {
-    -- Some hidden targets
-    bundlecheck =
+target_list = {}
+
+---table definition
+---@key func
+---@key desc
+---@key bundle_func
+---@key bundle_target
+---@key pre
+---@key custom internal usage only, must not be documented publicly
+---@table target_definition
+
+---Declare a custom target.
+---Exits if the name is already taken,
+---if the name is "", if there is no func...
+---@param builtin? boolean optional, whether the target is builtin or not, defaults to false
+---@param tgt_1 string name of the first target
+---@param def_1 table definition of the first target, up to
+---@param tgt_n string name of the last target
+---@param def_n table definition of the last target
+function declare_target(builtin, ...)
+  -- The fact that `pre` must return `0` on success was not documented
+  -- from the beginning, this really prevented to use `pre`.
+  -- Next is some goody just in case the author of `build.lua`
+  -- has missed the rule.
+  local function ensure_return_0(def, key)
+    if type(def[key]) == "function" then
+      return function(...)
+        local ans = def[key](...)
+        if type(ans) ~= "number" then
+          ans = 0
+        end
+        return ans
+      end
+    elseif def[key] then
+      error(key .. " expects a function", 0)
+    end
+  end
+  local feed_target_list
+  feed_target_list = function (tgt_i, def_i, ...) -- take the arguments 2 at a time
+    -- this function returns nothing but throws errors
+    if not tgt_i then
+      return -- arguments exhausted
+    elseif #tgt_i == 0 then
+      error("Target name must have at least one character", 0)
+    elseif target_list[tgt_i] then
+      error("Target name " .. tgt_i .. " is already used", 0)
+    elseif def_i then
+      if type(def_i.func) == "function" then
+        local success, msg = pcall(function ()
+          target_list[tgt_i] = {
+            func          = ensure_return_0(def_i, "func"),
+            desc          = def_i.desc,
+            bundle_target = def_i.bundle_target,
+            bundle_func   = ensure_return_0(def_i, "bundle_func"),
+            pre           = ensure_return_0(def_i, "pre"),
+            custom        = not builtin,
+          }
+        end)
+        if not success then
+          error("Wrong definition for " .. tgt_i .. "\n" .. msg, 0)
+        end
+        if not builtin then
+          print("New custom target " .. tgt_i)
+        elseif options.debug then
+          print("New target " .. tgt_i)
+        end
+        return feed_target_list(...) -- consume the rest
+      else
+        error("Missing func function in target definition for " .. tgt_i, 0)
+      end
+    else
+      error("Missing target definition for " .. tgt_i, 0)
+    end
+    -- unreachable
+  end
+  local success, msg
+  if type(builtin) == "boolean" then
+    success, msg = pcall(feed_target_list, ...)
+  else -- unprovided optional `builtin`, first target name captured instead
+    local tgt_1 = builtin
+    builtin = false -- targets are created custom by default
+    success, msg = pcall(feed_target_list, tgt_1, ...)
+  end
+  if not success then
+    error("!Error: " .. msg, 2)
+  end
+end
+
+-- next will be reformatted, in the meanwhile is helps diff analyze
+declare_target(true, -- these are builtin targets
+    -- Some hidden targets (with no desc)
+    "bundlecheck",
       {
         func = check,
         pre  = function(names)
@@ -58,55 +146,55 @@ target_list =
             return 0
           end
       },
-    bundlectan =
+    "bundlectan",
       {
         func = bundlectan
       },
-    bundleunpack =
+    "bundleunpack",
       {
         func = bundleunpack,
         pre  = function() return(dep_install(unpackdeps)) end
       },
     -- Public targets
-    check =
+    "check",
       {
         bundle_target = true,
         desc = "Run all automated tests",
         func = check,
       },
-    clean =
+    "clean",
       {
         bundle_func = bundleclean,
         desc = "Clean out directory tree",
         func = clean
       },
-    ctan =
+    "ctan",
       {
         bundle_func = ctan,
         desc = "Create CTAN-ready archive",
         func = ctan
       },
-    doc =
+    "doc",
       {
         desc = "Typesets all documentation files",
         func = doc
       },
-    install =
+    "install",
       {
         desc = "Installs files into the local texmf tree",
         func = install
       },
-    manifest =
+    "manifest",
       {
         desc = "Creates a manifest file",
         func = manifest
       },
-    save =
+    "save",
       {
         desc = "Saves test validation log",
         func = save
       },
-    tag =
+    "tag",
       {
         bundle_func = function(names)
             local modules = modules or listmodules()
@@ -127,23 +215,23 @@ target_list =
            return 0
          end
       },
-    uninstall =
+    "uninstall",
       {
         desc = "Uninstalls files from the local texmf tree",
         func = uninstall
       },
-    unpack=
+    "unpack",
       {
         bundle_target = true,
         desc = "Unpacks the source files into the build tree",
         func = unpack
       },
-    upload =
+    "upload",
       {
         desc = "Send archive to CTAN for public release",
         func = upload
-      },
-  }
+      }
+)
 
 --
 -- The overall main function
