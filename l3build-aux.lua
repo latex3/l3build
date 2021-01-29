@@ -77,7 +77,7 @@ end
 
 ---Returns the script name depending on the calling sequence.
 ---`l3build ...` -> full path of `l3build.lua` in the TDS
----When called via `texlua l3build.lua ...`, `l3build.lua` is resolved to either 
+---When called via `texlua l3build.lua ...`, `l3build.lua` is resolved to either
 ---`./l3build.lua` or the full path of `l3build.lua` in the TDS.
 ---`texlua l3build.lua` -> `/Library/TeX/texbin/l3build.lua` or `./l3build.lua`
 ---@return string
@@ -85,7 +85,7 @@ local function get_script_name()
   if match(arg[0], "l3build$") or match(arg[0], "l3build%.lua$") then
     return lookup("l3build.lua")
   else
-    return arg[0] -- Why no lookup here? 
+    return arg[0] -- Why no lookup here?
   end
 end
 
