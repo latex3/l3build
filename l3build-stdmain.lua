@@ -62,7 +62,7 @@ target_list = {}
 ---@param def_1 table definition of the first target, up to
 ---@param tgt_n string name of the last target
 ---@param def_n table definition of the last target
-function declare_target(builtin, ...)
+function declare_target(builtin, tgt_1, def_1, ...)
   -- The fact that `pre` must return `0` on success was not documented
   -- from the beginning, this really prevented to use `pre`.
   -- Next is some goody just in case the author of `build.lua`
@@ -119,12 +119,13 @@ function declare_target(builtin, ...)
     -- unreachable
   end
   local success, msg
-  if type(builtin) == "boolean" then
-    success, msg = pcall(feed_target_list, ...)
-  else -- unprovided optional `builtin`, first target name captured instead
-    local tgt_1 = builtin
+  if type(tgt_1) == "string" then
+    success, msg = pcall(feed_target_list, tgt_1, def_1, ...)
+  else
+    local tgt_2
+    tgt_1, def_1, tgt_2 = builtin, tgt_1, def_1
     builtin = false -- targets are created custom by default
-    success, msg = pcall(feed_target_list, tgt_1, ...)
+    success, msg = pcall(feed_target_list, tgt_1, def_1, tgt_2, ...)
   end
   if not success then
     error("!Error: " .. msg, 2)
