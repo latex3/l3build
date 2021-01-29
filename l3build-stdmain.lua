@@ -80,7 +80,7 @@ function declare_target(builtin, ...)
       error(key .. " expects a function", 0)
     end
   end
-  local feed_target_list
+  local feed_target_list -- recursive call => standalone declaration
   feed_target_list = function (tgt_i, def_i, ...) -- take the arguments 2 at a time
     -- this function returns nothing but throws errors
     if not tgt_i then
@@ -102,7 +102,7 @@ function declare_target(builtin, ...)
           }
         end)
         if not success then
-          error("Wrong definition for " .. tgt_i .. "\n" .. msg, 0)
+          error("Wrong definition for target " .. tgt_i .. "\n" .. msg, 0)
         end
         if not builtin then
           print("New custom target " .. tgt_i)

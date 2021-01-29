@@ -134,4 +134,12 @@ printed = ""
 target_list.foo.pre(421)
 printed_test("pre: 421", true)
 
+target_list.foo = nil
+declare_target("foo", {
+  func = function(names)
+    print("func: " .. tostring(names))
+  end,
+  pre = 421,
+})
+
 saved_print('DONE')

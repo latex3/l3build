@@ -42,8 +42,8 @@ function help(no_custom)
     for k,v in pairs(list) do
       if not no_custom or not v.custom then
         local star = v.custom and 3 or 0 -- reserve space for "(*)"
-        if k:len() + star > longest then
-          longest = k:len()
+        if #k + star > longest then
+          longest = #k
         end
       end
     end
@@ -67,10 +67,10 @@ function help(no_custom)
   local has_custom = false
   for _,k in ipairs(t) do
     local target = target_list[k]
-    if target["desc"] and (not no_custom or not target.custom) then
+    if target.desc and (not no_custom or not target.custom) then
       local star = target.custom and "(*)" or ""
       local filler = star .. rep(" ", longest - #k + 1 -#star)
-      print("   " .. k .. filler .. target["desc"])
+      print("   " .. k .. filler .. target.desc)
       has_custom = has_custom or target.custom
     end
   end
@@ -83,12 +83,12 @@ function help(no_custom)
   local longest,t = setup_list(option_list)
   for _,k in ipairs(t) do
     local opt = option_list[k]
-    local filler = rep(" ", longest - k:len() + 1)
-    if opt["desc"] then
-      if opt["short"] then
-        print("   --" .. k .. "|-" .. opt["short"] .. filler .. opt["desc"])
+    local filler = rep(" ", longest - #k + 1)
+    if opt.dest then
+      if opt.short then
+        print("   --" .. k .. "|-" .. opt.short .. filler .. opt.desc)
       else
-        print("   --" .. k .. "   " .. filler .. opt["desc"])
+        print("   --" .. k .. "   " .. filler .. opt.desc)
       end
     end
   end
