@@ -239,21 +239,21 @@ local function argparse()
           if optarg then
             local opt = "-" .. (match(a, "^%-%-") and "-" or "") .. opt
             stderr:write("Value not allowed for option " .. opt .."\n")
-            return {"help"}
+            return { target = "help" }
           end
         else
          if not optarg then
           optarg = arg[i + 1]
           if not optarg then
             stderr:write("Missing value for option " .. a .."\n")
-            return {"help"}
+            return { target = "help" }
           end
           i = i + 1
          end
         end
       else
         stderr:write("Unknown option " .. a .."\n")
-        return {"help"}
+        return { target = "help" }
       end
       -- Store the result
       if optarg then
