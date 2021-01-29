@@ -474,7 +474,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Removed
 - Rationalise short option names: removed `-d`, `-E`, `-r`
-- Target `cmdcheck`: specific to LaTeX3 kernel work
+- Target `cmdcheck`: specific to LaTeX kernel work
 
 [Unreleased]: https://github.com/latex3/l3build/compare/2020-06-04...HEAD
 [2020-06-04]: https://github.com/latex3/l3build/compare/2020-03-25...2020-06-04

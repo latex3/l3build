@@ -1,6 +1,6 @@
 --[[
 
-File l3build-help.lua Copyright (C) 2018,2020 The LaTeX3 Project
+File l3build-help.lua Copyright (C) 2018,2020 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -32,7 +32,7 @@ function version()
     "\n" ..
     "l3build: A testing and building system for LaTeX\n\n" ..
     "Release " .. release_date .. "\n" ..
-    "Copyright (C) 2014-2020 The LaTeX3 Project"
+    "Copyright (C) 2014-2020 The LaTeX Project"
   )
 end
 
@@ -87,5 +87,5 @@ function help()
   print("")
   print("Repository  : https://github.com/latex3/l3build")
   print("Bug tracker : https://github.com/latex3/l3build/issues")
-  print("Copyright (C) 2014-2020 The LaTeX3 Project")
+  print("Copyright (C) 2014-2020 The LaTeX Project")
 end
