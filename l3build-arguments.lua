@@ -158,7 +158,7 @@ option_list =
 
 -- This is done as a function (rather than do ... end) as it allows early
 -- termination (break)
-local function argparse()
+local function argparse(arg)
   local result = { }
   local names  = { }
   local long_options =  { }
@@ -282,8 +282,6 @@ local function argparse()
   return result
 end
 
-options = argparse()
-
 -- Sanity check
 function check_engines()
   if options["engine"] and not options["force"] then
@@ -305,3 +303,10 @@ function check_engines()
     end
   end
 end
+
+return {
+  _TYPE = "module",
+  _NAME = "arguments",
+  _VERSION = "2021/01/30",
+  parse = argparse,
+}
