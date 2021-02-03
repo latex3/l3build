@@ -180,7 +180,7 @@ function abspath(path)
     chdir(oldpwd)
     return escapepath(gsub(result, "\\", "/"))
   end
-  return ok, msg
+  error(msg)
 end
 
 function escapepath(path)
