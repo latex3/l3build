@@ -259,7 +259,7 @@ function fileexists(file)
     f:close()
     return true
   else
-    return false
+    return false -- also file exits and is not readable
   end
 end
 
