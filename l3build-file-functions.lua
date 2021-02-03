@@ -171,12 +171,16 @@ function normalize_path(path)
 end
 
 -- Return an absolute path from a relative one
+-- Due to chdir, path must exist and be accessible.
 function abspath(path)
   local oldpwd = currentdir()
-  chdir(path)
-  local result = currentdir()
-  chdir(oldpwd)
-  return escapepath(gsub(result, "\\", "/"))
+  local ok, msg = chdir(path)
+  if ok then
+    local result = currentdir()
+    chdir(oldpwd)
+    return escapepath(gsub(result, "\\", "/"))
+  end
+  return ok, msg
 end
 
 function escapepath(path)
