@@ -248,7 +248,7 @@ It is automatically generated with `texlua build.lua manifest`.
 
 end
 
-functiom manifest_write_subheading(filehandle,heading,description)
+function manifest_write_subheading(filehandle,heading,description)
 
   filehandle:write("\n\n## " .. heading .. "\n\n")
 
