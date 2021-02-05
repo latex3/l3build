@@ -85,7 +85,7 @@ function checkinit()
   return checkinit_hook()
 end
 
-checkinit_hook = checkinit_hook or function() return 0 end
+function checkinit_hook() return 0 end
 
 local function rewrite(source,result,processor,...)
   local file = assert(open(source,"rb"))
@@ -545,7 +545,7 @@ local function normalize_pdf(content)
       stream = true
       stream_content = "stream" .. os_newline
     elseif not match(line, "^ *$") and
-      not match(line,"^%%%%Invocation") and 
+      not match(line,"^%%%%Invocation") and
       not match(line,"^%%%%%+") then
       line = gsub(line,"%/ID( ?)%[<[^>]+><[^>]+>]","/ID%1[<ID-STRING><ID-STRING>]")
       new_content = new_content .. line .. os_newline
@@ -824,7 +824,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
 end
 
 -- A hook to allow additional tasks to run for the tests
-runtest_tasks = runtest_tasks or function(name,run)
+function runtest_tasks(name,run)
   return ""
 end
 

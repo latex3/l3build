@@ -28,7 +28,7 @@ local os_date = os.date
 local match   = string.match
 local gsub    = string.gsub
 
-update_tag = update_tag or function(filename,content,tagname,tagdate)
+function update_tag(filename,content,tagname,tagdate)
   return content
 end
 
@@ -81,4 +81,3 @@ function tag(tagnames)
   end
   return tag_hook(tagname,tagdate)
 end
-

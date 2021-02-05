@@ -44,7 +44,7 @@ end
 
 -- Split off from the main unpack so it can be used on a bundle and not
 -- leave only one modules files
-bundleunpack = bundleunpack or function(sourcedirs, sources)
+function bundleunpack(sourcedirs, sources)
   local errorlevel = mkdir(localdir)
   if errorlevel ~=0 then
     return errorlevel
