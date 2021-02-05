@@ -79,9 +79,6 @@ elseif options["target"] == "version" then
   exit(0)
 end
 
--- Allow main function to be disabled 'higher up'
-main = main or stdmain
-
 -- Look for some configuration details
 if fileexists("build.lua") then
   dofile("build.lua")

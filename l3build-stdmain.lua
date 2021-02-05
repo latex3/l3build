@@ -151,7 +151,7 @@ target_list =
 -- The overall main function
 --
 
-function stdmain(target,names)
+function main(target,names)
   -- Deal with unknown targets up-front
   if not target_list[target] then
     help()
