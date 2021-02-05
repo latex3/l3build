@@ -22,8 +22,6 @@ for those people who are interested.
 
 --]]
 
-local exit             = os.exit
-
 -- "module" is a deprecated function in Lua 5.2: as we want the name
 -- for other purposes, and it should eventually be 'free', simply
 -- remove the built-in
