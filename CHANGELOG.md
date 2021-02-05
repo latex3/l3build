@@ -19,6 +19,9 @@ this project uses date-based 'snapshot' version identifiers.
 - no longer expect LuaTeX line lengths to be off by a character for new
   LuaTeX versions
 
+### Removed
+- Support for use as `texlua build.lua <target>`
+
 ## [2020-06-04]
 
 ### Added
