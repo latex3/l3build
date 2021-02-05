@@ -82,15 +82,12 @@ end
 -- Allow main function to be disabled 'higher up'
 main = main or stdmain
 
--- Load configuration file if running as a script
-if match(arg[0], "l3build$") or match(arg[0], "l3build%.lua$") then
-  -- Look for some configuration details
-  if fileexists("build.lua") then
-    dofile("build.lua")
-  else
-    print("Error: Cannot find configuration build.lua")
-    exit(1)
-  end
+-- Look for some configuration details
+if fileexists("build.lua") then
+  dofile("build.lua")
+else
+  print("Error: Cannot find configuration build.lua")
+  exit(1)
 end
 
 -- Load standard settings for variables:
