@@ -49,6 +49,8 @@ local gsub             = string.gsub
 
 local insert           = table.insert
 
+local byte             = string.byte
+
 -- Convert a file glob into a pattern for use by e.g. string.gub
 -- Based on https://github.com/davidm/lua-glob-pattern
 -- Simplified substantially: "[...]" syntax not supported as is not
@@ -118,6 +120,222 @@ function glob_to_pattern(glob)
     end
   end
   return pattern
+end
+
+---Sanitize the given path by removing
+---what is not necessary.
+---@param p string
+---@return string
+local function sanitize_path(p)
+  return p:gsub("//", "/")
+          :gsub("^%./", "")
+          :gsub("/%./", "/")
+          :gsub("[^/]+/%.%./", "")
+end
+
+---Boundaries between directories are managed more precisely.
+---Named classes are available too.
+---This has been seriously revisited, fixed and enhanced.
+---@param g string
+---@return string
+function glob_to_pattern_x(g)
+  g =  sanitize_path(g)
+  local p = "^"  -- pattern being built
+  local i = 0    -- index in g
+
+  -- unescape glob char
+  local function unescape(c)
+    if c == '\\' then
+      i = i + 1; c = g:sub(i,i)
+      if c == '' then
+        p = '[^]'
+        error("Uncomplete escape sequence")
+      end
+    end
+    return true
+  end
+
+  -- escape pattern char
+  local function escape(c)
+    return c:match("^%w$") and c or '%' .. c
+  end
+
+  -- Creates a character range but excludes "/".
+  local function range(left, right)
+    local l = byte(left)
+    local r = byte(right)
+    if l > r then return "" end
+    if l == 0x2F then l = 0x30; left  = "0" end -- shift right
+    if r == 0x2F then r = 0x2E; right = "." end -- shift left
+    if l > r then return "" end -- it was a /-/ range
+    if l > 0x2F or r < 0x2F then
+      return escape(left) .. "-" .. escape(right)
+    end
+    -- l < 0x2F < r
+    local ans = escape(left)
+    if l < 0x2E then
+      ans = ans .. "-.0"
+    end
+    if r > 0x30 then
+      ans = ans .. "-" .. escape(right)
+    end
+    return ans
+  end
+  -- terminates the scanning of a character set
+  local function charset_end(c)
+    while 1 do
+      if c == '' then
+        p = '[^]'
+        error('No void class')
+      elseif c == '[' then
+        p = p .. '%['
+      elseif c == ']' then
+        p = p .. ']'
+        break
+      else
+        unescape(c)
+        local c1 = c
+        i = i + 1; c = g:sub(i,i)
+        if c == '' then
+          p = '[^]'
+          error('Missing "]"')
+        elseif c == '-' then
+          i = i + 1; c = g:sub(i,i)
+          if c == '' then
+            p = '[^]'
+            error('Missing "]"')
+          elseif c == ']' then
+            p = p .. escape(c1) .. '%-]'
+            break
+          else
+            unescape(c)
+            p = p .. range(c1, c)
+          end
+        elseif c == ']' then
+          p = p .. escape(c1) .. ']'
+          break
+        else
+          p = p .. escape(c1)
+          i = i - 1 -- put back
+        end
+      end
+      i = i + 1; c = g:sub(i,i)
+    end
+    return true
+  end
+  -- Convert tokens in charset.
+  local function charset(c)
+    local l = #p
+    if c == '' then
+      p = '[^]'
+      error('Missing closing "]"')
+    end
+    if c == '-' then
+      i = i + 1; c = g:sub(i,i)
+      if c == '-' then -- this might be a range
+        i = i + 1; c = g:sub(i,i)
+        if c == "]" then
+          p = p .. "%-"
+          return true
+        end
+        p = p .. "[" .. range("-", c)
+        i = i + 1; c = g:sub(i,i)
+      else
+        p = p .. '%-'
+        i = i + 1; c = g:sub(i,i)
+      end
+    elseif c == ']' then
+      p = p .. '[%]'
+      i = i + 1; c = g:sub(i,i)
+    elseif c == '^' or c == '!' then
+      i = i + 1; c = g:sub(i,i)
+      if c == ']' then
+        p = p .. '[^%]'
+        i = i + 1; c = g:sub(i,i)
+      else
+        p = p .. '[^'
+      end
+    else
+      p = p .. '['
+    end
+    charset_end(c)
+    if #p == l + 2 then -- "[z-a]"
+      p = p .. "\8" .. "^]"
+    end
+  end
+
+  local function named_class()
+    -- unsupported: [:blank:] and [:graph:]
+    -- i points after "[:"
+    local name = g:match("^([a-z]+):%]", i)
+    if not name then
+      error("Missing class name")
+    end
+    local map = {
+      alpha = "a", -- letters
+      cntrl = "c", -- control characters
+      digit = "d", -- digits
+      print = "g", -- printable characters except space.
+      lower = "l", -- lowercase letters
+      punct = "p", -- punctuation characters
+      space = "s", -- space characters
+      upper = "u", -- uppercase letters
+      alnum = "w", -- alphanumeric characters
+      xdigit = "x", -- hexadecimal digits
+    }
+    local q = map[name]
+    if not q then
+      error("unknown class name")
+    end
+    p = p .. "%" .. q
+    i = i + #name + 1
+  end
+  -- Convert tokens.
+  local ok, msg = pcall(function ()
+    while 1 do
+      i = i + 1; local c = g:sub(i,i)
+      ::if_c::
+      if c == '' then
+        p = p .. '$'
+        break
+      elseif c == '?' then
+        p = p .. '[^/]'
+      elseif c == '*' then
+        i = i + 1; c = g:sub(i,i)
+        if c == '*' then
+          p = p .. '.*'
+        else
+          p = p .. '[^/]*'
+          goto if_c
+        end
+      elseif c == '[' then
+        i = i + 1; c = g:sub(i,i)
+        if c == ":" then
+          i = i + 1; c = g:sub(i,i)
+          if c == "]" then
+            p = p .. ":"
+          else
+            named_class(c)
+          end
+        else
+          charset(c)
+        end
+      elseif c == '\\' then
+        i = i + 1; c = g:sub(i,i)
+        if c == '' then
+          p = p .. '\\$'
+          break
+        end
+        p = p .. escape(c)
+      else
+        p = p .. escape(c)
+      end
+    end
+  end)
+  if ok then
+    return p
+  end
+  error("Error \"" .. g .. "\": " .. msg)
 end
 
 -- Detect the operating system in use
