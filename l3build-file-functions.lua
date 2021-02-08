@@ -213,27 +213,36 @@ end
 
 -- Copy files 'quietly'
 function cp(glob, source, dest)
-  local errorlevel
   for i,_ in pairs(tree(source, glob)) do
-    local source = source .. "/" .. i
-    if os_type == "windows" then
-      if attributes(source)["mode"] == "directory" then
-        errorlevel = execute(
-          'xcopy /y /e /i "' .. unix_to_win(source) .. '" "'
-             .. unix_to_win(dest .. '/' .. i) .. '" > nul'
-        )
-      else
-        errorlevel = execute(
-          'xcopy /y "' .. unix_to_win(source) .. '" "'
-             .. unix_to_win(dest .. '/') .. '" > nul'
-        )
-      end
-    else
-      errorlevel = execute("cp -RLf '" .. source .. "' '" .. dest .. "'")
-    end
+    local errorlevel = copy(i, source, dest)
     if errorlevel ~=0 then
       return errorlevel
     end
+  end
+  return 0
+end
+
+-- Copy one file 'quietly'
+function copy(name, source, dest)
+  local errorlevel
+  source = source .. "/" .. name
+  if os_type == "windows" then
+    if attributes(source)["mode"] == "directory" then
+      errorlevel = execute(
+        'xcopy /y /e /i "' .. unix_to_win(source) .. '" "'
+           .. unix_to_win(dest .. '/' .. name) .. '" > nul'
+      )
+    else
+      errorlevel = execute(
+        'xcopy /y "' .. unix_to_win(source) .. '" "'
+           .. unix_to_win(dest .. '/') .. '" > nul'
+      )
+    end
+  else
+    errorlevel = execute("cp -RLf '" .. source .. "' '" .. dest .. "'")
+  end
+  if errorlevel ~=0 then
+    return errorlevel
   end
   return 0
 end

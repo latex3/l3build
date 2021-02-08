@@ -63,23 +63,23 @@ function checkinit()
   -- Copy dependencies to the test directory itself: this makes the paths
   -- a lot easier to manage, and is important for dealing with the log and
   -- with file input/output tests
-  for _,i in ipairs(filelist(localdir)) do
-    cp(i, localdir, testdir)
+  for _,n in ipairs(filelist(localdir)) do
+    copy(n, localdir, testdir)
   end
   bundleunpack({sourcefiledir, testfiledir})
-  for _,i in ipairs(installfiles) do
-    cp(i, unpackdir, testdir)
+  for _,g in ipairs(installfiles) do
+    cp(g, unpackdir, testdir)
   end
-  for _,i in ipairs(checkfiles) do
-    cp(i, unpackdir, testdir)
+  for _,g in ipairs(checkfiles) do
+    cp(g, unpackdir, testdir)
   end
   if direxists(testsuppdir) then
-    for _,i in ipairs(filelist(testsuppdir)) do
-      cp(i, testsuppdir, testdir)
+    for _,n in ipairs(filelist(testsuppdir)) do
+      copy(n, testsuppdir, testdir)
     end
   end
-  for _,i in ipairs(checksuppfiles) do
-    cp(i, supportdir, testdir)
+  for _,g in ipairs(checksuppfiles) do
+    cp(g, supportdir, testdir)
   end
   execute(os_ascii .. ">" .. testdir .. "/ascii.tcx")
   return checkinit_hook()
@@ -625,7 +625,7 @@ function setup_check(name, engine)
     -- Install comparison files found
     for _,v in pairs({tlgfile, tpffile}) do
       if v then
-        cp(
+        copy(
           match(v, ".*/(.*)"),
           match(v, "(.*)/.*"),
           testdir
@@ -693,10 +693,10 @@ end
 -- both creating and verifying
 function runtest(name, engine, hide, ext, pdfmode, breakout)
   local lvtfile = name .. (ext or lvtext)
-  cp(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
+  copy(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
     and testfiledir or unpackdir, testdir)
   local checkopts = checkopts
-  local engine = engine or stdengine
+  engine = engine or stdengine
   local binary = engine
   local format = gsub(engine,"tex$",checkformat)
   -- Special binary/format combos
@@ -797,7 +797,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     dvitopdf(name, testdir, engine, hide)
   end
   if pdfmode then
-    cp(name .. pdfext,testdir,resultdir)
+    copy(name .. pdfext,testdir,resultdir)
     ren(resultdir,name .. pdfext,name .. "." .. engine .. pdfext)
     rewrite(pdffile,npffile,normalize_pdf)
   else
@@ -1001,7 +1001,7 @@ function save(names)
           print("Creating and copying " .. out_file)
           runtest(name,engine,false,test_ext,pdfmode)
           ren(testdir,gen_file,out_file)
-          cp(out_file,testdir,testfiledir)
+          copy(out_file,testdir,testfiledir)
           if fileexists(unpackdir .. "/" .. out_file) then
             print("Saved " .. out_ext
               .. " file overrides unpacked version of the same name")

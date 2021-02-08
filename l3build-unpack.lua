@@ -35,8 +35,8 @@ function unpack(sources, sourcedirs)
   if errorlevel ~= 0 then
     return errorlevel
   end
-  for _,i in ipairs(installfiles) do
-    errorlevel = cp(i, unpackdir, localdir)
+  for _,g in ipairs(installfiles) do
+    errorlevel = cp(g, unpackdir, localdir)
     if errorlevel ~= 0 then
       return errorlevel
     end
@@ -57,16 +57,16 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
   end
   for _,i in ipairs(sourcedirs or {sourcefiledir}) do
     for _,j in ipairs(sources or {sourcefiles}) do
-      for _,k in ipairs(j) do
-        errorlevel = cp(k, i, unpackdir)
+      for _,g in ipairs(j) do
+        errorlevel = cp(g, i, unpackdir)
         if errorlevel ~=0 then
           return errorlevel
         end
       end
     end
   end
-  for _,i in ipairs(unpacksuppfiles) do
-    errorlevel = cp(i, supportdir, localdir)
+  for _,g in ipairs(unpacksuppfiles) do
+    errorlevel = cp(g, supportdir, localdir)
     if errorlevel ~=0 then
       return errorlevel
     end

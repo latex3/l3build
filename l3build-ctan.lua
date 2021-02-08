@@ -33,17 +33,17 @@ function copyctan()
   mkdir(ctandir .. "/" .. ctanpkg)
   local function copyfiles(files,source)
     if source == currentdir or flatten then
-      for _,filetype in pairs(files) do
-        cp(filetype,source,ctandir .. "/" .. ctanpkg)
+      for _,g_filetype in pairs(files) do
+        cp(g_filetype,source,ctandir .. "/" .. ctanpkg)
       end
     else
-      for _,filetype in pairs(files) do
-        for file,_ in pairs(tree(source,filetype)) do
+      for _,g_filetype in pairs(files) do
+        for file,_ in pairs(tree(source,g_filetype)) do
           local path = splitpath(file)
           local ctantarget = ctandir .. "/" .. ctanpkg .. "/"
             .. source .. "/" .. path
           mkdir(ctantarget)
-          cp(file,source,ctantarget)
+          copy(file,source,ctantarget)
         end
       end
     end
@@ -53,8 +53,8 @@ function copyctan()
     copyfiles(tab,docfiledir)
   end
   copyfiles(sourcefiles,sourcefiledir)
-  for _,file in pairs(textfiles) do
-    cp(file, textfiledir, ctandir .. "/" .. ctanpkg)
+  for _,g in pairs(textfiles) do
+    cp(g, textfiledir, ctandir .. "/" .. ctanpkg)
   end
 end
 
@@ -126,10 +126,10 @@ function ctan()
     return errorlevel
   end
   if errorlevel == 0 then
-    for _,i in ipairs(textfiles) do
+    for _,g in ipairs(textfiles) do
       for _,j in pairs({unpackdir, textfiledir}) do
-        cp(i, j, ctandir .. "/" .. ctanpkg)
-        cp(i, j, tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle)
+        cp(g, j, ctandir .. "/" .. ctanpkg)
+        cp(g, j, tdsdir .. "/doc/" .. tdsroot .. "/" .. bundle)
       end
     end
     -- Rename README if necessary
@@ -145,10 +145,10 @@ function ctan()
     end
     dirzip(tdsdir, ctanpkg .. ".tds")
     if packtdszip then
-      cp(ctanpkg .. ".tds.zip", tdsdir, ctandir)
+      copy(ctanpkg .. ".tds.zip", tdsdir, ctandir)
     end
     dirzip(ctandir, ctanzip)
-    cp(ctanzip .. ".zip", ctandir, currentdir)
+    copy(ctanzip .. ".zip", ctandir, currentdir)
   else
     print("\n====================")
     print("Typesetting failed, zip stage skipped!")
