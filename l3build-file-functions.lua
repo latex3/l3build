@@ -281,11 +281,15 @@ function filelist(path, glob)
         insert(files, entry)
       end
     end
-    local t = files
-    files = {}
-    for _, entry in pairs(t) do
-      if not match(entry, "^%.") then
-        insert(files, entry)
+    if not pattern
+    or pattern:gsub("%%", ""):gsub("%*", ""):match("%*")
+    then
+      local t = files
+      files = {}
+      for _, entry in pairs(t) do
+        if not match(entry, "^%.") then
+          insert(files, entry)
+        end
       end
     end
   end
