@@ -278,9 +278,14 @@ function filelist(path, glob)
           insert(files, entry)
         end
       else
-        if not match(entry, "^%.") then
-          insert(files, entry)
-        end
+        insert(files, entry)
+      end
+    end
+    local t = files
+    files = {}
+    for _, entry in pairs(t) do
+      if not match(entry, "^%.") then
+        insert(files, entry)
       end
     end
   end
