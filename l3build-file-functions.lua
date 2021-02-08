@@ -267,18 +267,18 @@ end
 -- if absent
 function filelist(path, glob)
   local files = { }
-  local pattern
-  if glob then
-    pattern = glob_to_pattern(glob)
-  end
   if direxists(path) then
+    local pattern
+    if glob then
+      pattern = glob_to_pattern(glob)
+    end
     for entry in lfs_dir(path) do
       if pattern then
         if match(entry, pattern) then
           insert(files, entry)
         end
       else
-        if entry ~= "." and entry ~= ".." then
+        if not match(entry, "^%.") then
           insert(files, entry)
         end
       end
