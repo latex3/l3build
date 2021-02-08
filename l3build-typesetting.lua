@@ -143,7 +143,7 @@ local function typesetpdf(file,dir)
   end
   pdfname = name .. pdfext
   rm(docfiledir,pdfname)
-  return cp(pdfname,dir,docfiledir)
+  return copy(pdfname,dir,docfiledir)
 end
 
 typeset = typeset or function(file,dir,exe)
@@ -178,15 +178,15 @@ local function docinit()
   for _,filetype in pairs(
       {bibfiles, docfiles, typesetfiles, typesetdemofiles}
     ) do
-    for _,file in pairs(filetype) do
-      cp(file, docfiledir, typesetdir)
+    for _,g in pairs(filetype) do
+      cp(g, docfiledir, typesetdir)
     end
   end
-  for _,file in pairs(sourcefiles) do
-    cp(file, sourcefiledir, typesetdir)
+  for _,g in pairs(sourcefiles) do
+    cp(g, sourcefiledir, typesetdir)
   end
-  for _,file in pairs(typesetsuppfiles) do
-    cp(file, supportdir, typesetdir)
+  for _,g in pairs(typesetsuppfiles) do
+    cp(g, supportdir, typesetdir)
   end
   dep_install(typesetdeps)
   unpack({sourcefiles, typesetsourcefiles}, {sourcefiledir, docfiledir})

@@ -263,7 +263,7 @@ function install_files(target,full,dry_run)
           -- Man files should have a single-digit extension: the type
           local installdir = target .. "/doc/man/man"  .. match(file,".$")
           errorlevel = errorlevel + mkdir(installdir)
-          errorlevel = errorlevel + cp(file,docfiledir,installdir)
+          errorlevel = errorlevel + copy(file,docfiledir,installdir)
         end
       end
     end
@@ -286,7 +286,7 @@ function install_files(target,full,dry_run)
   -- Files are all copied in one shot: this ensures that cleandir()
   -- can't be an issue even if there are complex set-ups
   for _,v in ipairs(installmap) do
-    errorlevel = cp(v.file,v.source,v.dest)
+    errorlevel = copy(v.file,v.source,v.dest)
     if errorlevel ~= 0  then return errorlevel end
   end 
   
