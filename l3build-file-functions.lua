@@ -303,7 +303,7 @@ function tree(path, glob)
   local dirs = {["."] = cropdots(path)}
   for pattern, criterion in gmatch(cropdots(glob), "([^/]+)(/?)") do
     local criterion = criterion == "/" and is_dir or always_true
-    function fill(path, dir, table)
+    local function fill(path, dir, table)
       for _, file in ipairs(filelist(dir, pattern)) do
         local fullpath = path .. "/" .. file
         if file ~= "." and file ~= ".." and
@@ -319,7 +319,7 @@ function tree(path, glob)
     local newdirs = {}
     if pattern == "**" then
       while true do
-        path, dir = next(dirs)
+        local path, dir = next(dirs)
         if not path then
           break
         end
