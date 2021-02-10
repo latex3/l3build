@@ -266,6 +266,7 @@ end
 -- Generate a table containing all file names of the given glob or all files
 -- if absent
 function filelist(path, glob)
+  print("************************************* FILELIST")
   local files = { }
   if direxists(path) then
     local pattern
@@ -281,13 +282,16 @@ function filelist(path, glob)
         insert(files, entry)
       end
     end
-    if not pattern
-    or pattern:gsub("%%", ""):gsub("%*", ""):match("%*")
-    then
+    if not pattern or not match(pattern, "^%^%%%.") then
       local t = files
       files = {}
-      for _, entry in pairs(t) do
-        if not match(entry, "^%.") then
+      for _, entry in ipairs(t) do
+        if match(entry, "^%.") then
+          print("**** ignored " .. entry)
+          if entry == ".tex" then
+            print(".tex is ignored during " .. options.target)
+          end
+        else
           insert(files, entry)
         end
       end
