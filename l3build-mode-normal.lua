@@ -196,6 +196,7 @@ end
 -- main(options["target"], options["names"])
 
 local _NAME = "main-normal"
+local KEY = "--normal"
 
 local M = {
   _TYPE = "module",
@@ -206,6 +207,17 @@ local M = {
 function M:run(arg)
   main(options["target"], options["names"])
   return 0
+end
+
+-- CLI
+-- Depending on `arg[1]` we run the module
+-- for direct calls
+-- `texlua l3build-mode-normal.lua`
+if not arg[1]
+or arg[1] ~= KEY
+or not arg[1]:match("^%-")
+then
+  os.exit(M:run(arg))
 end
 
 return M

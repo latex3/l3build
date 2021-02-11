@@ -27,6 +27,7 @@ for those people who are interested.
 release_date = "2020-06-04"
 
 local _NAME = "main-version"
+local KEY = "--version"
 
 local M = {
   _TYPE = "module",
@@ -42,6 +43,10 @@ function M:run(arg)
     "Copyright (C) 2014-2020 The LaTeX Project"
   )
   return 0
+end
+
+if not arg[1] or arg[1] ~= KEY then
+  os.exit(M:run(arg))
 end
 
 return M

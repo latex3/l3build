@@ -27,6 +27,7 @@ for those people who are interested.
 release_date = "2020-06-04"
 
 local _NAME = "main-advanced"
+local KEY   = "--advanced"
 
 local M = {
   _TYPE = "module",
@@ -37,6 +38,10 @@ local M = {
 function M:run(arg)
   print("Welcome to " .. _NAME)
   return 0
+end
+
+if not arg[1] or arg[1] ~= KEY then
+  os.exit(M:run(arg))
 end
 
 return M

@@ -33,8 +33,6 @@ local mode
 
 if arg[1] and arg[1]:match("^%-%-") then
   mode = arg[1]:sub(3)
-else
-  mode = "normal"
 end
 
 --[==[
@@ -51,28 +49,24 @@ x1 is the normal way, x4 is used by latex2e for example
 x2 and x3 can be used by l3build developers
 who want a full control on the launched tool.
 
-For average users: copy paste this one below
-kpse.set_program_name("kpsewhich")
-local kpse_dir = kpse.lookup("l3build.lua"):match(".*/")
-local mode = arg[1]:sub(3) -- "advanced" or "unit"
-local exe = "l3build-main-" .. mode .. ".lua"
-local path = kpse_dir .. exe
-os.exit(dofile(path):run(arg))
-
 --]==]
 
 kpse.set_program_name("kpsewhich")
 local kpse_dir = kpse.lookup("l3build.lua"):match(".*/")
 local launch_dir = arg[0]:match("^(.*/).*%.lua$") or "./"
 
-local exe = "l3build-mode-" .. mode .. ".lua"
-local path = package.searchpath(
-  "?", launch_dir .. exe -- ';' not allowed in the launch dir
-)  or package.searchpath(
-  "?", kpse_dir .. exe
-)
+local exe, path
 
-if not path then -- the mode is unknown
+if mode then
+  exe = "l3build-mode-" .. mode .. ".lua"
+  path = package.searchpath(
+    "?", launch_dir .. exe -- ';' not allowed in the launch dir
+  )  or package.searchpath(
+    "?", kpse_dir .. exe
+  )
+end
+
+if not path then -- fall back to the normal mode
   exe = "l3build-mode-normal.lua"
   path = package.searchpath(
     "?", launch_dir .. exe
@@ -81,4 +75,13 @@ if not path then -- the mode is unknown
   )
 end
 
-os.exit(dofile(path):run(arg, _ENV))
+local M = dofile(path)
+
+-- consume arg[1]
+if mode then
+  for i = 1, #arg - 1 do
+    arg[i] = arg[i+1]
+  end
+end
+
+os.exit(M:run(arg))
