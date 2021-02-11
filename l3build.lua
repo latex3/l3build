@@ -2,7 +2,7 @@
 
 --[[
 
-File l3build.lua Copyright (C) 2014-2020 The LaTeX3 Project
+File l3build.lua Copyright (C) 2014-2020 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -120,7 +120,7 @@ if options["epoch"] then
   forcecheckepoch = true
   forcedocepoch   = true
 end
-normalise_epoch()
+epoch = normalise_epoch(epoch)
 
 -- Sanity check
 check_engines()
@@ -159,7 +159,6 @@ if options["target"] == "check" then
         print("\n  Check failed with difference files")
         local testdir = testdir
         if config ~= "build" then
-          resultdir = resultdir .. "-" .. config
           testdir = testdir .. "-" .. config
         end
         for _,i in ipairs(filelist(testdir,"*" .. os_diffext)) do

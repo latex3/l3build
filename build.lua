@@ -1,6 +1,6 @@
 #!/usr/bin/env texlua
 
--- Build script for LaTeX3 "l3build" files
+-- Build script for LaTeX "l3build" files
 
 -- Identify the bundle and module
 module = "l3build"

@@ -1,6 +1,6 @@
 --[[
 
-File l3build-stdmain.lua Copyright (C) 2018-2020 The LaTeX3 Project
+File l3build-stdmain.lua Copyright (C) 2018-2020 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -49,7 +49,7 @@ target_list =
     bundlecheck =
       {
         func = check,
-        pre  = function()
+        pre  = function(names)
             if names then
               print("Bundle checks should not list test names")
               help()
@@ -65,7 +65,7 @@ target_list =
     bundleunpack =
       {
         func = bundleunpack,
-        pre  = function() return(depinstall(unpackdeps)) end
+        pre  = function() return(dep_install(unpackdeps)) end
       },
     -- Public targets
     check =

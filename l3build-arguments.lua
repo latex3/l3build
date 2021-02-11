@@ -1,6 +1,6 @@
 --[[
 
-File l3build-arguments.lua Copyright (C) 2018-2020 The LaTeX3 Project
+File l3build-arguments.lua Copyright (C) 2018-2020 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -170,7 +170,7 @@ local function argparse()
     end
     long_options[k] = k
   end
-  local args = args
+  local arg = arg
   -- arg[1] is a special case: must be a command or "-h"/"--help"
   -- Deal with this by assuming help and storing only apparently-valid
   -- input
@@ -239,21 +239,21 @@ local function argparse()
           if optarg then
             local opt = "-" .. (match(a, "^%-%-") and "-" or "") .. opt
             stderr:write("Value not allowed for option " .. opt .."\n")
-            return {"help"}
+            return { target = "help" }
           end
         else
          if not optarg then
           optarg = arg[i + 1]
           if not optarg then
             stderr:write("Missing value for option " .. a .."\n")
-            return {"help"}
+            return { target = "help" }
           end
           i = i + 1
          end
         end
       else
         stderr:write("Unknown option " .. a .."\n")
-        return {"help"}
+        return { target = "help" }
       end
       -- Store the result
       if optarg then

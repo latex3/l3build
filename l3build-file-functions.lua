@@ -1,6 +1,6 @@
 --[[
 
-File l3build-file-functions.lua Copyright (C) 2018-2020 The LaTeX3 Project
+File l3build-file-functions.lua Copyright (C) 2018-2020 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -171,12 +171,16 @@ function normalize_path(path)
 end
 
 -- Return an absolute path from a relative one
+-- Due to chdir, path must exist and be accessible.
 function abspath(path)
   local oldpwd = currentdir()
-  chdir(path)
-  local result = currentdir()
-  chdir(oldpwd)
-  return escapepath(gsub(result, "\\", "/"))
+  local ok, msg = chdir(path)
+  if ok then
+    local result = currentdir()
+    chdir(oldpwd)
+    return escapepath(gsub(result, "\\", "/"))
+  end
+  error(msg)
 end
 
 function escapepath(path)
@@ -255,7 +259,7 @@ function fileexists(file)
     f:close()
     return true
   else
-    return false
+    return false -- also file exits and is not readable
   end
 end
 
@@ -299,7 +303,7 @@ function tree(path, glob)
   local dirs = {["."] = cropdots(path)}
   for pattern, criterion in gmatch(cropdots(glob), "([^/]+)(/?)") do
     local criterion = criterion == "/" and is_dir or always_true
-    function fill(path, dir, table)
+    local function fill(path, dir, table)
       for _, file in ipairs(filelist(dir, pattern)) do
         local fullpath = path .. "/" .. file
         if file ~= "." and file ~= ".." and
@@ -315,7 +319,7 @@ function tree(path, glob)
     local newdirs = {}
     if pattern == "**" then
       while true do
-        path, dir = next(dirs)
+        local path, dir = next(dirs)
         if not path then
           break
         end

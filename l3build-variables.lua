@@ -1,6 +1,6 @@
 --[[
 
-File l3build-variables.lua Copyright (C) 2018-2020 The LaTeX3 Project
+File l3build-variables.lua Copyright (C) 2018-2020 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -21,8 +21,6 @@ The development version of the bundle can be found at
 for those people who are interested.
 
 --]]
-
-local exit             = os.exit
 
 -- "module" is a deprecated function in Lua 5.2: as we want the name
 -- for other purposes, and it should eventually be 'free', simply

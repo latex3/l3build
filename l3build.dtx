@@ -1,6 +1,6 @@
 % \iffalse
 %
-% File l3build.dtx (C) Copyright 2014-2020 The LaTeX3 Project
+% File l3build.dtx (C) Copyright 2014-2020 The LaTeX Project
 %
 % It may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -227,7 +227,7 @@
 % }
 %
 % \author{^^A
-%  The \LaTeX3 Project\thanks
+%  The \LaTeX{} Project\thanks
 %    {^^A
 %      E-mail:
 %        \href{mailto:latex-team@latex-project.org}
@@ -274,7 +274,7 @@
 % The \pkg{l3build} system is also capable of building and checking \emph{bundles} of packages.
 % To avoid confusion, we refer to either a standalone package or a package within a bundle as a \emph{module}.
 %
-% For example, within the \LaTeX3 project we have the \textsf{l3packages} bundle which contains the \textsf{xparse}, \textsf{xtemplate}, etc., modules.
+% For example, within the \LaTeX{} project we have the \textsf{l3packages} bundle which contains the \textsf{xparse}, \textsf{xtemplate}, etc., modules.
 % These are all built and distributed as one bundle for installation, distribution \emph{via} CTAN and so forth.
 %
 % Each module in a bundle will have its own build script, and a bundle build script brings them all together.
@@ -327,9 +327,9 @@
 %
 % In the working directory of a bundle or module, \pkg{l3build} is run by executing
 % \begin{center}
-% \texttt{l3build \meta{targets} [\meta{option(s)}]}
+% \texttt{l3build \meta{target} [\meta{option(s)}]}
 % \end{center}
-% where \texttt{\meta{targets}} can be one of the following:
+% where \texttt{\meta{target}} can be one of the following:
 % \begin{itemize}[noitemsep]\ttfamily
 % \item check
 % \item check \meta{name(s)}
@@ -616,12 +616,12 @@
 % \end{figure}
 %
 % An example of a bundle build script for \pkg{l3packages} is shown in Figure~\ref{fig:bundle}.
-% Note for \LaTeX3 we use a common file to set all build variables in one place, and the path to the |l3build.lua| script is hard-coded so we always use our own most recent version of the script.
+% Note for \LaTeX{} we use a common file to set all build variables in one place, and the path to the |l3build.lua| script is hard-coded so we always use our own most recent version of the script.
 % An example of an accompanying module build script is shown in Figure~\ref{fig:module}.
 %
 % \begin{figure}[p]
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
-%     -- Build script for LaTeX3 "l3packages" files
+%     -- Build script for LaTeX "l3packages" files
 %
 %     -- Identify the bundle: there is no module as this is the "driver"
 %     bundle = "l3packages"
@@ -635,7 +635,7 @@
 %
 % \begin{figure}[p]
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6]
-%     -- Build script for LaTeX3 "xparse" files
+%     -- Build script for LaTeX "xparse" files
 %
 %     -- Identify the bundle and module:
 %     bundle = "l3packages"
@@ -737,10 +737,10 @@
 % \subsection{Dependencies}
 %
 % If you have multiple packages that are developed separately but still interact in some way, it's often desirable to integrate them when performing regression tests.
-% For \LaTeX3, for example, when we make changes to \pkg{l3kernel} it's important to check that the tests for \pkg{l3packages} still run correctly, so it's necessary to include the \pkg{l3kernel} files in the build process for \pkg{l3packages}.
+% For \LaTeX{}, for example, when we make changes to \pkg{l3kernel} it's important to check that the tests for \pkg{l3packages} still run correctly, so it's necessary to include the \pkg{l3kernel} files in the build process for \pkg{l3packages}.
 %
 % In other words, \pkg{l3packages} is \emph{dependent} on \pkg{l3kernel}, and this is specified in \pkg{l3build} by setting appropriately the variables \texttt{checkdeps}, \texttt{typesetdeps}, and \texttt{unpackdeps}.
-% The relevant parts of the \LaTeX3 repository is structured as the following.
+% The relevant parts of the \LaTeX{} repository is structured as the following.
 % \Needspace{3\baselineskip}
 % \begin{Verbatim}
 % l3/
@@ -759,7 +759,7 @@
 %                      xparse.ins
 %    support/
 % \end{Verbatim}
-% For \LaTeX3 build files, |maindir| is defined as top level folder |l3|, so all support files are located here, and the build directories will be created there.
+% For \LaTeX{} build files, |maindir| is defined as top level folder |l3|, so all support files are located here, and the build directories will be created there.
 % To set \pkg{l3kernel} as a dependency of \pkg{l3package}, within |l3packages/xparse/build.lua| the equivalent of the following is set:
 % \begin{Verbatim}
 %   maindir = "../.."
@@ -1422,7 +1422,7 @@
 %
 % The CTAN upload process is backed by an API, which \pkg{l3build} can use
 % to send zip files for release. Along with the file, a variety of metadata
-% must be specified about the package, including the version, license, and so on.
+% must be specified about the package, including the version, license, and so on, explained at \url{https://www.ctan.org/upload}.
 % A description of this metadata is outlined in Table~\ref{tab:upload-setup},
 % and a simple example of an extract from a \texttt{build.lua} file using this is shown
 % in Figure~\ref{fig:uploadconfig}.
@@ -1662,7 +1662,7 @@
 %   \begin{syntax}
 %     |fileexists(|\meta{file}|)|
 %   \end{syntax}
-%   Tests if the \meta{file} exists; returns a boolean value.
+%   Tests if the \meta{file} exists and is readable; returns a boolean value.
 % \end{function}
 %
 % \begin{function}{filelist()}
@@ -1878,6 +1878,7 @@
 %     the |names| as an argument; this allows checking of the |name| data
 %     without impact on the main |func|.
 % \end{itemize}
+% The functions |func|, |bundle_func| and |pre| must return 0 on success.
 %
 % \subsection{Customising the manifest file}
 % \label{sec:manifest}

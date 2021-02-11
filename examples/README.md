@@ -1,4 +1,4 @@
-l3build: a testing and building system for LaTeX3
+l3build: a testing and building system for LaTeX
 =================================================
 
 Examples
@@ -19,6 +19,6 @@ The examples are:
 
 -----
 
-Copyright (C) 2014-2017 The LaTeX3 Project <br />
+Copyright (C) 2014-2017,2021 The LaTeX Project <br />
 <http://latex-project.org/> <br />
 All rights reserved.

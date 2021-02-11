@@ -1,6 +1,6 @@
 --[[
 
-File l3build-unpack.lua Copyright (C) 2018-2020 The LaTeX3 Project
+File l3build-unpack.lua Copyright (C) 2018-2020 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -27,7 +27,7 @@ local execute          = os.execute
 -- Unpack the package files using an 'isolated' system: this requires
 -- a copy of the 'basic' DocStrip program, which is used then removed
 function unpack(sources, sourcedirs)
-  local errorlevel = depinstall(unpackdeps)
+  local errorlevel = dep_install(unpackdeps)
   if errorlevel ~= 0 then
     return errorlevel
   end

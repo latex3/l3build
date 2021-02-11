@@ -1,6 +1,6 @@
 --[[
 
-File l3build-check.lua Copyright (C) 2018-2020 The LaTeX3 Project
+File l3build-check.lua Copyright (C) 2018-2020 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -59,7 +59,7 @@ function checkinit()
     cleandir(testdir)
     cleandir(resultdir)
   end
-  depinstall(checkdeps)
+  dep_install(checkdeps)
   -- Copy dependencies to the test directory itself: this makes the paths
   -- a lot easier to manage, and is important for dealing with the log and
   -- with file input/output tests
@@ -764,7 +764,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
       -- Allow for local texmf files
       os_setenv .. " TEXMFCNF=." .. os_pathsep
         .. os_concat ..
-      (forcecheckepoch and setepoch() or "") ..
+      (forcecheckepoch and set_epoch_cmd(epoch) or "") ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
@@ -874,7 +874,7 @@ function check(names)
         end
         for _,name in pairs(filelist(unpackdir, glob .. lvtext)) do
           if fileexists(testfiledir .. "/" .. name) then
-            print("Duplicate test file: " .. i)
+            print("Duplicate test file: " .. name)
             return 1
           end
           addname(name)

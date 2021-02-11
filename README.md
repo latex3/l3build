@@ -1,4 +1,4 @@
-l3build: a testing and building system for LaTeX3
+l3build: a testing and building system for LaTeX
 =================================================
 
 Release 2020-06-04
@@ -14,23 +14,23 @@ high-quality LaTeX code by providing:
 
 The bundle consists of a Lua script to run the tasks and a
 `.tex` file which provides the testing environment. These were
-originally developed for supporting LaTeX3 development but
+originally developed for supporting LaTeX development but
 are designed such that they can be readily used by others. Full
 documentation is provided.
 
 Issues
 ------
 
-The issue tracker for LaTeX3 is currently located
+The issue tracker for LaTeX is currently located
 [on GitHub](https://github.com/latex3/l3build/issues).
 
 Development team
 ----------------
 
-The LaTeX kernel is developed by [The LaTeX3 Project](https://latex-project.org).
+The LaTeX kernel is developed by [The LaTeX Project](https://latex-project.org).
 
 -----
 
-<p>Copyright (C) 2014-2020 The LaTeX3 Project <br />
+<p>Copyright (C) 2014-2020 The LaTeX Project <br />
 <a href="http://latex-project.org/">http://latex-project.org/</a> <br />
 All rights reserved.</p>
