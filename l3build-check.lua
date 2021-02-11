@@ -874,7 +874,7 @@ function check(names)
         end
         for _,name in pairs(filelist(unpackdir, glob .. lvtext)) do
           if fileexists(testfiledir .. "/" .. name) then
-            print("Duplicate test file: " .. i)
+            print("Duplicate test file: " .. name)
             return 1
           end
           addname(name)
