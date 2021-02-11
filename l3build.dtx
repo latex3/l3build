@@ -692,10 +692,10 @@
 % \subsection{Selective running of tests}
 %
 % The variables |includetests| and |excludetests| may be used to select which
-% tests are run: these variables take test \emph{names} not full file names.
+% tests are run: these variables take raw test \emph{names} not full file names.
 % The list of tests in |excludetests| overrides any matches in |includetests|,
 % meaning that tests can be disabled selectively. It also makes it possible
-% to disable test on for example a platform basis: the Lua core variable
+% to disable test on for example a platform basis: the |texlua| specific variable
 % |os.type| may be used to set |excludetests| only on some systems.
 %
 % \subsection{Multiple sets of tests}
