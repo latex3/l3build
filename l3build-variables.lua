@@ -207,6 +207,24 @@ pvtext = pvtext or ".pvt"
 tlgext = tlgext or ".tlg"
 tpfext = tpfext or ".tpf"
 
+test_types = test_types or { }
+test_types.log = test_types.log or {
+  test = lvtext,
+  generated = logext,
+  reference = tlgext,
+  expectation = lveext,
+  compare = compare_tlg,
+  rewrite = rewrite_log,
+}
+test_types.pdf = test_types.pdf or {
+  test = pvtext,
+  generated = pdfext,
+  reference = tpfext,
+  rewrite = rewrite_pdf,
+}
+
+test_order = test_order or {"log", "pdf"}
+
 -- Manifest options
 manifestfile = manifestfile or "MANIFEST.md"
 
