@@ -97,7 +97,7 @@ function uninstall()
   if errorlevel ~= 0 then return errorlevel end
   -- Finally, clean up special locations
   for _,location in ipairs(tdslocations) do
-    local path,glob = splitpath(location)
+    local path = splitpath(location)
     errorlevel = zapdir(path)
     if errorlevel ~= 0 then return errorlevel end
   end
@@ -140,11 +140,11 @@ function install_files(target,full,dry_run)
           end
           local matched = false
           for _,location in ipairs(tdslocations) do
-            local path,glob = splitpath(location)
-            local pattern = glob_to_pattern(glob)
+            local l_dir,l_glob = splitpath(location)
+            local pattern = glob_to_pattern(l_glob)
             if match(filename,pattern) then
-              insert(paths,path)
-              insert(filenames,path .. sourcepath .. filename)
+              insert(paths,l_dir)
+              insert(filenames,l_dir .. sourcepath .. filename)
               matched = true
               break
             end
@@ -162,12 +162,12 @@ function install_files(target,full,dry_run)
     if next(filenames) then
       if not dry_run then
         for _,path in pairs(paths) do
-          local dir = target .. "/" .. path
-          if not cleanpaths[dir] then
-            errorlevel = cleandir(dir)
+          local dir_a = target .. "/" .. path
+          if not cleanpaths[dir_a] then
+            errorlevel = cleandir(dir_a)
             if errorlevel ~= 0 then return errorlevel end
           end
-          cleanpaths[dir] = true
+          cleanpaths[dir_a] = true
         end
       end
       for _,file in ipairs(filenames) do
@@ -192,17 +192,17 @@ function install_files(target,full,dry_run)
       exclude = exclude or { }
       dir = dir or currentdir
       local includelist = { }
-      local excludelist = { }
+      local excludelist_a = { }
       for _,glob_table in pairs(exclude) do
         for _,glob in pairs(glob_table) do
           for file,_ in pairs(tree(dir,glob)) do
-            excludelist[file] = true
+            excludelist_a[file] = true
           end
         end
       end
       for _,glob in pairs(include) do
         for file,_ in pairs(tree(dir,glob)) do
-          if not excludelist[file] then
+          if not excludelist_a[file] then
             insert(includelist, file)
           end
         end

@@ -49,9 +49,9 @@ end
 
 -- An auxiliary used to set up the environmental variables
 function runcmd(cmd,dir,vars)
-  local dir = dir or "."
-  local dir = abspath(dir)
-  local vars = vars or {}
+  dir = dir or "."
+  dir = abspath(dir)
+  vars = vars or {}
   -- Allow for local texmf files
   local env = os_setenv .. " TEXMFCNF=." .. os_pathsep
   local localtexmf = ""
@@ -80,7 +80,7 @@ function biber(name,dir)
 end
 
 function bibtex(name,dir)
-  local dir = dir or "."
+  dir = dir or "."
   if fileexists(dir .. "/" .. name .. ".aux") then
     -- LaTeX always generates an .aux file, so there is a need to
     -- look inside it for a \citation line
@@ -105,7 +105,7 @@ function bibtex(name,dir)
 end
 
 function makeindex(name,dir,inext,outext,logext,style)
-  local dir = dir or "."
+  dir = dir or "."
   if fileexists(dir .. "/" .. name .. inext) then
     if style == "" then style = nil end
     return runcmd(makeindexexe .. " " .. makeindexopts
@@ -119,15 +119,15 @@ function makeindex(name,dir,inext,outext,logext,style)
 end
 
 function tex(file,dir,cmd)
-  local dir = dir or "."
-  local cmd = cmd or typesetexe .. typesetopts
+  dir = dir or "."
+  cmd = cmd or typesetexe .. typesetopts
   return runcmd(cmd .. " \"" .. typesetcmds
     .. "\\input " .. file .. "\"",
     dir,{"TEXINPUTS","LUAINPUTS"})
 end
 
 local function typesetpdf(file,dir)
-  local dir = dir or "."
+  dir = dir or "."
   local name = jobname(file)
   print("Typesetting " .. name)
   local fn = typeset
@@ -141,7 +141,7 @@ local function typesetpdf(file,dir)
     print(" ! Compilation failed")
     return errorlevel
   end
-  pdfname = name .. pdfext
+  local pdfname = name .. pdfext
   rm(docfiledir,pdfname)
   return cp(pdfname,dir,docfiledir)
 end
@@ -226,7 +226,7 @@ function doc(files)
             end
             -- Now know if we should typeset this source
             if typeset then
-              local errorlevel = typesetpdf(srcname,path)
+              errorlevel = typesetpdf(srcname,path)
               if errorlevel ~= 0 then
                 return errorlevel
               else

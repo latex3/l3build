@@ -134,7 +134,7 @@ local function normalize_log(content,engine,errlevels)
        not match(line, "%.%.%.$") then
       return "", (lastline or "") .. line
     end
-    local line = (lastline or "") .. line
+    line = (lastline or "") .. line
     lastline = ""
     -- Zap ./ at begin of filename
     line = gsub(line, "%(%.%/", "(")
@@ -696,17 +696,17 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   cp(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
     and testfiledir or unpackdir, testdir)
   local checkopts = checkopts
-  local engine = engine or stdengine
+  engine = engine or stdengine
   local binary = engine
-  local format = gsub(engine,"tex$",checkformat)
+  format = gsub(engine,"tex$",checkformat)
   -- Special binary/format combos
   if specialformats[checkformat] and next(specialformats[checkformat]) then
     local t = specialformats[checkformat]
-    if t[engine] and next(t[engine]) then
-      local t = t[engine]
-      binary    = t.binary  or binary
-      checkopts = t.options or checkopts
-      format    = t.format  or format
+    local t_ngn = t[engine]
+    if t_ngn and next(t_ngn) then
+      binary    = t_ngn.binary  or binary
+      checkopts = t_ngn.options or checkopts
+      format    = t_ngn.format  or format
     end
   end
   -- Finalise format string
@@ -807,11 +807,11 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   for _,filetype in pairs(auxfiles) do
     for _,file in pairs(filelist(testdir, filetype)) do
       if match(file,"^" .. name .. ".[^.]+$") then
-        local ext = match(file, "%.[^.]+$")
-        if ext ~= lvtext and
-           ext ~= tlgext and
-           ext ~= lveext and
-           ext ~= logext then
+        local e7n = match(file, "%.[^.]+$")
+        if e7n ~= lvtext and
+           e7n ~= tlgext and
+           e7n ~= lveext and
+           e7n ~= logext then
            local newname = gsub(file,"(%.[^.]+)$","." .. engine .. "%1")
            if fileexists(testdir,newname) then
              rm(testdir,newname)
@@ -908,17 +908,12 @@ function check(names)
         end
       end
     end
-    -- https://stackoverflow.com/a/32167188
-    local function shuffle(tbl)
-      local len, random = #tbl, rnd
-      for i = len, 2, -1 do
-          local j = random(1, i)
-          tbl[i], tbl[j] = tbl[j], tbl[i]
-      end
-      return tbl
-    end
     if options["shuffle"] then
-      names = shuffle(names)
+      -- https://stackoverflow.com/a/32167188
+      for i = #names, 2, -1 do
+        local j = rnd(1, i)
+        names[i], names[j] = names[j], names[i]
+      end
     end
     -- Actually run the tests
     print("Running checks on")

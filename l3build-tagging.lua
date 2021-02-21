@@ -51,7 +51,7 @@ local function update_file_tag(file,tagname,tagdate)
   else
     local path = dirname(file)
     ren(path,filename,filename .. ".bak")
-    local f = assert(open(file,"w"))
+    f = assert(open(file,"w"))
     -- Convert line ends back if required during write
     -- Watch for the second return value!
     f:write((gsub(updated_content,"\n",os_newline)))
