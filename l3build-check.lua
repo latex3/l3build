@@ -698,7 +698,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   local checkopts = checkopts
   engine = engine or stdengine
   local binary = engine
-  format = gsub(engine,"tex$",checkformat)
+  local format_a = gsub(engine,"tex$",checkformat)
   -- Special binary/format combos
   if specialformats[checkformat] and next(specialformats[checkformat]) then
     local t = specialformats[checkformat]
@@ -706,12 +706,12 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
     if t_ngn and next(t_ngn) then
       binary    = t_ngn.binary  or binary
       checkopts = t_ngn.options or checkopts
-      format    = t_ngn.format  or format
+      format_a    = t_ngn.format  or format_a
     end
   end
   -- Finalise format string
-  if format ~= "" then
-    format = " --fmt=" .. format
+  if format_a ~= "" then
+    format_a = " --fmt=" .. format_a
   end
   -- Special casing for XeTeX engine
   if match(engine, "xetex") and not pdfmode then
@@ -768,7 +768,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
-      binary .. format
+      binary .. format_a
         .. " " .. asciiopt .. " " .. checkopts
         .. setup(lvtfile)
         .. (hide and (" > " .. os_null) or "")
