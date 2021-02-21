@@ -435,7 +435,7 @@ local function normalize_lua_log(content,luatex)
       end
     end
     -- Look for another form of \discretionary, replacing a "-"
-    pattern = "^%.+\\discretionary replacing *$"
+    local pattern = "^%.+\\discretionary replacing *$"
     if match(line, pattern) then
       return "", line
     else
