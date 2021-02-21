@@ -34,7 +34,7 @@ local luatex_version   = status.luatex_version
 
 local len              = string.len
 local char             = string.char
-local format           = string.format
+local frmt             = string.format
 local gmatch           = string.gmatch
 local gsub             = string.gsub
 local match            = string.match
@@ -269,7 +269,7 @@ local function normalize_log(content,engine,errlevels)
     -- tidy up to match pdfTeX if an ASCII engine is in use
     if next(asciiengines) then
       for i = 128, 255 do
-        line = gsub(line, utf8_char(i), "^^" .. format("%02x", i))
+        line = gsub(line, utf8_char(i), "^^" .. frmt("%02x", i))
       end
     end
     return line, lastline
@@ -345,7 +345,7 @@ local function normalize_lua_log(content,luatex)
         l,
         m .. " (%-?)%d+%.%d+",
         m .. " %1"
-          .. format(
+          .. frmt(
             "%.3f",
             match(line, m .. " %-?(%d+%.%d+)") or 0
           )
@@ -712,20 +712,20 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   local checkopts = checkopts
   engine = engine or stdengine
   local binary = engine
-  local format_a = gsub(engine,"tex$",checkformat)
+  local format = gsub(engine,"tex$",checkformat)
   -- Special binary/format combos
   if specialformats[checkformat] and next(specialformats[checkformat]) then
     local t = specialformats[checkformat]
     local t_ngn = t[engine]
-    if t_ngn and next(t_ngn) then
+    if t_ngn then
       binary    = t_ngn.binary  or binary
+      format    = t_ngn.format  or format
       checkopts = t_ngn.options or checkopts
-      format_a    = t_ngn.format  or format_a
     end
   end
   -- Finalise format string
-  if format_a ~= "" then
-    format_a = " --fmt=" .. format_a
+  if format ~= "" then
+    format = " --fmt=" .. format
   end
   -- Special casing for XeTeX engine
   if match(engine, "xetex") and test_type.generated ~= pdfext then
@@ -780,7 +780,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
-      binary .. format_a
+      binary .. format
         .. " " .. asciiopt .. " " .. checkopts
         .. setup(lvtfile)
         .. (hide and (" > " .. os_null) or "")
