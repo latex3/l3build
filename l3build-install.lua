@@ -97,7 +97,7 @@ function uninstall()
   if errorlevel ~= 0 then return errorlevel end
   -- Finally, clean up special locations
   for _,location in ipairs(tdslocations) do
-    local path = splitpath(location)
+    local path = dirname(location)
     errorlevel = zapdir(path)
     if errorlevel ~= 0 then return errorlevel end
   end
