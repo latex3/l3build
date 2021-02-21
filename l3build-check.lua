@@ -806,18 +806,12 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
   -- Store secondary files for this engine
   for _,filetype in pairs(auxfiles) do
     for _,file in pairs(filelist(testdir, filetype)) do
-      if match(file,"^" .. name .. ".[^.]+$") then
-        local e7n = match(file, "%.[^.]+$")
-        if e7n ~= lvtext and
-           e7n ~= tlgext and
-           e7n ~= lveext and
-           e7n ~= logext then
-           local newname = gsub(file,"(%.[^.]+)$","." .. engine .. "%1")
-           if fileexists(testdir .. "/" .. newname) then
-             rm(testdir,newname)
-           end
-           ren(testdir,file,newname)
+      if match(file,"^" .. name .. "%.[^.]+$") then
+        local newname = gsub(file,"(%.[^.]+)$","." .. engine .. "%1")
+        if fileexists(testdir .. "/" .. newname) then
+          rmfile(testdir,newname)
         end
+        ren(testdir,file,newname)
       end
     end
   end
