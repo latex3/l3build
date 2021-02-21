@@ -813,7 +813,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
            e7n ~= lveext and
            e7n ~= logext then
            local newname = gsub(file,"(%.[^.]+)$","." .. engine .. "%1")
-           if fileexists(testdir,newname) then
+           if fileexists(testdir .. "/" .. newname) then
              rm(testdir,newname)
            end
            ren(testdir,file,newname)
