@@ -36,7 +36,6 @@ local execute          = os.execute
 local exit             = os.exit
 local getenv           = os.getenv
 local remove           = os.remove
-local os_time          = os.time
 local os_type          = os.type
 
 local luatex_revision  = status.luatex_revision
@@ -183,6 +182,7 @@ function abspath(path)
   error(msg)
 end
 
+-- TODO: Fix the cross platform problem
 function escapepath(path)
   if os_type == "windows" then
     local path,count = gsub(path,'"','')
@@ -214,22 +214,21 @@ end
 -- Copy files 'quietly'
 function cp(glob, source, dest)
   local errorlevel
-  for i,_ in pairs(tree(source, glob)) do
-    local source = source .. "/" .. i
+  for p_rel,p_cwd in pairs(tree(source, glob)) do
     if os_type == "windows" then
-      if attributes(source)["mode"] == "directory" then
+      if attributes(p_cwd)["mode"] == "directory" then
         errorlevel = execute(
-          'xcopy /y /e /i "' .. unix_to_win(source) .. '" "'
-             .. unix_to_win(dest .. '/' .. i) .. '" > nul'
+          'xcopy /y /e /i "' .. unix_to_win(p_cwd) .. '" "'
+             .. unix_to_win(dest .. '/' .. p_rel) .. '" > nul'
         )
       else
         errorlevel = execute(
-          'xcopy /y "' .. unix_to_win(source) .. '" "'
+          'xcopy /y "' .. unix_to_win(p_cwd) .. '" "'
              .. unix_to_win(dest .. '/') .. '" > nul'
         )
       end
     else
-      errorlevel = execute("cp -RLf '" .. source .. "' '" .. dest .. "'")
+      errorlevel = execute("cp -RLf '" .. p_cwd .. "' '" .. dest .. "'")
     end
     if errorlevel ~=0 then
       return errorlevel
@@ -302,10 +301,10 @@ function tree(path, glob)
   end
   local dirs = {["."] = cropdots(path)}
   for pattern, criterion in gmatch(cropdots(glob), "([^/]+)(/?)") do
-    local criterion = criterion == "/" and is_dir or always_true
-    local function fill(path, dir, table)
+    criterion = criterion == "/" and is_dir or always_true
+    local function fill(path_a, dir, table)
       for _, file in ipairs(filelist(dir, pattern)) do
-        local fullpath = path .. "/" .. file
+        local fullpath = path_a .. "/" .. file
         if file ~= "." and file ~= ".." and
           fullpath ~= builddir
         then
@@ -319,13 +318,13 @@ function tree(path, glob)
     local newdirs = {}
     if pattern == "**" then
       while true do
-        local path, dir = next(dirs)
-        if not path then
+        local path_a, dir = next(dirs)
+        if not path_a then
           break
         end
-        dirs[path] = nil
-        newdirs[path] = dir
-        fill(path, dir, dirs)
+        dirs[path_a] = nil
+        newdirs[path_a] = dir
+        fill(path_a, dir, dirs)
       end
     else
       for path, dir in pairs(dirs) do
@@ -357,7 +356,7 @@ function mkdir(dir)
   if os_type == "windows" then
     -- Windows (with the extensions) will automatically make directory trees
     -- but issues a warning if the dir already exists: avoid by including a test
-    local dir = unix_to_win(dir)
+    dir = unix_to_win(dir)
     return execute(
       "if not exist "  .. dir .. "\\nul " .. "mkdir " .. dir
     )
@@ -368,10 +367,10 @@ end
 
 -- Rename
 function ren(dir, source, dest)
-  local dir = dir .. "/"
+  dir = dir .. "/"
   if os_type == "windows" then
-    local source = gsub(source, "^%.+/", "")
-    local dest = gsub(dest, "^%.+/", "")
+    source = gsub(source, "^%.+/", "")
+    dest = gsub(dest, "^%.+/", "")
     return execute("ren " .. unix_to_win(dir) .. source .. " " .. dest)
   else
     return execute("mv " .. dir .. source .. " " .. dir .. dest)

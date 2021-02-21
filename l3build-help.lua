@@ -39,7 +39,7 @@ end
 function help()
   local function setup_list(list)
     local longest = 0
-    for k,v in pairs(list) do
+    for k,_ in pairs(list) do
       if k:len() > longest then
         longest = k:len()
       end
@@ -70,7 +70,7 @@ function help()
   end
   print("")
   print("Valid options are:")
-  local longest,t = setup_list(option_list)
+  longest,t = setup_list(option_list)
   for _,k in ipairs(t) do
     local opt = option_list[k]
     local filler = rep(" ", longest - k:len() + 1)
