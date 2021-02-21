@@ -38,11 +38,11 @@ local os_type = os.type
 function dvitopdf(name, dir, engine, hide)
   run(
     dir,
-    (forcecheckepoch and set_epoch_cmd(epoch) or "") ..
+    set_epoch_cmd(epoch) ..
     "dvips " .. name .. dviext
       .. (hide and (" > " .. os_null) or "")
       .. os_concat ..
-   "ps2pdf " .. ps2pdfopt .. name .. psext
+    "ps2pdf " .. ps2pdfopt .. name .. psext
       .. (hide and (" > " .. os_null) or "")
   )
 end
@@ -68,7 +68,7 @@ function runcmd(cmd,dir,vars)
   for _,var in pairs(vars) do
     env = env .. os_concat .. os_setenv .. " " .. var .. "=" .. envpaths
   end
-  return run(dir,(forcedocepoch and set_epoch_cmd(epoch) or "") .. env .. os_concat .. cmd)
+  return run(dir,set_epoch_cmd(epoch) .. env .. os_concat .. cmd)
 end
 
 function biber(name,dir)

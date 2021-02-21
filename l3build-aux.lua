@@ -60,19 +60,22 @@ function normalise_epoch(epoch)
   end
 end
 
----CLI command to set the epoch, will be run while checking or typesetting
+---Returns the CLI command (ending with `os_concat`) to set the epoch
+---when forcecheckepoch is true, a void string otherwise.
+---Will be run while checking or typesetting
 ---@param epoch string
 ---@return string
 ---@see check, typesetting
 ---@usage private?
 function set_epoch_cmd(epoch)
-  return
+  return forcecheckepoch and (
     os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
       .. os_concat ..
     os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
       .. os_concat ..
     os_setenv .. " FORCE_SOURCE_DATE=1"
       .. os_concat
+  ) or ""
 end
 
 ---Returns the script name depending on the calling sequence.

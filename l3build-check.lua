@@ -764,7 +764,7 @@ function runtest(name, engine, hide, ext, pdfmode, breakout)
       -- Allow for local texmf files
       os_setenv .. " TEXMFCNF=." .. os_pathsep
         .. os_concat ..
-      (forcecheckepoch and set_epoch_cmd(epoch) or "") ..
+      set_epoch_cmd(epoch) ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
