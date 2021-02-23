@@ -162,19 +162,19 @@ function install_files(target,full,dry_run)
     if next(filenames) then
       if not dry_run then
         for _,path in pairs(paths) do
-          local dir_a = target .. "/" .. path
-          if not cleanpaths[dir_a] then
-            errorlevel = cleandir(dir_a)
+          local target_path = target .. "/" .. path
+          if not cleanpaths[target_path] then
+            errorlevel = cleandir(target_path)
             if errorlevel ~= 0 then return errorlevel end
           end
-          cleanpaths[dir_a] = true
+          cleanpaths[target_path] = true
         end
       end
-      for _,file in ipairs(filenames) do
+      for _,name in ipairs(filenames) do
         if dry_run then
-          print("- " .. file)
+          print("- " .. name)
         else
-          local path,file = splitpath(file)
+          local path,file = splitpath(name)
           insert(installmap,
             {file = file, source = sourcepaths[file], dest = target .. "/" .. path})
         end
@@ -187,30 +187,30 @@ function install_files(target,full,dry_run)
   if errorlevel ~= 0 then return errorlevel end
 
     -- Creates a 'controlled' list of files
-    local function excludelist(dir,include,exclude)
+    local function create_list(dir,include,exclude)
+      dir = dir or currentdir
       include = include or { }
       exclude = exclude or { }
-      dir = dir or currentdir
-      local includelist = { }
-      local excludelist_a = { }
+      local excludelist = { }
       for _,glob_table in pairs(exclude) do
         for _,glob in pairs(glob_table) do
           for file,_ in pairs(tree(dir,glob)) do
-            excludelist_a[file] = true
+            excludelist[file] = true
           end
         end
       end
+      local ans = { }
       for _,glob in pairs(include) do
         for file,_ in pairs(tree(dir,glob)) do
-          if not excludelist_a[file] then
-            insert(includelist, file)
+          if not excludelist[file] then
+            insert(ans, file)
           end
         end
       end
-      return includelist
+      return ans
     end
 
-  local installlist = excludelist(unpackdir,installfiles,{scriptfiles})
+  local installlist = create_list(unpackdir,installfiles,{scriptfiles})
 
   if full then
     errorlevel = doc()
@@ -229,8 +229,8 @@ function install_files(target,full,dry_run)
     end
 
     -- Set up lists: global as they are also needed to do CTAN releases
-    typesetlist = excludelist(docfiledir,typesetfiles,{sourcefiles})
-    sourcelist = excludelist(sourcefiledir,sourcefiles,
+    typesetlist = create_list(docfiledir,typesetfiles,{sourcefiles})
+    sourcelist = create_list(sourcefiledir,sourcefiles,
       {bstfiles,installfiles,makeindexfiles,scriptfiles})
  
   if dry_run then

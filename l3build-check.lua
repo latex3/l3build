@@ -1015,7 +1015,7 @@ function save(names)
       return 1
     end
     for _,engine in pairs(engines) do
-      local testengine = ((engine == stdengine and "") or "." .. engine)
+      local testengine = ((engine == stdengine and "") or ("." .. engine))
       local out_file = name .. testengine .. test_type.reference
       local gen_file = name .. "." .. engine .. test_type.generated
       print("Creating and copying " .. out_file)
