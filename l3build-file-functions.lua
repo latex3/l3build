@@ -335,8 +335,8 @@ function tree(src_path, glob)
         fill(p_src, p_cwd, result)
       end
     else
-      for p_scr, p_cwd in pairs(result) do
-        fill(p_scr, p_cwd, new_result)
+      for p_src, p_cwd in pairs(result) do
+        fill(p_src, p_cwd, new_result)
       end
     end
     result = new_result
