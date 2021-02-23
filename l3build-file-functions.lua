@@ -312,13 +312,13 @@ function tree(src_path, glob)
     ---@param table table
     local function fill(p_src, p_cwd, table)
       for _, file in ipairs(filelist(p_cwd, glob_part)) do
-        p_src = p_src .. "/" .. file
+        local p_src_file = p_src .. "/" .. file
         if file ~= "." and file ~= ".." and
-          p_src ~= builddir -- TODO: ensure that `builddir` is properly formatted
+        p_src_file ~= builddir -- TODO: ensure that `builddir` is properly formatted
         then
-          p_cwd = p_cwd .. "/" .. file
-          if accept(p_cwd) then
-            table[p_src] = p_cwd
+          local p_cwd_file = p_cwd .. "/" .. file
+          if accept(p_cwd_file) then
+            table[p_src_file] = p_cwd_file
           end
         end
       end
