@@ -34,7 +34,7 @@ local luatex_version   = status.luatex_version
 
 local len              = string.len
 local char             = string.char
-local frmt             = string.format
+local str_format       = string.format
 local gmatch           = string.gmatch
 local gsub             = string.gsub
 local match            = string.match
@@ -269,7 +269,7 @@ local function normalize_log(content,engine,errlevels)
     -- tidy up to match pdfTeX if an ASCII engine is in use
     if next(asciiengines) then
       for i = 128, 255 do
-        line = gsub(line, utf8_char(i), "^^" .. frmt("%02x", i))
+        line = gsub(line, utf8_char(i), "^^" .. str_format("%02x", i))
       end
     end
     return line, lastline
@@ -345,7 +345,7 @@ local function normalize_lua_log(content,luatex)
         l,
         m .. " (%-?)%d+%.%d+",
         m .. " %1"
-          .. frmt(
+          .. str_format(
             "%.3f",
             match(line, m .. " %-?(%d+%.%d+)") or 0
           )
@@ -714,13 +714,13 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   local binary = engine
   local format = gsub(engine,"tex$",checkformat)
   -- Special binary/format combos
-  if specialformats[checkformat] and next(specialformats[checkformat]) then
-    local t = specialformats[checkformat]
-    local t_ngn = t[engine]
-    if t_ngn then
-      binary    = t_ngn.binary  or binary
-      format    = t_ngn.format  or format
-      checkopts = t_ngn.options or checkopts
+  local special_check = specialformats[checkformat]
+  if special_check and next(special_check) then
+    local engine_info = special_check[engine]
+    if engine_info then
+      binary    = engine_info.binary  or binary
+      format    = engine_info.format  or format
+      checkopts = engine_info.options or checkopts
     end
   end
   -- Finalise format string
@@ -933,10 +933,8 @@ function check(names)
     end
     -- Actually run the tests
     print("Running checks on")
-    local i = 0
-    for _,name in ipairs(names) do
-      i = i + 1
-      print("  " .. name .. " (" ..  i.. "/" .. #names ..")")
+    for i, name in ipairs(names) do
+      print("  " .. name .. " (" ..  i .. "/" .. #names ..")")
       local errlevel = runcheck(name, hide)
       -- Return value must be 1 not errlevel
       if errlevel ~= 0 then
@@ -1015,7 +1013,7 @@ function save(names)
       return 1
     end
     for _,engine in pairs(engines) do
-      local testengine = ((engine == stdengine and "") or ("." .. engine))
+      local testengine = engine == stdengine and "" or ("." .. engine)
       local out_file = name .. testengine .. test_type.reference
       local gen_file = name .. "." .. engine .. test_type.generated
       print("Creating and copying " .. out_file)
