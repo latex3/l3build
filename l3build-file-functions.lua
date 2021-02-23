@@ -214,12 +214,14 @@ end
 -- Copy files 'quietly'
 function cp(glob, source, dest)
   local errorlevel
-  for p_rel,p_cwd in pairs(tree(source, glob)) do
+  for p_src, p_cwd in pairs(tree(source, glob)) do
+    -- p_src is a path relative to `source` whereas
+    -- p_cwd is the counterpart relative to the current working directory
     if os_type == "windows" then
       if attributes(p_cwd)["mode"] == "directory" then
         errorlevel = execute(
           'xcopy /y /e /i "' .. unix_to_win(p_cwd) .. '" "'
-             .. unix_to_win(dest .. '/' .. p_rel) .. '" > nul'
+             .. unix_to_win(dest .. '/' .. p_src) .. '" > nul'
         )
       else
         errorlevel = execute(
@@ -287,53 +289,59 @@ function filelist(path, glob)
 end
 
 -- Does what filelist does, but can also glob subdirectories. In the returned
--- table, the keys are paths relative to the given starting path, the values
+-- table, the keys are paths relative to the given source path, the values
 -- are their counterparts relative to the current working directory.
-function tree(path, glob)
+function tree(src_path, glob)
   local function cropdots(path)
     return gsub(gsub(path, "^%./", ""), "/%./", "/")
   end
+  src_path = cropdots(src_path)
+  glob = cropdots(glob)
   local function always_true()
     return true
   end
   local function is_dir(file)
     return attributes(file)["mode"] == "directory"
   end
-  local dirs = {["."] = cropdots(path)}
-  for pattern, criterion in gmatch(cropdots(glob), "([^/]+)(/?)") do
-    criterion = criterion == "/" and is_dir or always_true
-    local function fill(path_a, dir, table)
-      for _, file in ipairs(filelist(dir, pattern)) do
-        local fullpath = path_a .. "/" .. file
+  local result = {["."] = src_path}
+  for glob_part, sep in gmatch(glob, "([^/]+)(/?)/*") do
+    local accept = sep == "/" and is_dir or always_true
+    ---Feeds the given table according to `glob_part`
+    ---@param p_src string path relative to `src_path`
+    ---@param p_cwd string path counterpart relative to the current working directory
+    ---@param table table
+    local function fill(p_src, p_cwd, table)
+      for _, file in ipairs(filelist(p_cwd, glob_part)) do
+        p_src = p_src .. "/" .. file
         if file ~= "." and file ~= ".." and
-          fullpath ~= builddir
+          p_src ~= builddir -- TODO: ensure that `builddir` is properly formatted
         then
-          local fulldir = dir .. "/" .. file
-          if criterion(fulldir) then
-            table[fullpath] = fulldir
+          p_cwd = p_cwd .. "/" .. file
+          if accept(p_cwd) then
+            table[p_src] = p_cwd
           end
         end
       end
     end
-    local newdirs = {}
-    if pattern == "**" then
+    local new_result = {}
+    if glob_part == "**" then
       while true do
-        local path_a, dir = next(dirs)
-        if not path_a then
+        local p_src, p_cwd = next(result)
+        if not p_src then
           break
         end
-        dirs[path_a] = nil
-        newdirs[path_a] = dir
-        fill(path_a, dir, dirs)
+        result[p_src] = nil
+        new_result[p_src] = p_cwd
+        fill(p_src, p_cwd, result)
       end
     else
-      for path, dir in pairs(dirs) do
-        fill(path, dir, newdirs)
+      for p_scr, p_cwd in pairs(result) do
+        fill(p_scr, p_cwd, new_result)
       end
     end
-    dirs = newdirs
+    result = new_result
   end
-  return dirs
+  return result
 end
 
 function remove_duplicates(a)

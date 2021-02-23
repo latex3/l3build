@@ -254,14 +254,6 @@ function construct_ctan_post(uploadfile,debug)
   ctan_field("uploader",     uploadconfig.uploader,      255, "Name of uploader",                    true,  false )
   ctan_field("version",      uploadconfig.version,        32, "Package version",                     true,  false )
 
-  --[=[ `qq` is unused because line 258 is commented
-  -- finish constructing the curl command:
-  local qq = '"'
-  if os_type == "windows" then
-    qq = '\"'
-  end
-  --]=]
--- commandline   ctan_post = ctan_post .. ' --form ' .. qq .. 'file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. qq
   ctan_post = ctan_post .. '\nform="file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
 
   return ctan_post
