@@ -64,11 +64,12 @@ end
 ---when forcecheckepoch is true, a void string otherwise.
 ---Will be run while checking or typesetting
 ---@param epoch string
+---@param force boolean
 ---@return string
 ---@see check, typesetting
 ---@usage private?
-function set_epoch_cmd(epoch)
-  return forcecheckepoch and (
+function set_epoch_cmd(epoch, force)
+  return force and (
     os_setenv .. " SOURCE_DATE_EPOCH=" .. epoch
       .. os_concat ..
     os_setenv .. " SOURCE_DATE_EPOCH_TEX_PRIMITIVES=1"
