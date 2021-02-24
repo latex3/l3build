@@ -34,7 +34,7 @@ local luatex_version   = status.luatex_version
 
 local len              = string.len
 local char             = string.char
-local format           = string.format
+local str_format       = string.format
 local gmatch           = string.gmatch
 local gsub             = string.gsub
 local match            = string.match
@@ -134,7 +134,7 @@ local function normalize_log(content,engine,errlevels)
        not match(line, "%.%.%.$") then
       return "", (lastline or "") .. line
     end
-    local line = (lastline or "") .. line
+    line = (lastline or "") .. line
     lastline = ""
     -- Zap ./ at begin of filename
     line = gsub(line, "%(%.%/", "(")
@@ -269,7 +269,7 @@ local function normalize_log(content,engine,errlevels)
     -- tidy up to match pdfTeX if an ASCII engine is in use
     if next(asciiengines) then
       for i = 128, 255 do
-        line = gsub(line, utf8_char(i), "^^" .. format("%02x", i))
+        line = gsub(line, utf8_char(i), "^^" .. str_format("%02x", i))
       end
     end
     return line, lastline
@@ -345,7 +345,7 @@ local function normalize_lua_log(content,luatex)
         l,
         m .. " (%-?)%d+%.%d+",
         m .. " %1"
-          .. format(
+          .. str_format(
             "%.3f",
             match(line, m .. " %-?(%d+%.%d+)") or 0
           )
@@ -435,7 +435,7 @@ local function normalize_lua_log(content,luatex)
       end
     end
     -- Look for another form of \discretionary, replacing a "-"
-    pattern = "^%.+\\discretionary replacing *$"
+    local pattern = "^%.+\\discretionary replacing *$"
     if match(line, pattern) then
       return "", line
     else
@@ -710,17 +710,17 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   cp(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
     and testfiledir or unpackdir, testdir)
   local checkopts = checkopts
-  local engine = engine or stdengine
+  engine = engine or stdengine
   local binary = engine
   local format = gsub(engine,"tex$",checkformat)
   -- Special binary/format combos
-  if specialformats[checkformat] and next(specialformats[checkformat]) then
-    local t = specialformats[checkformat]
-    if t[engine] and next(t[engine]) then
-      local t = t[engine]
-      binary    = t.binary  or binary
-      checkopts = t.options or checkopts
-      format    = t.format  or format
+  local special_check = specialformats[checkformat]
+  if special_check and next(special_check) then
+    local engine_info = special_check[engine]
+    if engine_info then
+      binary    = engine_info.binary  or binary
+      format    = engine_info.format  or format
+      checkopts = engine_info.options or checkopts
     end
   end
   -- Finalise format string
@@ -776,7 +776,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
       -- Allow for local texmf files
       os_setenv .. " TEXMFCNF=." .. os_pathsep
         .. os_concat ..
-      (forcecheckepoch and set_epoch_cmd(epoch) or "") ..
+      set_epoch_cmd(epoch) ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
@@ -813,7 +813,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
     for _,file in pairs(filelist(testdir, filetype)) do
       if match(file,"^" .. name .. "%.[^.]+$") then
         local newname = gsub(file,"(%.[^.]+)$","." .. engine .. "%1")
-        if fileexists(testdir,newname) then
+        if fileexists(testdir .. "/" .. newname) then
           rmfile(testdir,newname)
         end
         ren(testdir,file,newname)
@@ -924,24 +924,17 @@ function check(names)
         end
       end
     end
-    -- https://stackoverflow.com/a/32167188
-    local function shuffle(tbl)
-      local len, random = #tbl, rnd
-      for i = len, 2, -1 do
-          local j = random(1, i)
-          tbl[i], tbl[j] = tbl[j], tbl[i]
-      end
-      return tbl
-    end
     if options["shuffle"] then
-      names = shuffle(names)
+      -- https://stackoverflow.com/a/32167188
+      for i = #names, 2, -1 do
+        local j = rnd(1, i)
+        names[i], names[j] = names[j], names[i]
+      end
     end
     -- Actually run the tests
     print("Running checks on")
-    local i = 0
-    for _,name in ipairs(names) do
-      i = i + 1
-      print("  " .. name .. " (" ..  i.. "/" .. #names ..")")
+    for i, name in ipairs(names) do
+      print("  " .. name .. " (" ..  i .. "/" .. #names ..")")
       local errlevel = runcheck(name, hide)
       -- Return value must be 1 not errlevel
       if errlevel ~= 0 then
@@ -1020,7 +1013,7 @@ function save(names)
       return 1
     end
     for _,engine in pairs(engines) do
-      local testengine = ((engine == stdengine and "") or "." .. engine)
+      local testengine = engine == stdengine and "" or ("." .. engine)
       local out_file = name .. testengine .. test_type.reference
       local gen_file = name .. "." .. engine .. test_type.generated
       print("Creating and copying " .. out_file)

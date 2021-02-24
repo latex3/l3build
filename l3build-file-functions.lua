@@ -36,7 +36,6 @@ local execute          = os.execute
 local exit             = os.exit
 local getenv           = os.getenv
 local remove           = os.remove
-local os_time          = os.time
 local os_type          = os.type
 
 local luatex_revision  = status.luatex_revision
@@ -183,6 +182,7 @@ function abspath(path)
   error(msg)
 end
 
+-- TODO: Fix the cross platform problem
 function escapepath(path)
   if os_type == "windows" then
     local path,count = gsub(path,'"','')
@@ -214,22 +214,23 @@ end
 -- Copy files 'quietly'
 function cp(glob, source, dest)
   local errorlevel
-  for i,_ in pairs(tree(source, glob)) do
-    local source = source .. "/" .. i
+  for p_src, p_cwd in pairs(tree(source, glob)) do
+    -- p_src is a path relative to `source` whereas
+    -- p_cwd is the counterpart relative to the current working directory
     if os_type == "windows" then
-      if attributes(source)["mode"] == "directory" then
+      if attributes(p_cwd)["mode"] == "directory" then
         errorlevel = execute(
-          'xcopy /y /e /i "' .. unix_to_win(source) .. '" "'
-             .. unix_to_win(dest .. '/' .. i) .. '" > nul'
+          'xcopy /y /e /i "' .. unix_to_win(p_cwd) .. '" "'
+             .. unix_to_win(dest .. '/' .. p_src) .. '" > nul'
         )
       else
         errorlevel = execute(
-          'xcopy /y "' .. unix_to_win(source) .. '" "'
+          'xcopy /y "' .. unix_to_win(p_cwd) .. '" "'
              .. unix_to_win(dest .. '/') .. '" > nul'
         )
       end
     else
-      errorlevel = execute("cp -RLf '" .. source .. "' '" .. dest .. "'")
+      errorlevel = execute("cp -RLf '" .. p_cwd .. "' '" .. dest .. "'")
     end
     if errorlevel ~=0 then
       return errorlevel
@@ -288,53 +289,59 @@ function filelist(path, glob)
 end
 
 -- Does what filelist does, but can also glob subdirectories. In the returned
--- table, the keys are paths relative to the given starting path, the values
+-- table, the keys are paths relative to the given source path, the values
 -- are their counterparts relative to the current working directory.
-function tree(path, glob)
+function tree(src_path, glob)
   local function cropdots(path)
     return gsub(gsub(path, "^%./", ""), "/%./", "/")
   end
+  src_path = cropdots(src_path)
+  glob = cropdots(glob)
   local function always_true()
     return true
   end
   local function is_dir(file)
     return attributes(file)["mode"] == "directory"
   end
-  local dirs = {["."] = cropdots(path)}
-  for pattern, criterion in gmatch(cropdots(glob), "([^/]+)(/?)") do
-    local criterion = criterion == "/" and is_dir or always_true
-    local function fill(path, dir, table)
-      for _, file in ipairs(filelist(dir, pattern)) do
-        local fullpath = path .. "/" .. file
+  local result = {["."] = src_path}
+  for glob_part, sep in gmatch(glob, "([^/]+)(/?)/*") do
+    local accept = sep == "/" and is_dir or always_true
+    ---Feeds the given table according to `glob_part`
+    ---@param p_src string path relative to `src_path`
+    ---@param p_cwd string path counterpart relative to the current working directory
+    ---@param table table
+    local function fill(p_src, p_cwd, table)
+      for _, file in ipairs(filelist(p_cwd, glob_part)) do
+        local p_src_file = p_src .. "/" .. file
         if file ~= "." and file ~= ".." and
-          fullpath ~= builddir
+        p_src_file ~= builddir -- TODO: ensure that `builddir` is properly formatted
         then
-          local fulldir = dir .. "/" .. file
-          if criterion(fulldir) then
-            table[fullpath] = fulldir
+          local p_cwd_file = p_cwd .. "/" .. file
+          if accept(p_cwd_file) then
+            table[p_src_file] = p_cwd_file
           end
         end
       end
     end
-    local newdirs = {}
-    if pattern == "**" then
+    local new_result = {}
+    if glob_part == "**" then
       while true do
-        local path, dir = next(dirs)
-        if not path then
+        local p_src, p_cwd = next(result)
+        if not p_src then
           break
         end
-        dirs[path] = nil
-        newdirs[path] = dir
-        fill(path, dir, dirs)
+        result[p_src] = nil
+        new_result[p_src] = p_cwd
+        fill(p_src, p_cwd, result)
       end
     else
-      for path, dir in pairs(dirs) do
-        fill(path, dir, newdirs)
+      for p_src, p_cwd in pairs(result) do
+        fill(p_src, p_cwd, new_result)
       end
     end
-    dirs = newdirs
+    result = new_result
   end
-  return dirs
+  return result
 end
 
 function remove_duplicates(a)
@@ -357,7 +364,7 @@ function mkdir(dir)
   if os_type == "windows" then
     -- Windows (with the extensions) will automatically make directory trees
     -- but issues a warning if the dir already exists: avoid by including a test
-    local dir = unix_to_win(dir)
+    dir = unix_to_win(dir)
     return execute(
       "if not exist "  .. dir .. "\\nul " .. "mkdir " .. dir
     )
@@ -368,10 +375,10 @@ end
 
 -- Rename
 function ren(dir, source, dest)
-  local dir = dir .. "/"
+  dir = dir .. "/"
   if os_type == "windows" then
-    local source = gsub(source, "^%.+/", "")
-    local dest = gsub(dest, "^%.+/", "")
+    source = gsub(source, "^%.+/", "")
+    dest = gsub(dest, "^%.+/", "")
     return execute("ren " .. unix_to_win(dir) .. source .. " " .. dest)
   else
     return execute("mv " .. dir .. source .. " " .. dir .. dest)

@@ -39,7 +39,7 @@ function copyctan()
     else
       for _,filetype in pairs(files) do
         for file,_ in pairs(tree(source,filetype)) do
-          local path = splitpath(file)
+          local path = dirname(file)
           local ctantarget = ctandir .. "/" .. ctanpkg .. "/"
             .. source .. "/" .. path
           mkdir(ctantarget)

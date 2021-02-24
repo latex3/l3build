@@ -22,8 +22,6 @@ for those people who are interested.
 
 --]]
 
-local execute          = os.execute
-
 -- Unpack the package files using an 'isolated' system: this requires
 -- a copy of the 'basic' DocStrip program, which is used then removed
 function unpack(sources, sourcedirs)

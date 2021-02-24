@@ -78,6 +78,12 @@ end
 -- if upload is anything else, the user will be prompted whether to upload.
 -- For now, this is undocumented. I think I would prefer to keep it always set to ask for the time being.
 
+local ctan_post -- this is private to the module
+
+-- TODO: next is a public global method,
+-- but following functions are semantically local
+-- despite they are declared globally.
+
 function upload(tagnames)
 
   local uploadfile = ctanzip..".zip"
@@ -100,7 +106,7 @@ function upload(tagnames)
 
   uploadconfig.note =   uploadconfig.note  or file_contents(uploadconfig.note_file)
 
-  local tagnames = tagnames or { }
+  tagnames = tagnames or { }
   uploadconfig.version = tagnames[1] or uploadconfig.version
 
   local override_update_check = false
@@ -214,7 +220,7 @@ end
 
 function shell(s)
   local h = assert(popen(s, 'r'))
-  t = assert(h:read('*a'))
+  local t = assert(h:read('*a'))
   h:close()
   return t
 end
@@ -248,12 +254,6 @@ function construct_ctan_post(uploadfile,debug)
   ctan_field("uploader",     uploadconfig.uploader,      255, "Name of uploader",                    true,  false )
   ctan_field("version",      uploadconfig.version,        32, "Package version",                     true,  false )
 
-  -- finish constructing the curl command:
-  local qq = '"'
-  if os_type == "windows" then
-    qq = '\"'
-  end
--- commandline   ctan_post = ctan_post .. ' --form ' .. qq .. 'file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. qq
   ctan_post = ctan_post .. '\nform="file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
 
   return ctan_post
@@ -352,7 +352,7 @@ function file_contents (filename)
     local f= open(filename,"r")
     if f==nil then
       return nil
-    else 
+    else
       local s = f:read("*all")
       close(f)
       return s
