@@ -201,6 +201,7 @@ local function argparse()
   -- to grab arg for optionals where appropriate
   local i = 2
   while i <= #arg do
+    ::top::
     local a = arg[i]
     -- Terminate search for options
     if a == "--" then
@@ -252,8 +253,22 @@ local function argparse()
          end
         end
       else
-        stderr:write("Unknown option " .. a .."\n")
-        return { target = "help" }
+        -- Private special debugging options "--debug-<key>"
+        local key = match(a, "^%-%-debug%-(%w[%w%d_]*)")
+        if key then
+          ---@type l3build_t
+          local l3build = require("l3build")
+          l3build.debug[key] = true
+          i = i + 1
+          if i <= #arg then
+            goto top
+          else
+            break
+          end
+        else
+          stderr:write("Unknown option " .. a .."\n")
+          return { target = "help" }
+        end
       end
       -- Store the result
       if optarg then

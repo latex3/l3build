@@ -29,9 +29,11 @@ local match = string.match
 local pairs = pairs
 local print = print
 
-local lookup = kpse.lookup
+local os_time = os.time
 
-local os_time = os_time
+---@type l3build_t
+local l3build = require("l3build")
+
 --
 -- Auxiliary functions which are used by more than one main function
 --
@@ -86,11 +88,8 @@ end
 ---`texlua l3build.lua` -> `/Library/TeX/texbin/l3build.lua` or `./l3build.lua`
 ---@return string
 local function get_script_name()
-  if match(arg[0], "l3build$") or match(arg[0], "l3build%.lua$") then
-    return lookup("l3build.lua")
-  else
-    return arg[0] -- Why no lookup here?
-  end
+  local dir, base = splitpath(l3build.PATH)
+  return abspath(dir) .. '/' .. base
 end
 
 -- Performs the task named target given modules in a bundle.
@@ -138,10 +137,12 @@ function call(modules, target, opts)
       text = " for module " .. module
     end
     print("Running l3build with target \"" .. target .. "\"" .. text )
-    local error_level = run(
-      module,
-      "texlua " .. script_name .. " " .. target .. cli_opts
-    )
+    local cmd = "texlua " .. script_name .. " " .. target .. cli_opts
+    if l3build.debug.call then
+      print("module: ".. module)
+      print("execute ".. cmd)
+    end
+    local error_level = run(module, cmd)
     if error_level ~= 0 then
       return error_level
     end
