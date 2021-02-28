@@ -115,7 +115,7 @@ do
 
   is_main = cmd_base == "l3build" or cmd_base == "l3build.lua"
   assert(is_main == not not (match(arg[0], "l3build$") or match(arg[0], "l3build%.lua$")))
-  -- l3b_dir:
+  -- launch_dir:
   if cmd_base == "l3build.lua" then -- `texlua foo/bar/l3build.lua ...`
     launch_dir = cmd_dir
   elseif cmd_base == "l3build" then
@@ -155,6 +155,7 @@ do
   ---@param path string
   local function register(pkg, pkg_name, name, path)
     if type(pkg) ~= "table" then pkg = {} end
+    package.loaded[path] = nil  -- change the registration name
     package.loaded[pkg_name] = pkg
     pkg.PACKAGE = pkg_name
     pkg.NAME = name
@@ -182,7 +183,6 @@ do
       package.loaded[pkg_name] = true
       local path = launch_dir .. "l3build-"..name
       result = require_orig(path) -- error here if no such module exists
-      package.loaded[path] = nil  -- change the registration name
       result = register(result, pkg_name, name, path .. ".lua")
     else
       -- forthcoming management here
@@ -202,6 +202,7 @@ do
       print("  kpse:   ".. kpse_dir)
       print("  launch: ".. launch_dir)
       print()
+      break
     end
   end
 

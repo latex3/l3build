@@ -139,8 +139,8 @@ function call(modules, target, opts)
     print("Running l3build with target \"" .. target .. "\"" .. text )
     local cmd = "texlua " .. script_name .. " " .. target .. cli_opts
     if l3build.debug.call then
-      print("module: ".. module)
-      print("execute ".. cmd)
+      print("DEBUG Info: module  ".. module)
+      print("DEBUG Info: execute ".. cmd)
     end
     local error_level = run(module, cmd)
     if error_level ~= 0 then
