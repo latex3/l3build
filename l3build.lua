@@ -118,6 +118,8 @@ do
   -- l3b_dir:
   if cmd_base == "l3build.lua" then -- `texlua foo/bar/l3build.lua ...`
     launch_dir = cmd_dir
+  elseif cmd_base == "l3build" then
+    launch_dir = kpse_dir
   else
     launch_dir = container('./', "l3build.lua") or kpse_dir
   end
