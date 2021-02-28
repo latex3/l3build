@@ -124,24 +124,37 @@ do
     launch_dir = container('./', "l3build.lua") or kpse_dir
   end
 
+  ---Calls f when one CLI option starts with "--debug"
+  ---@param f fun()
+  local function on_debug(f)
+    for _,o in ipairs(arg) do
+      if match(o, "^%-%-debug") then
+        f()
+        break
+      end
+    end
+  end
+
   -- work_dir:
   if cmd_base == "build.lua" then
     work_dir = cmd_dir
   else
     work_dir = container(cmd_dir, "build.lua") or container(start_dir, "build.lua")
     if not work_dir then
-      print(arg[0])
-      print("  start:  ".. start_dir)
-      -- print("  work:   ".. work_dir)
-      print("  kpse:   ".. kpse_dir)
-      print("  launch: ".. launch_dir)
-      local dir, base = start_dir, "build.lua"
-      for _ in gmatch(dir .. lfs.currentdir(), "[^/]+") do
-        local p = dir .. base
-        print(p)
-        if os.rename(p, p) then return dir end -- true iff file or dir at the given path
-        dir = dir .. "../"
-      end
+      on_debug(function ()
+        print(arg[0])
+        print("  start:  ".. start_dir)
+        -- print("  work:   ".. work_dir)
+        print("  kpse:   ".. kpse_dir)
+        print("  launch: ".. launch_dir)
+        local dir, base = start_dir, "build.lua"
+        for _ in gmatch(dir .. lfs.currentdir(), "[^/]+") do
+          local p = dir .. base
+          print(p)
+          if os.rename(p, p) then return dir end -- true iff file or dir at the given path
+          dir = dir .. "../"
+        end
+      end)
     end
     assert(work_dir, 'Error: Cannot find configuration file "build.lua"')
   end
@@ -194,18 +207,15 @@ do
     return result
   end
 
-  for _,o in ipairs(arg) do
-    if match(o, "^%-%-debug") then
-      print("l3build: A testing and building system for LaTeX")
-      print("  start:  ".. start_dir)
-      print("  work:   ".. work_dir)
-      print("  kpse:   ".. kpse_dir)
-      print("  launch: ".. launch_dir)
-      print()
-      break
-    end
-  end
-
+  on_debug(function ()
+    print("l3build: A testing and building system for LaTeX")
+    print("  start:  ".. start_dir)
+    print("  work:   ".. work_dir)
+    print("  kpse:   ".. kpse_dir)
+    print("  launch: ".. launch_dir)
+    print()
+  end)
+  
 end
 --[=[ end of booting process ]=]
 
