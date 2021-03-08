@@ -120,7 +120,7 @@ end
 
 function tex(file,dir,cmd)
   dir = dir or "."
-  cmd = cmd or typesetexe .. typesetopts
+  cmd = cmd or typesetexe .. " " .. typesetopts
   return runcmd(cmd .. " \"" .. typesetcmds
     .. "\\input " .. file .. "\"",
     dir,{"TEXINPUTS","LUAINPUTS"})
