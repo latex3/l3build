@@ -300,7 +300,7 @@ end
 ---@param src_path string
 ---@param glob string
 ---@return table<integer,tree_entry_t>
-local function tree(src_path, glob)
+function tree(src_path, glob)
   local function cropdots(path)
     return path:gsub( "^%./", ""):gsub("/%./", "/")
   end

@@ -161,8 +161,7 @@ function install_files(target,full,dry_run)
     -- The target is only created if there are actual files to install
     if next(filenames) then
       if not dry_run then
-        for i = #paths, 1, -1 do
-          local path = paths[i]
+        for _,path in ipairs(paths) do
           local target_path = target .. "/" .. path
           if not cleanpaths[target_path] then
             errorlevel = cleandir(target_path)
