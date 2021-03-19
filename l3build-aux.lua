@@ -31,7 +31,7 @@ local print = print
 
 local lookup = kpse.lookup
 
-local os_time = os_time
+local os_time = os.time
 --
 -- Auxiliary functions which are used by more than one main function
 --
