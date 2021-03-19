@@ -214,23 +214,25 @@ end
 -- Copy files 'quietly'
 function cp(glob, source, dest)
   local errorlevel
-  for p_src, p_cwd in pairs(tree(source, glob)) do
+  for _,p in ipairs(tree(source, glob)) do
     -- p_src is a path relative to `source` whereas
     -- p_cwd is the counterpart relative to the current working directory
     if os_type == "windows" then
-      if attributes(p_cwd)["mode"] == "directory" then
+      if attributes(p.cwd, "mode") == "directory" then
         errorlevel = execute(
-          'xcopy /y /e /i "' .. unix_to_win(p_cwd) .. '" "'
-             .. unix_to_win(dest .. '/' .. p_src) .. '" > nul'
-        )
+          'xcopy /y /e /i "' .. unix_to_win(p.cwd) .. '" "'
+             .. unix_to_win(dest .. '/' .. p.src) .. '" > nul'
+        ) and 0 or 1
       else
         errorlevel = execute(
-          'xcopy /y "' .. unix_to_win(p_cwd) .. '" "'
+          'xcopy /y "' .. unix_to_win(p.cwd) .. '" "'
              .. unix_to_win(dest .. '/') .. '" > nul'
-        )
+        ) and 0 or 1
       end
     else
-      errorlevel = execute("cp -RLf '" .. p_cwd .. "' '" .. dest .. "'")
+      errorlevel = execute(
+        "cp -RLf '" .. p.cwd .. "' '" .. dest .. "'"
+      ) and 0 or 1
     end
     if errorlevel ~=0 then
       return errorlevel
@@ -288,12 +290,19 @@ function filelist(path, glob)
   return files
 end
 
--- Does what filelist does, but can also glob subdirectories. In the returned
--- table, the keys are paths relative to the given source path, the values
--- are their counterparts relative to the current working directory.
-function tree(src_path, glob)
+---@class tree_entry_t
+---@field src string path relative to the source directory
+---@field cwd string path counterpart relative to the current working directory
+
+---Does what filelist does, but can also glob subdirectories.
+---In the returned table, the keys are paths relative to the given source path,
+---the values are their counterparts relative to the current working directory.
+---@param src_path string
+---@param glob string
+---@return table<integer,tree_entry_t>
+local function tree(src_path, glob)
   local function cropdots(path)
-    return gsub(gsub(path, "^%./", ""), "/%./", "/")
+    return path:gsub( "^%./", ""):gsub("/%./", "/")
   end
   src_path = cropdots(src_path)
   glob = cropdots(glob)
@@ -301,42 +310,48 @@ function tree(src_path, glob)
     return true
   end
   local function is_dir(file)
-    return attributes(file)["mode"] == "directory"
+    return attributes(file, "mode") == "directory"
   end
-  local result = {["."] = src_path}
-  for glob_part, sep in gmatch(glob, "([^/]+)(/?)/*") do
+  ---@type table<integer,tree_entry_t>
+  local result = { {
+    src = ".",
+    cwd = src_path,
+  } }
+  for glob_part, sep in glob:gmatch("([^/]+)(/?)/*") do
     local accept = sep == "/" and is_dir or always_true
     ---Feeds the given table according to `glob_part`
-    ---@param p_src string path relative to `src_path`
-    ---@param p_cwd string path counterpart relative to the current working directory
+    ---@param p tree_entry_t path counterpart relative to the current working directory
     ---@param table table
-    local function fill(p_src, p_cwd, table)
-      for _, file in ipairs(filelist(p_cwd, glob_part)) do
-        local p_src_file = p_src .. "/" .. file
-        if file ~= "." and file ~= ".." and
-        p_src_file ~= builddir -- TODO: ensure that `builddir` is properly formatted
-        then
-          local p_cwd_file = p_cwd .. "/" .. file
-          if accept(p_cwd_file) then
-            table[p_src_file] = p_cwd_file
+    local function fill(p, table)
+      for _,file in ipairs(filelist(p.cwd, glob_part)) do
+        if file ~= "." and file ~= ".." then
+          local pp = {
+            src = p.src .. "/" .. file,
+            cwd = p.cwd .. "/" .. file,
+          }
+          if pp.cwd ~= builddir -- TODO: ensure that `builddir` is properly formatted
+          and accept(pp.cwd)
+          then
+            insert(table, pp)
           end
         end
       end
     end
     local new_result = {}
     if glob_part == "**" then
+      local i = 1
       while true do
-        local p_src, p_cwd = next(result)
-        if not p_src then
+        local p = result[i]
+        i = i + 1
+        if not p then
           break
         end
-        result[p_src] = nil
-        new_result[p_src] = p_cwd
-        fill(p_src, p_cwd, result)
+        insert(new_result, p) -- shorter path
+        fill(p, result)       -- after longer
       end
     else
-      for p_src, p_cwd in pairs(result) do
-        fill(p_src, p_cwd, new_result)
+      for _,p in ipairs(result) do
+        fill(p, new_result)
       end
     end
     result = new_result
@@ -387,8 +402,8 @@ end
 
 -- Remove file(s) based on a glob
 function rm(source, glob)
-  for i,_ in pairs(tree(source, glob)) do
-    rmfile(source,i)
+  for _,p in ipairs(tree(source, glob)) do
+    rmfile(source,p.src)
   end
   -- os.remove doesn't give a sensible errorlevel
   return 0

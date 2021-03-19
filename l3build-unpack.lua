@@ -70,8 +70,8 @@ bundleunpack = bundleunpack or function(sourcedirs, sources)
     end
   end
   for _,i in ipairs(unpackfiles) do
-    for j,_ in pairs(tree(unpackdir, i)) do
-      local path, name = splitpath(j)
+    for _,p in ipairs(tree(unpackdir, i)) do
+      local path, name = splitpath(p.src)
       local localdir = abspath(localdir)
       local success = io.popen(
         "cd " .. unpackdir .. "/" .. path .. os_concat ..

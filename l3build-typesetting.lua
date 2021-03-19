@@ -209,8 +209,8 @@ function doc(files)
   for _,typesetfiles in ipairs({typesetdemofiles,typesetfiles}) do
     for _,glob in pairs(typesetfiles) do
       for _,dir in ipairs({typesetdir,unpackdir}) do
-        for _,file in pairs(tree(dir,glob)) do
-          local path,srcname = splitpath(file)
+        for _,p in ipairs(tree(dir,glob)) do
+          local path,srcname = splitpath(p.cwd)
           local name = jobname(srcname)
           if not done[name] then
             local typeset = true

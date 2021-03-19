@@ -22,36 +22,46 @@ for those people who are interested.
 
 --]]
 
+local pairs   = pairs
+local ipairs  = ipairs
+local insert  = table.insert
+
 -- Remove all generated files
 function clean()
   -- To make sure that distribdir never contains any stray subdirs,
   -- it is entirely removed then recreated rather than simply deleting
   -- all of the files
-  local errorlevel =
-    rmdir(distribdir)    +
-    mkdir(distribdir)    +
-    cleandir(localdir)   +
-    cleandir(testdir)    +
-    cleandir(typesetdir) +
-    cleandir(unpackdir)
+  local errorlevel =  rmdir(distribdir)
+                    + mkdir(distribdir)
+                    + cleandir(localdir)
+                    + cleandir(testdir)
+                    + cleandir(typesetdir)
+                    + cleandir(unpackdir)
 
   if errorlevel ~= 0 then return errorlevel end
 
-  local clean_list = { }
   for _,dir in pairs(remove_duplicates({maindir,sourcefiledir,docfiledir})) do
+    local clean_list  = {}
+    local flags = {}
     for _,glob in pairs(cleanfiles) do
-      for file,_ in pairs(tree(dir,glob)) do
-        clean_list[file] = true
+      for _,p in ipairs(tree(dir,glob)) do
+        insert(clean_list, p.src)
+        flags[p.src] = true
       end
     end
     for _,glob in pairs(sourcefiles) do
-      for file,_ in pairs(tree(dir,glob)) do
-        clean_list[file] = nil
+      for _,p in ipairs(tree(dir,glob)) do
+        flags[p.src] = nil
       end
     end
-    for file,_ in pairs(clean_list) do
-      errorlevel = rm(dir,file)
-      if errorlevel ~= 0 then return errorlevel end
+    for i = #clean_list, 1, -1 do
+      local p_src = clean_list[i]
+      if flags[p_src] then
+        errorlevel = rm(dir,p_src)
+        if errorlevel ~= 0 then
+          return errorlevel
+        end
+      end
     end
   end
 
@@ -63,10 +73,8 @@ function bundleclean()
   for _,i in ipairs(cleanfiles) do
     errorlevel = rm(currentdir, i) + errorlevel
   end
-  return (
-    errorlevel     +
-    rmdir(ctandir) +
-    rmdir(tdsdir)
-  )
+  return  errorlevel
+        + rmdir(ctandir)
+        + rmdir(tdsdir)
 end
 

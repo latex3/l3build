@@ -68,15 +68,15 @@ function uninstall()
   -- Any script man files need special handling
   local manfiles = { }
   for _,glob in pairs(scriptmanfiles) do
-    for file,_ in pairs(tree(docfiledir,glob)) do
+    for _,p in ipairs(tree(docfiledir,glob)) do
       -- Man files should have a single-digit extension: the type
-      local installdir = gethome() .. "/doc/man/man"  .. match(file,".$")
-      if fileexists(installdir .. "/" .. file) then
+      local installdir = gethome() .. "/doc/man/man"  .. match(p.src,".$")
+      if fileexists(installdir .. "/" .. p.src) then
         if options["dry-run"] then
-          insert(manfiles,"man" .. match(file,".$") .. "/" ..
-           select(2,splitpath(file)))
+          insert(manfiles,"man" .. match(p.src,".$") .. "/" ..
+           select(2,splitpath(p.src)))
         else
-          errorlevel = errorlevel + rm(installdir,file)
+          errorlevel = errorlevel + rm(installdir,p.src)
         end
       end
     end
@@ -127,9 +127,9 @@ function install_files(target,full,dry_run)
     -- Generate a file list and include the directory
     for _,glob_table in pairs(files) do
       for _,glob in pairs(glob_table) do
-        for file,_ in pairs(tree(source,glob)) do
+        for _,p in ipairs(tree(source,glob)) do
           -- Just want the name
-          local path,filename = splitpath(file)
+          local path,filename = splitpath(p.src)
           local sourcepath = "/"
           if path == "." then
             sourcepaths[filename] = source
@@ -161,7 +161,8 @@ function install_files(target,full,dry_run)
     -- The target is only created if there are actual files to install
     if next(filenames) then
       if not dry_run then
-        for _,path in pairs(paths) do
+        for i = #paths, 1, -1 do
+          local path = paths[i]
           local target_path = target .. "/" .. path
           if not cleanpaths[target_path] then
             errorlevel = cleandir(target_path)
@@ -194,16 +195,16 @@ function install_files(target,full,dry_run)
       local excludelist = { }
       for _,glob_table in pairs(exclude) do
         for _,glob in pairs(glob_table) do
-          for file,_ in pairs(tree(dir,glob)) do
-            excludelist[file] = true
+          for _,p in ipairs(tree(dir,glob)) do
+            excludelist[p.src] = true
           end
         end
       end
       local result = { }
       for _,glob in pairs(include) do
-        for file,_ in pairs(tree(dir,glob)) do
-          if not excludelist[file] then
-            insert(result, file)
+        for _,p in ipairs(tree(dir,glob)) do
+          if not excludelist[p.src] then
+            insert(result, p.src)
           end
         end
       end
@@ -255,15 +256,15 @@ function install_files(target,full,dry_run)
     -- Any script man files need special handling
     local manfiles = { }
     for _,glob in pairs(scriptmanfiles) do
-      for file,_ in pairs(tree(docfiledir,glob)) do
+      for _,p in ipairs(tree(docfiledir,glob)) do
         if dry_run then
-          insert(manfiles,"man" .. match(file,".$") .. "/" ..
-            select(2,splitpath(file)))
+          insert(manfiles,"man" .. match(p.src,".$") .. "/" ..
+            select(2,splitpath(p.src)))
         else
           -- Man files should have a single-digit extension: the type
-          local installdir = target .. "/doc/man/man"  .. match(file,".$")
+          local installdir = target .. "/doc/man/man"  .. match(p.src,".$")
           errorlevel = errorlevel + mkdir(installdir)
-          errorlevel = errorlevel + cp(file,docfiledir,installdir)
+          errorlevel = errorlevel + cp(p.src,docfiledir,installdir)
         end
       end
     end

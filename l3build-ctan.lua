@@ -38,12 +38,12 @@ function copyctan()
       end
     else
       for _,filetype in pairs(files) do
-        for file,_ in pairs(tree(source,filetype)) do
-          local path = dirname(file)
+        for _,p in ipairs(tree(source,filetype)) do
+          local path = dirname(p.src)
           local ctantarget = ctandir .. "/" .. ctanpkg .. "/"
             .. source .. "/" .. path
           mkdir(ctantarget)
-          cp(file,source,ctantarget)
+          cp(p.src,source,ctantarget)
         end
       end
     end
