@@ -11,6 +11,11 @@ this project uses date-based 'snapshot' version identifiers.
 
 - Normal Lua function calls (issue #127)
 
+### Fixed
+
+- the home texmf directory is now created before use
+- the yyyy-mm-dd format of epoch caused a  crashed
+
 ## [2020-06-04]
 
 ### Added
