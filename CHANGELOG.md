@@ -13,8 +13,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 
-- the home texmf directory is now created before use
-- the yyyy-mm-dd format of epoch caused a  crashed
+- installation now supports deeper directory levels (issue #182) 
 
 ## [2020-06-04]
 
