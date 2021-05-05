@@ -71,8 +71,8 @@ function tag(tagnames)
   local errorlevel = 0
   for _,dir in pairs(dirs) do
     for _,filetype in pairs(tagfiles) do
-      for file,_ in pairs(tree(dir,filetype)) do
-        errorlevel = update_file_tag(dir .. "/" .. file,tagname,tagdate)
+      for _,p in ipairs(tree(dir,filetype)) do
+        errorlevel = update_file_tag(dir .. "/" .. p.src,tagname,tagdate)
         if errorlevel ~= 0 then
           return errorlevel
         end
