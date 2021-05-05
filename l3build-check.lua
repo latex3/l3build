@@ -653,7 +653,7 @@ end
 
 function base_compare(test_type,name,engine,cleanup)
   local testname = name .. "." .. engine
-  local difffile = testdir .. "/" .. testname .. test_type.generated .. os_diffext
+  local difffile = testdir .. "/" .. testname.. os_diffext
   local genfile  = testdir .. "/" .. testname .. test_type.generated
   local reffile  = locate({testdir}, {testname .. test_type.reference, name .. test_type.reference})
   if not reffile then
