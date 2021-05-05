@@ -8,16 +8,14 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 ### Changed
-
-- Normal Lua function calls (issue #127)
+- Normalise Lua function calls (issue #127) - may require `.tlg` update
+- LuaTeX from TL'21 is no longer 'off by one' in log files - may require
+  `.tlg` update
 
 ### Fixed
-
-- installation now supports deeper directory levels (issue #182) 
-- the home texmf directory is now created before use
-- the yyyy-mm-dd format of epoch caused a  crashed
-- no longer expect LuaTeX line lengths to be off by a character for new
-  LuaTeX versions
+- Installation now supports deeper directory levels (issue #182)
+- The `texmfhome` directory is now created before use if required
+- Crash caused by yyyy-mm-dd epoch format
 
 ### Removed
 - Support for use as `texlua build.lua <target>`
