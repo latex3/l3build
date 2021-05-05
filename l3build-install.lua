@@ -37,7 +37,9 @@ local insert = table.insert
 
 local function gethome()
   set_program("latex")
-  return abspath(options["texmfhome"] or var_value("TEXMFHOME"))
+  local result = options["texmfhome"] or var_value("TEXMFHOME")
+  mkdir(result)
+  return abspath(result)
 end
 
 function uninstall()

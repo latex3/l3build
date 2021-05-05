@@ -14,6 +14,10 @@ this project uses date-based 'snapshot' version identifiers.
 ### Fixed
 
 - installation now supports deeper directory levels (issue #182) 
+- the home texmf directory is now created before use
+- the yyyy-mm-dd format of epoch caused a  crashed
+- no longer expect LuaTeX line lengths to be off by a character for new
+  LuaTeX versions
 
 ## [2020-06-04]
 
