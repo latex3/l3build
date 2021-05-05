@@ -146,7 +146,7 @@ local function typesetpdf(file,dir)
   return cp(pdfname,dir,docfiledir)
 end
 
-typeset = typeset or function(file,dir,exe)
+function typeset(file,dir,exe)
   dir = dir or "."
   local errorlevel = tex(file,dir,exe)
   if errorlevel ~= 0 then
@@ -168,7 +168,7 @@ typeset = typeset or function(file,dir,exe)
 end
 
 -- A hook to allow additional typesetting of demos
-typeset_demo_tasks = typeset_demo_tasks or function()
+function typeset_demo_tasks()
   return 0
 end
 
@@ -198,7 +198,7 @@ local function docinit()
   return docinit_hook()
 end
 
-docinit_hook = docinit_hook or function() return 0 end
+function docinit_hook() return 0 end
 
 -- Typeset all required documents
 -- Uses a set of dedicated auxiliaries that need to be available to others
@@ -240,4 +240,3 @@ function doc(files)
   end
   return 0
 end
-

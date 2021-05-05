@@ -33,7 +33,7 @@ for those people who are interested.
       `l3build-manifest-setup.lua`.
 --]]
 
-manifest = manifest or function()
+function manifest()
 
   -- build list of ctan files
   ctanfiles = {}
@@ -277,4 +277,3 @@ manifest_write_group = function(f,entry)
   end
 
 end
-
