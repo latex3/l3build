@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Issue when running PDF-based tests
+
 ## [2021-05-05]
 
 ### Changed
