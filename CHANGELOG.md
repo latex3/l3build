@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2021-05-06]
+
 ### Fixed
 - Issue when running PDF-based tests
 
@@ -490,7 +492,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2021-05-05...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2021-05-06...HEAD
+[2021-05-06]: https://github.com/latex3/l3build/compare/2021-05-05...2021-05-06
 [2021-05-05]: https://github.com/latex3/l3build/compare/2020-06-04...2021-05-05
 [2020-06-04]: https://github.com/latex3/l3build/compare/2020-03-25...2020-06-04
 [2020-03-25]: https://github.com/latex3/l3build/compare/2020-03-16...2020-03-25
