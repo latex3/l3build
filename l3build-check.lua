@@ -1007,7 +1007,7 @@ function save(names)
       return 1
     end
     local test_type = test_types[kind]
-    if locate({unpackdir, testfiledir}, {name .. test_type.expectation}) then
+    if test_type.expectation and locate({unpackdir, testfiledir}, {name .. test_type.expectation}) then
       print("Saved " .. test_type.test .. " file would override a "
         .. test_type.expectation .. " file of the same name")
       return 1
