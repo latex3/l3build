@@ -849,7 +849,10 @@ function check(names)
   local errorlevel = 0
   if testfiledir ~= "" and direxists(testfiledir) then
     if not options["rerun"] then
-      checkinit()
+      errorlevel = checkinit()
+      if errorlevel ~= 0 then
+        return errorlevel
+      end
     end
     local hide = true
     if names and next(names) then
@@ -994,7 +997,12 @@ function showfaileddiff()
 end
 
 function save(names)
-  checkinit()
+  do
+    local errorlevel = checkinit()
+    if errorlevel ~= 0 then
+      return errorlevel
+    end
+  end
   local engines = options["engine"] or {stdengine}
   if names == nil then
     print("Arguments are required for the save command")
