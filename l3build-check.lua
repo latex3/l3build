@@ -574,6 +574,7 @@ function runcheck(name, hide)
   if options["engine"] then
     checkengines = options["engine"]
   end
+  local failedengines = {}
   -- Used for both .lvt and .pvt tests
   local test_type = test_types[kind]
   local function check_and_diff(engine)
@@ -582,6 +583,7 @@ function runcheck(name, hide)
     if errorlevel == 0 then
       return errorlevel
     end
+    failedengines[#failedengines + 1] = engine
     if options["show-log-on-error"] then
       showfailedlog(name)
     end
@@ -595,14 +597,20 @@ function runcheck(name, hide)
     setup_check(name,engine)
     local errlevel = check_and_diff(engine)
     if errlevel ~= 0 and options["halt-on-error"] then
-      return 1
+      return 1, failedengines
     end
     if errlevel > errorlevel then
       errorlevel = errlevel
     end
   end
+  for i=1, #failedengines do
+     if failedengines[i] == stdengine then
+        failedengines = {stdengine}
+        break
+     end
+  end
   -- Return everything
-  return errorlevel
+  return errorlevel, failedengines
 end
 
 function setup_check(name, engine)
@@ -936,11 +944,13 @@ function check(names)
     end
     -- Actually run the tests
     print("Running checks on")
+    local failurelist = {}
     for i, name in ipairs(names) do
       print("  " .. name .. " (" ..  i .. "/" .. #names ..")")
-      local errlevel = runcheck(name, hide)
+      local errlevel, failedengines = runcheck(name, hide)
       -- Return value must be 1 not errlevel
       if errlevel ~= 0 then
+        failurelist[name] = failedengines
         if options["halt-on-error"] then
           return 1
         else
@@ -952,6 +962,7 @@ function check(names)
     end
     if errorlevel ~= 0 then
       checkdiff()
+      showsavecommands(failurelist)
     else
       print("\n  All checks passed\n")
     end
@@ -964,6 +975,34 @@ function checkdiff()
   print("\n  Check failed with difference files")
   for _,i in ipairs(filelist(testdir, "*" .. os_diffext)) do
     print("  - " .. testdir .. "/" .. i)
+  end
+  print("")
+end
+
+-- A short auxiliary to print the list of differences for check
+function showsavecommands(failurelist)
+  local savecmds = {}
+  local prefix = "    l3build save"
+  if options.config then
+    prefix = prefix .. " -c " .. options.config[1]
+  end
+  for name, engines in pairs(failurelist) do
+    for i = 1, #engines do
+      local engine = engines[i]
+      local cmd = savecmds[engine]
+      if not cmd then
+        if engine == stdengine then
+          cmd = prefix
+        else
+          cmd = prefix .. " -e " .. engine
+        end
+      end
+      savecmds[engine] = cmd .. " " .. name
+    end
+  end
+  print("\n  To regenerate the test files, run")
+  for _, cmds in pairs(savecmds) do
+    print(cmds)
   end
   print("")
 end
