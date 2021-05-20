@@ -962,7 +962,9 @@ function check(names)
     end
     if errorlevel ~= 0 then
       checkdiff()
-      showsavecommands(failurelist)
+      if options["show-save-cmds"] then
+        showsavecommands(failurelist)
+      end
     else
       print("\n  All checks passed\n")
     end
