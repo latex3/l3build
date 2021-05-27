@@ -984,9 +984,12 @@ end
 -- A short auxiliary to print the list of differences for check
 function showsavecommands(failurelist)
   local savecmds = {}
-  local prefix = "    l3build save"
-  if options.config then
-    prefix = prefix .. " -c " .. options.config[1]
+  local hascheckcmd, checkcmd = false, "l3build check --show-save-cmds"
+  local prefix = "l3build save"
+  if options.config and options.config[1] ~= 'build' then
+    local config = " -c " .. options.config[1]
+    prefix = prefix .. config
+    checkcmd = checkcmd .. config
   end
   for name, engines in pairs(failurelist) do
     for i = 1, #engines do
@@ -1000,11 +1003,18 @@ function showsavecommands(failurelist)
         end
       end
       savecmds[engine] = cmd .. " " .. name
+      if engine == stdengine then
+        hascheckcmd, checkcmd = true, checkcmd .. " " .. name
+      end
     end
   end
-  print("\n  To regenerate the test files, run")
+  print("  To regenerate the test files, run\n")
   for _, cmds in pairs(savecmds) do
-    print(cmds)
+    print("    " .. cmds)
+  end
+  if hascheckcmd then
+     print("\n  Afterwards test for engine specific changes using\n")
+     print("    " .. checkcmd)
   end
   print("")
 end
