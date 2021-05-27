@@ -1009,13 +1009,18 @@ function showsavecommands(failurelist)
     end
   end
   print("  To regenerate the test files, run\n")
+  local f = open(testdir .. "/.savecommands", "w")
   for _, cmds in pairs(savecmds) do
     print("    " .. cmds)
+    f:write(cmds, "\n")
   end
+  f:write"\n"
   if hascheckcmd then
      print("\n  Afterwards test for engine specific changes using\n")
      print("    " .. checkcmd)
+     f:write(checkcmd)
   end
+  f:close()
   print("")
 end
 
