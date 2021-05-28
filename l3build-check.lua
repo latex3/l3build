@@ -853,6 +853,49 @@ function testexists(test)
   end
 end
 
+-- A short auxiliary to print the list of differences for check
+local function showsavecommands(failurelist)
+  local savecmds = {}
+  local checkcmd = "l3build check --show-save-cmds"
+  local prefix = "l3build save"
+  if options.config and options.config[1] ~= 'build' then
+    local config = " -c " .. options.config[1]
+    prefix = prefix .. config
+    checkcmd = checkcmd .. config
+  end
+  for name, engines in pairs(failurelist) do
+    for i = 1, #engines do
+      local engine = engines[i]
+      local cmd = savecmds[engine]
+      if not cmd then
+        if engine == stdengine then
+          cmd = prefix
+        else
+          cmd = prefix .. " -e " .. engine
+        end
+      end
+      savecmds[engine] = cmd .. " " .. name
+      if engine == stdengine then
+        checkcmd = checkcmd .. " " .. name
+      end
+    end
+  end
+  print("  To regenerate the test files, run\n")
+  local f = open(testdir .. "/.savecommands", "w")
+  for _, cmds in pairs(savecmds) do
+    print("    " .. cmds)
+    f:write(cmds, "\n")
+  end
+  f:write"\n"
+  if savecmds[stdengine] then
+     print("\n  Afterwards test for engine specific changes using\n")
+     print("    " .. checkcmd)
+     f:write(checkcmd)
+  end
+  f:close()
+  print("")
+end
+
 function check(names)
   local errorlevel = 0
   if testfiledir ~= "" and direxists(testfiledir) then
@@ -978,49 +1021,6 @@ function checkdiff()
   for _,i in ipairs(filelist(testdir, "*" .. os_diffext)) do
     print("  - " .. testdir .. "/" .. i)
   end
-  print("")
-end
-
--- A short auxiliary to print the list of differences for check
-function showsavecommands(failurelist)
-  local savecmds = {}
-  local hascheckcmd, checkcmd = false, "l3build check --show-save-cmds"
-  local prefix = "l3build save"
-  if options.config and options.config[1] ~= 'build' then
-    local config = " -c " .. options.config[1]
-    prefix = prefix .. config
-    checkcmd = checkcmd .. config
-  end
-  for name, engines in pairs(failurelist) do
-    for i = 1, #engines do
-      local engine = engines[i]
-      local cmd = savecmds[engine]
-      if not cmd then
-        if engine == stdengine then
-          cmd = prefix
-        else
-          cmd = prefix .. " -e " .. engine
-        end
-      end
-      savecmds[engine] = cmd .. " " .. name
-      if engine == stdengine then
-        hascheckcmd, checkcmd = true, checkcmd .. " " .. name
-      end
-    end
-  end
-  print("  To regenerate the test files, run\n")
-  local f = open(testdir .. "/.savecommands", "w")
-  for _, cmds in pairs(savecmds) do
-    print("    " .. cmds)
-    f:write(cmds, "\n")
-  end
-  f:write"\n"
-  if hascheckcmd then
-     print("\n  Afterwards test for engine specific changes using\n")
-     print("    " .. checkcmd)
-     f:write(checkcmd)
-  end
-  f:close()
   print("")
 end
 

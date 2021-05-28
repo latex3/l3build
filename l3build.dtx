@@ -1130,11 +1130,13 @@
 % In these cases, the option |--show-save-cmds| can be passed to
 % |l3build check| in order to generate a list of |l3build save| commands which
 % can be executed to regenerate the expected output of all tests which fail.
-% If engine specific tests are present, there can still be some test failures
-% after running these commands. In that case, running |l3build check| with
-% |--show-save-cmds| again followed by executing the generated list of
-% |l3build save| commands will regenerate the remaining tests. It is never
-% required to run this for a third time.
+% Additionally it sometimes prints a list of |l3build check| commands for tests
+% which might still fail due to engine differences after running the |save|
+% commands. After running all these |l3build check| commands and all
+% |l3build save| commands listed by them, all tests will succeed.
+%
+% When bundles are used |l3build check --show-save-cmds| has to be executed
+% separately for every module in the bundle.
 %
 % This option is potentially dangerous and therefore should only be used with
 % care. It can easily hide valid test failures between a bunch of spurious
