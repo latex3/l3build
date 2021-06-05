@@ -379,7 +379,7 @@
 % \item |--rerun| Run tests without unpacking/set up
 % \item |--show-log-on-error| To be used in addition to \texttt{--halt-on-error} and results
 %   in the full \texttt{.log} file of a failed test to be shown on the console
-% \item |--show-save-cmds| When tests fail, print the \texttt{l3build save} commands needed
+% \item |--show-saves| (|-S|) When tests fail, print the \texttt{l3build save} commands needed
 %   to regenerate the tests assuming that the failures were false negatives.
 % \item |--shuffle| Shuffle the order in which tests run
 % \item |--texmfhome| Sets the location of the user tree for installing
@@ -1127,7 +1127,7 @@
 % changes and therefore all log file based tests using the component fail with
 % these changes.
 %
-% In these cases, the option |--show-save-cmds| can be passed to
+% In these cases, the option |--show-saves| can be passed to
 % |l3build check| in order to generate a list of |l3build save| commands which
 % can be executed to regenerate the expected output of all tests which fail.
 % Additionally it sometimes prints a list of |l3build check| commands for tests
@@ -1135,7 +1135,7 @@
 % commands. After running all these |l3build check| commands and all
 % |l3build save| commands listed by them, all tests will succeed.
 %
-% When bundles are used |l3build check --show-save-cmds| has to be executed
+% When bundles are used |l3build check --show-saves| has to be executed
 % separately for every module in the bundle.
 %
 % This option is potentially dangerous and therefore should only be used with

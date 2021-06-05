@@ -856,7 +856,7 @@ end
 -- A short auxiliary to print the list of differences for check
 local function showsavecommands(failurelist)
   local savecmds = {}
-  local checkcmd = "l3build check --show-save-cmds"
+  local checkcmd = "l3build check --show-saves"
   local prefix = "l3build save"
   if options.config and options.config[1] ~= 'build' then
     local config = " -c " .. options.config[1]
@@ -1005,7 +1005,7 @@ function check(names)
     end
     if errorlevel ~= 0 then
       checkdiff()
-      if options["show-save-cmds"] then
+      if options["show-saves"] then
         showsavecommands(failurelist)
       end
     else

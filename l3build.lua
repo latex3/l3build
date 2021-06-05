@@ -162,7 +162,7 @@ if options["target"] == "check" then
         end
         print("")
       end
-      if options["show-save-cmds"] then
+      if options["show-saves"] then
         local savecmds, recheckcmds = "", ""
         for _,config in ipairs(failed) do
           local testdir = testdir
