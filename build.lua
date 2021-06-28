@@ -16,6 +16,7 @@ packtdszip   = true
 scriptfiles  = {"l3build*.lua"}
 scriptmanfiles = {"l3build.1"}
 sourcefiles  = {"*.dtx", "l3build*.lua", "*.ins"}
+typesetruns  = 4
 typesetcmds  = "\\AtBeginDocument{\\DisableImplementation}"
 unpackdeps   = { }
 tagfiles     = {"l3build.1", "l3build.dtx", "*.md", "l3build.lua"}

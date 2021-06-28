@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Add the `--show-saves` flag for `l3build check` to generate a list of
+  `l3build save` commands to regenerate all failing tests
+
 ## [2021-05-06]
 
 ### Fixed

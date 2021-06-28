@@ -139,6 +139,12 @@ option_list =
         desc  = "If 'halt-on-error' stops, show the full log of the failure",
         type  = "boolean"
       },
+    ["show-saves"] =
+      {
+        desc  = "If tests fail, show the l3build save invocation to regenerate the tests",
+        short = "S",
+        type  = "boolean"
+      },
     shuffle =
       {
         desc  = "Shuffle order of tests",
