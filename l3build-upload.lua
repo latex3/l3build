@@ -181,6 +181,10 @@ end
       else
        print("Validation successful." )
       end
+      print("" )
+      print("----------------------------------------------------" )
+      print("| Have you executed l3build ctan first?  If so ... |" )
+      print("----------------------------------------------------" )
       print("Do you want to upload to CTAN? [y/n]" )
       local answer=""
       io.stdout:write("> ")
