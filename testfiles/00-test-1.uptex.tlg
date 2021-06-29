@@ -31,6 +31,7 @@ Completed box being shipped out [1]
 ..\vbox(0.0+0.0)x469.75499
 ...\glue 0.0 plus 1.0fil
 ...\hbox(0.0+0.0)x469.75499
+....\hbox(0.0+0.0)x469.75499
 ..\glue 0.0
 ..\glue(\lineskip) 0.0
 ..\vbox(578.15999+0.0)x469.75499, glue set 532.15999fil
@@ -55,10 +56,12 @@ Completed box being shipped out [1]
 ....\OT1/cmtt/m/n/10 %
 ....\OT1/cmtt/m/n/10 &
 ....\hbox(0.0+0.0)x0.0
+....\kern 0.0
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
 ...\penalty 0
+...\glue(\parskip) 0.0
 ...\glue(\parskip) 0.0
 ...\glue(\baselineskip) 11.16667
 ...\hbox(0.0+0.0)x469.75499, glue set 464.50504fil
@@ -67,6 +70,7 @@ Completed box being shipped out [1]
 ....\glue 5.24995
 ....\penalty 10000
 ....\hbox(0.0+0.0)x0.0
+....\kern 0.0
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
@@ -77,6 +81,7 @@ Completed box being shipped out [1]
 ...\glue 0.0 plus 1.0
 ...\glue 0.0 plus -1.0
 ...\glue 0.0 plus 1.0
+...\glue(\parskip) 0.0
 ...\glue(\parskip) 0.0
 ...\glue(\baselineskip) 5.05556
 ...\hbox(6.94444+0.83333)x469.75499, glue set 427.75536fil
@@ -99,10 +104,12 @@ Completed box being shipped out [1]
 ....\OT1/cmtt/m/n/10 %
 ....\OT1/cmtt/m/n/10 &
 ....\hbox(0.0+0.0)x0.0
+....\kern 0.0
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
 ...\penalty 0
+...\glue(\parskip) 0.0
 ...\glue(\parskip) 0.0
 ...\glue(\baselineskip) 11.16667
 ...\hbox(0.0+0.0)x469.75499, glue set 464.50504fil
@@ -111,6 +118,7 @@ Completed box being shipped out [1]
 ....\glue 5.24995
 ....\penalty 10000
 ....\hbox(0.0+0.0)x0.0
+....\kern 0.0
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
@@ -121,5 +129,6 @@ Completed box being shipped out [1]
 ...\glue 0.0
 ..\glue(\baselineskip) 0.0
 ..\hbox(0.0+0.0)x469.75499
+...\hbox(0.0+0.0)x469.75499
 .\kern 0.0
 (00-test-1.aux)
