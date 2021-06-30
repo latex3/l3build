@@ -116,11 +116,24 @@ function upload(tagnames)
   end
 
   -- avoid lower level error from post command if zip file missing
-  local zip=open(trim_space(tostring(uploadfile)),"r")
-  if zip~=nil then
-    close(zip)
-  else
-    error("Missing zip file '" .. tostring(uploadfile) .. "'")
+  local ziptime = lfs.attributes(trim_space(tostring(uploadfile)), 'modification')
+  if not ziptime then
+    error("Missing zip file '" .. tostring(uploadfile) .. "'. \z
+       Maybe you forgot to run 'l3build ctan' first?")
+  end
+  local age = os.time() - ziptime
+  if age >= 86400 then
+    print(string.format("------------------------------------------\n\z
+           | The local archive is older than %3i days.            |\n\z
+           | Are you sure that you executed 'l3build ctan' first? |\n\z
+           --------------------------------------------------------",
+      age // 86400))
+    print("Are you sure you want to continue? [y/n]" )
+    io.stdout:write("> "):flush()
+    if lower(read(),1,1) ~= "y" then
+       print'Aborting'
+       return 1
+    end
   end
 
   ctan_post = construct_ctan_post(uploadfile,options["debug"])
@@ -174,12 +187,23 @@ end
   end
 
   -- if upload requested and validation succeeded repost to the upload URL
-    if (exit_status==0 or exit_status==nil) then
+  if (exit_status==0 or exit_status==nil) then
     if (ctanupload ~=nil and ctanupload ~=false and ctanupload ~= true) then
       if (match(fp_return,"WARNING")) then
-       print("Warnings from CTAN package validation:" .. fp_return:gsub("%[","\n["):gsub("%]%]","]\n]"))
+        print("Warnings from CTAN package validation:" .. fp_return:gsub("%[","\n["):gsub("%]%]","]\n]"))
       else
-       print("Validation successful." )
+        print("Validation successful." )
+      end
+      print("" )
+      if age < 86400 and age >= 60 then
+        if age >= 3600 then
+          print("----------------------------------------------------" )
+          print(string.format("| The local archive is older than %2i hours.        |", age//3600 ))
+          print("| Have you executed l3build ctan first?  If so ... |" )
+          print("----------------------------------------------------" )
+        else
+          print(string.format("The local archive is %i minutes old.", age//60 ))
+        end
       end
       print("Do you want to upload to CTAN? [y/n]" )
       local answer=""
