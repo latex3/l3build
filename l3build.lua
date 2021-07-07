@@ -50,11 +50,14 @@ local stdout           = io.stdout
 kpse.set_program_name("kpsewhich")
 build_kpse_path = match(lookup("l3build.lua"),"(.*[/])")
 local function build_require(s)
-  require(lookup("l3build-"..s..".lua", { path = build_kpse_path } ) )
+  return require(lookup("l3build-"..s..".lua", { path = build_kpse_path } ) )
 end
 
 -- Minimal code to do basic checks
 build_require("arguments")
+local cli = build_require("arguments")
+options = cli.parse(arg)
+
 build_require("help")
 
 build_require("file-functions")
