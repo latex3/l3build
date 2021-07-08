@@ -578,7 +578,7 @@ function runcheck(name, hide)
   -- Used for both .lvt and .pvt tests
   local test_type = test_types[kind]
   local function check_and_diff(engine)
-    runtest(name, engine, hide, test_type.test, test_type, true)
+    runtest(name, engine, hide, test_type.test, test_type, not forcecheckruns)
     local errorlevel = base_compare(test_type,name,engine)
     if errorlevel == 0 then
       return errorlevel
