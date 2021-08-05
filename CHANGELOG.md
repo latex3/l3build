@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
+- No longer call an external program to generate `zip` files and generate
+  them directly instead. This disables the options `zipexe` and `zipopts`.
 
 ### Added
 - Add the `--show-saves` flag for `l3build check` to generate a list of
