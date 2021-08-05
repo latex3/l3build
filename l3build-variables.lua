@@ -84,6 +84,7 @@ demofiles          = demofiles          or { }
 docfiles           = docfiles           or { }
 dynamicfiles       = dynamicfiles       or { }
 excludefiles       = excludefiles       or {"*~"}
+exefiles           = exefiles           or { }
 installfiles       = installfiles       or {"*.sty","*.cls"}
 makeindexfiles     = makeindexfiles     or {"*.ist"}
 scriptfiles        = scriptfiles        or { }

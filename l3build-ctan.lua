@@ -25,8 +25,11 @@ for those people who are interested.
 local pairs = pairs
 local print = print
 
+local attributes = lfs.attributes
 local lower = string.lower
 local match = string.match
+
+local newzip = require"l3build-zip"
 
 -- Copy files to the main CTAN release directory
 function copyctan()
@@ -68,33 +71,33 @@ end
 function ctan()
   -- Always run tests for all engines
   options["engine"] = nil
-  local function dirzip(dir, name)
-    local zipname = name .. ".zip"
-    local function tab_to_str(table)
-      local string = ""
-      for _,i in ipairs(table) do
-        string = string .. " " .. "\"" .. i .. "\""
+  local function dirzip(dir, zipname)
+    zipname = zipname .. ".zip"
+    local zip = newzip(dir .. '/' .. zipname)
+    local function tab_to_check(table)
+      local patterns = {}
+      for n,i in ipairs(table) do
+        patterns[n] = glob_to_pattern(i)
       end
-      return string
+      return function(name)
+        for n, patt in ipairs(patterns) do
+          if patt:match(name) then return true end
+        end
+        return false
+      end
     end
     -- Convert the tables of files to quoted strings
-    local binfiles = tab_to_str(binaryfiles)
-    local exclude = tab_to_str(excludefiles)
+    local binfile = tab_to_check(binaryfiles)
+    local exclude = tab_to_check(excludefiles)
+    local exefile = tab_to_check(exefiles)
     -- First, zip up all of the text files
-    run(
-      dir,
-      zipexe .. " " .. zipopts .. " -ll ".. zipname .. " " .. "."
-        .. (
-          (binfiles or exclude) and (" -x" .. binfiles .. " " .. exclude)
-          or ""
-        )
-    )
-    -- Then add the binary ones
-    run(
-      dir,
-      zipexe .. " " .. zipopts .. " -g ".. zipname .. " " .. ". -i" ..
-        binfiles .. (exclude and (" -x" .. exclude) or "")
-    )
+    for _, p in ipairs(tree(dir, "**")) do
+      local src = p.src:sub(3) -- Strip ./
+      if not (attributes(p.cwd, "mode") == "directory" or exclude(src) or src == zipname) then
+        zip:add(p.cwd, src, binfile(src), execfile(src))
+      end
+    end
+    return zip:close()
   end
   local errorlevel
   local standalone = false
