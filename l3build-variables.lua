@@ -107,12 +107,10 @@ unpackdeps  = unpackdeps  or { }
 -- Executable names plus following options
 typesetexe = typesetexe or "pdflatex"
 unpackexe  = unpackexe  or "pdftex"
-zipexe     = zipexe     or "zip"
 
 checkopts   = checkopts   or "-interaction=nonstopmode"
 typesetopts = typesetopts or "-interaction=nonstopmode"
 unpackopts  = unpackopts  or ""
-zipopts     = zipopts     or "-v -r -X"
 
 -- Engines for testing
 checkengines = checkengines or {"pdftex", "xetex", "luatex"}
