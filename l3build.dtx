@@ -121,7 +121,6 @@
 \luavarseparator
 \luavarset{typesetexe}   {"pdflatex"} {Executable for compiling \texttt{doc(s)}}
 \luavarset{unpackexe}    {"pdftex"}   {Executable for running \texttt{unpack}}
-\luavarset{zipexe}       {"zip"}      {Executable for creating archive with \texttt{ctan}}
 \luavarset{biberexe}     {"biber"}    {Biber executable}
 \luavarset{bibtexexe}    {"bibtex8"}  {\BibTeX{} executable}
 \luavarset{makeindexexe} {"makeindex"}{MakeIndex executable}
@@ -130,7 +129,6 @@
 \luavarset{checkopts}  {"-interaction=nonstopmode"}{Options passed to engine when running checks}
 \luavarset{typesetopts}{"-interaction=nonstopmode"}{Options passed to engine when typesetting}
 \luavarset{unpackopts} {""}                        {Options passed to engine when unpacking}
-\luavarset{zipopts}    {"-v -r -X"}                {Options passed to zip program}
 \luavarset{biberopts}    {""}         {Biber options}
 \luavarset{bibtexopts}   {"-W"}       {\BibTeX{} options}
 \luavarset{makeindexopts}{""}         {MakeIndex options}
@@ -498,7 +496,7 @@
 %
 % Binary files should be specified with the \var{binaryfiles} variable (default \luavar{binaryfiles}); these are added to the zip archive without normalising line endings (text files are automatically converted to Unix-style line endings).
 %
-% To create the archive, by default the binary \var{zipexe} is used (\luavar{zipexe}) with options \var{zipopts} (|-v -r -X|). The intermediate build directories \var{ctandir} and \var{tdsdir} are used to construct the archive.
+% The intermediate build directories \var{ctandir} and \var{tdsdir} are used to construct the archive.
 % \end{buildcmd}
 %
 %
