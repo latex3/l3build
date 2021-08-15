@@ -211,6 +211,20 @@ function cleandir(dir)
   return rm(dir, "**")
 end
 
+function direxists(dir)
+  return attributes(dir, "mode") == "directory"
+end
+
+function fileexists(file)
+  local f = open(file, "r")
+  if f ~= nil then
+    f:close()
+    return true
+  else
+    return false -- also file exits and is not readable
+  end
+end
+
 -- Copy files 'quietly'
 function cp(glob, source, dest)
   local errorlevel
@@ -218,7 +232,7 @@ function cp(glob, source, dest)
     -- p_src is a path relative to `source` whereas
     -- p_cwd is the counterpart relative to the current working directory
     if os_type == "windows" then
-      if attributes(p.cwd, "mode") == "directory" then
+      if direxists(p.cwd) then
         errorlevel = execute(
           'xcopy /y /e /i "' .. unix_to_win(p.cwd) .. '" "'
              .. unix_to_win(dest .. '/' .. p.src) .. '" > nul'
@@ -239,31 +253,6 @@ function cp(glob, source, dest)
     end
   end
   return 0
-end
-
--- OS-dependent test for a directory
-function direxists(dir)
-  local errorlevel
-  if os_type == "windows" then
-    errorlevel =
-      execute("if not exist \"" .. unix_to_win(dir) .. "\" exit 1")
-  else
-    errorlevel = execute("[ -d '" .. dir .. "' ]")
-  end
-  if errorlevel ~= 0 then
-    return false
-  end
-  return true
-end
-
-function fileexists(file)
-  local f = open(file, "r")
-  if f ~= nil then
-    f:close()
-    return true
-  else
-    return false -- also file exits and is not readable
-  end
 end
 
 -- Generate a table containing all file names of the given glob or all files
@@ -309,16 +298,13 @@ function tree(src_path, glob)
   local function always_true()
     return true
   end
-  local function is_dir(file)
-    return attributes(file, "mode") == "directory"
-  end
   ---@type table<integer,tree_entry_t>
   local result = { {
     src = ".",
     cwd = src_path,
   } }
   for glob_part, sep in glob:gmatch("([^/]+)(/?)/*") do
-    local accept = sep == "/" and is_dir or always_true
+    local accept = sep == "/" and direxists or always_true
     ---Feeds the given table according to `glob_part`
     ---@param p tree_entry_t path counterpart relative to the current working directory
     ---@param table table
