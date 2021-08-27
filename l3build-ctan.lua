@@ -81,7 +81,7 @@ function ctan()
       end
       return function(name)
         for n, patt in ipairs(patterns) do
-          if patt:match(name) then return true end
+          if name:match(patt) then return true end
         end
         return false
       end
