@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
+
+## [2021-08-27]
 - No longer call an external program to generate `zip` files and generate
   them directly instead. This disables the options `zipexe` and `zipopts`.
 
@@ -501,7 +503,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2021-05-06...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2021-08-27...HEAD
+[2021-08-27]: https://github.com/latex3/l3build/compare/2021-05-06...2021-08-27
 [2021-05-06]: https://github.com/latex3/l3build/compare/2021-05-05...2021-05-06
 [2021-05-05]: https://github.com/latex3/l3build/compare/2020-06-04...2021-05-05
 [2020-06-04]: https://github.com/latex3/l3build/compare/2020-03-25...2020-06-04
