@@ -1,0 +1,56 @@
+# The test framework itself
+#
+luatex
+#
+# Required to build formats
+#
+latex-bin
+luahbtex
+platex
+uplatex
+tex
+xetex
+# Requirements for the tests
+amsfonts
+etex-pkg
+#
+# Support for typesetting the docs
+#
+alphalph
+atbegshi
+atveryend
+amsmath
+bigintcalc
+bitset
+booktabs
+ec
+colortbl
+csquotes
+enumitem
+etexcmds
+fancyvrb
+gettitlestring
+graphics
+hologo
+hycolor
+iftex
+intcalc
+kvdefinekeys
+kvsetkeys
+l3packages
+letltxmacro
+listings
+ltxcmds
+makeindex
+needspace
+oberdiek
+pdfescape
+pdftexcmds
+psnfss
+refcount
+rerunfilecheck
+hyperref
+titlesec
+tools
+underscore
+uniquecounter
