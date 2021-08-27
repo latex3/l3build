@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Creation of zip files on Windows
+- Only match filename and not full path for `exefiles`
 
 ## [2021-08-27]
 
