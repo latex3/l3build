@@ -146,6 +146,7 @@ function ctan()
     dirzip(tdsdir, ctanpkg .. ".tds")
     if packtdszip then
       cp(ctanpkg .. ".tds.zip", tdsdir, ctandir)
+      cp(ctanpkg .. ".tds.zip", tdsdir, currentdir)
     end
     dirzip(ctandir, ctanzip)
     cp(ctanzip .. ".zip", ctandir, currentdir)

@@ -11,6 +11,9 @@ this project uses date-based 'snapshot' version identifiers.
 - Add the `--show-saves` flag for `l3build check` to generate a list of
   `l3build save` commands to regenerate all failing tests
 
+### Changed
+- Copy TDS-style zip files to make dir
+
 ## [2021-05-06]
 
 ### Fixed
