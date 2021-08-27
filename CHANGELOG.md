@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Creation of zip files on Windows
+
 ## [2021-08-27]
 
 ### Added
