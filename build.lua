@@ -11,6 +11,7 @@ checkconfigs = {"build", "config-pdf", "config-plain"}
 checkdeps    = { }
 checkengines = {"pdftex", "xetex", "luatex", "ptex", "uptex"}
 cleanfiles   = {"*.pdf", "*.tex", "*.zip"}
+exefiles     = {"l3build.lua"}
 installfiles = {"regression-test.tex"}
 packtdszip   = true
 scriptfiles  = {"l3build*.lua"}
