@@ -1,6 +1,6 @@
 --[[
 
-File l3build-clean.lua Copyright (C) 2018,2020 The LaTeX Project
+File l3build-clean.lua Copyright (C) 2018,2020,2021 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -77,4 +77,3 @@ function bundleclean()
         + rmdir(ctandir)
         + rmdir(tdsdir)
 end
-

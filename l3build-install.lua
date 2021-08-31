@@ -1,6 +1,6 @@
 --[[
 
-File l3build-install.lua Copyright (C) 2018-2020 The LaTeX Project
+File l3build-install.lua Copyright (C) 2018-2021 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -234,11 +234,11 @@ function install_files(target,full,dry_run)
     typesetlist = create_file_list(docfiledir,typesetfiles,{sourcefiles})
     sourcelist = create_file_list(sourcefiledir,sourcefiles,
       {bstfiles,installfiles,makeindexfiles,scriptfiles})
- 
+
   if dry_run then
     print("\nFor installation inside " .. target .. ":")
-  end 
-    
+  end
+
     errorlevel = create_install_map(sourcefiledir,"source",{sourcelist})
       + create_install_map(docfiledir,"doc",
           {bibfiles,demofiles,docfiles,pdffiles,textfiles,typesetlist})
@@ -290,8 +290,8 @@ function install_files(target,full,dry_run)
   for _,v in ipairs(installmap) do
     errorlevel = cp(v.file,v.source,v.dest)
     if errorlevel ~= 0  then return errorlevel end
-  end 
-  
+  end
+
   return 0
 end
 

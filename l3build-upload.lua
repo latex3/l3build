@@ -1,6 +1,6 @@
 --[[
 
-File l3build-upload.lua Copyright (C) 2018-2020 The LaTeX Project
+File l3build-upload.lua Copyright (C) 2018-2021 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -145,9 +145,9 @@ function upload(tagnames)
   output(curlopt)
   write(ctan_post)
   close(curlopt)
-  
+
   ctan_post=curlexe .. " --config " .. curloptfile
-  
+
 
 if options["debug"] then
     ctan_post = ctan_post ..  ' https://httpbin.org/post'
@@ -254,7 +254,7 @@ function construct_ctan_post(uploadfile,debug)
   -- start building the curl command:
 -- commandline  ctan_post = curlexe .. " "
   ctan_post=""
-  
+
   -- build up the curl command field-by-field:
 
   --         field                                   max  desc                                 mandatory  multi
