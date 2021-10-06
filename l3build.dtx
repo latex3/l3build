@@ -366,7 +366,7 @@
 % \item |--first| Name of the first test to run
 % \item |--force| (|-f|) Force checks to run even if sanity
 %   checks fail, \emph{e.g.}~when |--engine| is not given in
-%   \luavar{checkengines}
+%   \var{checkengines}
 % \item |--full| Instructs the \texttt{install} target to include the
 %   \texttt{doc} and \texttt{source} trees
 % \item |--halt-on-error| (|-H|) Specifies that checks
@@ -1149,9 +1149,9 @@
 % \subsection{Epoch setting}
 %
 % To produce predictable output when using dates, the test system offers the
-% ability to set the epoch to a known value. The \luavar{epoch} variable may
+% ability to set the epoch to a known value. The \var{epoch} variable may
 % be given as a raw value (a simple integer) or as a date in ISO format.
-% The two flags \luavar{forcecheckepoch} and \luavar{forcedocepoch} then
+% The two flags \var{forcecheckepoch} and \var{forcedocepoch} then
 % determine whether this is applied in testing and typesetting, respectively.
 %
 % The epoch may also be given as a command line option, |-E|, which again
@@ -1309,7 +1309,7 @@
 % \end{itemize}
 %
 % For more complex set ups, this can be customised using the
-% \luavar{tdslocations} table. Each entry there should be a glob specifying the
+% \var{tdslocations} table. Each entry there should be a glob specifying the
 % TDS position of a file or files. Any files not specified in the table
 % will use the standard locations above. For example, to place some files
 % in the generic tree, some in the plain \TeX{} tree and some in the \LaTeX{}
@@ -1383,8 +1383,8 @@
 % As part of the overall build process, \pkg{l3build} will create PDF
 % documentation as described earlier. The standard build process for PDFs
 % will attempt to run Biber, \BibTeX{} and MakeIndex as appropriate
-% (the exact binaries used are defined by \luavar{biberexe}, \luavar{bibtexexe}
-% and \luavar{makeindexexe}). However, there is no attempt to create an entire
+% (the exact binaries used are defined by \var{biberexe}, \var{bibtexexe}
+% and \var{makeindexexe}). However, there is no attempt to create an entire
 % PDF creation system in the style of \texttt{latexmk} or similar.
 %
 % For package authors who have more complex requirements than those covered
