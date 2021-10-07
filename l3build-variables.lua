@@ -229,6 +229,7 @@ manifestfile = manifestfile or "MANIFEST.md"
 
 -- Non-standard installation locations
 tdslocations = tdslocations or { }
+tdsdirs = tdsdirs or {}
 
 -- Upload settings
 curlexe  = curlexe  or "curl"
