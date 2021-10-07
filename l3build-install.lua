@@ -32,6 +32,7 @@ local var_value   = kpse.var_value
 local gsub  = string.gsub
 local lower = string.lower
 local match = string.match
+local format = string.format
 
 local insert = table.insert
 
@@ -106,6 +107,23 @@ function uninstall()
     local path = dirname(location)
     errorlevel = zapdir(path)
     if errorlevel ~= 0 then return errorlevel end
+  end
+  -- We remove all directories which contain at least one ordinary file in the source tree
+  for src, dest in pairs(tdsdirs) do
+    dest = dest .. '/'
+    local skipdir
+    for _, p in ipairs(tree(src, '**')) do
+      local src = p.src:sub(2) -- Skip the first '.'
+      if skipdir and src:sub(1, #skipdir) ~= skipdir then
+        skipdir = nil
+      end
+      if (not skipdir) and (not direxists(p.cwd)) then
+        skipdir = dirname(src)
+        errorlevel = zapdir(dest .. skipdir)
+        if errorlevel ~= 0 then return errorlevel end
+        skipdir = skipdir .. '/'
+      end
+    end
   end
   return 0
 end
@@ -286,6 +304,26 @@ function install_files(target,full,dry_run)
     + create_install_map(unpackdir,"bibtex/bst",{bstfiles},module)
     + create_install_map(unpackdir,"makeindex",{makeindexfiles},module)
     + create_install_map(unpackdir,"scripts",{scriptfiles},module)
+
+  for src, dest in pairs(tdsdirs) do
+    dest = target .. '/' .. dest
+    insert(installmap,
+      {file = '*', source = src, dest = dest})
+    dest = dest .. '/'
+    local skipdir
+    for _, p in ipairs(tree(src, '**')) do
+      local src = p.src:sub(2) -- Skip the first '.'
+      if skipdir and src:sub(1, #skipdir) ~= skipdir then
+        skipdir = nil
+      end
+      if (not skipdir) and (not direxists(p.cwd)) then
+        skipdir = dirname(src)
+        errorlevel = cleandir(dest .. skipdir)
+        if errorlevel ~= 0 then return errorlevel end
+        skipdir = skipdir .. '/'
+      end
+    end
+  end
 
   if errorlevel ~= 0 then return errorlevel end
 
