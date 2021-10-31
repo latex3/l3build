@@ -10,6 +10,9 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Documentation improvements
 
+### Fixed
+- Allow config names ending with 'lua', as long as they don't end with '.lua'
+
 ## [2021-08-28]
 
 ### Fixed
