@@ -141,7 +141,7 @@ option_list =
       },
     ["show-saves"] =
       {
-        desc  = "If tests fail, show the l3build save invocation to regenerate the tests",
+        desc  = "Show the invocation to update failing .tlg files",
         short = "S",
         type  = "boolean"
       },
