@@ -211,32 +211,32 @@ function doc(files)
   local done = {}
   for _,typesetfiles in ipairs({typesetdemofiles,typesetfiles}) do
     for _,glob in pairs(typesetfiles) do
-        for _,p in ipairs(tree(typesetdir,glob)) do
-          local path,srcname = splitpath(p.cwd)
-          local name = jobname(srcname)
-          if not done[name] then
-            local typeset = true
-            -- Allow for command line selection of files
-            if files and next(files) then
-              typeset = false
-              for _,file in pairs(files) do
-                if name == file then
-                  typeset = true
-                  break
-                end
-              end
-            end
-            -- Now know if we should typeset this source
-            if typeset then
-              errorlevel = typesetpdf(srcname,path)
-              if errorlevel ~= 0 then
-                return errorlevel
-              else
-                done[name] = true
+      for _,p in ipairs(tree(typesetdir,glob)) do
+        local path,srcname = splitpath(p.cwd)
+        local name = jobname(srcname)
+        if not done[name] then
+          local typeset = true
+          -- Allow for command line selection of files
+          if files and next(files) then
+            typeset = false
+            for _,file in pairs(files) do
+              if name == file then
+                typeset = true
+                break
               end
             end
           end
+          -- Now know if we should typeset this source
+          if typeset then
+            errorlevel = typesetpdf(srcname,path)
+            if errorlevel ~= 0 then
+              return errorlevel
+            else
+              done[name] = true
+            end
+          end
         end
+      end
     end
   end
   return 0
