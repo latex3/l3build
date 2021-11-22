@@ -174,7 +174,12 @@ end
 
 local function docinit()
   -- Set up
+  dep_install(typesetdeps)
+  unpack({sourcefiles, typesetsourcefiles}, {sourcefiledir, docfiledir})
   cleandir(typesetdir)
+  for _,file in pairs(typesetfiles) do
+    cp(file, unpackdir, typesetdir)
+  end
   for _,filetype in pairs(
       {bibfiles, docfiles, typesetfiles, typesetdemofiles}
     ) do
@@ -188,8 +193,6 @@ local function docinit()
   for _,file in pairs(typesetsuppfiles) do
     cp(file, supportdir, typesetdir)
   end
-  dep_install(typesetdeps)
-  unpack({sourcefiles, typesetsourcefiles}, {sourcefiledir, docfiledir})
   -- Main loop for doc creation
   local errorlevel = typeset_demo_tasks()
   if errorlevel ~= 0 then
@@ -208,8 +211,7 @@ function doc(files)
   local done = {}
   for _,typesetfiles in ipairs({typesetdemofiles,typesetfiles}) do
     for _,glob in pairs(typesetfiles) do
-      for _,dir in ipairs({typesetdir,unpackdir}) do
-        for _,p in ipairs(tree(dir,glob)) do
+        for _,p in ipairs(tree(typesetdir,glob)) do
           local path,srcname = splitpath(p.cwd)
           local name = jobname(srcname)
           if not done[name] then
@@ -235,7 +237,6 @@ function doc(files)
             end
           end
         end
-      end
     end
   end
   return 0
