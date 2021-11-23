@@ -55,7 +55,6 @@ Completed box being shipped out [1]
 ....\OT1/cmtt/m/n/10 %
 ....\OT1/cmtt/m/n/10 &
 ....\hbox(0.0+0.0)x0.0
-....\kern 0.0
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
@@ -69,7 +68,6 @@ Completed box being shipped out [1]
 ....\glue 5.24995
 ....\penalty 10000
 ....\hbox(0.0+0.0)x0.0
-....\kern 0.0
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
@@ -103,7 +101,6 @@ Completed box being shipped out [1]
 ....\OT1/cmtt/m/n/10 %
 ....\OT1/cmtt/m/n/10 &
 ....\hbox(0.0+0.0)x0.0
-....\kern 0.0
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
@@ -117,7 +114,6 @@ Completed box being shipped out [1]
 ....\glue 5.24995
 ....\penalty 10000
 ....\hbox(0.0+0.0)x0.0
-....\kern 0.0
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
