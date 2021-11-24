@@ -136,7 +136,7 @@ option_list =
       },
     ["show-log-on-error"] =
       {
-        desc  = "If 'halt-on-error' stops, show the full log of the failure",
+        desc  = "Show the full log of the failure with 'halt-on-error'",
         type  = "boolean"
       },
     ["show-saves"] =
