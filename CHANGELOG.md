@@ -8,6 +8,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 ### Changed
+- Documentation improvements
 - Use `checkengines[1]` as the default for `stdengine`
 
 ### Fixed

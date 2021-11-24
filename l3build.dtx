@@ -1905,7 +1905,7 @@
 %   when creating non-standard typesetting steps.
 % \end{function}
 %
-% \subsection{Customising the target list}
+% \subsection{Customising the target and option lists}
 %
 % The targets known to \pkg{l3build} are stored in the global table
 % |target_list|. Each entry should have at least a |func|, pointing to the
@@ -1923,6 +1923,13 @@
 %     without impact on the main |func|.
 % \end{itemize}
 % The functions |func|, |bundle_func| and |pre| must return 0 on success.
+%
+% The list of options (switches) is controlled by the |option_list| table.
+% The name of each entry in the table is the \enquote{long} version of the
+% option. Each entry requires a |type|, one of |boolean|, |string| or
+% |table|. As for targets, each entry should have a |desc| to construct
+% the |help()|. It is also possible to provide a |short| name for the option:
+% this should be a single letter.
 %
 % \subsection{Customising the manifest file}
 % \label{sec:manifest}
