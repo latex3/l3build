@@ -38,7 +38,7 @@ local insert = table.insert
 local function gethome()
   set_program("latex")
   local result = options["texmfhome"] or var_value("TEXMFHOME")
-  if result == "" or match(result, os_pathsep) then
+  if not result or result == "" or match(result, os_pathsep) then
     print("Ambiguous TEXMFHOME setting: please use the --texmfhome option")
     os.exit(1)
   end
