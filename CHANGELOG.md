@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Use `checkengines[1]` as the defauly for `stdengine`
+
 ## [2021-11-24]
 
 - Always typeset in `typesetdir` (fixes #210)

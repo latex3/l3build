@@ -133,7 +133,7 @@ if not string.find(status.banner,"2019") then
     {luatex = {binary="luahbtex",format = "lualatex-dev"}}
 end
 
-stdengine    = stdengine    or "pdftex"
+stdengine = stdengine or checkengines[1] or "pdftex"
 
 -- The tests themselves
 includetests = includetests or {"*"}
