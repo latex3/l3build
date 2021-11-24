@@ -9,6 +9,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [2021-11-24]
 
+- Always typeset in `typesetdir` (fixes #210)
+
 ## [2021-11-12]
 
 ### Changed
