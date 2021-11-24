@@ -32,7 +32,7 @@ function version()
     "\n" ..
     "l3build: A testing and building system for LaTeX\n\n" ..
     "Release " .. release_date .. "\n" ..
-    "Copyright (C) 2014-2020 The LaTeX Project"
+    "Copyright (C) 2014-2021 The LaTeX Project"
   )
 end
 
