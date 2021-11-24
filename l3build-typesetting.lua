@@ -141,9 +141,7 @@ local function typesetpdf(file,dir)
     print(" ! Compilation failed")
     return errorlevel
   end
-  local pdfname = name .. pdfext
-  rm(docfiledir,pdfname)
-  return cp(pdfname,dir,docfiledir)
+  return 0
 end
 
 function typeset(file,dir,exe)
@@ -211,7 +209,8 @@ function doc(files)
   local done = {}
   for _,typesetfiles in ipairs({typesetdemofiles,typesetfiles}) do
     for _,glob in pairs(typesetfiles) do
-      for _,p in ipairs(tree(typesetdir,glob)) do
+      local destpath,globstub = splitpath(glob)
+      for _,p in ipairs(tree(typesetdir,globstub)) do
         local path,srcname = splitpath(p.cwd)
         local name = jobname(srcname)
         if not done[name] then
@@ -233,6 +232,9 @@ function doc(files)
               return errorlevel
             else
               done[name] = true
+              local pdfname = jobname(srcname) .. pdfext
+              rm(pdfname,destpath)
+              cp(pdfname,path,destpath)
             end
           end
         end

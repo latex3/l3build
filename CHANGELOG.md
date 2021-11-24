@@ -13,6 +13,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Incorrect line in `manifest` target (see #195)
+- Placement of PDF files in subdirectory locations (issue #209)
 
 ## [2021-11-24]
 
