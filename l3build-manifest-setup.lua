@@ -243,7 +243,7 @@ function manifest_write_opening(filehandle)
   filehandle:write("# Manifest for " .. module .. "\n\n")
   filehandle:write([[
 This file is a listing of all files considered to be part of this package.
-It is automatically generated with `texlua build.lua manifest`.
+It is automatically generated with `l3build manifest`.
 ]])
 
 end

@@ -10,6 +10,9 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Use `checkengines[1]` as the defauly for `stdengine`
 
+### Fixed
+- Incorrect line in `manifest` target (see #195)
+
 ## [2021-11-24]
 
 - Always typeset in `typesetdir` (fixes #210)
