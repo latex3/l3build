@@ -10,6 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Documentation improvements
 - Use `checkengines[1]` as the default for `stdengine`
+- Add sanity check for `TEXMFHOME` value
 
 ### Fixed
 - Incorrect line in `manifest` target (see #195)
