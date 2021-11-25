@@ -13,6 +13,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Add sanity check for `TEXMFHOME` value
 
 ### Fixed
+- Installation of files when using MiKTeX (see #125)
 - Incorrect line in `manifest` target (see #195)
 - Placement of PDF files in subdirectory locations (issue #209)
 
