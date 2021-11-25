@@ -1525,7 +1525,8 @@
 % \meta{package}|-ctan.curlopt|. This is then passed to curl using its
 % |--config| commandline option.  (Using an intermediate file helps
 % keep \pkg{l3build} portable between systems using different
-% commandline quoting conventions.)
+% commandline quoting conventions. Any backslashes are doubled when writing 
+% to this file, so they do not need to be doubled in announcement and note texts.)
 %
 % By default the file is written into the current directory alongside
 % the zip file to be uploaded. You may wish to specify that this file

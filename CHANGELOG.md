@@ -11,6 +11,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Documentation improvements
 - Use `checkengines[1]` as the default for `stdengine`
 - Add sanity check for `TEXMFHOME` value
+- Double \ when writing the curl options, so that \ 
+  does not need to be doubled in note and announcement texts.
 
 ### Fixed
 - Installation of files when using MiKTeX (see #125)

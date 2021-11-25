@@ -319,6 +319,7 @@ function ctan_single_field(fname,fvalue,max,desc,mandatory)
       if (max > 0 and len(vs) > max) then
         error("The field " .. fname .. " is longer than " .. max)
       end
+      vs = vs:gsub('\\','\\\\')
       vs = vs:gsub('"','\\"')
       vs = vs:gsub('`','\\`')
       vs = vs:gsub('\n','\\n')
