@@ -18,6 +18,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Installation of files when using MiKTeX (see #125)
 - Incorrect line in `manifest` target (see #195)
 - Placement of PDF files in subdirectory locations (issue #209)
+- Detection of engine-specific tlg files for non-standard LuaTeX based engines (issues #214)
 
 ## [2021-11-24]
 
