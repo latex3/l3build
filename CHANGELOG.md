@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2021-11-29]
+
 ### Changed
 - Documentation improvements
 - Use `checkengines[1]` as the default for `stdengine`
@@ -536,7 +538,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2021-11-24...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2021-11-29...HEAD
+[2021-11-29]: https://github.com/latex3/l3build/compare/2021-11-24...2021-11-29
 [2021-11-24]: https://github.com/latex3/l3build/compare/2021-11-12...2021-11-24
 [2021-11-12]: https://github.com/latex3/l3build/compare/2021-08-28...2021-11-12
 [2021-08-28]: https://github.com/latex3/l3build/compare/2021-08-27...2021-08-28
