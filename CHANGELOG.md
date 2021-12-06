@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2021-12-06]
+
 ### Fixed
 - Place PDF files inside `docfiledir` in all cases
 
@@ -541,7 +543,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2021-11-29...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2021-12-06...HEAD
+[2021-12-06]: https://github.com/latex3/l3build/compare/2021-11-29...2021-12-06
 [2021-11-29]: https://github.com/latex3/l3build/compare/2021-11-24...2021-11-29
 [2021-11-24]: https://github.com/latex3/l3build/compare/2021-11-12...2021-11-24
 [2021-11-12]: https://github.com/latex3/l3build/compare/2021-08-28...2021-11-12
