@@ -27,7 +27,7 @@ local match  = string.match
 local rep    = string.rep
 local sort   = table.sort
 
-local copyright = "Copyright (C) 2014-2021 The LaTeX Project"
+local copyright = "Copyright (C) 2014-2021 The LaTeX Project\n"
 
 function version()
   print(
