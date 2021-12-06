@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Place PDF files inside `docfiledir` in all cases
+
 ## [2021-11-29]
 
 ### Changed

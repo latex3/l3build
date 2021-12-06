@@ -210,6 +210,7 @@ function doc(files)
   for _,typesetfiles in ipairs({typesetdemofiles,typesetfiles}) do
     for _,glob in pairs(typesetfiles) do
       local destpath,globstub = splitpath(glob)
+      destpath = docfiledir .. gsub(gsub(destpath,"^./",""),"^.","")
       for _,p in ipairs(tree(typesetdir,globstub)) do
         local path,srcname = splitpath(p.cwd)
         local name = jobname(srcname)
