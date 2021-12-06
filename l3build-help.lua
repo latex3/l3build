@@ -27,12 +27,14 @@ local match  = string.match
 local rep    = string.rep
 local sort   = table.sort
 
+local copyright = "Copyright (C) 2014-2021 The LaTeX Project"
+
 function version()
   print(
     "\n" ..
     "l3build: A testing and building system for LaTeX\n\n" ..
     "Release " .. release_date .. "\n" ..
-    "Copyright (C) 2014-2021 The LaTeX Project"
+    copyright
   )
 end
 
@@ -87,5 +89,5 @@ function help()
   print("")
   print("Repository  : https://github.com/latex3/l3build")
   print("Bug tracker : https://github.com/latex3/l3build/issues")
-  print("Copyright (C) 2014-2020 The LaTeX Project")
+  print(copyright)
 end
