@@ -33,17 +33,28 @@ local newzip = require"l3build-zip"
 
 -- Copy files to the main CTAN release directory
 function copyctan()
-  mkdir(ctandir .. "/" .. ctanpkg)
+  local pkgdir = ctandir .. "/" .. ctanpkg
+  mkdir(pkgdir)
+
+  -- Handle pre-formed sources: do two passes to avoid any cleandir() issues
+  for _,dest in pairs(tdsdirs) do
+    mkdir(pkgdir .. "/" .. dest)
+  end
+  for src,dest in pairs(tdsdirs) do
+    cp("*",src,pkgdir .. "/" .. dest)
+  end
+
+  -- Now deal with the one-at-a-time files
   local function copyfiles(files,source)
     if source == currentdir or flatten then
       for _,filetype in pairs(files) do
-        cp(filetype,source,ctandir .. "/" .. ctanpkg)
+        cp(filetype,source,pkgdir)
       end
     else
       for _,filetype in pairs(files) do
         for _,p in ipairs(tree(source,filetype)) do
           local path = dirname(p.src)
-          local ctantarget = ctandir .. "/" .. ctanpkg .. "/"
+          local ctantarget = pkgdir .. "/"
             .. source .. "/" .. path
           mkdir(ctantarget)
           cp(p.src,source,ctantarget)
