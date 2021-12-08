@@ -68,8 +68,9 @@ function copyctan()
   end
   copyfiles(sourcefiles,sourcefiledir)
   for _,file in pairs(textfiles) do
-    cp(file, textfiledir, ctandir .. "/" .. ctanpkg)
+    cp(file, textfiledir, pkgdir)
   end
+
 end
 
 function bundlectan()
