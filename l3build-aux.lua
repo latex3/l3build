@@ -166,3 +166,16 @@ function dep_install(deps)
   end
   return 0
 end
+
+-- Construct a localtexmf including any tdsdirs
+-- Needed for checking and typesetting, hence global
+function localtexmf()
+  local paths = ""
+  for src,_ in pairs(tdsdirs) do
+    paths = paths .. os_pathsep .. abspath(src) .. "//"
+  end
+  if texmfdir and texmfdir ~= "" and direxists(texmfdir) then
+    paths = paths .. os_pathsep .. abspath(texmfdir) .. "//"
+  end
+  return paths
+end

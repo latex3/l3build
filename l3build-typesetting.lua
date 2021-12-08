@@ -54,11 +54,7 @@ function runcmd(cmd,dir,vars)
   vars = vars or {}
   -- Allow for local texmf files
   local env = os_setenv .. " TEXMFCNF=." .. os_pathsep
-  local localtexmf = ""
-  if texmfdir and texmfdir ~= "" and direxists(texmfdir) then
-    localtexmf = os_pathsep .. abspath(texmfdir) .. "//"
-  end
-  local envpaths = "." .. localtexmf .. os_pathsep
+  local envpaths = "." .. localtexmf() .. os_pathsep
     .. abspath(localdir) .. os_pathsep
     .. dir .. (typesetsearch and os_pathsep or "")
   -- Deal with spaces in paths
