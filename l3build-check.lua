@@ -764,19 +764,15 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   -- Ensure there is no stray .log file
   rmfile(testdir,name .. logext)
   local errlevels = {}
-  local localtexmf = ""
-  if texmfdir and texmfdir ~= "" and direxists(texmfdir) then
-    localtexmf = os_pathsep .. abspath(texmfdir) .. "//"
-  end
   for i = 1, checkruns do
     errlevels[i] = run(
       testdir,
       -- No use of localdir here as the files get copied to testdir:
       -- avoids any paths in the logs
-      os_setenv .. " TEXINPUTS=." .. localtexmf
+      os_setenv .. " TEXINPUTS=." .. localtexmf()
         .. (checksearch and os_pathsep or "")
         .. os_concat ..
-      os_setenv .. " LUAINPUTS=." .. localtexmf
+      os_setenv .. " LUAINPUTS=." .. localtexmf()
         .. (checksearch and os_pathsep or "")
         .. os_concat ..
       -- Avoid spurious output from (u)pTeX
