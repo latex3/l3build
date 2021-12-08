@@ -161,6 +161,7 @@
 \luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file}
 \luavarseparator
 \luavarset{tdslocations}{\{ \}}{Map for non-standard file installations}
+\luavarset{tdsdirs}{\{ \}}{List of ready-to-use source locations}
 \luavarseparator
 \luavarset{uploadconfig}        {\meta{table}} {Metadata to describe the package for CTAN (see Table~\ref{tab:upload-setup})}
 \luavarset{uploadconfig.pkg}{ctanpkg}{Name of the CTAN package}
@@ -773,6 +774,22 @@
 %
 % A series of example layouts and matching |build.lua| files are available from
 % \url{https://github.com/latex3/l3build/tree/master/examples}.
+%
+% For more complex layouts in which sources are laid out in TDS format and
+% should be used directly, the table \var{tdsdirs} is available. Each entry
+% is a source directory and the matching installation target, for example
+% \begin{Verbatim}
+%   tdsdirs = {sources = "tex"}
+% \end{Verbatim}
+%  This would enable a directory \texttt{sources} in the development area to
+%  be used for testing and typesetting, and for it to be installed into the
+%  \texttt{tex} tree when building a release. When this method is used, the
+%  sources are \emph{not} copied into the local tree: like \var{texmfdir},
+%  they are added directly to the areas accessible during a testing or
+%  typesetting run. When using this approach, the files listed in
+%  \var{typesetfiles} \emph{must} still be included in \var{docfiles}:
+%  they have to be directly visible to \pkg{l3build}, not found by
+%  \texttt{kpsewhich} searching.
 %
 % \subsection{Non-standard formats/binaries}
 %
