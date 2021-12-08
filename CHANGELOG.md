@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Support for pre-constructed TDS-style sources (variable `tdsdirs`)
+
 ## [2021-12-06]
 
 ### Fixed
@@ -18,7 +21,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Documentation improvements
 - Use `checkengines[1]` as the default for `stdengine`
 - Add sanity check for `TEXMFHOME` value
-- Double \ when writing the curl options, so that \ 
+- Double \ when writing the curl options, so that \
   does not need to be doubled in note and announcement texts.
 
 ### Fixed
