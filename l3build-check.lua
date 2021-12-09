@@ -719,6 +719,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   cp(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
     and testfiledir or unpackdir, testdir)
   local checkopts = checkopts
+  local tokens = ""
   engine = engine or stdengine
   local binary = engine
   local format = gsub(engine,"tex$",checkformat)
@@ -730,6 +731,8 @@ function runtest(name, engine, hide, ext, test_type, breakout)
       binary    = engine_info.binary  or binary
       format    = engine_info.format  or format
       checkopts = engine_info.options or checkopts
+      tokens    = engine_info.tokens and (' "' .. engine_info.tokens .. '" ')
+                    or tokens
     end
   end
   -- Finalise format string
@@ -742,10 +745,10 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   end
   -- Special casing for ConTeXt
   local function setup(file)
-    return " -jobname=" .. name .. " " .. ' "\\input ' .. file .. '" '
+    return " -jobname=" .. name .. tokens .. ' "\\input ' .. file .. '" '
   end
   if match(checkformat,"^context$") then
-    function setup(file) return ' "' .. file .. '" '  end
+    function setup(file) return tokens .. ' "' .. file .. '" '  end
   end
   local basename = testdir .. "/" .. name
   local gen_file = basename .. test_type.generated

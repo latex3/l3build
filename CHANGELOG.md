@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 - Support for pre-constructed TDS-style sources (variable `tdsdirs`)
+- Support for injection of tokens using `specialformats`
 
 ## [2021-12-06]
 
