@@ -11,6 +11,10 @@ this project uses date-based 'snapshot' version identifiers.
 - Support for pre-constructed TDS-style sources (variable `tdsdirs`)
 - Support for injection of tokens using `specialformats`
 
+### Changed
+- If multiple configurations are present, let `l3build clean` run
+  on all of them by default. (issue #214)
+
 ## [2021-12-06]
 
 ### Fixed
