@@ -179,7 +179,7 @@ function main(target,names)
     errorlevel = target_list[target].func(names)
   end
   -- All done, finish up
-  if errorlevel ~= 0 then
+  if errorlevel or errorlevel ~= 0 then
     exit(1)
   else
     exit(0)
