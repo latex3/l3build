@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Use correct name for `options` table in multi configuration management code
+
 ## [2021-12-09]
 
 ### Added
