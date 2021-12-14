@@ -121,11 +121,13 @@ specialformats.context = specialformats.context or {
     pdftex = {binary = "texexec", format = ""},
     xetex  = {binary = "texexec", format = "", options = "--xetex"}
   }
-specialformats.latex = specialformats.latex or {
-    etex  = {format = "latex"},
-    ptex  = {binary = "eptex"},
-    uptex = {binary = "euptex"}
-  }
+specialformats.latex = specialformats.latex or { }
+specialformats.latex.etex = specialformats.latex.etex or
+  {format = "latex"}
+specialformats.latex.ptex = specialformats.latex.ptex or
+   {binary = "eptex"}
+specialformats.latex.uptex = specialformats.latex.uptex or
+  {binary = "euptex"}
 if not string.find(status.banner,"2019") then
   specialformats.latex.luatex = specialformats.latex.luatex or
     {binary = "luahbtex",format = "lualatex"}
