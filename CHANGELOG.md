@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Documentation of how to validate an upload
+
 ## [2021-12-14]
 
 ### Fixed

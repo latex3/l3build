@@ -59,7 +59,7 @@ option_list =
       },
     ["dry-run"] =
       {
-        desc = "Dry run for install",
+        desc = "Dry run for install or upload",
         type = "boolean"
       },
     email =
