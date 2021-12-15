@@ -49,7 +49,7 @@ option_list =
       },
     debug =
       {
-        desc = "Runs target in debug mode (not supported by all targets)",
+        desc = "Runs target in debug mode",
         type = "boolean"
       },
     dirty =
