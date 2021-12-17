@@ -324,7 +324,7 @@ function ctan_single_field(fname,fvalue,max,desc,mandatory)
       vs = vs:gsub('`','\\`')
       vs = vs:gsub('\n','\\n')
 -- for strings on commandline version      ctan_post=ctan_post .. ' --form "' .. fname .. "=" .. vs .. '"'
-      ctan_post=ctan_post .. '\nform="' .. fname .. '=' .. vs .. '"'
+      ctan_post=ctan_post .. '\nform-string="' .. fname .. '=' .. vs .. '"'
     end
   else
     error("The value of the field '" .. fname .."' must be a scalar not a table")
