@@ -245,8 +245,12 @@ end
 function shell(s)
   local h = assert(popen(s, 'r'))
   local t = assert(h:read('*a'))
-  h:close()
-  return t
+  local success = h:close()
+  if (success) then
+   return t
+  else
+   error("\nError from shell command:\n" .. s .. "\n" .. t .. "\n")
+  end
 end
 
 function construct_ctan_post(uploadfile,debug)

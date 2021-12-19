@@ -10,6 +10,11 @@ this project uses date-based 'snapshot' version identifiers.
 ### Fixed
 - use `form-string` rather than `form` for all curl fields to avoid
   misinterpreting leading `@` or `<` eg a description starting `<p>`
+  
+- Check the boolean value returned by executing shell commands in
+  l3build-upload and throw an error if this is false. This fixes
+  the issue that previously "validation successful" was reported
+  if curl failed.
 
 ### Changed
 - Documentation of how to validate an upload
