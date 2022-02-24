@@ -8,6 +8,8 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 ### Fixed
+- Creation of subdirectories in TDS structures on Unix-like systems
+
 - use `form-string` rather than `form` for all curl fields to avoid
   misinterpreting leading `@` or `<` eg a description starting `<p>`
   

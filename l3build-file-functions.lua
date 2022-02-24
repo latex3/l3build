@@ -1,6 +1,6 @@
 --[[
 
-File l3build-file-functions.lua Copyright (C) 2018-2021 The LaTeX Project
+File l3build-file-functions.lua Copyright (C) 2018-2022 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -244,6 +244,11 @@ function cp(glob, source, dest)
         ) and 0 or 1
       end
     else
+      -- Ensure we get similar behavior on all platforms
+      if not direxists(dirname(dest)) then
+        errorlevel = mkdir(dirname(dest))
+      end
+      if errorlevel ~=0 then return errorlevel end
       errorlevel = execute(
         "cp -RLf '" .. p.cwd .. "' '" .. dest .. "'"
       ) and 0 or 1
