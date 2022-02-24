@@ -1,7 +1,7 @@
 l3build: a testing and building system for LaTeX
 =================================================
 
-Release 2021-12-14
+Release 2022-02-24
 
 Overview
 --------
@@ -31,6 +31,6 @@ The LaTeX kernel is developed by [The LaTeX Project](https://latex-project.org).
 
 -----
 
-<p>Copyright (C) 2014-2021 The LaTeX Project <br />
+<p>Copyright (C) 2014-2022 The LaTeX Project <br />
 <a href="http://latex-project.org/">http://latex-project.org/</a> <br />
 All rights reserved.</p>
