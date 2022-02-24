@@ -247,8 +247,8 @@ function cp(glob, source, dest)
       -- Ensure we get similar behavior on all platforms
       if not direxists(dirname(dest)) then
         errorlevel = mkdir(dirname(dest))
+        if errorlevel ~=0 then return errorlevel end
       end
-      if errorlevel ~=0 then return errorlevel end
       errorlevel = execute(
         "cp -RLf '" .. p.cwd .. "' '" .. dest .. "'"
       ) and 0 or 1
