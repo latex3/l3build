@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Use correct name for `options` table in multi configuration management code
+- Correctly normalize luaotfload font cache path
 
 ## [2021-12-09]
 
