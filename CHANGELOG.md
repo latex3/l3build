@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+ - if `\pdfmeta_set_regression_data:` is defined it is used
+   to set the meta data.
+   
 ## [2022-02-24]
 
 ### Fixed
