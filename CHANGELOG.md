@@ -8,9 +8,12 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 ### Changed
- - If `\pdfmeta_set_regression_data:` is defined it is used
-   to set the meta data.
+- When `\pdfmeta_set_regression_data:` is defined it is used
+  to set metadata
 - Support multiple configurations in bundles
+
+### Fixed
+- Correctly normalize luaotfload font cache path
 
 ## [2022-02-24]
 
@@ -32,7 +35,6 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Use correct name for `options` table in multi configuration management code
-- Correctly normalize luaotfload font cache path
 
 ## [2021-12-09]
 
