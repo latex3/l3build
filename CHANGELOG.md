@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2022-03-15]
+
 ### Changed
 - When `\pdfmeta_set_regression_data:` is defined it is used
   to set metadata
@@ -582,7 +584,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2022-02-24...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2022-03-15...HEAD
+[2022-03-15]: https://github.com/latex3/l3build/compare/2022-02-24...2022-03-15
 [2022-02-24]: https://github.com/latex3/l3build/compare/2021-12-14...2022-02-24
 [2021-12-14]: https://github.com/latex3/l3build/compare/2021-12-09...2021-12-14
 [2021-12-09]: https://github.com/latex3/l3build/compare/2021-12-06...2021-12-09
