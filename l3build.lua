@@ -134,7 +134,7 @@ else
 end
 
 if #checkconfigs > 1 then
-  if options["target"] == "check" then
+  if options["target"] == "check" or options["target"] == "bundlecheck" then
     local errorlevel = 0
     local failed = { }
     for i = 1, #checkconfigs do
