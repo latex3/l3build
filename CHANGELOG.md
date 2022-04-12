@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Sort list of names of difference files for failing tests.
+
 ## [2022-04-12]
 
 ### Added
