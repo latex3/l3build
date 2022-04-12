@@ -52,9 +52,9 @@ function uninstall()
     local installdir = gethome() .. "/" .. dir
     if options["dry-run"] then
       local files = filelist(installdir)
-      if next(files) then
+      if files[1] then
         print("\n" .. "For removal from " .. installdir .. ":")
-        for _,file in pairs(filelist(installdir)) do
+        for _,file in ipairs(ordered_filelist(installdir)) do
           print("- " .. file)
         end
       end
