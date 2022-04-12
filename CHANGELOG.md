@@ -10,6 +10,9 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 - Basic support for `make4ht`
 
+### Changed
+- Support `bidi` version string in `\special` lines (closes \#226)
+
 ## [2022-03-15]
 
 ### Changed

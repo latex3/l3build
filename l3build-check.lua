@@ -246,6 +246,10 @@ local function normalize_log(content,engine,errlevels)
     if match(line, "^%.*\\special%{papersize") then
       return ""
     end
+    -- Remove bidi version in \special lines line
+    if match(line, "BIDI.Fullbanner") then
+      line = gsub(line,"Version %d*%.%d*", "Version ...")
+    end
     -- Remove ConTeXt stuff
     if match(line, "^backend         >") or
        match(line, "^close source    >") or
