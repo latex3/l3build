@@ -134,6 +134,8 @@ if not string.find(status.banner,"2019") then
   specialformats["latex-dev"] = specialformats["latex-dev"] or
     {luatex = {binary="luahbtex",format = "lualatex-dev"}}
 end
+specialformats.latex["make4ht"] = specialformats.latex["make4ht"] or
+  {binary = "make4ht"}
 
 stdengine = stdengine or checkengines[1] or "pdftex"
 

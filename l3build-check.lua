@@ -750,6 +750,11 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   if match(checkformat,"^context$") then
     function setup(file) return tokens .. ' "' .. file .. '" '  end
   end
+  if match(binary,"make4ht") then
+    function setup(file) return tokens .. ' "' .. file .. '" '  end
+    format = ""
+    checkopts = ""
+  end
   local basename = testdir .. "/" .. name
   local gen_file = basename .. test_type.generated
   local new_file = basename .. "." .. engine .. test_type.generated

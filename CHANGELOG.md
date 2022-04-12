@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Basic support for `make4ht`
+
 ## [2022-03-15]
 
 ### Changed
