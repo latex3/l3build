@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Normalise GhostScript version in PDF-based tests
+
 ## [2022-04-12]
 
 ### Added
