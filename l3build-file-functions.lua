@@ -198,7 +198,7 @@ function escapepath(path)
   else
     path = gsub(path,"\\ ","[PATH-SPACE]")
     path = gsub(path," ","\\ ")
-    return gsub(path,"%[PATH-SPACE%]","\\ ")
+    return gsub(path,"%[PATH%-SPACE%]","\\ ")
   end
 end
 
@@ -234,13 +234,13 @@ function cp(glob, source, dest)
     if os_type == "windows" then
       if direxists(p.cwd) then
         errorlevel = execute(
-          'xcopy /y /e /i "' .. unix_to_win(p.cwd) .. '" "'
-             .. unix_to_win(dest .. '/' .. p.src) .. '" > nul'
+          'xcopy /y /e /i "' .. unix_to_win(p.cwd) .. '" '
+             .. unix_to_win(dest .. '/' .. escapepath(p.src)) .. ' > nul'
         ) and 0 or 1
       else
         errorlevel = execute(
-          'xcopy /y "' .. unix_to_win(p.cwd) .. '" "'
-             .. unix_to_win(dest .. '/') .. '" > nul'
+          'xcopy /y "' .. unix_to_win(p.cwd) .. '" '
+             .. unix_to_win(dest .. '/') .. ' > nul'
         ) and 0 or 1
       end
     else
@@ -250,7 +250,7 @@ function cp(glob, source, dest)
         if errorlevel ~=0 then return errorlevel end
       end
       errorlevel = execute(
-        "cp -RLf '" .. p.cwd .. "' '" .. dest .. "'"
+        "cp -RLf '" .. p.cwd .. "' " .. dest
       ) and 0 or 1
     end
     if errorlevel ~=0 then
@@ -367,6 +367,7 @@ function remove_duplicates(a)
 end
 
 function mkdir(dir)
+  dir = escapepath(dir)
   if os_type == "windows" then
     -- Windows (with the extensions) will automatically make directory trees
     -- but issues a warning if the dir already exists: avoid by including a test
