@@ -177,7 +177,7 @@ function abspath(path)
   if ok then
     local result = currentdir()
     chdir(oldpwd)
-    return escapepath(gsub(gsub(result,"^\\\\%?\\",""), "\\", "/"))
+    return gsub(gsub(result,"^\\\\%?\\",""), "\\", "/")
   end
   error(msg)
 end
