@@ -183,7 +183,7 @@ function abspath(path)
 end
 
 -- TODO: Fix the cross platform problem
-function escapepath(path)
+function escape_arg(path)
   if os_type == "windows" then
     local path,count = gsub(path,'"','')
     if count % 2 ~= 0 then
@@ -200,6 +200,10 @@ function escapepath(path)
     path = gsub(path," ","\\ ")
     return gsub(path,"%[PATH%-SPACE%]","\\ ")
   end
+end
+
+function normalize_and_escape(path)
+  return escape_arg(normalize_path(path))
 end
 
 -- For cleaning out a directory, which also ensures that it exists
@@ -234,13 +238,13 @@ function cp(glob, source, dest)
     if os_type == "windows" then
       if direxists(p.cwd) then
         errorlevel = execute(
-          'xcopy /y /e /i "' .. unix_to_win(p.cwd) .. '" '
-             .. unix_to_win(dest .. '/' .. escapepath(p.src)) .. ' > nul'
+          'xcopy /y /e /i ' .. normalize_and_escape(p.cwd) .. ' '
+             .. normalize_and_escape(dest .. '/' .. p.src) .. ' > nul'
         ) and 0 or 1
       else
         errorlevel = execute(
-          'xcopy /y "' .. unix_to_win(p.cwd) .. '" '
-             .. unix_to_win(dest .. '/') .. ' > nul'
+          'xcopy /y ' .. normalize_and_escape(p.cwd) .. ' '
+             .. normalize_and_escape(dest .. '/') .. ' > nul'
         ) and 0 or 1
       end
     else
@@ -250,7 +254,7 @@ function cp(glob, source, dest)
         if errorlevel ~=0 then return errorlevel end
       end
       errorlevel = execute(
-        "cp -RLf '" .. p.cwd .. "' " .. dest
+        "cp -RLf " .. normalize_and_escape(p.cwd) .. " " .. normalize_and_escape(dest)
       ) and 0 or 1
     end
     if errorlevel ~=0 then
@@ -372,7 +376,7 @@ function remove_duplicates(a)
 end
 
 function mkdir(dir)
-  dir = escapepath(dir)
+  dir = normalize_and_escape(dir)
   if os_type == "windows" then
     -- Windows (with the extensions) will automatically make directory trees
     -- but issues a warning if the dir already exists: avoid by including a test
@@ -391,9 +395,9 @@ function ren(dir, source, dest)
   if os_type == "windows" then
     source = gsub(source, "^%.+/", "")
     dest = gsub(dest, "^%.+/", "")
-    return execute("ren " .. unix_to_win(dir) .. source .. " " .. dest)
+    return execute("ren " .. normalize_and_escape(dir .. source) .. ' ' .. normalize_and_escape(dest))
   else
-    return execute("mv " .. dir .. source .. " " .. dir .. dest)
+    return execute("mv " .. normalize_and_escape(dir .. source) .. ' ' .. normalize_and_escape(dir .. dest))
   end
 end
 
@@ -418,15 +422,15 @@ function rmdir(dir)
   -- First, make sure it exists to avoid any errors
   mkdir(dir)
   if os_type == "windows" then
-    return execute("rmdir /s /q " .. unix_to_win(dir))
+    return execute("rmdir /s /q " .. normalize_and_escape(dir))
   else
-    return execute("rm -r " .. dir)
+    return execute("rm -r " .. normalize_and_escape(dir))
   end
 end
 
 -- Run a command in a given directory
 function run(dir, cmd)
-  return execute("cd " .. dir .. os_concat .. cmd)
+  return execute("cd " .. normalize_and_escape(dir) .. os_concat .. cmd)
 end
 
 -- Split a path into file and directory component

@@ -121,12 +121,12 @@ function call(modules, target, opts)
           end
         end
       end
-      cli_opts = cli_opts .. " --" .. k .. value
+      cli_opts = cli_opts .. " " .. escape_arg("--" .. k .. value)
     end
   end
   if opts.names then
     for _, name in pairs(opts.names) do
-      cli_opts = cli_opts .. " " .. name
+      cli_opts = cli_opts .. " " .. escape_arg(name)
     end
   end
   local script_name = get_script_name()
@@ -140,7 +140,7 @@ function call(modules, target, opts)
     print("Running l3build with target \"" .. target .. "\"" .. text )
     local error_level = run(
       module,
-      "texlua " .. script_name .. " " .. target .. cli_opts
+      "texlua " .. escape_arg(script_name) .. " " .. escape_arg(target) .. cli_opts
     )
     if error_level ~= 0 then
       return error_level
@@ -159,7 +159,7 @@ function dep_install(deps)
   local error_level
   for _, dep in ipairs(deps) do
     print("Installing dependency: " .. dep)
-    error_level = run(dep, "texlua " .. get_script_name() .. " unpack -q")
+    error_level = run(dep, "texlua " .. escape_arg(get_script_name()) .. " unpack -q")
     if error_level ~= 0 then
       return error_level
     end
