@@ -156,7 +156,7 @@ if #checkconfigs > 1 then
         if config ~= "build" then
           testdir = testdir .. "-" .. config
         end
-        for _,i in ipairs(filelist(testdir,"*" .. os_diffext)) do
+        for _,i in ipairs(ordered_filelist(testdir,"*" .. os_diffext)) do
           print("  - " .. testdir .. "/" .. i)
         end
         print("")

@@ -828,7 +828,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   test_type.rewrite(gen_file,new_file,engine,errlevels)
   -- Store secondary files for this engine
   for _,filetype in pairs(auxfiles) do
-    for _,file in pairs(filelist(testdir, filetype)) do
+    for _,file in ipairs(filelist(testdir, filetype)) do
       if match(file,"^" .. name .. "%.[^.]+$") then
         local newname = gsub(file,"(%.[^.]+)$","." .. engine .. "%1")
         if fileexists(testdir .. "/" .. newname) then
@@ -931,7 +931,7 @@ function check(names)
           excludepatterns[num_exclude] = glob_to_pattern(glob .. ext)
         end
         for _,glob in pairs(includetests) do
-          for _,name in pairs(filelist(testfiledir, glob .. ext)) do
+          for _,name in ipairs(filelist(testfiledir, glob .. ext)) do
             local exclude
             for i=1, num_exclude do
               if match(name, excludepatterns[i]) then
@@ -943,7 +943,7 @@ function check(names)
               insert(names,jobname(name))
             end
           end
-          for _,name in pairs(filelist(unpackdir, glob .. ext)) do
+          for _,name in ipairs(filelist(unpackdir, glob .. ext)) do
             local exclude
             for i=1, num_exclude do
               if not match(name, excludepatterns[i]) then
@@ -1028,7 +1028,7 @@ end
 -- A short auxiliary to print the list of differences for check
 function checkdiff()
   print("\n  Check failed with difference files")
-  for _,i in ipairs(filelist(testdir, "*" .. os_diffext)) do
+  for _,i in ipairs(ordered_filelist(testdir, "*" .. os_diffext)) do
     print("  - " .. testdir .. "/" .. i)
   end
   print("")
@@ -1036,7 +1036,7 @@ end
 
 function showfailedlog(name)
   print("\nCheck failed with log file")
-  for _,i in ipairs(filelist(testdir, name..".log")) do
+  for _,i in ipairs(ordered_filelist(testdir, name..".log")) do
     print("  - " .. testdir .. "/" .. i)
     print("")
     local f = open(testdir .. "/" .. i,"r")
@@ -1050,7 +1050,7 @@ end
 
 function showfaileddiff()
   print("\nCheck failed with difference file")
-  for _,i in ipairs(filelist(testdir, "*" .. os_diffext)) do
+  for _,i in ipairs(ordered_filelist(testdir, "*" .. os_diffext)) do
     print("  - " .. testdir .. "/" .. i)
     print("")
     local f = open(testdir .. "/" .. i,"r")

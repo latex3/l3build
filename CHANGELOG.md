@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Normalise GhostScript version in PDF-based tests
+- Sort list of names of difference files for failing tests.
 
 ## [2022-04-12]
 

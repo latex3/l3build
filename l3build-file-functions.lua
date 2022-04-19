@@ -283,6 +283,11 @@ function filelist(path, glob)
   end
   return files
 end
+function ordered_filelist(...)
+  local files = filelist(...)
+  table.sort(files)
+  return files
+end
 
 ---@class tree_entry_t
 ---@field src string path relative to the source directory
