@@ -25,8 +25,6 @@ PASSED
 ============================================================
 Completed box being shipped out [1]
 \vbox(578.15999+0.0)x469.75499
-.\hbox(0.0+0.0)x0.0
-..\special{pdfcolorstackinit 1 page direct (0 g 0 G)}
 .\glue 0.0
 .\vbox(578.15999+0.0)x469.75499
 ..\vbox(0.0+0.0)x469.75499
@@ -121,5 +119,4 @@ Completed box being shipped out [1]
 ..\glue(\baselineskip) 0.0
 ..\hbox(0.0+0.0)x469.75499
 ...\hbox(0.0+0.0)x469.75499
-.\kern 0.0
 (00-test-1.aux)
