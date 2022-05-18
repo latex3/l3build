@@ -1474,11 +1474,13 @@
 % For example, to choose to use \LuaTeX{} for one file when \var{typesetexe}
 % is |pdftex|
 % \begin{verbatim}
-% specialtypesetting.foo = {cmd = "luatex -interaction=nonstopmode"}
+% specialtypesetting = specialtypesetting or {}
+% specialtypesetting["foo.tex"] = {cmd = "luatex -interaction=nonstopmode"}
 % \end{verbatim}
 % or to select an entirely different typesetting function
 % \begin{verbatim}
-% specialtypesetting.foo = {func = typeset_foo}
+% specialtypesetting = specialtypesetting or {}
+% specialtypesetting["foo.tex"] = {func = typeset_foo}
 % \end{verbatim}
 %
 % \subsection{Automated upload to CTAN}
