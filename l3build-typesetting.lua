@@ -185,7 +185,7 @@ local function docinit()
     cp(file, sourcefiledir, typesetdir)
   end
   for _,file in pairs(typesetsuppfiles) do
-    cp(file, supportdir, typesetdir)
+    cp(file, supportdir, localdir)
   end
   -- Main loop for doc creation
   local errorlevel = typeset_demo_tasks()
