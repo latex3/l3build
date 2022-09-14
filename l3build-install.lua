@@ -327,9 +327,17 @@ function install_files(target,full,dry_run)
 
   if errorlevel ~= 0 then return errorlevel end
 
+  -- Track created destination directories to avoid overhead from
+  -- repeatedly creating them
+  local destination_dirs = {}
+
   -- Files are all copied in one shot: this ensures that cleandir()
   -- can't be an issue even if there are complex set-ups
   for _,v in ipairs(installmap) do
+    if not destination_dirs[v.dest] then
+      mkdir(v.dest)
+      destination_dirs[v.dest] = true
+    end
     errorlevel = cp(v.file,v.source,v.dest)
     if errorlevel ~= 0  then return errorlevel end
   end
