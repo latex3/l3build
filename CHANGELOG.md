@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Copying of nested directories
+
 ## [2022-04-19]
 
 ### Changed
