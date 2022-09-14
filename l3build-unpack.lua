@@ -74,14 +74,14 @@ function bundleunpack(sourcedirs, sources)
       local path, name = splitpath(p.src)
       local localdir = abspath(localdir)
       local success = io.popen(
-        "cd " .. unpackdir .. "/" .. path .. os_concat ..
+        "cd " .. normalize_and_escape(unpackdir .. "/" .. path) .. os_concat ..
         os_setenv .. " TEXINPUTS=." .. os_pathsep
-          .. localdir .. (unpacksearch and os_pathsep or "") ..
+          .. normalize_and_escape(localdir) .. (unpacksearch and os_pathsep or "") ..
         os_concat  ..
         os_setenv .. " LUAINPUTS=." .. os_pathsep
-          .. localdir .. (unpacksearch and os_pathsep or "") ..
+          .. normalize_and_escape(localdir) .. (unpacksearch and os_pathsep or "") ..
         os_concat ..
-        unpackexe .. " " .. unpackopts .. " " .. name
+        unpackexe .. " " .. unpackopts .. " " .. normalize_and_escape(name)
           .. (options["quiet"] and (" > " .. os_null) or ""),
         "w"
       ):write(string.rep("y\n", 300)):close()
