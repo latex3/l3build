@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Copying of nested directories
+- Space handling and file and path names
 
 ## [2022-04-19]
 
