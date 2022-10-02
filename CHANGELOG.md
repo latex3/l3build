@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Allow for local override of `ctanupload` variable
+
 ## [2022-09-15]
 
 ### Fixed

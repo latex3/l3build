@@ -238,3 +238,4 @@ tdsdirs = tdsdirs or {}
 -- Upload settings
 curlexe  = curlexe  or "curl"
 uploadconfig = uploadconfig or {}
+ctanupload   = ctanupload   or "ask"
