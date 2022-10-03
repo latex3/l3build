@@ -69,7 +69,7 @@ local match = string.match
 local curl_debug = curl_debug or false -- to disable posting
 -- For now, this is undocumented.
 
-local ctanupload = ctanupload or "ask"
+
 if options["dry-run"] then
   ctanupload = false
 end
