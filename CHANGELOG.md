@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Suppress (new) LaTeX version data at end of `.log`
+
 ### Fixed
 - Allow for local override of `ctanupload` variable
 

@@ -2555,6 +2555,13 @@
   \fi
 \fi
 %    \end{macrocode}
+%  Suppress version data in \LaTeX{} runs.
+%    \begin{macrocode}
+\ifdefined\AddToHook
+  \AddToHook{enddocument/info}[kernel/testmode]{}
+  \DeclareHookRule{enddocument/info}{kernel/testmode}{voids}{kernel/release}
+\fi
+%    \end{macrocode}
 %
 % Finish up.
 %    \begin{macrocode}
