@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2022-11-10]
+
 ### Changed
 - Suppress (new) LaTeX version data at end of `.log`
 
@@ -609,7 +611,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2022-09-15...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2022-11-10...HEAD
+[2022-11-10]: https://github.com/latex3/l3build/compare/2022-09-15...2022-11-10
 [2022-09-15]: https://github.com/latex3/l3build/compare/2022-04-19...2022-09-15
 [2022-04-19]: https://github.com/latex3/l3build/compare/2022-04-12...2022-04-19
 [2022-04-12]: https://github.com/latex3/l3build/compare/2022-03-15...2022-04-12
