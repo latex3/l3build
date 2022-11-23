@@ -58,6 +58,8 @@ function manifest()
   printline = "Manifest written to " .. manifestfile
   print((printline:gsub(".","*")))  print(printline)  print((printline:gsub(".","*")))
 
+  return 0
+
 end
 
 --[[
