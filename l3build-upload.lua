@@ -146,7 +146,7 @@ function upload(tagnames)
   write(ctan_post)
   close(curlopt)
 
-  ctan_post=curlexe .. " --config " .. curloptfile
+  ctan_post=curlexe .. " --config " .. normalize_and_escape(curloptfile)
 
 
 if options["debug"] then

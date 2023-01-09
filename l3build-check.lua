@@ -81,7 +81,7 @@ function checkinit()
   for _,i in ipairs(checksuppfiles) do
     cp(i, supportdir, testdir)
   end
-  execute(os_ascii .. ">" .. testdir .. "/ascii.tcx")
+  execute(os_ascii .. ">" .. normalize_and_escape(testdir .. "/ascii.tcx"))
   return checkinit_hook()
 end
 
@@ -678,7 +678,8 @@ function base_compare(test_type,name,engine,cleanup)
     return compare(difffile, reffile, genfile, cleanup, name, engine)
   end
   local errorlevel = execute(os_diffexe .. " "
-    .. normalize_path(reffile .. " " .. genfile .. " > " .. difffile))
+    .. normalize_and_escape(reffile) .. " " .. normalize_and_escape(genfile)
+    .. " > " .. normalize_and_escape(difffile))
   if errorlevel == 0 or cleanup then
     remove(difffile)
   end
@@ -701,15 +702,19 @@ function compare_tlg(difffile, tlgfile, logfile, cleanup, name, engine)
     local luatlgfile = testdir .. "/" .. testname .. tlgext
     rewrite(tlgfile,luatlgfile,normalize_lua_log)
     rewrite(logfile,lualogfile,normalize_lua_log,true)
-    errorlevel = execute(os_diffexe .. " "
-      .. normalize_path(luatlgfile .. " " .. lualogfile .. " > " .. difffile))
+    errorlevel = execute(os_diffexe
+      .. " " .. normalize_and_escape(luatlgfile)
+      .. " " .. normalize_and_escape(lualogfile)
+      .. " > " .. normalize_and_escape(difffile))
     if cleanup then
       remove(lualogfile)
       remove(luatlgfile)
     end
   else
-    errorlevel = execute(os_diffexe .. " "
-      .. normalize_path(tlgfile .. " " .. logfile .. " > " .. difffile))
+    errorlevel = execute(os_diffexe
+      .. " " .. normalize_and_escape(tlgfile)
+      .. " " .. normalize_and_escape(logfile)
+      .. " > " .. normalize_and_escape(difffile))
   end
   if errorlevel == 0 or cleanup then
     remove(difffile)
@@ -736,7 +741,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
       binary    = engine_info.binary  or binary
       format    = engine_info.format  or format
       checkopts = engine_info.options or checkopts
-      tokens    = engine_info.tokens and (' "' .. engine_info.tokens .. '" ')
+      tokens    = engine_info.tokens and (' ' .. escape_arg(engine_info.tokens))
                     or tokens
     end
   end
@@ -753,10 +758,10 @@ function runtest(name, engine, hide, ext, test_type, breakout)
     return " -jobname=" .. name .. tokens .. ' "\\input ' .. file .. '" '
   end
   if match(checkformat,"^context$") then
-    function setup(file) return tokens .. ' "' .. file .. '" '  end
+    function setup(file) return tokens .. ' ' .. escape_arg(file) .. ' '  end
   end
   if match(binary,"make4ht") then
-    function setup(file) return tokens .. ' "' .. file .. '" '  end
+    function setup(file) return tokens .. ' "' .. escape_arg(file) .. '" '  end
     format = ""
     checkopts = ""
   end
@@ -778,14 +783,15 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   rmfile(testdir,name .. logext)
   local errlevels = {}
   for i = 1, checkruns do
+    -- FIXME
     errlevels[i] = run(
       testdir,
       -- No use of localdir here as the files get copied to testdir:
       -- avoids any paths in the logs
-      os_setenv .. " TEXINPUTS=." .. localtexmf()
+      os_setenv .. " TEXINPUTS=." .. escape_arg(localtexmf())
         .. (checksearch and os_pathsep or "")
         .. os_concat ..
-      os_setenv .. " LUAINPUTS=." .. localtexmf()
+      os_setenv .. " LUAINPUTS=." .. escape_arg(localtexmf())
         .. (checksearch and os_pathsep or "")
         .. os_concat ..
       -- Avoid spurious output from (u)pTeX

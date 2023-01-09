@@ -39,10 +39,10 @@ function dvitopdf(name, dir, engine, hide)
   run(
     dir,
     set_epoch_cmd(epoch, forcecheckepoch) ..
-    "dvips " .. name .. dviext
+    "dvips " .. normalize_and_escape(name .. dviext)
       .. (hide and (" > " .. os_null) or "")
       .. os_concat ..
-    "ps2pdf " .. ps2pdfopt .. name .. psext
+    "ps2pdf " .. ps2pdfopt .. normalize_and_escape(name .. psext)
       .. (hide and (" > " .. os_null) or "")
   )
 end
@@ -70,7 +70,7 @@ end
 function biber(name,dir)
   if fileexists(dir .. "/" .. name .. ".bcf") then
     return
-      runcmd(biberexe .. " " .. biberopts .. " " .. name,dir,{"BIBINPUTS"})
+      runcmd(biberexe .. " " .. biberopts .. " " .. normalize_and_escape(name),dir,{"BIBINPUTS"})
   end
   return 0
 end
@@ -82,18 +82,18 @@ function bibtex(name,dir)
     -- look inside it for a \citation line
     local grep
     if os_type == "windows" then
-      grep = "\\\\"
+      grep = [[\\]]
     else
-     grep = "\\\\\\\\"
+     grep = [[\\\\]]
     end
     if run(dir,
-        os_grepexe .. " \"^" .. grep .. "citation{\" " .. name .. ".aux > "
-          .. os_null
+        os_grepexe .. " \"^" .. grep .. "citation{\" " .. normalize_and_escape(name .. ".aux")
+          .. " > " .. os_null
       ) + run(dir,
-        os_grepexe .. " \"^" .. grep .. "bibdata{\" " .. name .. ".aux > "
-          .. os_null
+        os_grepexe .. " \"^" .. grep .. "bibdata{\" " .. normalize_and_escape(name .. ".aux")
+          .. " > " .. os_null
       ) == 0 then
-      return runcmd(bibtexexe .. " " .. bibtexopts .. " " .. name,dir,
+      return runcmd(bibtexexe .. " " .. bibtexopts .. " " .. normalize_and_escape(name),dir,
         {"BIBINPUTS","BSTINPUTS"})
     end
   end
@@ -105,9 +105,9 @@ function makeindex(name,dir,inext,outext,logext,style)
   if fileexists(dir .. "/" .. name .. inext) then
     if style == "" then style = nil end
     return runcmd(makeindexexe .. " " .. makeindexopts
-      .. " -o " .. name .. outext
-      .. (style and (" -s " .. style) or "")
-      .. " -t " .. name .. logext .. " "  .. name .. inext,
+      .. " -o " .. normalize_and_escape(name .. outext)
+      .. (style and (" -s " .. escape_arg(style)) or "")
+      .. " -t " .. normalize_and_escape(name .. logext) .. " "  .. normalize_and_escape(name .. inext),
       dir,
       {"INDEXSTYLE"})
   end
