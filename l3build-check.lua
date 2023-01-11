@@ -778,8 +778,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   rmfile(testdir,name .. logext)
   local errlevels = {}
   for i = 1, checkruns do
-    errlevels[i] = run(
-      testdir,
+    errlevels[i] = runcmd(
       -- No use of localdir here as the files get copied to testdir:
       -- avoids any paths in the logs
       os_setenv .. " TEXINPUTS=." .. localtexmf()
@@ -791,10 +790,6 @@ function runtest(name, engine, hide, ext, test_type, breakout)
       -- Avoid spurious output from (u)pTeX
       os_setenv .. " GUESS_INPUT_KANJI_ENCODING=0"
         .. os_concat ..
-      -- Allow for local texmf files
-      os_setenv .. " TEXMFCNF=." .. os_pathsep
-        .. os_concat ..
-      set_epoch_cmd(epoch, forcecheckepoch) ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
@@ -803,7 +798,8 @@ function runtest(name, engine, hide, ext, test_type, breakout)
         .. setup(lvtfile)
         .. (hide and (" > " .. os_null) or "")
         .. os_concat ..
-      runtest_tasks(jobname(lvtfile),i)
+      runtest_tasks(jobname(lvtfile),i),
+      testdir
     )
     -- Break the loop if the result is stable
     if breakout and i < checkruns then
