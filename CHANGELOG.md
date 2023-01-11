@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Ensure `texmf.cnf` work correctly for `dvips`
+
 ## [2022-11-10]
 
 ### Changed
