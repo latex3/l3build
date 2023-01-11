@@ -35,17 +35,6 @@ local match = string.match
 
 local os_type = os.type
 
-function dvitopdf(name, dir, engine, hide)
-  runcmd(
-    "dvips " .. name .. dviext
-      .. (hide and (" > " .. os_null) or "")
-      .. os_concat ..
-    "ps2pdf " .. ps2pdfopt .. name .. psext
-      .. (hide and (" > " .. os_null) or ""),
-    dir
-  )
-end
-
 -- An auxiliary used to set up the environmental variables
 function runcmd(cmd,dir,vars)
   dir = dir or "."
@@ -64,6 +53,17 @@ function runcmd(cmd,dir,vars)
     env = env .. os_concat .. os_setenv .. " " .. var .. "=" .. envpaths
   end
   return run(dir,set_epoch_cmd(epoch, forcedocepoch) .. env .. os_concat .. cmd)
+end
+
+function dvitopdf(name, dir, engine, hide)
+  runcmd(
+    "dvips " .. name .. dviext
+      .. (hide and (" > " .. os_null) or "")
+      .. os_concat ..
+    "ps2pdf " .. ps2pdfopt .. name .. psext
+      .. (hide and (" > " .. os_null) or ""),
+    dir
+  )
 end
 
 function biber(name,dir)
