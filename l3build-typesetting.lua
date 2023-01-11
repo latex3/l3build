@@ -36,14 +36,13 @@ local match = string.match
 local os_type = os.type
 
 function dvitopdf(name, dir, engine, hide)
-  run(
-    dir,
-    set_epoch_cmd(epoch, forcecheckepoch) ..
+  runcmd(
     "dvips " .. name .. dviext
       .. (hide and (" > " .. os_null) or "")
       .. os_concat ..
     "ps2pdf " .. ps2pdfopt .. name .. psext
-      .. (hide and (" > " .. os_null) or "")
+      .. (hide and (" > " .. os_null) or ""),
+    dir
   )
 end
 
