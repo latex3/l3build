@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Completion support for `zsh`
+
 ## [2023-02-16]
 
 ### Changed

@@ -70,6 +70,10 @@ target_list =
         pre  = function() return(dep_install(unpackdeps)) end
       },
     -- Public targets
+    complete =
+      {
+        desc = "Print shell completion script",
+      },
     check =
       {
         bundle_target = true,

@@ -56,6 +56,7 @@ end
 -- Minimal code to do basic checks
 build_require("arguments")
 build_require("help")
+build_require("complete")
 
 build_require("file-functions")
 build_require("typesetting")
@@ -70,6 +71,13 @@ build_require("manifest-setup")
 build_require("tagging")
 build_require("upload")
 build_require("stdmain")
+
+if options["target"] == "complete" then
+  for _, v in pairs(options["names"]) do
+    complete(v)
+  end
+  exit(0)
+end
 
 -- This has to come after stdmain(),
 -- and that has to come after the functions are defined

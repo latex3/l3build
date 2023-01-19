@@ -40,7 +40,8 @@ option_list =
       {
         desc  = "Sets the config(s) used for running tests",
         short = "c",
-        type  = "table"
+        type  = "table",
+        complete = "lua_file"
       },
     date =
       {
@@ -71,7 +72,8 @@ option_list =
       {
         desc  = "Sets the engine(s) to use for running test",
         short = "e",
-        type  = "table"
+        type  = "table",
+        complete = "engine"
       },
     epoch =
       {
@@ -82,7 +84,8 @@ option_list =
       {
         desc  = "Take the upload announcement from the given file",
         short = "F",
-        type  = "string"
+        type  = "string",
+        complete = "file"
       },
     first =
       {
@@ -110,7 +113,8 @@ option_list =
       {
         desc  = "Print this message and exit",
         short = "h",
-        type  = "boolean"
+        type  = "boolean",
+        stop_completions = {"option", "target", "name"}
       },
     last =
       {
@@ -158,7 +162,8 @@ option_list =
     version =
       {
         desc = "Print version information and exit",
-        type = "boolean"
+        type = "boolean",
+        stop_completions = {"option", "target", "name"}
       }
   }
 

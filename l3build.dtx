@@ -338,6 +338,7 @@
 % \item check
 % \item check \meta{name(s)}
 % \item clean
+% \item complete \meta{shell name}
 % \item ctan
 % \item doc
 % \item doc \meta{name(s)}
@@ -442,6 +443,33 @@
 % This command removes all temporary files used for package bundling and regression testing.
 % In the standard layout, these are all files within the directories defined by \var{localdir}, \var{testdir}, \var{typesetdir} and \var{unpackdir}, as well as all files defined in the \var{cleanfiles} variable in the same directory as the script.
 % The defaults are |.pdf| files from typesetting (|doc|) and |.zip| files from bundling (|ctan|).
+% \end{buildcmd}
+%
+% \begin{buildcmd}{complete \meta{shell name}}
+% This command print shell completion script. Now it only supports zsh. (A pull request is welcome!)
+%
+% Zsh users must \verb|autoload -Uz compinit && compinit| in \verb|~/.zshrc| to enable completion. Then users have two methods to install completion scripts:
+%
+% \begin{itemize}
+%   \item Users can add \verb|eval "$(l3build completion zsh)"| to \verb|~/.zshrc|.
+%   \item Users can add the following file (also provided by \href{https://github.com/zsh-users/zsh-completions}{zsh-completions}) to \\\verb|/usr/share/zsh/site-functions/_l3build|:
+% \begin{verbatim}
+% #compdef l3build
+% (( $+functions[__l3build] )) || eval "$(l3build complete zsh)" && __l3build
+% \end{verbatim}
+%     Then \verb|grep l3build ~/.zcompdump| to confirm:
+% \begin{verbatim}
+% 'l3build' '_l3build'
+% \end{verbatim}
+% If not, \verb|rm ~/.zcompdump|, then \verb|compinit| again.
+%
+% Note: \verb|/usr/share| is only for GNU/Linux, for other OSs, try:
+% \begin{description}
+%   \item[macOS (homebrew, x86)]\verb|/usr/local/share|
+%   \item[macOS (homebrew, arm)]\verb|/opt/homebrew/share|
+%   \item[Android (Termux)]\verb|/data/data/com.termux/files/usr/share|
+%   \item[Windows (Msys2 Mingw64)]\verb|/mingw64/share|
+% \end{description}
 % \end{buildcmd}
 %
 %
