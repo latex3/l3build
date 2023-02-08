@@ -787,9 +787,6 @@ function runtest(name, engine, hide, ext, test_type, breakout)
       os_setenv .. " LUAINPUTS=." .. localtexmf()
         .. (checksearch and os_pathsep or "")
         .. os_concat ..
-      -- Avoid spurious output from (u)pTeX
-      os_setenv .. " GUESS_INPUT_KANJI_ENCODING=0"
-        .. os_concat ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..

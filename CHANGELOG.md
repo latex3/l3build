@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Drop a redundant setup line for upTeX
+
 ### Fixed
 - Ensure `texmf.cnf` work correctly for `dvips`
 
