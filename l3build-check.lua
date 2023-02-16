@@ -126,8 +126,8 @@ local function normalize_log(content,engine,errlevels)
     -- Zap line numbers from \show, \showbox, \box_show and the like:
     -- do this before wrapping lines
     line = gsub(line, "^l%.%d+ ", "l. ...")
-    -- Also from lua stack traces.
-    line = gsub(line, "lua:%d+: in function", "lua:...: in function")
+    -- Also from Lua stack traces
+    line = gsub(line, "lua:%d+:", "lua:...:")
     -- Allow for wrapped lines: preserve the content and wrap
     -- Skip lines that have an explicit marker for truncation
     if len(line) == maxprintline  and

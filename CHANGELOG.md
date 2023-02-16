@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Drop a redundant setup line for upTeX
+- Normalise more Lua stack trace data (may require `.tlg` rebuild)
 
 ### Fixed
 - Ensure `texmf.cnf` work correctly for `dvips`
