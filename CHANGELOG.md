@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2023-02-16]
+
 ### Changed
 - Drop a redundant setup line for upTeX
 - Normalise more Lua stack trace data (may require `.tlg` rebuild)
@@ -618,7 +620,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2022-11-10...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2023-02-16...HEAD
+[2023-02-16]: https://github.com/latex3/l3build/compare/2022-11-10...2023-02-16
 [2022-11-10]: https://github.com/latex3/l3build/compare/2022-09-15...2022-11-10
 [2022-09-15]: https://github.com/latex3/l3build/compare/2022-04-19...2022-09-15
 [2022-04-19]: https://github.com/latex3/l3build/compare/2022-04-12...2022-04-19
