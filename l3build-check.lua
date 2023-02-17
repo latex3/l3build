@@ -55,7 +55,10 @@ local remove           = os.remove
 -- Set up the check system files: needed for checking one or more tests and
 -- for saving the test files
 function checkinit()
-  if not options["dirty"] then
+  if options["dirty"] then
+    mkdir(testdir)
+    mkdir(resultdir)
+  else
     cleandir(testdir)
     cleandir(resultdir)
   end

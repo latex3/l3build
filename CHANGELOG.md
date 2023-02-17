@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Ensure directories `testdir` and `resultdir` exist when `--dirty` is set
+
 ## [2023-02-16]
 
 ### Changed
