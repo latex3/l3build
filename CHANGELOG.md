@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Ensure directories `testdir` and `resultdir` exist when `--dirty` is set
+- epoch settings with xetex
 
 ## [2023-02-16]
 
