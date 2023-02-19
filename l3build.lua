@@ -207,11 +207,12 @@ end
 if #checkconfigs == 1 and
    checkconfigs[1] ~= "build" and
    (options["target"] == "check" or options["target"] == "save" or options["target"] == "clean") then
-   local config = "./" .. gsub(checkconfigs[1],"%.lua$","") .. ".lua"
+   local configname  = gsub(checkconfigs[1], "%.lua$", "")
+   local config = "./" .. configname .. ".lua"
    if fileexists(config) then
      local savedtestfiledir = testfiledir
      dofile(config)
-     testdir = testdir .. "-" .. checkconfigs[1]
+     testdir = testdir .. "-" .. configname
      -- Reset testsuppdir if required
      if savedtestfiledir ~= testfiledir and
        testsuppdir == savedtestfiledir .. "/support" then

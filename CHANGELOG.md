@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Unify `testdir` by dropping possibly trailing `.lua` passed to `--config`
+
 ### Fixed
 - Ensure directories `testdir` and `resultdir` exist when `--dirty` is set
 - epoch settings with xetex
