@@ -57,6 +57,7 @@ end
 
 function dvitopdf(name, dir, engine, hide)
   runcmd(
+    set_epoch_cmd(epoch, forcecheckepoch) ..
     "dvips " .. name .. dviext
       .. (hide and (" > " .. os_null) or "")
       .. os_concat ..
