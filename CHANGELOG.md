@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Restore epoch settings for `dvitopdf()`
+
 ## [2023-02-20]
 
 ### Changed

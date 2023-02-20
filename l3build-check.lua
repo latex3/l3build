@@ -791,7 +791,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
         .. (checksearch and os_pathsep or "")
         .. os_concat ..
       -- ensure epoch settings
-        set_epoch_cmd(epoch, forcecheckepoch) ..  
+      set_epoch_cmd(epoch, forcecheckepoch) ..
       -- Ensure lines are of a known length
       os_setenv .. " max_print_line=" .. maxprintline
         .. os_concat ..
