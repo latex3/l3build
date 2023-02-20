@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2023-02-20]
+
 ### Changed
 - Unify `testdir` by dropping possibly trailing `.lua` passed to `--config`
 
@@ -627,7 +629,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2023-02-16...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2023-02-20...HEAD
+[2023-02-20]: https://github.com/latex3/l3build/compare/2023-02-16...2023-02-20
 [2023-02-16]: https://github.com/latex3/l3build/compare/2022-11-10...2023-02-16
 [2022-11-10]: https://github.com/latex3/l3build/compare/2022-09-15...2022-11-10
 [2022-09-15]: https://github.com/latex3/l3build/compare/2022-04-19...2022-09-15
