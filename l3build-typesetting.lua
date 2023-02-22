@@ -57,6 +57,7 @@ end
 
 function dvitopdf(name, dir, engine, hide)
   runcmd(
+    -- dvips respects epoch settings, but ps2pdf (ghostscript) doesn't
     set_epoch_cmd(epoch, forcecheckepoch) ..
     "dvips " .. name .. dviext
       .. (hide and (" > " .. os_null) or "")
