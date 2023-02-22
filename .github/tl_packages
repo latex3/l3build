@@ -12,7 +12,11 @@ tex
 xetex
 # Requirements for the tests
 amsfonts
+dvips
 etex-pkg
+l3experimental
+latex-lab
+pdfmanagement-testphase
 #
 # Support for typesetting the docs
 #
