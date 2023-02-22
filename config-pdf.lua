@@ -1,2 +1,2 @@
-checkengines = {"pdftex", "xetex"}
+checkengines = {"pdftex", "xetex", "latexdvips"}
 testfiledir  = "testfiles-pdf"

@@ -7,6 +7,16 @@ bundle = ""
 -- Non-standard settings
 checkconfigs = {"build", "config-pdf", "config-plain"}
 checkdeps    = { }
+--[[ FIXME:
+  - setting specialformats in config-pdf.lua results in "binary" set to "latexdvips" (should be "latex")
+  - setting specialformats in build.lua disables specifying engine
+      l3build save -c config-pdf -e latexdvips 00-test-2
+]]
+specialformats = specialformats or {}
+specialformats["latex"] = specialformats["latex"] or
+  {
+    latexdvips = {binary = "latex", format = ""}
+  }
 checkengines = {"pdftex", "xetex", "luatex", "ptex", "uptex"}
 cleanfiles   = {"*.pdf", "*.tex", "*.zip"}
 exefiles     = {"l3build.lua"}
