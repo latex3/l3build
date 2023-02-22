@@ -551,6 +551,11 @@ local function normalize_pdf(content)
       binary = false
       stream = true
       stream_content = "stream" .. os_newline
+    elseif match(line, "/Length %d+>>stream$") then
+      binary = false
+      stream = true
+      stream_content = "stream" .. os_newline
+      new_content = new_content .. gsub(line, "stream$", "") .. os_newline
     elseif not match(line, "^ *$") and
       not match(line,"^%%%%Invocation") and
       not match(line,"^%%%%%+") then
