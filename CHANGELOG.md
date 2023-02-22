@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 - Force non-Windows diff program to consider all files to be text files
+- Extend PDF-based tests to `dvips`
 
 ### Fixed
 - Restore epoch settings for `dvitopdf()`

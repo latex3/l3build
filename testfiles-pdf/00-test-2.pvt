@@ -1,3 +1,7 @@
+% needed by dvips (ps2pdf), to normalize pdf metadata
+\ifdefined\pdfoutput\ifnum\pdfoutput=0
+  \DocumentMetadata{}
+\fi\fi
 \input regression-test.tex\relax
 
 \documentclass{minimal}
