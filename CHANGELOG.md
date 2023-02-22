@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Force non-Windows diff program to consider all files to be text files
+
 ### Fixed
 - Restore epoch settings for `dvitopdf()`
 - Use plural form of variable `ps2pdfopts` consistently in code and doc, and 

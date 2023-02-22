@@ -133,7 +133,9 @@ os_ascii   = "echo \"\""
 os_cmpexe  = getenv("cmpexe") or "cmp"
 os_cmpext  = getenv("cmpext") or ".cmp"
 os_diffext = getenv("diffext") or ".diff"
-os_diffexe = getenv("diffexe") or "diff -c --strip-trailing-cr"
+-- "-a, --text": force diff to consider all files to be text files
+-- https://www.gnu.org/software/diffutils/manual/html_node/Binary.html
+os_diffexe = getenv("diffexe") or "diff -ac --strip-trailing-cr"
 os_grepexe = "grep"
 os_newline = "\n"
 
