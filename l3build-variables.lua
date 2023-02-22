@@ -193,7 +193,8 @@ if flattentds == nil then
 end
 maxprintline = maxprintline or 79
 packtdszip   = packtdszip   or false
-ps2pdfopt    = ps2pdfopt    or ""
+-- support "ps2pdfopt" for backward compatibility, gh issue #275
+ps2pdfopts   = ps2pdfopts   or ps2pdfopt or ""
 typesetcmds  = typesetcmds  or ""
 typesetruns  = typesetruns  or 3
 recordstatus = recordstatus or false
