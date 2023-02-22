@@ -5,10 +5,10 @@ collected together a few pointers to help things along.
 ## Bugs
 
 Please log bugs using the [issues](https://github.com/latex3/l3build/issues)
-system on GitHub, and choose the 'bug' label. Handy information that you might
+system on GitHub. Handy information that you might
 include, depending on the nature of the issue, includes
 
-- Your version of `l3build` (`texlua l3build.lua version`)
+- Your version of `l3build` (`l3build version`)
 - Your TeX system details (for example 'TeX Live 2017')
 - Your operating system
 - The contents of your `build.lua` file
@@ -16,8 +16,8 @@ include, depending on the nature of the issue, includes
 
 ## Feature requests
 
-Feature requests are welcome: log them in the same way as bugs and pick
-the 'Enhancement' label. We welcome feature requests for the test set up,
+Feature requests are welcome: log them in the same way as bugs.
+We welcome feature requests for the test set up,
 the build process, _etc._
 
 ## Code contributions
@@ -30,9 +30,9 @@ There are a few things that might look non-standard to most Lua programmers,
 which come about as `l3build`'s focus is testing and building LaTeX packages:
 
 - Our target Lua set up is `texlua` (part of LuaTeX), not standalone `lua`
-- The main `l3build.lua` file is self-contained as this helps with
-  bootstrapping LaTeX: we are aiming to maintain a single file with no
-  `.lua` dependencies
+- The `l3build` is self-contained as this helps with bootstrapping LaTeX:
+  we are aiming to maintain `l3build`, currently as a set of `l3build*.lua`
+  files with no external `.lua` dependencies
 - The primary documentation is aimed at the TeX world, so is in PDF format
   and generated from `l3build.dtx`; documentation in the `.lua` file is
   also welcome, but anything for general use does need to be in the `.dtx`
@@ -44,9 +44,9 @@ which come about as `l3build`'s focus is testing and building LaTeX packages:
 
 If you are submitting a pull request, notice that
 
-- We use Travis-CI for (light) testing so add `[ci skip]` to documentation-only
-  commit messages
-- We favour a single linear history so will rebase agreed pull requests on to
-  the `master` branch
+- We use GitHub Actions for (light) testing so you can test changes on your
+  fork first
+- We favor a single linear history so will rebase agreed pull requests on to
+  the `main` branch
 - Where a commit fixes or closes an issue, please include this information
   in the first line of the commit message
