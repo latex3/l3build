@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Run engine sanity check per config
+
 ### Fixed
 - Restore epoch settings for `dvitopdf()`
 - Use plural form of variable `ps2pdfopts` consistently in code and doc, and 
