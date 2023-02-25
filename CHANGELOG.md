@@ -14,6 +14,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Restore epoch settings for `dvitopdf()`
 - Use plural form of variable `ps2pdfopts` consistently in code and doc, and 
   retain compatibility with singular form `ps2pdfopt` (issue #275)
+- Remove the last trace of dropped variable `stdconfig`
 
 ## [2023-02-20]
 

@@ -123,9 +123,9 @@ epoch = normalise_epoch(epoch)
 --
 
 -- When we have specific files to deal with, only use explicit configs
--- (or just the std one)
+-- (or just the default one)
 if options["names"] then
-  checkconfigs = options["config"] or {stdconfig}
+  checkconfigs = options["config"] or {"build"}
 else
   checkconfigs = options["config"] or checkconfigs
 end
