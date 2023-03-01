@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Generalize normalization of ghostscript version in PDF-based tests
+
 ## [2023-02-26]
 
 ### Changed

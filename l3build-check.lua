@@ -556,7 +556,7 @@ local function normalize_pdf(content)
       not match(line,"^%%%%%+") then
       line = gsub(line,"%/ID( ?)%[<[^>]+><[^>]+>]","/ID%1[<ID-STRING><ID-STRING>]")
       line = gsub(line,"%/ID( ?)%[(%b())%2%]","/ID%1[<ID-STRING><ID-STRING>]")
-      line = gsub(line,"GhostScript %d%.%d+%.?%d*","GhostScript ...")
+      line = gsub(line,"Ghost[sS]cript %d+%.%d+%.?%d*","Ghostscript ...")
       new_content = new_content .. line .. os_newline
     end
   end
