@@ -11,6 +11,9 @@ this project uses date-based 'snapshot' version identifiers.
 - Generalize normalization of ghostscript version in PDF-based tests
 - Include UNIX timestamps in generated ZIP files
 
+### Fixed
+- Ensure when used, value of `ps2pdfopts` is surrounded by a space on both sides
+
 ## [2023-02-26]
 
 ### Changed
