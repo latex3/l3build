@@ -36,6 +36,9 @@ this project uses date-based 'snapshot' version identifiers.
 - Include UNIX timestamps in generated ZIP files
 - Normalize pdfTeX `.enc` file loading
 
+### Fixed
+- Ensure when used, value of `ps2pdfopts` is surrounded by a space on both sides
+
 ## [2023-02-26]
 
 ### Changed
