@@ -39,6 +39,26 @@ local function encode_time(unix)
   return date, time
 end
 
+local function extra_timestamp(mod, access, creation)
+  local flags = 0
+  local local_extra, central_extra = '', ''
+  if mod then
+    flags = flags | 0x1
+    local_extra = pack('<I4', mod)
+    global_extra = local_extra
+  end
+  if access then
+    flags = flags | 0x2
+    local_extra = local_extra .. pack('<I4', access)
+  end
+  if creation then
+    flags = flags | 0x4
+    local_extra = local_extra .. pack('<I4', creation)
+  end
+  if flags == 0 then return '', '' end
+  return pack('<c2I2B', 'UT', #central_extra + 1, flags) .. central_extra, pack('<c2I2B', 'UT', #local_extra + 1, flags) .. local_extra
+end
+
 local meta = {__index = {
   add = function(z, filename, innername, binary, executable)
     innername = innername or filename
@@ -55,7 +75,9 @@ local meta = {__index = {
     if #compressed >= #content then
       compressed = nil
     end
-    local date, time = encode_time(nil)
+    local timestamp = os.time()
+    local date, time = encode_time(timestamp)
+    local central_extra, local_extra = extra_timestamp(timestamp, nil, nil)
     z.f:write(pack("<c4I2I2I2I2I2I4I4I4I2I2",
         'PK\3\4',
         compressed and 20 or 10, -- ZIP 2.0 to allow deflate
@@ -67,8 +89,9 @@ local meta = {__index = {
         compressed and #compressed or #content,
         #content,
         #innername,
-        0),
+        #local_extra),
       innername,
+      local_extra,
       compressed or content)
     local central = pack("<c4I2I2I2I2I2I2I4I4I4I2I2I2I2I2I4I4",
         'PK\1\2',
@@ -82,13 +105,13 @@ local meta = {__index = {
         compressed and #compressed or #content,
         #content,
         #innername,
-        0, -- no extra data
+        #central_extra,
         0, -- no comment
         0, -- Disc 0
         binary and 0 or 1,
         (executable and 0x81ED--[[0100755]] or 0x81A4--[[0100644]]) << 16,
         offset)
-    z.central[#z.central+1] = central .. innername
+    z.central[#z.central+1] = central .. innername .. central_extra
   end,
   close = function(z, comment)
     comment = comment or ''
