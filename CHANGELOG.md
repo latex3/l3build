@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Generalize normalization of ghostscript version in PDF-based tests
+- Include UNIX timestamps in generated ZIP files
 
 ## [2023-02-26]
 
