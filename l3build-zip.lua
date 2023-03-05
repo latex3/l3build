@@ -45,7 +45,7 @@ local function extra_timestamp(mod, access, creation)
   if mod then
     flags = flags | 0x1
     local_extra = pack('<I4', mod)
-    global_extra = local_extra
+    central_extra = local_extra
   end
   if access then
     flags = flags | 0x2
