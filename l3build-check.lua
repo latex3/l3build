@@ -156,6 +156,10 @@ local function normalize_log(content,engine,errlevels)
     if match(line, "^%.+\\XeTeX.?.?.?file") then
       line = gsub(line, pattern, "../%1")
     end
+    -- pdfTeX .enc files
+    if match(line, "%.enc%}") then
+      line = gsub(line,"%{" .. pattern .. "%}","")
+    end
     -- Deal with dates
     if match(line, "[^<]%d%d%d%d[/%-]%d%d[/%-]%d%d") then
         line = gsub(line,"%d%d%d%d[/%-]%d%d[/%-]%d%d","....-..-..")
