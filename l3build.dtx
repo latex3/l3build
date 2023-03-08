@@ -621,42 +621,42 @@
 % Here, the |module| only is defined, and since it doesn't use |.ins| files so the variable \var{unpackfiles} is redefined to run |tex| on the |.dtx| files instead to generate the necessary |.sty| files.
 % There are some PDFs in the repository that shouldn't be part of a CTAN submission, so they're explicitly excluded, and here unpacking is done `quietly' to minimise console output when building the package.
 %
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,label=fig:breqn,caption=The build configuration for the \pkg{breqn} package.]
-%     -- Build configuration for breqn
+% \begin{floating-listing}[caption=The build configuration for the \pkg{breqn} package.,label=lst:breqn]
+%   -- Build configuration for breqn
 %
-%     module = "breqn"
+%   module = "breqn"
 %
-%     unpackfiles = {"*.dtx"}
-%     excludefiles = {"*/breqn-abbr-test.pdf",
-%                     "*/eqbreaks.pdf"}
-%     unpackopts  = "-interaction=batchmode"
-%   \end{lstlisting}
+%   unpackfiles = {"*.dtx"}
+%   excludefiles = {"*/breqn-abbr-test.pdf",
+%                   "*/eqbreaks.pdf"}
+%   unpackopts  = "-interaction=batchmode"
+% \end{floating-listing}
 %
 % An example of a bundle build script for \pkg{l3packages} is shown in Listing~\vref{lst:bundle}.
 % Note for \LaTeX{} we use a common file to set all build variables in one place, and the path to the |l3build.lua| script is hard-coded so we always use our own most recent version of the script.
 % An example of an accompanying module build script is shown in Listing~\vref{lst:module}.
 %
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,caption={The build script for the \pkg{l3packages} bundle.},label={fig:bundle}]
-%     -- Build script for LaTeX "l3packages" files
+% \begin{floating-listing}[caption={The build script for the \pkg{l3packages} bundle.},label={lst:bundle}]
+%   -- Build script for LaTeX "l3packages" files
 %
-%     -- Identify the bundle: there is no module as this is the "driver"
-%     bundle = "l3packages"
+%   -- Identify the bundle: there is no module as this is the "driver"
+%   bundle = "l3packages"
 %
-%     -- Location of main directory: use Unix-style path separators
-%     maindir = ".."
-%   \end{lstlisting}
+%   -- Location of main directory: use Unix-style path separators
+%   maindir = ".."
+% \end{floating-listing}
 %
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,caption={The build script for the \pkg{xparse} module.},label={fig:module}]
-%     -- Build script for LaTeX "xparse" files
+% \begin{floating-listing}[caption={The build script for the \pkg{xparse} module.},label={lst:module}]
+%   -- Build script for LaTeX "xparse" files
 %
-%     -- Identify the bundle and module:
-%     bundle = "l3packages"
-%     module = "xparse"
+%   -- Identify the bundle and module:
+%   bundle = "l3packages"
+%   module = "xparse"
 %
-%     -- Location of main directory: use Unix-style path separators
-%     -- Should match that defined by the bundle.
-%     maindir = "../.."
-%   \end{lstlisting}
+%   -- Location of main directory: use Unix-style path separators
+%   -- Should match that defined by the bundle.
+%   maindir = "../.."
+% \end{floating-listing}
 %
 % A collection of full examples (source files in various layouts) are available
 % at \url{https://github.com/latex3/l3build/tree/master/examples}.
@@ -699,18 +699,18 @@
 % For example, for the core \LaTeXe{} tests the main test files are contained
 % in a directory |testfiles|. To test font loading for \XeTeX{} and \LuaTeX{}
 % there are a second set of tests in |testfiles-TU| which use the short
-% |build-TU.lua| file shown in \vref{fig:configs}. To run both sets of
+% |build-TU.lua| file shown in Listing~\vref{lst:configs}. To run both sets of
 % tests, the main |build.lua| file contains the setting
 % |checkconfigs = {"build", "config-TU"}|. This will cause \pkg{l3build} to run
 % first using no additional settings (\emph{i.e.}~reading the normal
 % |build.lua| file alone), then running \emph{also} loading the settings from
 % |config-TU.lua|.
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,caption={Example of using additional (or overriding) settings for configuring tests in a different subdirectory.},label={fig:configs}]
-%     -- Special config for these tests
-%     checksearch  = true
-%     checkengines = {"xetex","luatex"}
-%     testfiledir  = "testfiles-TU"
-%   \end{lstlisting}
+% \begin{floating-listing}[caption={Example of using additional (or overriding) settings for configuring tests in a different subdirectory.},label={lst:configs}]
+%   -- Special config for these tests
+%   checksearch  = true
+%   checkengines = {"xetex","luatex"}
+%   testfiledir  = "testfiles-TU"
+% \end{floating-listing}
 %
 % To allow selection of one or more configurations, and to allow saving of
 % |.tlg| files in non-standard configurations, the |--config| (|-c|) option may
@@ -1121,16 +1121,16 @@
 % If more than one task is required, these should be separated
 % by use of |os_concat|, a string variable defined by \pkg{l3build} as the
 % correct concatenation marker for the system. An example of |runtest_tasks|
-% suitable for calling Biber is shown in \vref{fig:test-tasks}.
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,caption={Example \texttt{runtest_tasks} function.},label={fig:test-tasks}]
-%     function runtest_tasks(name,run)
-%       if run == 1 then
-%         return "biber " .. name
-%       else
-%         return ""
-%       end
+% suitable for calling Biber is shown in Listing~\vref{lst:test-tasks}.
+% \begin{floating-listing}[caption={Example \texttt{runtest_tasks} function.},label={lst:test-tasks}]
+%   function runtest_tasks(name,run)
+%     if run == 1 then
+%       return "biber " .. name
+%     else
+%       return ""
 %     end
-%   \end{lstlisting}
+%   end
+% \end{floating-listing}
 %
 % \subsection{Instructions for rebuilding test output}
 %
@@ -1211,28 +1211,28 @@
 % \TeX{}s counters. Listing~\vref{lst:expect-ins} shows the relevant part of an
 % \texttt{.ins} file to generate it.
 %
-%   \begin{lstlisting}[frame=single,language={TeX},gobble = 6,float,caption={Test and expectation can be specified side-by-side in a single \texttt{.dtx} file.},label={fig:expect-dtx}]
-%     \input regression-test.tex\relax
-%     \START
-%     \TEST{counter-math}{
-%     %<*test>
-%       \OMIT
-%       \newcounter{numbers}
-%       \setcounter{numbers}{2}
-%       \addtocounter{numbers}{2}
-%       \stepcounter{numbers}
-%       \TIMO
-%       \typeout{\arabic{numbers}}
-%     %</test>
-%     %<expect>  \typeout{5}
-%     }
-%     \END
-%   \end{lstlisting}
+% \begin{floating-listing}[language={TeX},caption={Test and expectation can be specified side-by-side in a single \texttt{.dtx} file.},label={lst:expect-dtx}]
+%   \input regression-test.tex\relax
+%   \START
+%   \TEST{counter-math}{
+%   %<*test>
+%     \OMIT
+%     \newcounter{numbers}
+%     \setcounter{numbers}{2}
+%     \addtocounter{numbers}{2}
+%     \stepcounter{numbers}
+%     \TIMO
+%     \typeout{\arabic{numbers}}
+%   %</test>
+%   %<expect>  \typeout{5}
+%   }
+%   \END
+% \end{floating-listing}
 %
-%   \begin{lstlisting}[frame=single,language={TeX},gobble = 6,float,caption={Test and expectation are generated from a \texttt{.dtx} file of the same name.},label={fig:expect-ins}]
-%      \generate{\file{\jobname.lvt}{\from{\jobname.dtx}{test}}
-%                \file{\jobname.lve}{\from{\jobname.dtx}{expect}}}
-%   \end{lstlisting}
+% \begin{floating-listing}[language={TeX},caption={Test and expectation are generated from a \texttt{.dtx} file of the same name.},label={lst:expect-ins}]
+%    \generate{\file{\jobname.lvt}{\from{\jobname.dtx}{test}}
+%              \file{\jobname.lve}{\from{\jobname.dtx}{expect}}}
+% \end{floating-listing}
 %
 % \subsection{PDF-based tests}
 %
@@ -1317,15 +1317,15 @@
 % TDS position of a file or files. Any files not specified in the table
 % will use the standard locations above. For example, to place some files
 % in the generic tree, some in the plain \TeX{} tree and some in the \LaTeX{}
-% tree, one might use the set up shown in \vref{fig:tds}.
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,caption={Example \texttt{tdslocations} table.},label={fig:tds}]
-%     tdslocations =
-%       {
-%         "tex/generic/mypkg/*.generic.tex" ,
-%         "tex/plain/mypkg/*.plain.tex"    ,
-%         "tex/latex/mypkg/*.latex.tex"
-%       }
-%   \end{lstlisting}
+% tree, one might use the set up shown in Listing~\vref{lst:tds}.
+% \begin{floating-listing}[caption={Example \texttt{tdslocations} table.},label={lst:tds}]
+%   tdslocations =
+%     {
+%       "tex/generic/mypkg/*.generic.tex" ,
+%       "tex/plain/mypkg/*.plain.tex"    ,
+%       "tex/latex/mypkg/*.latex.tex"
+%     }
+% \end{floating-listing}
 %
 % The table is read in order, and thus specific file names should come before
 % potential wild-card matches.
@@ -1348,25 +1348,25 @@
 % For example, the function used by |l3build| itself is
 % shown in Listing~\vref{lst:update-tag}.
 %
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,caption={Example \texttt{update_tag} function.},label={fig:update-tag}]
-%     -- Detail how to set the version automatically
-%     function update_tag(file,content,tagname,tagdate)
-%       if string.match(file, "%.dtx$") then
-%         return string.gsub(content,
-%           "\n%% \\date{Released %d%d%d%d/%d%d/%d%d}\n",
-%           "\n%% \\date{Released " .. tagname .. "}\n")
-%       elseif string.match(file, "%.md$") then
-%         return string.gsub(content,
-%           "\nRelease %d%d%d%d/%d%d/%d%d\n",
-%           "\nRelease " .. tagname .. "\n")
-%       elseif string.match(file, "%.lua$") then
-%         return string.gsub(content,
-%           '\nrelease_date = "%d%d%d%d/%d%d/%d%d"\n',
-%           '\nrelease_date = "' .. tagname .. '"\n')
-%       end
-%       return content
+% \begin{floating-listing}[caption={Example \texttt{update_tag} function.},label={lst:update-tag}]
+%   -- Detail how to set the version automatically
+%   function update_tag(file,content,tagname,tagdate)
+%     if string.match(file, "%.dtx$") then
+%       return string.gsub(content,
+%         "\n%% \\date{Released %d%d%d%d/%d%d/%d%d}\n",
+%         "\n%% \\date{Released " .. tagname .. "}\n")
+%     elseif string.match(file, "%.md$") then
+%       return string.gsub(content,
+%         "\nRelease %d%d%d%d/%d%d/%d%d\n",
+%         "\nRelease " .. tagname .. "\n")
+%     elseif string.match(file, "%.lua$") then
+%       return string.gsub(content,
+%         '\nrelease_date = "%d%d%d%d/%d%d/%d%d"\n',
+%         '\nrelease_date = "' .. tagname .. '"\n')
 %     end
-%   \end{lstlisting}
+%     return content
+%   end
+% \end{floating-listing}
 %
 % To allow more complex tasks to take place, a hook |tag_hook()| is also
 % available. It will receive the tag name and date as arguments, and
@@ -1407,29 +1407,29 @@
 % for an example of this). Note that this hook is intended for use files
 % \emph{not} listed in \var{typesetfiles} or \var{typesetdemofiles}.
 %
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,caption={A customised PDF creation script.},label={fig:PDF}]
-%     #!/usr/bin/env texlua
+% \begin{floating-listing}[caption={A customised PDF creation script.},label={lst:PDF}]
+%   #!/usr/bin/env texlua
 %
-%     -- Build script with custom PDF route
+%   -- Build script with custom PDF route
 %
-%     module = "mymodule"
+%   module = "mymodule"
 %
-%     function typeset(file)
-%       local name = jobname(file)
-%       local errorlevel = tex (file)
-%       if errorlevel == 0 then
-%         -- Return a non-zero errorlevel if anything goes wrong
-%         errorlevel =(
-%           bibtex(name) +
-%           tex(file)    +
-%           bibtex(name) +
-%           tex(file)    +
-%           tex(file)
-%         )
-%       end
-%       return errorlevel
+%   function typeset(file)
+%     local name = jobname(file)
+%     local errorlevel = tex (file)
+%     if errorlevel == 0 then
+%       -- Return a non-zero errorlevel if anything goes wrong
+%       errorlevel =(
+%         bibtex(name) +
+%         tex(file)    +
+%         bibtex(name) +
+%         tex(file)    +
+%         tex(file)
+%       )
 %     end
-%   \end{lstlisting}
+%     return errorlevel
+%   end
+% \end{floating-listing}
 %
 % \subsection{Pre-typesetting hook}
 %
@@ -1586,18 +1586,18 @@
 % \end{table}
 %
 %
-%   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,caption={Example of \texttt{uploadconfig} from the \pkg{vertbars} package.},label={fig:uploadconfig}]
-%     uploadconfig = {
-%       pkg         = "vertbars",
-%       version     = "v1.0c",
-%       author      = "Peter R Wilson; Will Robertson",
-%       license     = "lppl1.3c",
-%       summary     = "Mark vertical rules in margin of text",
-%       ctanPath    = "/macros/latex/contrib/vertbars",
-%       repository  = "https://github.com/wspr/herries-press/",
-%       update      = true,
-%     }
-%   \end{lstlisting}
+% \begin{floating-listing}[caption={Example of \texttt{uploadconfig} from the \pkg{vertbars} package.},label={lst:uploadconfig}]
+%   uploadconfig = {
+%     pkg         = "vertbars",
+%     version     = "v1.0c",
+%     author      = "Peter R Wilson; Will Robertson",
+%     license     = "lppl1.3c",
+%     summary     = "Mark vertical rules in margin of text",
+%     ctanPath    = "/macros/latex/contrib/vertbars",
+%     repository  = "https://github.com/wspr/herries-press/",
+%     update      = true,
+%   }
+% \end{floating-listing}
 %
 % \section{Lua interfaces}
 %
