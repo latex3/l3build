@@ -163,7 +163,7 @@
 \luavarset{tdslocations}{\{ \}}{Map for non-standard file installations}
 \luavarset{tdsdirs}{\{ \}}{List of ready-to-use source locations}
 \luavarseparator
-\luavarset{uploadconfig}        {\meta{table}} {Metadata to describe the package for CTAN (see \vref{tab:upload-setup})}
+\luavarset{uploadconfig}        {\meta{table}} {Metadata to describe the package for CTAN (see Table~\vref{tab:upload-setup})}
 \luavarset{uploadconfig.pkg}{ctanpkg}{Name of the CTAN package}
 \luavarseparator
 \luavarset{bakext}{".bak"}{Extension of backup files}
@@ -212,15 +212,25 @@
     basicstyle=\ttfamily\small,
     numbers=left,
     numberstyle={\tiny\color[gray]{0.4}},
+    language={[5.2]Lua},
+    gobble=4,
+}
+\lstnewenvironment{floating-listing}[1][]
+{%
+  \lstset{
+    frame=single,
+    float,
     captionpos=b,
     abovecaptionskip=\bigskipamount,
     floatplacement=htb,
+    #1
+  }%
 }
+{}
 \usepackage{shortvrb}
 \usepackage{enumitem}
 \usepackage[nospace]{varioref}
 \usepackage{longtable}
-\usepackage[noabbrev]{cleveref}
 \MakeShortVerb\|
 \begin{document}
   \DocInput{\jobname.dtx}
@@ -259,7 +269,7 @@
 %
 % The \pkg{l3build} system is designed for packages written in any \TeX\ dialect; its defaults are set up for \LaTeX\ packages written in the DocStrip style. (Caveat: minimal testing has yet been performed for non-\LaTeX{} packages.)
 %
-% Test files are written as standalone \TeX{} documents using the |regression-test.tex| setup file; documentation on writing these tests is discussed in \vref{sec:writing-tests}.
+% Test files are written as standalone \TeX{} documents using the |regression-test.tex| setup file; documentation on writing these tests is discussed in Section~\vref{sec:writing-tests}.
 %
 % Each package will define its own |build.lua| configuration file which both sets variables (such as the name of the package) and may also provide custom functions.
 %
@@ -329,7 +339,7 @@
 % variable settings \emph{or} additional code to customize the build
 % process.
 %
-%The example scripts given in \vref{sec:examples} largely cover the required knowledge in Lua programing.
+%The example scripts given in Section~\vref{sec:examples} largely cover the required knowledge in Lua programing.
 % For a more advanced usage, one may consult general Lua documentations including \url{http://www.lua.org/manual/5.3/manual.html} and for the few |texlua| specific additions see section 4.2 of the \LuaTeX{} manual available locally with |texdoc luatex| command line or at \url{https://www.pragma-ade.com/general/manuals/luatex.pdf}.
 %
 % \subsection{Main build targets}
@@ -543,7 +553,7 @@
 % This file is then used in all subsequent checks against the \texttt{\meta{name}.lvt} test.
 %
 % If the |--engine| (or |-e|) is specified (one of |pdftex|, |xetex|, or |luatex|), the saved output is stored in \texttt{\meta{name}.\meta{engine}.tlg}. This is necessary if running the test through a different engine produces a different output.
-% A normalisation process is performed when checking to avoid common differences such as register allocation; full details are listed in \vref{sec:norm}.
+% A normalisation process is performed when checking to avoid common differences such as register allocation; full details are listed in Section~\vref{sec:norm}.
 %
 % If the \var{recordstatus} variable is set \var{true}, additional information
 % will be added to the \texttt{.tlg} to record the \enquote{exit status} of the
@@ -560,7 +570,7 @@
 % This would allow, say, for the copyright statement for the package to refer to the
 % manifest file rather than requiring the author to manually keep a file list up-to-date
 % in multiple locations. The manifest file can be structured and documented with a degree
-% of flexibility. Additional information is described in \vref{sec:manifest}.
+% of flexibility. Additional information is described in Section~\vref{sec:manifest}.
 %
 % In order for \texttt{manifest} to detect derived and typeset files, it should be run
 % \emph{after} running \texttt{unpack} and \texttt{doc}. If \texttt{manifest}
@@ -580,7 +590,7 @@
 % ISO format (YYYY-MM-DD). If no \meta{tag name} is given, the tag will default to |nil|.
 % Both are passed as arguments to the |update_tag()| function.
 %
-% The standard setup does nothing unless tag update is set up by defining a custom |update_tag()| function. See \vref{sec:tagging} for full details on this feature.
+% The standard setup does nothing unless tag update is set up by defining a custom |update_tag()| function. See Section~\vref{sec:tagging} for full details on this feature.
 % \end{buildcmd}
 %
 % \begin{buildcmd}{unpack}
@@ -598,16 +608,16 @@
 % \begin{buildcmd}{upload [\meta{version}]}
 % This target uses \texttt{curl} to upload the package zip file (created using \texttt{ctan}) to CTAN.
 % To control the metadata used to upload the package, the \texttt{uploadconfig} table should be populated with a number of fields.
-% These are documented in \vref{tab:upload-setup}.
+% These are documented in Table~\vref{tab:upload-setup}.
 % Missing required fields will result in an interactive prompt for manual entry. When given, \meta{version} overrides \texttt{uploadconfig.version}.
 %
-% See \vref{sec:upload} for full details on this feature.
+% See Section~\vref{sec:upload} for full details on this feature.
 % \end{buildcmd}
 %
 % \subsection{Example build scripts}
 % \label{sec:examples}
 %
-% An example of a standalone build script for a package that uses self-contained |.dtx| files is shown in \vref{fig:breqn}.
+% An example of a standalone build script for a package that uses self-contained |.dtx| files is shown in Listing~\vref{lst:breqn}.
 % Here, the |module| only is defined, and since it doesn't use |.ins| files so the variable \var{unpackfiles} is redefined to run |tex| on the |.dtx| files instead to generate the necessary |.sty| files.
 % There are some PDFs in the repository that shouldn't be part of a CTAN submission, so they're explicitly excluded, and here unpacking is done `quietly' to minimise console output when building the package.
 %
@@ -622,9 +632,9 @@
 %     unpackopts  = "-interaction=batchmode"
 %   \end{lstlisting}
 %
-% An example of a bundle build script for \pkg{l3packages} is shown in \vref{fig:bundle}.
+% An example of a bundle build script for \pkg{l3packages} is shown in Listing~\vref{lst:bundle}.
 % Note for \LaTeX{} we use a common file to set all build variables in one place, and the path to the |l3build.lua| script is hard-coded so we always use our own most recent version of the script.
-% An example of an accompanying module build script is shown in \vref{fig:module}.
+% An example of an accompanying module build script is shown in Listing~\vref{lst:module}.
 %
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,caption={The build script for the \pkg{l3packages} bundle.},label={fig:bundle}]
 %     -- Build script for LaTeX "l3packages" files
@@ -1001,7 +1011,7 @@
 % \showbox0
 % \END
 % \end{Verbatim}
-% This produces the output shown in \vref{fig:box-log} (left side).
+% This produces the output shown in Figure~\vref{fig:box-log} (left side).
 % It is clear that if the definitions used to typeset the material in the box changes, the log output will differ and the test will no longer pass.
 %
 % The equivalent test in \LaTeXe{} using \pkg{expl3} is similar.
@@ -1017,7 +1027,7 @@
 % \ExplSyntaxOff
 % \END
 % \end{Verbatim}
-% The output from this test is shown in \vref{fig:box-log} (right side).
+% The output from this test is shown in Figure~\vref{fig:box-log} (right side).
 % There is marginal difference (mostly related to font selection and different logging settings in \LaTeX) between the plain and \pkg{expl3} versions.
 %
 % When examples are not self-contained enough to be typeset into boxes, it is possible to ask \TeX{} to output the entire contents of a page.
@@ -1220,8 +1230,8 @@
 % differ.
 %
 % Combining both features enables contrasting the test with its expected
-% outcome in a compact format. \Vref{fig:expect-dtx} exemplary tests
-% \TeX{}s counters. \Vref{fig:expect-ins} shows the relevant part of an
+% outcome in a compact format. Listing~\vref{lst:expect-dtx} exemplary tests
+% \TeX{}s counters. Listing~\vref{lst:expect-ins} shows the relevant part of an
 % \texttt{.ins} file to generate it.
 %
 %   \begin{lstlisting}[frame=single,language={TeX},gobble = 6,float,caption={Test and expectation can be specified side-by-side in a single \texttt{.dtx} file.},label={fig:expect-dtx}]
@@ -1359,7 +1369,7 @@
 % The |update_tag()| function should return the (modified) contents
 % for writing to disk.
 % For example, the function used by |l3build| itself is
-% shown in \vref{fig:update-tag}.
+% shown in Listing~\vref{lst:update-tag}.
 %
 %   \begin{lstlisting}[frame=single,language={[5.2]Lua},gobble = 6,float,caption={Example \texttt{update_tag} function.},label={fig:update-tag}]
 %     -- Detail how to set the version automatically
@@ -1408,7 +1418,7 @@
 % any extension. The \texttt{tex} takes as an argument the full name
 % of the file. The most complex function \texttt{makeindex} requires the
 % name, input extension, output extension, log extension and style name.
-% For example, \vref{fig:PDF} shows a simple script which might
+% For example, Listing~\vref{lst:PDF} shows a simple script which might
 % apply to a case where multiple \BibTeX{} runs are needed (perhaps where
 % citations can appear within other references).
 %
@@ -1474,9 +1484,9 @@
 % The CTAN upload process is backed by an API, which \pkg{l3build} can use
 % to send zip files for release. Along with the file, a variety of metadata
 % must be specified about the package, including the version, license, and so on, explained at \url{https://www.ctan.org/upload}.
-% A description of this metadata is outlined in \vref{tab:upload-setup},
+% A description of this metadata is outlined in Table~\vref{tab:upload-setup},
 % and a simple example of an extract from a \texttt{build.lua} file using this is shown
-% in \vref{fig:uploadconfig}.
+% in Listing~\vref{lst:uploadconfig}.
 %
 % Note that the \texttt{upload} target will \emph{not} execute the
 % \texttt{ctan} target first.
@@ -1953,13 +1963,13 @@
 % target attempt to reflect the defaults for \pkg{l3build} itself.
 % The groups (and hence the files) displayed can be completely
 % customised by defining a new setup function which creates a Lua table with
-% the appropriate settings (\vref{sec:manifest-groups}).
+% the appropriate settings (Section~\vref{sec:manifest-groups}).
 %
 % The formatting within the manifest file can be customised by redefining a number
 % of Lua functions. This includes
-% how the files are sorted within each group (\vref{sec:manifest-sorting}),
-% the inclusion of one-line descriptions for each file (\vref{sec:manifest-desc}),
-% and the details of the formatting of each entry (\vref{sec:manifest-formatting}).
+% how the files are sorted within each group (Section~\vref{sec:manifest-sorting}),
+% the inclusion of one-line descriptions for each file (Section~\vref{sec:manifest-desc}),
+% and the details of the formatting of each entry (Section~\vref{sec:manifest-formatting}).
 %
 % To perform such customisations, either include the re-definitions directly within your
 % package's |build.lua| file, or make a copy of |l3build-manifest-setup.lua|, rename it,
@@ -2002,7 +2012,8 @@
 %
 % The |groups| variable is an ordered array of tables which contain the metadata about each
 % `group' in the manifest listing.
-% The keys supported in these tables are outlined in \vref{tab:manifest-setup,tab:manifest-subheadings}
+% The keys supported in these tables are outlined in
+% Tables~\vref{tab:manifest-setup} and~\vref{tab:manifest-subheadings}.
 % See the complete setup code in |l3build-manifest-setup.lua| for examples of these in use.
 %
 % \begin{table}
