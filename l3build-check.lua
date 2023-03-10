@@ -697,9 +697,11 @@ function compare_tlg(difffile, tlgfile, logfile, cleanup, name, engine)
   local testname = name .. "." .. engine
   -- Do additional log formatting if the engine is LuaTeX, there is no
   -- engine-specific .tlg file and the default engine is not LuaTeX
+  local has_engine_specific_tlg =
+      match(tlgfile, "%." .. engine .. "%" .. tlgext)
+      and locate({ testfiledir, unpackdir }, { tlgfile })
   if (match(engine,"^lua") or match(engine,"^harf"))
-    and not (match(tlgfile, "%." .. engine .. "%" .. tlgext)
-      and locate({testfiledir, unpackdir}, {tlgfile}))
+    and not has_engine_specific_tlg
     and not match(stdengine,"^lua")
     then
     local lualogfile = logfile
