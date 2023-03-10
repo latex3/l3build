@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Apply needed luatex-specific log normalization, even when `--rerun` is used
+  (issue #291)
+
 ## [2023-03-08]
 
 ### Changed
