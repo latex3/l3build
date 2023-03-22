@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Default value of `maxprintline` is now `9999`
+  (may require `.tlg` updates: see docs)
+
 ### Fixed
 - Apply needed luatex-specific log normalization, even when `--rerun` is used
   (issue #291)

@@ -152,7 +152,7 @@
 \luavarset{epoch}       {1463734800}  {Epoch (Unix date) to set for test runs}
 \luavarset{flatten}     {true}        {Switch to flatten any source structure when sending to CTAN}
 \luavarset{flattentds}  {true}        {Switch to flatten any source structure when creating a TDS structure}
-\luavarset{maxprintline}{79}          {Length of line to use in log files}
+\luavarset{maxprintline}{9999}        {Length of line to use in log files}
 \luavarset{packtdszip}  {false}       {Switch to build a TDS-style zip file for CTAN}
 \luavarset{ps2pdfopts}  {""}          {Options for \texttt{ps2pdf}}
 \luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting}
@@ -895,6 +895,25 @@
 % normalisation is carried out from UTF-8 to ASCII. If the option is set to
 % an empty table the latter process is skipped: suitable for cases where only
 % Unicode engines are in use.
+%
+% \subsection{Breaking changes}
+%
+% Very occasionally, it is necessary to make changes to \pkg{l3build} that
+% change the \texttt{.tlg} file results. This is typically when additional
+% normalisation is required. When this is the case, you should first verify
+% that \texttt{.tlg} files pass with the older \pkg{l3build}, then update only
+% \pkg{l3build}, re-check the files and save the results. Where possible,
+% we provide a mechanism to run with older setting to allow this process to
+% take place smoothly.
+%
+% \subsubsection{Release 2023-03-22}
+%
+% This release changes the standard value of \var{maxprintline} for $79$ to
+% $9999$, to suppress line wrapping in the log. This makes normalisation of
+% for example file paths more reliable. To check that \texttt{.tlg} files
+% are correct, you can set \var{maxprintline} in your \texttt{build.lua} file
+% explicitly to the old default, check that tests pass, then remove this
+% line and re-check.
 %
 % \section{Writing test files}
 % \label{sec:writing-tests}

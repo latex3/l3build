@@ -1,6 +1,6 @@
 --[[
 
-File l3build-variables.lua Copyright (C) 2018-2022 The LaTeX Project
+File l3build-variables.lua Copyright (C) 2018-2023 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -191,7 +191,7 @@ end
 if flattentds == nil then
   flattentds = true
 end
-maxprintline = maxprintline or 79
+maxprintline = maxprintline or 9999
 packtdszip   = packtdszip   or false
 -- support "ps2pdfopt" for backward compatibility, gh issue #275
 ps2pdfopts   = ps2pdfopts   or ps2pdfopt or ""
