@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2023-03-22]
+
 ### Changed
 - Default value of `maxprintline` is now `9999`
   (may require `.tlg` updates: see docs)
@@ -655,7 +657,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2023-03-08...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2023-03-22...HEAD
+[2023-03-22]: https://github.com/latex3/l3build/compare/2023-03-08...2023-03-22
 [2023-03-08]: https://github.com/latex3/l3build/compare/2023-02-26...2023-03-08
 [2023-02-26]: https://github.com/latex3/l3build/compare/2023-02-20...2023-02-26
 [2023-02-20]: https://github.com/latex3/l3build/compare/2023-02-16...2023-02-20
