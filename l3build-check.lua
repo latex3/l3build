@@ -699,7 +699,7 @@ function compare_tlg(difffile, tlgfile, logfile, cleanup, name, engine)
   -- engine-specific .tlg file and the default engine is not LuaTeX
   local has_engine_specific_tlg =
       match(tlgfile, "%." .. engine .. "%" .. tlgext)
-      and locate({ testfiledir, unpackdir }, { tlgfile })
+      and locate({ testfiledir, unpackdir }, { basename(tlgfile) })
   if (match(engine,"^lua") or match(engine,"^harf"))
     and not has_engine_specific_tlg
     and not match(stdengine,"^lua")

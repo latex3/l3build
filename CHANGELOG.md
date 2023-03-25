@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- All LuaTeX `.tlg` files were wrongly considered not engine-specific.
+  Introduced in #292 which tried to fix #291.
+
 ## [2023-03-22]
 
 ### Changed
