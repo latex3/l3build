@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Improve stdout "Running l3build with target ..."
+- Quote configuration name used in stdout
 
 ## [2023-03-27]
 
