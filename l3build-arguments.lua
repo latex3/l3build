@@ -300,7 +300,7 @@ function check_engines(config)
     end
     for _, engine in pairs(options["engine"]) do
       if not t[engine] then
-        print("\n! Error: Engine \"" .. engine .. "\" not set up for testing with configuration " .. config .. "!")
+        print("\n! Error: Engine \"" .. engine .. "\" not set up for testing with configuration \"" .. config .. "\"!")
         print("\n  Valid values are:")
         for _, engine in ipairs(checkengines) do
           print("  - " .. engine)
