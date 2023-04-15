@@ -133,9 +133,9 @@ function call(modules, target, opts)
   for _, module in ipairs(modules) do
     local text
     if module == "." and opts["config"] and #opts["config"]>0 then
-      text = " with configuration " .. opts["config"][1]
+      text = " and configuration \"" .. opts["config"][1] .. "\""
     else
-      text = " for module " .. module
+      text = " for module \"" .. module .. "\""
     end
     print("Running l3build with target \"" .. target .. "\"" .. text )
     local error_level = run(
