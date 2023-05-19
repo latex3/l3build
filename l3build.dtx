@@ -951,9 +951,13 @@
 % \item
 % \cs{ERROR} is \emph{not} defined but is commonly used to indicate a code path that should never be reached.
 % \item
-% The \cs{TEST}\marg{title}\marg{contents} command surrounds its \meta{contents} with some \cs{SEPARATOR}s and a \meta{title}.
+% The \cs{TEST}\marg{title}\marg{contents} command runs its \meta{contents}
+% in a group and surrounds the generated log lines with some \cs{SEPARATOR}s
+% and a \meta{title}.
 % \item
-% \cs{TESTEXP} surrounds its contents with \cs{TYPE} and formatting to match \cs{TEST}; this can be used as a shorthand to test expandable commands.
+% \cs{TESTEXP}\marg{title}\marg{contents} surrounds its \meta{contents} with
+% \cs{TYPE} and formatting to match \cs{TEST}; this can be used as a shorthand
+% to test expandable commands.
 % \item
 % \cs{BEGINTEST}\marg{title} \dots \cs{ENDTEST} is an environment form of
 % \cs{TEST}, allowing verbatim material, \emph{etc.} to appear.
