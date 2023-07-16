@@ -676,6 +676,14 @@
 % tests such that they do not use the same names for such files: this may lead
 % to variable outcomes depending on the order in which tests are run.
 %
+% Where files need to be removed between different engine tests, they should
+% be listed in |dynamicfiles|. If the files are generated in a directory
+% structure, e.g.~by \pkg{minted}, then a recursive glob will be needed,
+% for example
+% \begin{Verbatim}
+%   dynamicfiles = {"_minted-*/**"}
+% \end{Verbatim}
+%
 % \subsection{Selective running of tests}
 %
 % The variables |includetests| and |excludetests| may be used to select which
