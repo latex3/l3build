@@ -23,3 +23,23 @@ jobs:
           package_file: .github/tl_packages
       - name: Run l3build
         run: texlua l3build.lua ctan -H --show-log-on-error
+  miktex:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install MikTeX
+        run: |
+          set -e
+          sudo gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/miktex.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D6BC243565B2087BC3F897C9277A7293F59E4889
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/miktex.gpg] http://miktex.org/download/ubuntu jammy universe" | sudo tee /etc/apt/sources.list.d/miktex.list
+          sudo apt-get update
+          # We need Ghostscript for XeTeX tests.
+          sudo apt-get install ghostscript
+          sudo apt-get install -y --no-install-recommends miktex
+          sudo miktexsetup finish
+          sudo initexmf --admin --set-config-value=[MPM]AutoInstall=1
+          sudo mpm --admin --update-db
+          sudo mpm --admin --update
+      - name: Run l3build
+        run: texlua l3build.lua ctan -H --show-log-on-error
