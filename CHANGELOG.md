@@ -10,7 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Improve stdout "Running l3build with target ..."
 - Quote configuration name used in stdout
-- Update one leftover outdated doc for `unpackexe`. It defaults to `pdftex`.
+- Update one leftover outdated doc for `unpackexe`: defaults to `pdftex`
 - Building pLaTeX format now uses e-upTeX engine
 
 ## [2023-03-27]
