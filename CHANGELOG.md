@@ -12,6 +12,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Quote configuration name used in stdout
 - Update one leftover outdated doc for `unpackexe`: defaults to `pdftex`
 - Building pLaTeX format now uses e-upTeX engine
+- Normalize more `luaotfload` path data (see issue #301)
 
 ## [2023-03-27]
 

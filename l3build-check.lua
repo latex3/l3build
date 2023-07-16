@@ -152,6 +152,9 @@ local function normalize_log(content,engine,errlevels)
     -- luaotfload files start with keywords
     line = gsub(line, "from " .. pattern .. "$", "from ../%1")
     line = gsub(line, ": " .. pattern .. "%)", ": ../%1)")
+    -- More luaotfload
+    line = gsub(line, "database loaded from " .. pattern .. "%)",
+      "database loaded from ../%1)")
     -- Deal with XeTeX specials
     if match(line, "^%.+\\XeTeX.?.?.?file") then
       line = gsub(line, pattern, "../%1")
