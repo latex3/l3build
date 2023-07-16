@@ -12,7 +12,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Quote configuration name used in stdout
 - Update one leftover outdated doc for `unpackexe`: defaults to `pdftex`
 - Building pLaTeX format now uses e-upTeX engine
-- Normalize more `luaotfload` path data (see issue #301)
+- Normalize more `luaotfload` path data (see issue \#301)
 
 ## [2023-03-27]
 
@@ -28,7 +28,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Apply needed luatex-specific log normalization, even when `--rerun` is used
-  (issue #291)
+  (issue \#291)
 
 ## [2023-03-08]
 
@@ -48,7 +48,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Fixed
 - Restore epoch settings for `dvitopdf()`
 - Use plural form of variable `ps2pdfopts` consistently in code and doc, and 
-  retain compatibility with singular form `ps2pdfopt` (issue #275)
+  retain compatibility with singular form `ps2pdfopt` (issue \#275)
 - Remove the last trace of dropped variable `stdconfig`
 
 ## [2023-02-20]
@@ -135,7 +135,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - If multiple configurations are present, let `l3build clean` run
-  on all of them by default. (issue #214)
+  on all of them by default. (issue \#214)
 
 ## [2021-12-06]
 
@@ -154,7 +154,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Fixed
 - Installation of files when using MiKTeX (see #125)
 - Incorrect line in `manifest` target (see #195)
-- Placement of PDF files in subdirectory locations (issue #209)
+- Placement of PDF files in subdirectory locations (issue \#209)
 - Detection of engine-specific tlg files for non-standard LuaTeX based engines (issues #214)
 
 ## [2021-11-24]
@@ -196,12 +196,12 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2021-05-05]
 
 ### Changed
-- Normalise Lua function calls (issue #127) - may require `.tlg` update
+- Normalise Lua function calls (issue \#127) - may require `.tlg` update
 - LuaTeX from TL'21 is no longer 'off by one' in log files - may require
   `.tlg` update
 
 ### Fixed
-- Installation now supports deeper directory levels (issue #182)
+- Installation now supports deeper directory levels (issue \#182)
 - The `texmfhome` directory is now created before use if required
 - Crash caused by yyyy-mm-dd epoch format
 
@@ -265,7 +265,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - When `checkruns` > 1 and `recordstatus=true`, testing code would crash
-  (issue #90)
+  (issue \#90)
 
 ## [2020-02-03]
 
@@ -296,7 +296,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 
-- New `\ASSERT` and `\ASSERTSTR` functions (issue #102)
+- New `\ASSERT` and `\ASSERTSTR` functions (issue \#102)
 
 ### Changed
 
