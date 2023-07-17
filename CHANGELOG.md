@@ -14,6 +14,9 @@ this project uses date-based 'snapshot' version identifiers.
 - Building pLaTeX format now uses e-upTeX engine
 - Normalize more `luaotfload` path data (see issue \#301)
 
+### Fixed
+- Avoid setting `TEMXFCNF` for ConTeXt (issue \#232)
+
 ## [2023-03-27]
 
 ### Fixed
