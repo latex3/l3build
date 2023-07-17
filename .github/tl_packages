@@ -12,6 +12,7 @@ tex
 xetex
 # Requirements for the tests
 amsfonts
+context
 etex-pkg
 #
 # Support for typesetting the docs
