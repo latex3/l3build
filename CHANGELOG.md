@@ -13,6 +13,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Update one leftover outdated doc for `unpackexe`: defaults to `pdftex`
 - Building pLaTeX format now uses e-upTeX engine
 - Normalize more `luaotfload` path data (see issue \#301)
+- Update ConTeXt settings to allow for LuaTeX and LuaMetaTeX runs
 
 ### Fixed
 - Avoid setting `TEMXFCNF` for ConTeXt (issue \#232)
