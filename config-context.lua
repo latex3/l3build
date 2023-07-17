@@ -1,5 +1,5 @@
 stdengine = "luametatex"
-checkengines = {"luametatex","luatex"}
+checkengines = {"luametatex"}
 checkformat = "context"
 testfiledir = "testfiles-context"
 unpackfiles = {}
