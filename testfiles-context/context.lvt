@@ -1,0 +1,7 @@
+\starttext
+\input{regression-test}
+\START
+    Hello!
+    \wlog{Hello}
+\OMIT
+\stoptext
