@@ -1,6 +1,6 @@
 --[[
 
-File l3build-typesetting.lua Copyright (C) 2018-2021 The LaTeX Project
+File l3build-typesetting.lua Copyright (C) 2018-2021,2023 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -31,29 +31,8 @@ local pairs  = pairs
 local print  = print
 
 local gsub  = string.gsub
-local match = string.match
 
 local os_type = os.type
-
--- An auxiliary used to set up the environmental variables
-function runcmd(cmd,dir,vars)
-  dir = dir or "."
-  dir = abspath(dir)
-  vars = vars or {}
-  -- Allow for local texmf files
-  local env = os_setenv .. " TEXMFCNF=." .. os_pathsep
-  local envpaths = "." .. localtexmf() .. os_pathsep
-    .. abspath(localdir) .. os_pathsep
-    .. dir .. (typesetsearch and os_pathsep or "")
-  -- Deal with spaces in paths
-  if os_type == "windows" and match(envpaths," ") then
-    envpaths = gsub(envpaths,'"','')
-  end
-  for _,var in pairs(vars) do
-    env = env .. os_concat .. os_setenv .. " " .. var .. "=" .. envpaths
-  end
-  return run(dir,set_epoch_cmd(epoch, forcedocepoch) .. env .. os_concat .. cmd)
-end
 
 function dvitopdf(name, dir, engine, hide)
   runcmd(
@@ -61,7 +40,7 @@ function dvitopdf(name, dir, engine, hide)
     "dvips " .. name .. dviext
       .. (hide and (" > " .. os_null) or "")
       .. os_concat ..
-    "ps2pdf " .. ps2pdfopts .. name .. psext
+    "ps2pdf " .. ps2pdfopts .. " " .. name .. psext
       .. (hide and (" > " .. os_null) or ""),
     dir
   )

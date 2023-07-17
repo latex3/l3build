@@ -117,15 +117,16 @@ checkengines = checkengines or {"pdftex", "xetex", "luatex"}
 checkformat  = checkformat  or "latex"
 specialformats = specialformats or { }
 specialformats.context = specialformats.context or {
-    luatex = {binary = "context", format = ""},
-    pdftex = {binary = "texexec", format = ""},
-    xetex  = {binary = "texexec", format = "", options = "--xetex"}
+    luametatex = {binary = "context", format = ""},
+    luatex     = {binary = "context", format = "", options = "--luatex"},
+    pdftex     = {binary = "texexec", format = ""},
+    xetex      = {binary = "texexec", format = "", options = "--xetex"}
   }
 specialformats.latex = specialformats.latex or { }
 specialformats.latex.etex = specialformats.latex.etex or
   {format = "latex"}
 specialformats.latex.ptex = specialformats.latex.ptex or
-   {binary = "eptex"}
+   {binary = "euptex"}
 specialformats.latex.uptex = specialformats.latex.uptex or
   {binary = "euptex"}
 if not string.find(status.banner,"2019") then
