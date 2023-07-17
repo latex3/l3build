@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2023-07-17]
+
 ### Changed
 - Improve stdout "Running l3build with target ..."
 - Quote configuration name used in stdout
@@ -678,7 +680,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2023-03-27...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2023-07-17...HEAD
+[2023-07-17]: https://github.com/latex3/l3build/compare/2023-03-27...2023-07-17
 [2023-03-27]: https://github.com/latex3/l3build/compare/2023-03-22...2023-03-27
 [2023-03-22]: https://github.com/latex3/l3build/compare/2023-03-08...2023-03-22
 [2023-03-08]: https://github.com/latex3/l3build/compare/2023-02-26...2023-03-08
