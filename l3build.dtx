@@ -111,7 +111,7 @@
 \luavarset{unpackdeps} {\{\}}{List of dependencies for unpacking}
 \luavarseparator
 \luavarset{checkengines}{\{"pdftex", "xetex", "luatex"\}}{Engines to check with \texttt{check} by default}
-\luavarset{stdengine}    {"pdftex"}{Engine to generate \texttt{.tlg} file from}
+\luavarset{stdengine}    {checkengines[1] or "pdftex"}{Engine to generate \texttt{.tlg} file from}
 \luavarset{checkformat}  {"latex"} {Format to use for tests}
 \luavarset{specialformats}{\meta{table}} {Non-standard engine/format combinations}
 \luavarset{\detokenize{test_types}}        {\meta{table}} {Custom test variants}
