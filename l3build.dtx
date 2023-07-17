@@ -428,6 +428,10 @@
 %
 % Checking can be performed with any or all of the `engines' \texttt{pdftex}, \texttt{xetex}, and \texttt{luatex}.
 % By default, each test is executed with all three, being compared against the \texttt{.tlg} file produced from the \var{pdftex} engine (these defaults are controlled by the |checkengines| and |stdengine| variable, respectively).
+% The standard engine to use is typically chosen automatically as the first entry in
+% \var{checkengines}, but may be set manually using \var{stdengine}. Where multiple
+% configurations are used and need adjustment to the standard engine, this does
+% need to be given explicitly using \var{stdengine}.
 % The format used for tests can be altered by setting \var{checkformat}: the default setting \texttt{latex} means that tests are run using \emph{e.g.}~\texttt{pdflatex}, whereas setting to \texttt{tex} will run tests using \emph{e.g.}~\texttt{pdftex}.
 % (Currently, this should be one of \texttt{latex} or \texttt{tex}.)
 % To perform the check, the engine typesets each test up to \var{checkruns} times.
