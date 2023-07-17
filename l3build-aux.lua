@@ -32,6 +32,8 @@ local print = print
 local lookup = kpse.lookup
 
 local os_time = os.time
+local os_type = os.type
+
 --
 -- Auxiliary functions which are used by more than one main function
 --
@@ -178,4 +180,24 @@ function localtexmf()
     paths = paths .. os_pathsep .. abspath(texmfdir) .. "//"
   end
   return paths
+end
+
+-- Run a command after setting up the environmental variables
+function runcmd(cmd,dir,vars)
+  dir = dir or "."
+  dir = abspath(dir)
+  vars = vars or {}
+  -- Allow for local texmf files
+  local env = os_setenv .. " TEXMFCNF=." .. os_pathsep
+  local envpaths = "." .. localtexmf() .. os_pathsep
+    .. abspath(localdir) .. os_pathsep
+    .. dir .. (typesetsearch and os_pathsep or "")
+  -- Deal with spaces in paths
+  if os_type == "windows" and match(envpaths," ") then
+    envpaths = gsub(envpaths,'"','')
+  end
+  for _,var in pairs(vars) do
+    env = env .. os_concat .. os_setenv .. " " .. var .. "=" .. envpaths
+  end
+  return run(dir,set_epoch_cmd(epoch, forcedocepoch) .. env .. os_concat .. cmd)
 end
