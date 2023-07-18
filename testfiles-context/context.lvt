@@ -1,7 +1,7 @@
-\starttext
 \input{regression-test}
+\starttext
 \START
     Hello!
-    \wlog{Hello}
+    \TYPE{Hello}
 \OMIT
 \stoptext
