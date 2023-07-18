@@ -1,4 +1,4 @@
-\input regression-test\relax
+\input{regression-test}
 \starttext
 \START
     Hello!
