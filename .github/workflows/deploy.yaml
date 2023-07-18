@@ -23,6 +23,8 @@ jobs:
           # List the required TeX Live packages in a separate file to allow reuse in
           # different workflows.
           package_file: .github/tl_packages
+      # Work around a TL issue
+      - run: mtxrun --generate && context --luatex --generate
       - name: Run l3build
         run: texlua l3build.lua ctan -H --show-log-on-error
       # Now create the release (this only runs if the previous steps were successful)
