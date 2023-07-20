@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+- Set `-kanji-internal=euc` when building pLaTeX
+
 ## [2023-07-17]
 
 ### Changed
