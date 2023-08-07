@@ -48,6 +48,13 @@ local exit             = os.exit
 local execute          = os.execute
 local remove           = os.remove
 
+local runtest
+function _ENV.runtest(...)
+  io.stderr:write("Directly calling runtest is deprecated. If you need this functionality, please contact the LaTeX team immediately.\n")
+  runtest(...)
+  return 0
+end
+
 --
 -- Auxiliary functions which are used by more than one main function
 --
@@ -594,9 +601,10 @@ function runcheck(name, hide)
   -- Used for both .lvt and .pvt tests
   local test_type = test_types[kind]
   local function check_and_diff(engine)
-    runtest(name, engine, hide, test_type.test, test_type, not forcecheckruns)
+    local time, runs = runtest(name, engine, hide, test_type.test, test_type, not forcecheckruns)
     local errorlevel = base_compare(test_type,name,engine)
     if errorlevel == 0 then
+      print(str_format("%q completed on %q in %fs with %i runs.", name, engine, time, runs))
       return errorlevel
     end
     failedengines[#failedengines + 1] = engine
@@ -790,6 +798,8 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   -- Ensure there is no stray .log file
   rmfile(testdir,name .. logext)
   local errlevels = {}
+  local needed_runs
+  local t0 = os.gettimeofday()
   for i = 1, checkruns do
     errlevels[i] = runcmd(
       -- No use of localdir here as the files get copied to testdir:
@@ -822,10 +832,12 @@ function runtest(name, engine, hide, ext, test_type, breakout)
       end
       test_type.rewrite(gen_file,new_file,engine,errlevels)
       if base_compare(test_type,name,engine,true) == 0 then
+        needed_runs = i
         break
       end
     end
   end
+  local dt = os.gettimeofday() - t0
   if test_type.generated == pdfext then
     if fileexists(testdir .. "/" .. name .. dviext) then
       dvitopdf(name, testdir, engine, hide)
@@ -846,7 +858,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
       end
     end
   end
-  return 0
+  return dt, needed_runs or checkruns
 end
 
 -- A hook to allow additional tasks to run for the tests
