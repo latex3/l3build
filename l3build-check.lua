@@ -48,6 +48,9 @@ local exit             = os.exit
 local execute          = os.execute
 local remove           = os.remove
 
+-- randomise the random numbers
+math.randomseed( os.time() )
+
 --
 -- Auxiliary functions which are used by more than one main function
 --
