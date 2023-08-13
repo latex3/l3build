@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Initialise the random seed with the current time so `--shuffle` produces different orders each run.
+
 ## [2023-07-20]
 
 - Set `-kanji-internal=euc` when building pLaTeX
@@ -58,7 +61,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Restore epoch settings for `dvitopdf()`
-- Use plural form of variable `ps2pdfopts` consistently in code and doc, and 
+- Use plural form of variable `ps2pdfopts` consistently in code and doc, and
   retain compatibility with singular form `ps2pdfopt` (issue \#275)
 - Remove the last trace of dropped variable `stdconfig`
 
