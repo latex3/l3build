@@ -158,6 +158,8 @@ local function normalize_log(content,engine,errlevels)
     -- More luaotfload
     line = gsub(line, "database loaded from " .. pattern .. "%)",
       "database loaded from ../%1)")
+    line = gsub(line, 'Root cache directory is "' .. pattern .. '"',
+      'Root cache directory is ".../%1"')
     -- Deal with XeTeX specials
     if match(line, "^%.+\\XeTeX.?.?.?file") then
       line = gsub(line, pattern, "../%1")
