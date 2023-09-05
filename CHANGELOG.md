@@ -10,6 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Initialise the random seed with the current time so `--shuffle` produces different orders each run.
 - Normalise more `luaotfload` cache lines
+- Apply `-utc` switch for LuaTeX when using a fixed epoch value
 
 ## [2023-07-20]
 
