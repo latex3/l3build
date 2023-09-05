@@ -42,7 +42,5 @@
   \ASSERT{Q}{\ODD}%
   \ASSERTSTR{Q}{\ODD}%
 }
-\ExplSyntaxOn
-\TEST{Oops}{\show\c_sys_timestamp_str}
-\ExplSyntaxOff
+
 \end{document}
