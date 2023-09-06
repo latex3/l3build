@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Refine `-utc` support
+
 ## [2023-09-05]
 
 ### Changed
