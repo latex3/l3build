@@ -129,8 +129,10 @@ if forcecheckepoch then
     local options = specialformats["latex-dev"].luatex.options
     specialformats["latex-dev"].luatex.options = (options and (options .. " ") or "") .. "-utc"
   end
+end
+if forcedocepoch then
   if match(typesetexe,"luatex") or match(typesetexe,"lualatex") then
-      typesetopts = typsetopts .. " -utc"
+    typesetopts = typsetopts .. " -utc"
   end
 end
 
