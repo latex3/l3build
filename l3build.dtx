@@ -436,8 +436,9 @@
 % (Currently, this should be one of \texttt{latex} or \texttt{tex}.)
 % To perform the check, the engine typesets each test up to \var{checkruns} times.
 % More detail on this in the documentation on |save|.
-% Options passed to the binary are defined in the variable \var{checkopts}.
-% These are applied in addition to any 
+% Options passed to the binary are those defined in the variable
+% \var{checkopts}, followed by the engine-specific ones for the current
+% \var{checkformat} (stored in table \var{specialformats}), if exist.
 %
 % By default, |texmf| trees are searched for input files when checking. This can be disabled by setting \var{checksearch} to |false|: isolation provides confidence that the tests cannot accidentally be running with incorrect files installed in the main distribution or |hometexmf|.
 %
