@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Refine `-utc` support
+- Apply `checkopts` in addition to engine-specific options
 
 ## [2023-09-05]
 

@@ -753,7 +753,8 @@ function runtest(name, engine, hide, ext, test_type, breakout)
     if engine_info then
       binary    = engine_info.binary  or binary
       format    = engine_info.format  or format
-      checkopts = engine_info.options or checkopts
+      checkopts = (engine_info.options
+        and (checkopts .. " " ..  engine_info.options)) or checkopts
       tokens    = engine_info.tokens and (' "' .. engine_info.tokens .. '" ')
                     or tokens
     end
