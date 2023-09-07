@@ -433,7 +433,8 @@
 % configurations are used and need adjustment to the standard engine, this does
 % need to be given explicitly using \var{stdengine}.
 % The format used for tests can be altered by setting \var{checkformat}: the default setting \texttt{latex} means that tests are run using \emph{e.g.}~\texttt{pdflatex}, whereas setting to \texttt{tex} will run tests using \emph{e.g.}~\texttt{pdftex}.
-% (Currently, this should be one of \texttt{latex} or \texttt{tex}.)
+% (Currently, this should be one of \texttt{latex}, \texttt{tex}, or
+% \texttt{context}.)
 % To perform the check, the engine typesets each test up to \var{checkruns} times.
 % More detail on this in the documentation on |save|.
 % Options passed to the binary are those defined in the variable
@@ -820,12 +821,13 @@
 % For more complex set ups, \var{specialformats} should be used. This is a
 % table with one entry per \var{checkformat}. Each entry is itself a table,
 % and these contain a list of engines and settings for |binary|, |format|
-% and |options|. For example, for Con\TeX{}t and appropriate set up is
+% and |options|. For example, the set up for Con\TeX{}t in \pkg{l3build} 2023-07-17 is
 % \begin{verbatim}
 % specialformats.context = {
-%   luatex = {binary = "context", format = ""},
-%   pdftex = {binary = "texexec", format = ""},
-%   xetex  = {binary = "texexec", format = "", options = "--xetex"}
+%   luametatex = {binary = "context", format = ""},
+%   luatex     = {binary = "context", format = "", options = "--luatex"},
+%   pdftex     = {binary = "texexec", format = ""},
+%   xetex      = {binary = "texexec", format = "", options = "--xetex"}
 % }
 % \end{verbatim}
 % Additional tokens can also be injected before the loading of a test file using

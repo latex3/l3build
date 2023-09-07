@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Document ConTeXt as supported `checkformat`
+
 ## [2023-09-07]
 
 ### Changed
