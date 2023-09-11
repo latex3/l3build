@@ -215,6 +215,7 @@ function install_files(target,full,dry_run)
       dir = dir or currentdir
       include = include or { }
       exclude = exclude or { }
+      insert(exclude,excludefiles)
       local excludelist = { }
       for _,glob_table in pairs(exclude) do
         for _,glob in pairs(glob_table) do

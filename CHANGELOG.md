@@ -17,6 +17,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Fixed
 - Return passing errorlevel if BibTeX issues warnings
   (see \#260)
+- Respect `excludefiles` when doing (local) installation
 
 ## [2023-09-07]
 
