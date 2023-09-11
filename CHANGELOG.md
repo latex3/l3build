@@ -14,6 +14,10 @@ this project uses date-based 'snapshot' version identifiers.
 - Extend version string normalisation during checks
   (see issue \#96)
 
+### Fixed
+- Return passing errorlevel if BibTeX issues warnings
+  (see \#260)
+
 ## [2023-09-07]
 
 ### Changed

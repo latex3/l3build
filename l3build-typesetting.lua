@@ -72,8 +72,10 @@ function bibtex(name,dir)
         os_grepexe .. " \"^" .. grep .. "bibdata{\" " .. name .. ".aux > "
           .. os_null
       ) == 0 then
-      return runcmd(bibtexexe .. " " .. bibtexopts .. " " .. name,dir,
-        {"BIBINPUTS","BSTINPUTS"})
+      local errorlevel = runcmd(bibtexexe .. " " .. bibtexopts .. " " .. name,
+        dir,{"BIBINPUTS","BSTINPUTS"})
+      -- BibTeX(8) signals warnings with errorlevel 1
+      if errorlevel > 1 then return errorlevel else return 0 end
     end
   end
   return 0
