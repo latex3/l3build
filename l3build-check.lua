@@ -171,7 +171,10 @@ local function normalize_log(content,engine,errlevels)
     -- Deal with dates
     if match(line, "[^<]%d%d%d%d[/%-]%d%d[/%-]%d%d") then
         line = gsub(line,"%d%d%d%d[/%-]%d%d[/%-]%d%d","....-..-..")
+        -- Classical LaTeX version strings
         line = gsub(line,"v%d+%.?%d?%d?%w?","v...")
+        -- Semantic version-like ones
+        line = gsub(line,"v%d+%.%d+%.%d+[%d%a.+%-]*","v...")
     end
     -- Deal with leading spaces for file and page number lines
     line = gsub(line,"^ *%[(%d)","[%1")

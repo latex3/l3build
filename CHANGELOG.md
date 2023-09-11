@@ -10,6 +10,10 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 - Document ConTeXt as supported `checkformat`
 
+### Changed
+- Extend version string normalisation during checks
+  (see issue \#96)
+
 ## [2023-09-07]
 
 ### Changed
