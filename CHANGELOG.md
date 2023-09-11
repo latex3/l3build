@@ -14,6 +14,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Extend version string normalisation during checks
   (see issue \#96)
 
+- Extend excludefiles to cover `build.lua` (see \#286)
 ### Fixed
 - Return passing errorlevel if BibTeX issues warnings
   (see \#260)
