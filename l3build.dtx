@@ -2141,6 +2141,14 @@
 % Full descriptions of their usage and arguments can be found within the |l3build-manifest-setup.lua|
 % code itself.
 %
+% \section{Known limitations}
+%
+% \subsection{Non-\textsc{ascii} filenames}
+%
+% On Windows, support for non-\textsc{ascii} filenames is limited by the way
+% that Lua handles system calls. While calling \TeX{} engines should work with
+% any name, general file operations will only success if the filename falls
+% within the codepage currently in use by the operating system.
 %
 % \end{documentation}
 %

@@ -153,9 +153,15 @@ if os_type == "windows" then
   os_yes     = "for /l %I in (1,1,300) do @echo y"
 end
 
+-- Deal with codepage hell on Windows
+local function fixname(f) return f end 
+if chgstrcp then
+  fixname = chgstrcp.utf8tosyscp
+end
+
 -- Deal with the fact that Windows and Unix use different path separators
 local function unix_to_win(path)
-  return gsub(path, "/", "\\")
+  return fixname(gsub(path, "/", "\\"))
 end
 
 function normalize_path(path)

@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Support non-ASCII filenames that fall within the system codepage on Windows
+  (see \#122)
+
 ## [2023-09-13]
 
 ### Added
