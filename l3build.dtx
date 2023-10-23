@@ -529,7 +529,7 @@
 % If the compilation is successful the |.pdf| is moved back into the main directory.
 %
 % The documentation compilation is performed with the \var{typesetexe} binary (default \texttt{pdflatex}), with options \var{typesetopts}.
-% Additional \TeX{} material defined in \var{typesetcmds} is passed to the document (e.g., for writing |\\PassOptionsToClass{l3doc}{letterpaper}|, and so on---note that backslashes need to be escaped in Lua strings).
+% Additional \TeX{} material defined in \var{typesetcmds} is passed to the document (e.g., for writing |\PassOptionsToClass{l3doc}{letterpaper}|, and so on---note that backslashes need to be escaped in Lua strings).
 %
 % Files that match |typesetsuppfiles| in the |support| directory (|supportdir|) are copied into the |build/doc| directory (|typesetdir|) for the typesetting compilation process.
 % Additional dependencies listed in the \var{typesetdeps} variable (empty by default) will also be installed.
@@ -1819,7 +1819,7 @@
 %     |normalize_path(|\meta{path}|)|
 %   \end{syntax}
 %   When called on Windows, returns a string comprising the \meta{path} with
-%   |/| characters replaced by |\\|. In other cases returns the path unchanged.
+%   |/| characters replaced by |\|. In other cases returns the path unchanged.
 % \end{function}
 %
 % \subsection{System-dependent strings}
