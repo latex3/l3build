@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Drop duplicate backslashes in doc
+
 ### Fixed
 - Support non-ASCII filenames that fall within the system codepage on Windows
   (see \#122)
