@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Document default value of `ctanpkg` as a valid lua expression
+
 ## [2023-11-01]
 
 ### Changed
