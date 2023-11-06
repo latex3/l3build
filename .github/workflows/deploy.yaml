@@ -14,11 +14,11 @@ jobs:
     steps:
       # Boilerplate
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # We need Ghostscript for XeTeX tests.
       - run: sudo apt-get update && sudo apt-get install ghostscript
       - name: Install TeX Live
-        uses: zauguin/install-texlive@v2
+        uses: zauguin/install-texlive@v3
         with:
           # List the required TeX Live packages in a separate file to allow reuse in
           # different workflows.
@@ -29,7 +29,7 @@ jobs:
         run: texlua l3build.lua ctan -H --show-log-on-error
       # Now create the release (this only runs if the previous steps were successful)
       - name: Create GitHub release
-        uses: ncipollo/release-action@a2e71bdd4e7dab70ca26a852f29600c98b33153e # v1.12.0
+        uses: ncipollo/release-action@v1
         with:
           artifacts: "build/distrib/ctan/*.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
