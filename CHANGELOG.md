@@ -11,6 +11,9 @@ this project uses date-based 'snapshot' version identifiers.
 - Document default value of `ctanpkg` as a valid lua expression
 - Improve log for failed checks with no diff files
 
+### Fixed
+- Short-circuit `check --rerun` if `testdir` doesn't exist
+
 ## [2023-11-01]
 
 ### Changed
