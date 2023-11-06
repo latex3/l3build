@@ -1031,7 +1031,7 @@ function check(names)
       end
     end
     if errorlevel ~= 0 then
-      checkdiff()
+      checkdiff() -- this leaves "config" parameter of "checkdiff()" nil
       if options["show-saves"] then
         showsavecommands(failurelist)
       end
@@ -1043,10 +1043,26 @@ function check(names)
 end
 
 -- A short auxiliary to print the list of differences for check
-function checkdiff()
-  print("\n  Check failed with difference files")
-  for _,i in ipairs(ordered_filelist(testdir, "*" .. os_diffext)) do
-    print("  - " .. testdir .. "/" .. i)
+function checkdiff(config)
+  local diff_files = ordered_filelist(testdir, "*" .. os_diffext)
+  if next(diff_files) then
+    if config then
+      print("Failed tests for configuration \"" .. config .. "\":")
+      local testdir = testdir
+      if config ~= "build" then
+        testdir = testdir .. "-" .. config
+      end
+    end
+    print("\n  Check failed with difference files")
+    for _,i in ipairs(diff_files) do
+      print("  - " .. testdir .. "/" .. i)
+    end
+  else
+    if config then
+      print("Check failed for configuration \"" .. config .. "\" with no difference files.")
+    else
+      print("Check failed with no difference files.")
+    end
   end
   print("")
 end
