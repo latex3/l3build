@@ -10,6 +10,9 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Document default value of `ctanpkg` as a valid lua expression
 
+### Fixed
+- Short-circuit `check --rerun` if `testdir` doesn't exist
+
 ## [2023-11-01]
 
 ### Changed

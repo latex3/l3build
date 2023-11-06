@@ -926,7 +926,13 @@ end
 function check(names)
   local errorlevel = 0
   if testfiledir ~= "" and direxists(testfiledir) then
-    if not options["rerun"] then
+    if options["rerun"] then
+      if not direxists(testdir) then
+        print("\n  Test directory \"" .. testdir .. "\" doesn't exist.")
+        print("  Try again without \"--rerun\".\n")
+        return 1
+      end
+    else
       errorlevel = checkinit()
       if errorlevel ~= 0 then
         return errorlevel
