@@ -165,16 +165,7 @@ if #checkconfigs > 1 then
     end
     if next(failed) then
       for _,config in ipairs(failed) do
-        print("Failed tests for configuration \"" .. config .. "\":")
-        print("\n  Check failed with difference files")
-        local testdir = testdir
-        if config ~= "build" then
-          testdir = testdir .. "-" .. config
-        end
-        for _,i in ipairs(ordered_filelist(testdir,"*" .. os_diffext)) do
-          print("  - " .. testdir .. "/" .. i)
-        end
-        print("")
+        checkdiff(config)
       end
       if options["show-saves"] then
         local savecmds, recheckcmds = "", ""
