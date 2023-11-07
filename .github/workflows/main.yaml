@@ -12,11 +12,11 @@ jobs:
     steps:
       # Boilerplate
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # We need Ghostscript for XeTeX tests.
       - run: sudo apt-get update && sudo apt-get install ghostscript
       - name: Install TeX Live
-        uses: zauguin/install-texlive@v2
+        uses: zauguin/install-texlive@v3
         with:
           # List the required TeX Live packages in a separate file to allow reuse in
           # different workflows.
