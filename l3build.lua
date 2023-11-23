@@ -191,7 +191,7 @@ if #checkconfigs > 1 then
         end
         print"To regenerate the test files, run\n"
         print(savecmds)
-        if recheckcmds ~= "" then
+        if recheckcmds ~= "" and #checkengines ~= 1 then
           print"To detect engine-specific differences, run after that\n"
           print(recheckcmds)
         end
