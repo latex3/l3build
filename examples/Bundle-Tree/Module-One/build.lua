@@ -1,5 +1,3 @@
-#!/usr/bin/env texlua
-
 bundle = "bundle-tree"
 module = "module-one"
 maindir = ".."
