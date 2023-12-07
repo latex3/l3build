@@ -10,6 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Document default value of `ctanpkg` as a valid lua expression
 - Improve log for failed checks with no diff files
+- Document full syntaxes of `\SHOWFILE` and `\ASSERT(STR)`
 
 ### Fixed
 - Short-circuit `check --rerun` if `testdir` doesn't exist

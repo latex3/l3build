@@ -977,12 +977,13 @@
 % \cs{BEGINTEST}\marg{title} \dots \cs{ENDTEST} is an environment form of
 % \cs{TEST}, allowing verbatim material, \emph{etc.} to appear.
 % \item
-% \cs{SHOWFILE} (\eTeX{} only) Shows the content of the file given as an
-% argument.
+% \cs{SHOWFILE}\marg{filename} (\eTeX{} only) Shows the content of
+% \meta{filename}.
 % \item
-% \cs{ASSERT} and \cs{ASSERTSTR} Asserts if the full expansion
-% of the two required arguments are the same: the \cs{ASSERT} function is
-% token-based, the \cs{ASSERTSTR} works on a string basis.
+% \cs{ASSERT}\marg{arg_1}\marg{arg_2} and \cs{ASSERTSTR}\marg{arg_1}\marg{arg_2}
+% Asserts if the full expansion of \meta{arg_1} and \meta{arg_2} are the same:
+% the \cs{ASSERT} function is token-based,
+% the \cs{ASSERTSTR} works on a string basis.
 % \end{itemize}
 % An example of some of these commands is shown following.
 % \begin{Verbatim}
