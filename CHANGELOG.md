@@ -14,6 +14,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Short-circuit `check --rerun` if `testdir` doesn't exist
+- Retain errorlevel on Windows during `check` target
 
 ## [2023-11-01]
 

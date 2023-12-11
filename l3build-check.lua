@@ -799,29 +799,37 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   -- Ensure there is no stray .log file
   rmfile(testdir,name .. logext)
   local errlevels = {}
+  local preamble =
+    -- No use of localdir here as the files get copied to testdir:
+    -- avoids any paths in the logs
+    os_setenv .. " TEXINPUTS=." .. localtexmf()
+      .. (checksearch and os_pathsep or "")
+      .. os_concat ..
+    os_setenv .. " LUAINPUTS=." .. localtexmf()
+      .. (checksearch and os_pathsep or "")
+      .. os_concat ..
+    -- ensure epoch settings
+    set_epoch_cmd(epoch, forcecheckepoch) ..
+    -- Ensure lines are of a known length
+    os_setenv .. " max_print_line=" .. maxprintline
+      .. os_concat
   for i = 1, checkruns do
     errlevels[i] = runcmd(
-      -- No use of localdir here as the files get copied to testdir:
-      -- avoids any paths in the logs
-      os_setenv .. " TEXINPUTS=." .. localtexmf()
-        .. (checksearch and os_pathsep or "")
-        .. os_concat ..
-      os_setenv .. " LUAINPUTS=." .. localtexmf()
-        .. (checksearch and os_pathsep or "")
-        .. os_concat ..
-      -- ensure epoch settings
-      set_epoch_cmd(epoch, forcecheckepoch) ..
-      -- Ensure lines are of a known length
-      os_setenv .. " max_print_line=" .. maxprintline
-        .. os_concat ..
+      preamble ..
       binary .. format
         .. " " .. asciiopt .. " " .. checkopts
         .. setup(lvtfile)
-        .. (hide and (" > " .. os_null) or "")
-        .. os_concat ..
-      runtest_tasks(jobname(lvtfile),i),
+        .. (hide and (" > " .. os_null) or ""),
       testdir
     )
+    -- On Windows, concatenting here will suppress any non-zero errorlevel
+    -- from the main run, so we split into two parts.
+    if errlevels[i] == 0 then
+      local errorlevel =
+        runcmd(preamble .. runtest_tasks(jobname(lvtfile),i)
+        .. (hide and (" > " .. os_null) or ""),testdir)
+      if errorlevel ~= 0 then errlevels[i] = errorlevel end
+    end
     -- Break the loop if the result is stable
     if breakout and i < checkruns then
       if test_type.generated == pdfext then
