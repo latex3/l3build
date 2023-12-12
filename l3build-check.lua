@@ -822,7 +822,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
         .. (hide and (" > " .. os_null) or ""),
       testdir
     )
-    -- On Windows, concatenting here will suppress any non-zero errorlevel
+    -- On Windows, concatenating here will suppress any non-zero errorlevel
     -- from the main run, so we split into two parts.
     if errlevels[i] == 0 then
       local errorlevel =
