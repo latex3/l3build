@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Syntax warning on Windows with some test setups
+
 ## [2023-12-12]
 
 ### Changed
