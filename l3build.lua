@@ -1,3 +1,5 @@
+#!/usr/bin/env texlua
+
 --[[
 
 File l3build.lua Copyright (C) 2014-2022 The LaTeX Project
