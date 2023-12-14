@@ -18,7 +18,14 @@ sourcefiles  = {"*.dtx", "l3build*.lua", "*.ins"}
 typesetruns  = 4
 typesetcmds  = "\\AtBeginDocument{\\DisableImplementation}"
 unpackdeps   = { }
-tagfiles     = {"l3build.1", "l3build.dtx", "*.md", "l3build.lua"}
+tagfiles     = {
+  "l3build.1",
+  "l3build.dtx",
+  "l3build.ins",
+  "**/*.md",     -- to include README.md in ./examples
+  "l3build*.lua",
+  "**/regression-test.cfg"
+}
 
 uploadconfig = {
   author      = "The LaTeX Team",
@@ -42,6 +49,21 @@ Linux, macOS, and Windows systems. The package offers:
 function update_tag(file,content,tagname,tagdate)
   local iso = "%d%d%d%d%-%d%d%-%d%d"
   local url = "https://github.com/latex3/l3build/compare/"
+  -- update copyright
+  -- copied from https://github.com/latex3/latex3/blob/76104b03a42246726556384f2ca34083bc6955aa/build-config.lua#L48-L60
+  if string.match(content,"%(C%)%s*[%d%-,]+ The LaTeX Project") then
+    local year = os.date("%Y")
+    content = string.gsub(content,
+      "%(C%)%s*([%d%-,]+) The LaTeX Project",
+      "(C) %1," .. year .. " The LaTeX Project")
+    content = string.gsub(content,year .. "," .. year,year)
+    content = string.gsub(content,
+      "%-" .. math.tointeger(year - 1) .. "," .. year,
+      "-" .. year)
+    content = string.gsub(content,
+      math.tointeger(year - 2) .. "," .. math.tointeger(year - 1) .. "," .. year,
+      math.tointeger(year - 2) .. "-" .. year)
+  end
   if string.match(file, "%.1$") then
     return string.gsub(content,
       '%.TH l3build 1 "' .. iso .. '"\n',
