@@ -11,6 +11,6 @@ As the `.dtx` package file grows larger, it may be sensible to split it up into 
 
 -----
 
-Copyright (C) 2014-2017,2021 The LaTeX Project <br />
+Copyright (C) 2014-2017,2021,2023 The LaTeX Project <br />
 <http://latex-project.org/> <br />
 All rights reserved.
