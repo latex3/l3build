@@ -50,20 +50,17 @@ function update_tag(file,content,tagname,tagdate)
   local iso = "%d%d%d%d%-%d%d%-%d%d"
   local url = "https://github.com/latex3/l3build/compare/"
   -- update copyright
-  -- copied from https://github.com/latex3/latex3/blob/76104b03a42246726556384f2ca34083bc6955aa/build-config.lua#L48-L60
-  if string.match(content,"%(C%)%s*[%d%-,]+ The LaTeX Project") then
-    local year = os.date("%Y")
+  local year = os.date("%Y")
+  if string.match(content,"%(C%)%s*" .. (year - 1) .. " The LaTeX Project") then
     content = string.gsub(content,
-      "%(C%)%s*([%d%-,]+) The LaTeX Project",
-      "(C) %1," .. year .. " The LaTeX Project")
-    content = string.gsub(content,year .. "," .. year,year)
+      "%(C%)%s*" .. (year - 1) .. " The LaTeX Project",
+      "(C) " .. year .. " The LaTeX Project")
+  elseif string.match(content,"%(C%)%s*%d%d%d%d%-" .. (year - 1) .. " The LaTeX Project") then
     content = string.gsub(content,
-      "%-" .. math.tointeger(year - 1) .. "," .. year,
-      "-" .. year)
-    content = string.gsub(content,
-      math.tointeger(year - 2) .. "," .. math.tointeger(year - 1) .. "," .. year,
-      math.tointeger(year - 2) .. "-" .. year)
+      "%(C%)%s*(%d%d%d%d%-)" .. (year - 1) .. " The LaTeX Project",
+      "(C) %1" .. year .. " The LaTeX Project")
   end
+  -- update release date
   if string.match(file, "%.1$") then
     return string.gsub(content,
       '%.TH l3build 1 "' .. iso .. '"\n',
