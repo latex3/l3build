@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Test for blank `runtest_task()` (issue \#327)
+
 ## [2023-12-13-2]
 
 ## [2023-12-13]
