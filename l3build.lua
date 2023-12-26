@@ -32,7 +32,6 @@ local lfs = require("lfs")
 
 -- Local access to functions
 
-local assert           = assert
 local ipairs           = ipairs
 local insert           = table.insert
 local lookup           = kpse.lookup
@@ -40,11 +39,8 @@ local match            = string.match
 local gsub             = string.gsub
 local next             = next
 local print            = print
-local select           = select
-local tonumber         = tonumber
 local exit             = os.exit
 local open             = io.open
-local stdout           = io.stdout
 
 -- l3build setup and functions
 kpse.set_program_name("kpsewhich")

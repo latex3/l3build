@@ -22,7 +22,6 @@ for those people who are interested.
 
 --]]
 
-local pairs            = pairs
 local print            = print
 
 local open             = io.open
@@ -43,7 +42,6 @@ local luatex_version   = status.luatex_version
 
 local match            = string.match
 local sub              = string.sub
-local gmatch           = string.gmatch
 local gsub             = string.gsub
 
 local insert           = table.insert
