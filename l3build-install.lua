@@ -32,7 +32,6 @@ local var_value   = kpse.var_value
 local gsub  = string.gsub
 local lower = string.lower
 local match = string.match
-local format = string.format
 
 local insert = table.insert
 

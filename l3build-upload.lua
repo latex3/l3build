@@ -34,8 +34,6 @@ local popen = io.popen
 local read  = io.read
 local write = io.write
 
-local os_type = os.type
-
 local len   = string.len
 local lower = string.lower
 local match = string.match
