@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Throw warnings on unknown doc name(s)
+
 ## [2023-12-15]
 
 ### Fixed
