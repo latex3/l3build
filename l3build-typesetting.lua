@@ -184,6 +184,12 @@ function doc(files)
   local errorlevel = docinit()
   if errorlevel ~= 0 then return errorlevel end
   local done = {}
+  local files_unknown = {}
+  if files and next(files) then
+    for _, file in pairs(files) do
+      files_unknown[file] = true
+    end
+  end
   for _,typesetfiles in ipairs({typesetdemofiles,typesetfiles}) do
     for _,glob in pairs(typesetfiles) do
       local destpath,globstub = splitpath(glob)
@@ -198,6 +204,7 @@ function doc(files)
             typeset = false
             for _,file in pairs(files) do
               if name == file then
+                files_unknown[file] = nil
                 typeset = true
                 break
               end
@@ -218,6 +225,12 @@ function doc(files)
         end
       end
     end
+  end
+  if next(files_unknown) then
+    for file, _ in pairs(files_unknown) do
+      print("Unknown doc name \"" .. file .. "\"")
+    end
+    return 1
   end
   return 0
 end
