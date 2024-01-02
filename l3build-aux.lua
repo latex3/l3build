@@ -25,6 +25,7 @@ for those people who are interested.
 -- local safety guards and shortcuts
 
 local match = string.match
+local gsub  = string.gsub
 
 local pairs = pairs
 local print = print
