@@ -177,11 +177,11 @@ if #checkconfigs > 1 then
             exit(2)
           end
           for line in f:lines() do
-             if line == "" then break end
-             savecmds = savecmds .. "  " .. line .. "\n"
+            if line == "" then break end
+            savecmds = savecmds .. "  " .. line .. "\n"
           end
           for line in f:lines() do
-             recheckcmds = recheckcmds .. "  " .. line .. "\n"
+            recheckcmds = recheckcmds .. "  " .. line .. "\n"
           end
           f:close()
         end

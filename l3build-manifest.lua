@@ -128,7 +128,7 @@ manifest_build_init = function(entry)
     Nchar_descr   = 11 , -- TODO: generalise
   }
 
-   -- copy default options to each group if necessary
+  -- copy default options to each group if necessary
   for kk,ll in pairs(manifest_group_defaults) do
     if entry[kk] == nil then
       entry[kk] = ll

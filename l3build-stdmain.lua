@@ -122,12 +122,12 @@ target_list =
         desc = "Updates release tags in files",
         func = tag,
         pre  = function(names)
-           if names and #names > 1 then
-             print("Too many tags specified; exactly one required")
-             exit(1)
-           end
-           return 0
-         end
+            if names and #names > 1 then
+              print("Too many tags specified; exactly one required")
+              exit(1)
+            end
+            return 0
+          end
       },
     uninstall =
       {
@@ -171,10 +171,10 @@ function main(target,names)
     end
   else
     if target_list[target].pre then
-     errorlevel = target_list[target].pre(names)
-     if errorlevel ~= 0 then
-       exit(1)
-     end
+      errorlevel = target_list[target].pre(names)
+      if errorlevel ~= 0 then
+        exit(1)
+      end
     end
     errorlevel = target_list[target].func(names)
   end

@@ -63,7 +63,7 @@ function bibtex(name,dir)
     if os_type == "windows" then
       grep = "\\\\"
     else
-     grep = "\\\\\\\\"
+      grep = "\\\\\\\\"
     end
     if run(dir,
         os_grepexe .. " \"^" .. grep .. "citation{\" " .. name .. ".aux > "
