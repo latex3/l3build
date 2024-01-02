@@ -11,5 +11,5 @@ in the build script for each module.
 -----
 
 Copyright (C) 2014-2023 The LaTeX Project <br />
-<http://latex-project.org/> <br />
+<https://latex-project.org/> <br />
 All rights reserved.
