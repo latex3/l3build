@@ -628,10 +628,10 @@ function runcheck(name, hide)
     end
   end
   for i=1, #failedengines do
-     if failedengines[i] == stdengine then
-        failedengines = {stdengine}
-        break
-     end
+    if failedengines[i] == stdengine then
+      failedengines = {stdengine}
+      break
+    end
   end
   -- Return everything
   return errorlevel, failedengines
@@ -657,7 +657,7 @@ function setup_check(name, engine)
     end
   end
   if found then
-     return
+    return
   end
   -- Attempt to generate missing reference file from expectation
   for _, kind in ipairs(test_order) do
@@ -674,7 +674,7 @@ function setup_check(name, engine)
     end
   end
   if found then
-     return
+    return
   end
   print(
     "Error: failed to find any reference or expectation file for "
@@ -922,9 +922,9 @@ local function showsavecommands(failurelist)
   end
   f:write"\n"
   if savecmds[stdengine] then
-     print("\n  Afterwards test for engine specific changes using\n")
-     print("    " .. checkcmd)
-     f:write(checkcmd)
+    print("\n  Afterwards test for engine specific changes using\n")
+    print("    " .. checkcmd)
+    f:write(checkcmd)
   end
   f:close()
   print("")

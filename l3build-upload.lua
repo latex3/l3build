@@ -129,8 +129,8 @@ function upload(tagnames)
     print("Are you sure you want to continue? [y/n]" )
     io.stdout:write("> "):flush()
     if lower(read(),1,1) ~= "y" then
-       print'Aborting'
-       return 1
+      print'Aborting'
+      return 1
     end
   end
 
@@ -245,9 +245,9 @@ function shell(s)
   local t = assert(h:read('*a'))
   local success = h:close()
   if (success) then
-   return t
+    return t
   else
-   error("\nError from shell command:\n" .. s .. "\n" .. t .. "\n")
+    error("\nError from shell command:\n" .. s .. "\n" .. t .. "\n")
   end
 end
 
@@ -356,7 +356,7 @@ function input_multi_line_field (name)
       if answer_line~=nil then
         field = field .. "\n" .. answer_line
       end
-     end
+    end
   until (return_count==3 or answer_line==nil or answer_line=='\004')
   return field
 end

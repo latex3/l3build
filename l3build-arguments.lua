@@ -248,14 +248,14 @@ local function argparse()
             return { target = "help" }
           end
         else
-         if not optarg then
-          optarg = arg[i + 1]
           if not optarg then
-            stderr:write("Missing value for option " .. a .."\n")
-            return { target = "help" }
+            optarg = arg[i + 1]
+            if not optarg then
+              stderr:write("Missing value for option " .. a .."\n")
+              return { target = "help" }
+            end
+            i = i + 1
           end
-          i = i + 1
-         end
         end
       else
         stderr:write("Unknown option " .. a .."\n")
@@ -283,7 +283,7 @@ local function argparse()
     end
   end
   if next(names) then
-   result["names"] = names
+    result["names"] = names
   end
   return result
 end
