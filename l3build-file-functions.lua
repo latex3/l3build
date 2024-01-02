@@ -225,6 +225,10 @@ function fileexists(file)
   end
 end
 
+function execute_with_errorlevel(command)
+  return select(3, execute(command))
+end
+
 -- Copy files 'quietly'
 function cp(glob, source, dest)
   local errorlevel
@@ -233,12 +237,12 @@ function cp(glob, source, dest)
     -- p_cwd is the counterpart relative to the current working directory
     if os_type == "windows" then
       if direxists(p.cwd) then
-        errorlevel = execute(
+        errorlevel = execute_with_errorlevel(
           'xcopy /y /e /i "' .. unix_to_win(p.cwd) .. '" '
              .. unix_to_win(dest .. '/' .. escapepath(p.src)) .. ' > nul'
         ) and 0 or 1
       else
-        errorlevel = execute(
+        errorlevel = execute_with_errorlevel(
           'xcopy /y "' .. unix_to_win(p.cwd) .. '" '
              .. unix_to_win(dest .. '/') .. ' > nul'
         ) and 0 or 1
@@ -249,7 +253,7 @@ function cp(glob, source, dest)
         errorlevel = mkdir(dirname(dest))
         if errorlevel ~=0 then return errorlevel end
       end
-      errorlevel = execute(
+      errorlevel = execute_with_errorlevel(
         "cp -RLf '" .. p.cwd .. "' " .. dest
       ) and 0 or 1
     end
@@ -377,11 +381,11 @@ function mkdir(dir)
     -- Windows (with the extensions) will automatically make directory trees
     -- but issues a warning if the dir already exists: avoid by including a test
     dir = unix_to_win(dir)
-    return execute(
+    return execute_with_errorlevel(
       "if not exist "  .. dir .. "\\nul " .. "mkdir " .. dir
     )
   else
-    return execute("mkdir -p " .. dir)
+    return execute_with_errorlevel("mkdir -p " .. dir)
   end
 end
 
@@ -391,9 +395,9 @@ function ren(dir, source, dest)
   if os_type == "windows" then
     source = gsub(source, "^%.+/", "")
     dest = gsub(dest, "^%.+/", "")
-    return execute("ren " .. unix_to_win(dir) .. source .. " " .. dest)
+    return execute_with_errorlevel("ren " .. unix_to_win(dir) .. source .. " " .. dest)
   else
-    return execute("mv " .. dir .. source .. " " .. dir .. dest)
+    return execute_with_errorlevel("mv " .. dir .. source .. " " .. dir .. dest)
   end
 end
 
@@ -418,15 +422,15 @@ function rmdir(dir)
   -- First, make sure it exists to avoid any errors
   mkdir(dir)
   if os_type == "windows" then
-    return execute("rmdir /s /q " .. unix_to_win(dir))
+    return execute_with_errorlevel("rmdir /s /q " .. unix_to_win(dir))
   else
-    return execute("rm -r " .. dir)
+    return execute_with_errorlevel("rm -r " .. dir)
   end
 end
 
 -- Run a command in a given directory
 function run(dir, cmd)
-  return execute("cd " .. dir .. os_concat .. cmd)
+  return execute_with_errorlevel("cd " .. dir .. os_concat .. cmd)
 end
 
 -- Split a path into file and directory component

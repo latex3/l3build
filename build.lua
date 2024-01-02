@@ -93,7 +93,7 @@ function update_tag(file,content,tagname,tagdate)
 end
 
 function tag_hook(tagname)
-  os.execute('git commit -a -m "Step release tag"')
+  return select(3, os.execute('git commit -a -m "Step release tag"'))
 end
 
 if not release_date then

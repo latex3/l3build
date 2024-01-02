@@ -695,7 +695,7 @@ function base_compare(test_type,name,engine,cleanup)
   if compare then
     return compare(difffile, reffile, genfile, cleanup, name, engine)
   end
-  local errorlevel = execute(os_diffexe .. " "
+  local errorlevel = execute_with_errorlevel(os_diffexe .. " "
     .. normalize_path(reffile .. " " .. genfile .. " > " .. difffile))
   if errorlevel == 0 or cleanup then
     remove(difffile)
@@ -722,14 +722,14 @@ function compare_tlg(difffile, tlgfile, logfile, cleanup, name, engine)
     local luatlgfile = testdir .. "/" .. testname .. tlgext
     rewrite(tlgfile,luatlgfile,normalize_lua_log)
     rewrite(logfile,lualogfile,normalize_lua_log,true)
-    errorlevel = execute(os_diffexe .. " "
+    errorlevel = execute_with_errorlevel(os_diffexe .. " "
       .. normalize_path(luatlgfile .. " " .. lualogfile .. " > " .. difffile))
     if cleanup then
       remove(lualogfile)
       remove(luatlgfile)
     end
   else
-    errorlevel = execute(os_diffexe .. " "
+    errorlevel = execute_with_errorlevel(os_diffexe .. " "
       .. normalize_path(tlgfile .. " " .. logfile .. " > " .. difffile))
   end
   if errorlevel == 0 or cleanup then
