@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Type of return value of `runtest_tasks()` in doc
+
 ## [2024-01-04]
 
 ### Changed
