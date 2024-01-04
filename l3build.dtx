@@ -713,17 +713,18 @@
 %
 % For example, for the core \LaTeXe{} tests the main test files are contained
 % in a directory |testfiles|. To test font loading for \XeTeX{} and \LuaTeX{}
-% there are a second set of tests in |testfiles-TU| which use the short
-% |config-TU.lua| file shown in Listing~\vref{lst:configs}. To run both sets of
-% tests, the main |build.lua| file contains the setting
+% there are a second set of tests in |testfiles-TU| which use a short
+% |config-TU.lua| file similar to the one shown in Listing~\vref{lst:configs}.
+% To run both sets of tests, the main |build.lua| file contains the setting
 % |checkconfigs = {"build", "config-TU"}|. This will cause \pkg{l3build} to run
 % first using no additional settings (\emph{i.e.}~reading the normal
 % |build.lua| file alone), then running \emph{also} loading the settings from
 % |config-TU.lua|.
 % \begin{floating-listing}[caption={Example of using additional (or overriding) settings for configuring tests in a different subdirectory.},label={lst:configs}]
 %   -- Special config for these tests
-%   checksearch  = true
+%   stdengine    = "xetex"
 %   checkengines = {"xetex","luatex"}
+%   checksearch  = true
 %   testfiledir  = "testfiles-TU"
 % \end{floating-listing}
 %
