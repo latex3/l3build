@@ -1157,7 +1157,8 @@
 % of the current test (this is equivalent to \TeX{}'s \cs{jobname},
 % \emph{i.e.}~it lacks an extension) and the current run number.
 % The function |runtest_tasks| is run after the main call to the
-% engine for a test cycle. It should return an errorlevel value.
+% engine for a test cycle. It should return a string consists of task(s),
+% i.e., the CLI command(s) to execute.
 % If more than one task is required, these should be separated
 % by use of |os_concat|, a string variable defined by \pkg{l3build} as the
 % correct concatenation marker for the system. An example of |runtest_tasks|
