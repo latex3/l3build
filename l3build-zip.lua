@@ -1,6 +1,6 @@
 --[[
 
-File l3build-zip.lua Copyright (C) 2021-2023 The LaTeX Project
+File l3build-zip.lua Copyright (C) 2021-2024 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this

@@ -19,6 +19,6 @@ The examples are:
 
 -----
 
-Copyright (C) 2014-2023 The LaTeX Project <br />
+Copyright (C) 2014-2024 The LaTeX Project <br />
 <https://latex-project.org/> <br />
 All rights reserved.

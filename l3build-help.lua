@@ -1,6 +1,6 @@
 --[[
 
-File l3build-help.lua Copyright (C) 2018-2023 The LaTeX Project
+File l3build-help.lua Copyright (C) 2018-2024 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -27,7 +27,7 @@ local match  = string.match
 local rep    = string.rep
 local sort   = table.sort
 
-local copyright = "Copyright (C) 2014-2023 The LaTeX Project\n"
+local copyright = "Copyright (C) 2014-2024 The LaTeX Project\n"
 
 function version()
   print(
