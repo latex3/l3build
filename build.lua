@@ -51,13 +51,14 @@ function update_tag(file,content,tagname,tagdate)
   local url = "https://github.com/latex3/l3build/compare/"
   -- update copyright
   local year = os.date("%Y")
-  if string.match(content,"%(C%)%s*" .. (year - 1) .. " The LaTeX Project") then
+  local oldyear = math.tointeger(year - 1)
+  if string.match(content,"%(C%)%s*" .. oldyear .. " The LaTeX Project") then
     content = string.gsub(content,
-      "%(C%)%s*" .. (year - 1) .. " The LaTeX Project",
+      "%(C%)%s*" .. oldyear .. " The LaTeX Project",
       "(C) " .. year .. " The LaTeX Project")
-  elseif string.match(content,"%(C%)%s*%d%d%d%d%-" .. (year - 1) .. " The LaTeX Project") then
+  elseif string.match(content,"%(C%)%s*%d%d%d%d%-" .. oldyear .. " The LaTeX Project") then
     content = string.gsub(content,
-      "%(C%)%s*(%d%d%d%d%-)" .. (year - 1) .. " The LaTeX Project",
+      "%(C%)%s*(%d%d%d%d%-)" .. oldyear .. " The LaTeX Project",
       "(C) %1" .. year .. " The LaTeX Project")
   end
   -- update release date
