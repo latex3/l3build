@@ -824,7 +824,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
     )
     -- On Windows, concatenating here will suppress any non-zero errorlevel
     -- from the main run, so we split into two parts.
-    if errlevels[i] == 0 and runtest_tasks(jobname(lvtfile),i) ~= "" then
+    if runtest_tasks(jobname(lvtfile),i) ~= "" then
       local errorlevel =
         runcmd(preamble .. runtest_tasks(jobname(lvtfile),i),testdir)
       if errorlevel ~= 0 then errlevels[i] = errorlevel end

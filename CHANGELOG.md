@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Throw warnings on unknown doc name(s)
+- Always execute `runtest_tasks()` if set (issue \#327)
 
 ## [2023-12-15]
 
