@@ -1057,6 +1057,10 @@ end
 
 -- A short auxiliary to print the list of differences for check
 function checkdiff(config)
+  local testdir = testdir
+  if config then
+    testdir = testdir .. "-" .. config
+  end
   local diff_files = ordered_filelist(testdir, "*" .. os_diffext)
   if next(diff_files) then
     if config then
