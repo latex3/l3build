@@ -54,7 +54,7 @@ option_list =
       },
     dirty =
       {
-        desc = "Skip cleaning up the test area",
+        desc = "Skips cleaning up the test area",
         type = "boolean"
       },
     ["dry-run"] =
@@ -80,7 +80,7 @@ option_list =
       },
     file =
       {
-        desc  = "Take the upload announcement from the given file",
+        desc  = "Takes the upload announcement from the given file",
         short = "F",
         type  = "string"
       },
@@ -91,13 +91,13 @@ option_list =
       },
     force =
       {
-        desc  = "Force tests to run if engine is not set up",
+        desc  = "Forces tests to run if engine is not set up",
         short = "f",
         type  = "boolean"
       },
     full =
       {
-        desc = "Install all files",
+        desc = "Installs all files",
         type = "boolean"
       },
     ["halt-on-error"] =
@@ -108,7 +108,7 @@ option_list =
       },
     help =
       {
-        desc  = "Print this message and exit",
+        desc  = "Prints this message and exit",
         short = "h",
         type  = "boolean"
       },
@@ -131,23 +131,23 @@ option_list =
       },
     rerun =
       {
-        desc  = "Skip setup: simply rerun tests",
+        desc  = "Skips setup: simply rerun tests",
         type  = "boolean"
       },
     ["show-log-on-error"] =
       {
-        desc  = "Show the full log of the failure with 'halt-on-error'",
+        desc  = "Shows the full log of the failure with 'halt-on-error'",
         type  = "boolean"
       },
     ["show-saves"] =
       {
-        desc  = "Show the invocation to update failing .tlg files",
+        desc  = "Shows the invocation to update failing .tlg files",
         short = "S",
         type  = "boolean"
       },
     shuffle =
       {
-        desc  = "Shuffle order of tests",
+        desc  = "Shuffles order of tests",
         type  = "boolean"
       },
     texmfhome =
@@ -157,7 +157,7 @@ option_list =
       },
     version =
       {
-        desc = "Print version information and exit",
+        desc = "Prints version information and exit",
         type = "boolean"
       }
   }

@@ -371,15 +371,15 @@
 % \item |--config| (|-c|) Configuration(s) to use for testing
 % \item |--date| Date to use when tagging data
 % \item |--debug| Runs the target in debug mode (not supported by all targets)
-% \item |--dirty| Skip cleaning up of the test area
+% \item |--dirty| Skips cleaning up of the test area
 % \item |--dry-run| Runs the \texttt{install} target but does not copy
 %   any files: simply lists those that would be installed
 % \item |--email| Sets the email address for CTAN upload
 % \item |--engine| (|-e|) Sets the engine to use for testing
 % \item |--epoch| Sets the epoch for typesetting and testing
-% \item |--file| (|-F|) Take the upload announcement from the given file
+% \item |--file| (|-F|) Takes the upload announcement from the given file
 % \item |--first| Name of the first test to run
-% \item |--force| (|-f|) Force checks to run even if sanity
+% \item |--force| (|-f|) Forces checks to run even if sanity
 %   checks fail, \emph{e.g.}~when |--engine| is not given in
 %   \var{checkengines}
 % \item |--full| Instructs the \texttt{install} target to include the
@@ -390,12 +390,12 @@
 % \item |--last| Name of the last test to run
 % \item |--message| (|-m|) Text for upload announcement
 % \item |--quiet| (|-q|) Suppresses output from unpacking
-% \item |--rerun| Run tests without unpacking/set up
+% \item |--rerun| Runs tests without unpacking/set up
 % \item |--show-log-on-error| To be used in addition to \texttt{--halt-on-error} and results
 %   in the full \texttt{.log} file of a failed test to be shown on the console
-% \item |--show-saves| (|-S|) When tests fail, print the \texttt{l3build save} commands needed
+% \item |--show-saves| (|-S|) When tests fail, prints the \texttt{l3build save} commands needed
 %   to regenerate the tests assuming that the failures were false negatives.
-% \item |--shuffle| Shuffle the order in which tests run
+% \item |--shuffle| Shuffles the order in which tests run
 % \item |--texmfhome| Sets the location of the user tree for installing
 % \end{itemize}
 %
@@ -591,7 +591,7 @@
 % \end{buildcmd}
 %
 % \begin{buildcmd}{tag [\meta{tag name}]}
-% Apply the Lua |update_tag()| function to modify the contents of files specified by |tagfiles| to update the `release tag' (or package version) and date.
+% Applies the Lua |update_tag()| function to modify the contents of files specified by |tagfiles| to update the `release tag' (or package version) and date.
 % The tag is given as the optional command line argument \meta{tag name} and the date using
 % |--date| (or |-d|). If not given, the date will default to the current date in
 % ISO format (YYYY-MM-DD). If no \meta{tag name} is given, the tag will default to |nil|.
