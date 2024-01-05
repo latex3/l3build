@@ -73,19 +73,19 @@ target_list =
     check =
       {
         bundle_target = true,
-        desc = "Run all automated tests",
+        desc = "Runs all automated tests",
         func = check,
       },
     clean =
       {
         bundle_func = bundleclean,
-        desc = "Clean out directory tree",
+        desc = "Cleans out directory tree",
         func = clean
       },
     ctan =
       {
         bundle_func = ctan,
-        desc = "Create CTAN-ready archive",
+        desc = "Creates CTAN-ready archive",
         func = ctan
       },
     doc =
@@ -142,7 +142,7 @@ target_list =
       },
     upload =
       {
-        desc = "Send archive to CTAN for public release",
+        desc = "Sends archive to CTAN for public release",
         func = upload
       },
   }
