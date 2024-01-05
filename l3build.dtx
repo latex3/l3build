@@ -731,7 +731,10 @@
 % To allow selection of one or more configurations, and to allow saving of
 % |.tlg| files in non-standard configurations, the |--config| (|-c|) option may
 % be used. This works in the same way as |--engine|: it takes a comma list of
-% configurations to apply, overriding \var{checkconfigs}.
+% configurations to apply, overriding \var{checkconfigs}. For example, in the
+% directory containing |config-TU.lua|, you can use
+% |l3build check -cconfig-TU <name(s)>| and |l3build save -cconfig-TU <name(s)>|
+% to check and save tests in |testfiles-TU| directory.
 %
 % \subsection{Dependencies}
 %
