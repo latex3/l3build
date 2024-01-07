@@ -108,7 +108,7 @@ option_list =
       },
     help =
       {
-        desc  = "Prints this message and exit",
+        desc  = "Prints this message and exits",
         short = "h",
         type  = "boolean"
       },
@@ -131,7 +131,7 @@ option_list =
       },
     rerun =
       {
-        desc  = "Skips setup: simply rerun tests",
+        desc  = "Skips setup: simply reruns tests",
         type  = "boolean"
       },
     ["show-log-on-error"] =
@@ -157,7 +157,7 @@ option_list =
       },
     version =
       {
-        desc = "Prints version information and exit",
+        desc = "Prints version information and exits",
         type = "boolean"
       }
   }
