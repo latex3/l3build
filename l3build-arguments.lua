@@ -91,7 +91,7 @@ option_list =
       },
     force =
       {
-        desc  = "Forces tests to run if engine is not set up",
+        desc  = "Forces tests to run, even if engine is not set up",
         short = "f",
         type  = "boolean"
       },
