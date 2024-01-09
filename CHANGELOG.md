@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2024-01-09]
+
 ### Fixed
 - Type of return value of `runtest_tasks()` in doc
 - Print failures correctly when these occur in multiple configurations
@@ -758,7 +760,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2024-01-04...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2024-01-09...HEAD
+[2024-01-09]: https://github.com/latex3/l3build/compare/2024-01-04...2024-01-09
 [2024-01-04]: https://github.com/latex3/l3build/compare/2023-12-15...2024-01-04
 [2023-12-15]: https://github.com/latex3/l3build/compare/2023-12-13-2...2023-12-15
 [2023-12-13-2]: https://github.com/latex3/l3build/compare/2023-12-13...2023-12-13-2
