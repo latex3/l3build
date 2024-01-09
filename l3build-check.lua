@@ -1065,10 +1065,6 @@ function checkdiff(config)
   if next(diff_files) then
     if config then
       print("Failed tests for configuration \"" .. config .. "\":")
-      local testdir = testdir
-      if config ~= "build" then
-        testdir = testdir .. "-" .. config
-      end
     end
     print("\n  Check failed with difference files")
     for _,i in ipairs(diff_files) do
