@@ -9,6 +9,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Type of return value of `runtest_tasks()` in doc
+- Print failures correctly when these occur in multiple configurations
+  including the core (`build`) one
 
 ## [2024-01-04]
 
