@@ -987,9 +987,10 @@
 % \meta{filename}.
 % \item
 % \cs{ASSERT}\marg{arg_1}\marg{arg_2} and \cs{ASSERTSTR}\marg{arg_1}\marg{arg_2}
-% assert if the full expansion of \meta{arg_1} and \meta{arg_2} are the same:
-% the \cs{ASSERT} function is token-based,
-% the \cs{ASSERTSTR} works on a string basis.
+% Test if the full expansion of \meta{arg_1} and \meta{arg_2} are the same:
+% on a token basis in \cs{ASSERT} and on a string basis in \cs{ASSERTSTR}.
+% Depending on the outcome, record either \texttt{PASSED} or \texttt{FAILED}
+% in the \texttt{.log}.
 % \end{itemize}
 % An example of some of these commands is shown following.
 % \begin{Verbatim}
