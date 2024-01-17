@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Switch `-s|--stdengine` to run a set of tests only with the standard engine
+  even where this varies between configs (issue \#343)
 ## [2024-01-09]
 
 ### Fixed

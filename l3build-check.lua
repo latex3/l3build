@@ -595,7 +595,9 @@ function runcheck(name, hide)
     return 1
   end
   local checkengines = checkengines
-  if options["engine"] then
+  if options["stdengine"] then
+    checkengines = {stdengine}
+  elseif options["engine"] then
     checkengines = options["engine"]
   end
   local failedengines = {}

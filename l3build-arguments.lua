@@ -150,6 +150,12 @@ option_list =
         desc  = "Shuffles order of tests",
         type  = "boolean"
       },
+    stdengine =
+      {
+        desc  = "Run tests only with the standard engine",
+        short = "s",
+        type  = "boolean"
+      },
     texmfhome =
       {
         desc = "Location of user texmf tree",
