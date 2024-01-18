@@ -307,5 +307,8 @@ function check_engines(config)
       end
     end
   end
-  if not next(checkengines) then exit(0) end
+  if not next(checkengines) then
+    print("No applicable engine requested, config ignored")
+    exit(0)
+  end
 end
