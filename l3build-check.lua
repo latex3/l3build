@@ -597,8 +597,6 @@ function runcheck(name, hide)
   local checkengines = checkengines
   if options["stdengine"] then
     checkengines = {stdengine}
-  elseif options["engine"] then
-    checkengines = options["engine"]
   end
   local failedengines = {}
   -- Used for both .lvt and .pvt tests

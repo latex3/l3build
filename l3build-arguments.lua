@@ -89,12 +89,6 @@ option_list =
         desc  = "Name of first test to run",
         type  = "string"
       },
-    force =
-      {
-        desc  = "Forces tests to run, even if engine is not set up",
-        short = "f",
-        type  = "boolean"
-      },
     full =
       {
         desc = "Installs all files",
@@ -298,21 +292,18 @@ options = argparse()
 
 -- Sanity check
 function check_engines(config)
-  if options["engine"] and not options["force"] then
+  if options["engine"] then
     -- Make a lookup table
     local t = { }
     for _, engine in pairs(checkengines) do
       t[engine] = true
     end
-    for _, engine in pairs(options["engine"]) do
-      if not t[engine] then
-        print("\n! Error: Engine \"" .. engine .. "\" not set up for testing with configuration \"" .. config .. "\"!")
-        print("\n  Valid values are:")
-        for _, engine in ipairs(checkengines) do
-          print("  - " .. engine)
-        end
-        print("")
-        exit(1)
+    checkengines = {}
+    for _,engine in ipairs(options["engine"]) do
+      if t[engine] then
+          insert(checkengines,engine)
+      else
+        print("Skipping unknown engine " .. engine)
       end
     end
   end
