@@ -136,7 +136,7 @@ manifest_build_init = function(entry)
     -- can't use "entry[kk] = entry[kk] or ll" because false/nil are indistinguishable!
   end
 
-  -- initialisation for internal data
+  -- initialization for internal data
   for kk,ll in pairs(manifest_group_init) do
     entry[kk] = ll
   end
