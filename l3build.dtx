@@ -559,7 +559,7 @@
 % This file is then used in all subsequent checks against the \texttt{\meta{name}.lvt} test.
 %
 % If the |--engine| (or |-e|) is specified (one of |pdftex|, |xetex|, or |luatex|), the saved output is stored in \texttt{\meta{name}.\meta{engine}.tlg}. This is necessary if running the test through a different engine produces a different output.
-% A normalisation process is performed when checking to avoid common differences such as register allocation; full details are listed in Section~\vref{sec:norm}.
+% A normalization process is performed when checking to avoid common differences such as register allocation; full details are listed in Section~\vref{sec:norm}.
 %
 % If the \var{recordstatus} variable is set \var{true}, additional information
 % will be added to the \texttt{.tlg} to record the \enquote{exit status} of the
@@ -671,7 +671,7 @@
 %
 % \subsection{Variables}
 %
-% This section lists all variables defined in the |l3build.lua| script that are available for customisation.
+% This section lists all variables defined in the |l3build.lua| script that are available for customization.
 %
 % \luavartypeset
 %
@@ -839,13 +839,13 @@
 % the |tokens| entry: this might for example be used to select a graphics driver
 % with a DVI-based route.
 %
-% \subsection{Output normalisation}
+% \subsection{Output normalization}
 % \label{sec:norm}
 %
 % To allow test files to be used between different systems (\emph{e.g.}~when
 % multiple developers are involved in a project), the log files are normalised
 % before comparison during checking. This removes some system-dependent
-% data but also some variations due to different engines. This normalisation
+% data but also some variations due to different engines. This normalization
 % consists of two parts: removing (\enquote{ignoring}) some lines and modifying
 % others to give consistent test. Currently, the following types of line are
 % ignored:
@@ -861,11 +861,11 @@
 % \begin{itemize}
 %   \item Removal spaces at the start of lines.
 %   \item Removal of |./| at start of file names.
-%   \item Standardisation of the list of units known to \TeX{} (\pdfTeX{}
+%   \item Standardization of the list of units known to \TeX{} (\pdfTeX{}
 %     and \LuaTeX{} add a small number of additional units which are not
 %     known to \TeX90 or \XeTeX{}, (u)p\TeX{} adds some additional non-standard
 %     ones)
-%   \item Standardisation of \verb*|\csname\endcsname | to |\csname\endcsname|
+%   \item Standardization of \verb*|\csname\endcsname | to |\csname\endcsname|
 %     (the former is formally correct, but the latter was produced for many
 %     years due to a \TeX{} bug).
 %   \item Conversion of \texttt{on line \meta{number}} to \texttt{on line ...}
@@ -890,11 +890,11 @@
 % these may not be desirable in all cases, they are handled separately.
 % When creating \LuaTeX{}-specific test files (either with \LuaTeX{} as
 % the standard engine or saving a \LuaTeX{}-specific |.tlg| file) no further
-% normalisation is undertaken. On the other hand, for cross-engine comparison
-% the following normalisation is applied:
+% normalization is undertaken. On the other hand, for cross-engine comparison
+% the following normalization is applied:
 % \begin{itemize}
 %   \item Removal of additional (unused) |\discretionary| points.
-%   \item Normalisation of some |\discretionary| data to a \TeX{}90 form.
+%   \item normalization of some |\discretionary| data to a \TeX{}90 form.
 %   \item Removal of |U+...| notation for missing characters.
 %   \item Removal of |display| for display math boxes
 %     (included by \TeX90/\pdfTeX{}/\XeTeX).
@@ -912,7 +912,7 @@
 % dependent on the active code page). This may be controlled using the
 % |asciiengines| option. Any engines named here will use a |.tcx| file to
 % produce only ASCII chars in the log output, whilst for other engines
-% normalisation is carried out from UTF-8 to ASCII. If the option is set to
+% normalization is carried out from UTF-8 to ASCII. If the option is set to
 % an empty table the latter process is skipped: suitable for cases where only
 % Unicode engines are in use.
 %
@@ -920,7 +920,7 @@
 %
 % Very occasionally, it is necessary to make changes to \pkg{l3build} that
 % change the \texttt{.tlg} file results. This is typically when additional
-% normalisation is required. When this is the case, you should first verify
+% normalization is required. When this is the case, you should first verify
 % that \texttt{.tlg} files pass with the older \pkg{l3build}, then update only
 % \pkg{l3build}, re-check the files and save the results. Where possible,
 % we provide a mechanism to run with older setting to allow this process to
@@ -929,7 +929,7 @@
 % \subsubsection{Release 2023-03-22}
 %
 % This release changes the standard value of \var{maxprintline} from $79$ to
-% $9999$, to suppress line wrapping in the log. This makes normalisation of
+% $9999$, to suppress line wrapping in the log. This makes normalization of
 % for example file paths more reliable. To check that \texttt{.tlg} files
 % are correct, you can set \var{maxprintline} in your \texttt{build.lua} file
 % explicitly to the old default, check that tests pass, then remove this
@@ -939,7 +939,7 @@
 % \label{sec:writing-tests}
 %
 % Test files are written in a \TeX{} dialect using the support file |regression-test.tex|, which should be |\input| at the very beginning of each test.
-% Additional customisations to this driver can be included in a local |regression-test.cfg| file, which will be loaded automatically if found.
+% Additional customizations to this driver can be included in a local |regression-test.cfg| file, which will be loaded automatically if found.
 %
 % The macros loaded by |regression-test.tex| set up the test system and provide a number of commands to aid the production of a structured test suite.
 % The basis of the test suite is to output material into the |.log| file, from which a normalised test output (|.tlg|) file is produced by the build command |save|.
@@ -1432,7 +1432,7 @@
 %
 % For package authors who have more complex requirements than those covered
 % by the standard set up, the Lua script offers the possibility for
-% customisation. The Lua function \texttt{typeset} may be defined before
+% customization. The Lua function \texttt{typeset} may be defined before
 % reading \texttt{l3build.lua} and should take one argument, the name of
 % the file to be typeset. Within this function, the auxiliary Lua
 % functions \texttt{biber}, \texttt{bibtex}, \texttt{makeindex} and
@@ -1995,7 +1995,7 @@
 % the inclusion of one-line descriptions for each file (Section~\vref{sec:manifest-desc}),
 % and the details of the formatting of each entry (Section~\vref{sec:manifest-formatting}).
 %
-% To perform such customisations, either include the re-definitions directly within your
+% To perform such customizations, either include the re-definitions directly within your
 % package's |build.lua| file, or make a copy of |l3build-manifest-setup.lua|, rename it,
 % and load it within your |build.lua| using |dofile()|.
 %
