@@ -146,7 +146,7 @@ option_list =
       },
     stdengine =
       {
-        desc  = "Run tests only with the standard engine (which may vary between configs)",
+        desc  = "Run tests with the std engine (config dependent)",
         short = "s",
         type  = "boolean"
       },
