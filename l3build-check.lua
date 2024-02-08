@@ -200,6 +200,10 @@ local function normalize_log(content,engine,errlevels)
     -- Two similar cases, Lua patterns mean we need to do them separately
     line = gsub(line, "on line %d*", "on line ...")
     line = gsub(line, "on input line %d*", "on input line ...")
+    -- And the case where LaTeX has wrapped
+    if match(line,"^%(%w+%)%s+%d+%.$") then
+      line = gsub(line,"%((%w+)%)(%s+)%d+%.", "(%1)%2....")
+    end
     -- Tidy up to ^^ notation
     for i = 0, 31 do
       line = gsub(line, char(i), "^^" .. char(64 + i))

@@ -7,6 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Extend normalization of line numbers to include those wrapped by LaTeX in
+  text `on line ...`
+
 ## [2024-01-18]
 
 ### Added
