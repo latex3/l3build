@@ -10,6 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - Extend normalization of line numbers to include those wrapped by LaTeX in
   text `on line ...`
+- Suppress `l3msg` message wrapping
 
 ## [2024-01-18]
 
