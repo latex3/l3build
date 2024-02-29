@@ -1119,7 +1119,12 @@ function save(names)
       return errorlevel
     end
   end
-  local engines = options["engine"] or {stdengine}
+  local engines
+  if options["engine"] then
+    engines = checkengines -- sanitized by check_engines()
+  else
+    engines = {stdengine}
+  end
   if names == nil then
     print("Arguments are required for the save command")
     return 1
