@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Skip unknown engines correctly in `l3build save`
+
 ## [2024-02-08]
 
 ### Changed
