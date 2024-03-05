@@ -111,7 +111,7 @@ function  docinit_hook()
   insert(man_t,'.TH ' .. string.upper(module) .. ' 1 "'
     .. readme:sub(date_start,date_end) .. '" "LaTeX"\n')
   insert(man_t,(".SH NAME\n" .. module .. "\n"))
-  insert(man_t,(".SH SYNOPSIS\n Usage " .. module .. " <cmd> [<options>] [<names>]\n"))
+  insert(man_t,(".SH SYNOPSIS\n Usage " .. module .. " <target> [<options>] [<names>]\n"))
   insert(man_t,".SH DESCRIPTION")
 
   local _,desc_start = find(readme,"Overview\n--------")
