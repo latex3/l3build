@@ -128,7 +128,7 @@ if forcecheckepoch then
 end
 if forcedocepoch then
   if match(typesetexe,"luatex") or match(typesetexe,"lualatex") then
-    typesetopts = typsetopts .. " -utc"
+    typesetopts = typesetopts .. " -utc"
   end
 end
 
