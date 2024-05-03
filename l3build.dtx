@@ -1227,9 +1227,9 @@
 % \subsection{Settings in \texttt{texmf.cnf}}
 %
 % To allow application of non-standard \TeX{} trees or similar non-standard
-% settings, \pkg{l3build} enables searching for a \texttt{texmf.cnf} file
-% by setting the envirnmental variable \texttt{TEXMFCNF}. This might
-% for example be used with a file containing
+% settings, \pkg{l3build} sets the environment variable \texttt{TEXMFCNF}
+% to allow reading of any \texttt{texmf.cnf} file present in the support folder.
+% This might for example be used with a file containing
 % \begin{verbatim}
 % TEXMFAUXTREES = ../../texmf,
 % \end{verbatim}
