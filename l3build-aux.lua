@@ -190,7 +190,7 @@ function runcmd(cmd,dir,vars)
   vars = vars or {}
   -- Allow for local texmf files
   local env = ""
-  if not match(checkformat,"^context$")  then
+  if checkformat ~= "context" then
     env = os_setenv .. " TEXMFCNF=." .. os_pathsep .. os_concat
   end
   local envpaths = "." .. localtexmf() .. os_pathsep

@@ -778,7 +778,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   local function setup(file)
     return " -jobname=" .. name .. tokens .. ' "\\input ' .. file .. '" '
   end
-  if match(checkformat,"^context$") then
+  if  checkformat == "context" then
     function setup(file) return tokens .. ' "' .. file .. '" '  end
   end
   if match(binary,"make4ht") then
