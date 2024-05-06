@@ -181,7 +181,9 @@ function docinit_hook() return 0 end
 -- Typeset all required documents
 -- Uses a set of dedicated auxiliaries that need to be available to others
 function doc(files)
-  local errorlevel = docinit()
+  if not options["rerun"] then
+    local errorlevel = docinit()
+  end
   if errorlevel ~= 0 then return errorlevel end
   local done = {}
   local files_unknown = {}

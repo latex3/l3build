@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Respect `--reun` in `doc` target (issue \#112)
+
 ### Fixed
 - Skip unknown engines correctly in `l3build save`
 - Handling of environment settings in some cases (issue \#353)
