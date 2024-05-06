@@ -189,9 +189,9 @@ function runcmd(cmd,dir,vars)
   dir = abspath(dir)
   vars = vars or {}
   -- Allow for local texmf files
-  local env = os_concat
+  local env
   if checkformat ~= "context" then
-    env = os_setenv .. " TEXMFCNF=." .. os_pathsep .. os_concat
+    env = os_setenv .. " TEXMFCNF=." .. os_pathsep
   end
   local envpaths = "." .. localtexmf() .. os_pathsep
     .. abspath(localdir) .. os_pathsep
@@ -201,7 +201,9 @@ function runcmd(cmd,dir,vars)
     envpaths = gsub(envpaths,'"','')
   end
   for _,var in pairs(vars) do
-    env = env .. os_setenv .. " " .. var .. "=" .. envpaths .. os_concat
+    env = (env and (env .. os_concat) or "")
+      .. os_setenv .. " " .. var .. "=" .. envpaths
   end
-  return run(dir,set_epoch_cmd(epoch, forcedocepoch) .. env .. cmd)
+  return run(dir,set_epoch_cmd(epoch, forcedocepoch)
+    .. (env and (env .. os_concat) or "") .. cmd)
 end
