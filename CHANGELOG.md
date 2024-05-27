@@ -10,7 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2024-05-27]
 
 ### Changed
-- Respect `--reun` in `doc` target (issue \#112)
+- Respect `--rerun` in `doc` target (issue \#112)
 
 ### Fixed
 - Skip unknown engines correctly in `l3build save`
