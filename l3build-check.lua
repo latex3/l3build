@@ -45,8 +45,9 @@ local sort             = table.sort
 local utf8_char        = unicode.utf8.char
 
 local exit             = os.exit
-local execute          = os.execute
 local remove           = os.remove
+
+local execute          = require"l3buildlib".execute
 
 -- randomise the random numbers
 math.randomseed( os.time() )

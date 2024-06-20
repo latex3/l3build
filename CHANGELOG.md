@@ -7,9 +7,13 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Respect `--debug` in `execute` invocations
+
 ### Fixed
 - Global `typesetopts` no longer ignored for `luatex` and `lualatex` (issue \#351)
 - Handling of spaces in options
+- Low level failures detected
 
 ## [2024-05-27]
 
