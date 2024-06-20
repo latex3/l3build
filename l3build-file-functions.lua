@@ -236,12 +236,12 @@ function cp(glob, source, dest)
         errorlevel = execute(
           'xcopy /y /e /i "' .. unix_to_win(p.cwd) .. '" '
              .. unix_to_win(dest .. '/' .. escapepath(p.src)) .. ' > nul'
-        ) and 0 or 1
+        ) -- execute returns an integer
       else
         errorlevel = execute(
           'xcopy /y "' .. unix_to_win(p.cwd) .. '" '
              .. unix_to_win(dest .. '/') .. ' > nul'
-        ) and 0 or 1
+        ) -- execute returns an integer
       end
     else
       -- Ensure we get similar behavior on all platforms
@@ -251,7 +251,7 @@ function cp(glob, source, dest)
       end
       errorlevel = execute(
         "cp -RLf '" .. p.cwd .. "' " .. dest
-      ) and 0 or 1
+      ) -- execute returns an integer
     end
     if errorlevel ~=0 then
       return errorlevel
