@@ -335,12 +335,13 @@
 % The \texttt{build.lua} file used to control \pkg{l3build} is a simple Lua file
 % which is read during execution. In the current release of \pkg{l3build},
 % \texttt{build.lua} is read automatically and can access all of the global
-% functions provided by the script. Thus it may contain a simple list of
+% functions and variables provided by the script. Thus it may contain a simple list of
 % variable settings \emph{or} additional code to customize the build
 % process.
 %
 %The example scripts given in Section~\vref{sec:examples} largely cover the required knowledge in Lua programing.
 % For a more advanced usage, one may consult general Lua documentations including \url{https://www.lua.org/manual/5.3/manual.html} and for the few |texlua| specific additions see section 4.2 of the \LuaTeX{} manual available locally with |texdoc luatex| command line or at \url{https://www.pragma-ade.com/general/manuals/luatex.pdf}.
+% Note that |os.execute| is at version 5.1, which is undocumented there.
 %
 % \subsection{Main build targets}
 %
@@ -374,9 +375,9 @@
 % \item |--dirty| Skips cleaning up of the test area
 % \item |--dry-run| Runs the \texttt{install} target but does not copy
 %   any files: simply lists those that would be installed
-% \item |--email| Sets the email address for CTAN upload
-% \item |--engine| (|-e|) Sets the engine to use for testing
-% \item |--epoch| Sets the epoch for typesetting and testing
+% \item |--email| Email address for CTAN upload
+% \item |--engine| (|-e|) Comma or space separated list of engines to use for testing
+% \item |--epoch| Epoch for typesetting and testing
 % \item |--file| (|-F|) Takes the upload announcement from the given file
 % \item |--first| Name of the first test to run
 % \item |--full| Instructs the \texttt{install} target to include the
@@ -388,14 +389,14 @@
 % \item |--message| (|-m|) Text for upload announcement
 % \item |--quiet| (|-q|) Suppresses output from unpacking
 % \item |--rerun| Runs tests without unpacking/set up
-% \item |--show-log-on-error| To be used in addition to \texttt{--halt-on-error} and results
+% \item |--show-log-on-error| When in addition to \texttt{-{}-halt-on-error}, results
 %   in the full \texttt{.log} file of a failed test to be shown on the console
-% \item |--show-saves| (|-S|) When tests fail, prints the \texttt{l3build save} commands needed
-%   to regenerate the tests assuming that the failures were false negatives.
+% \item |--show-saves| (|-S|) When tests fail, prints the \texttt{l3build save ...} commands needed
+%   to regenerate the tests, assuming that the failures were false negatives.
 % \item |--shuffle| Shuffles the order in which tests run
-% \item |--stdengine| (|-s|) Run tests only with the standard engine (which can vary between
+% \item |--stdengine| (|-s|) Runs tests only with the standard engine (which can vary between
 %   configurations)
-% \item |--texmfhome| Sets the location of the user tree for installing
+% \item |--texmfhome| Location of the user tree for installing
 % \end{itemize}
 %
 % \begin{buildcmd}{check}
@@ -1662,35 +1663,40 @@
 %
 % \begin{variable}{options}
 %   The |options| table holds the values passed to \pkg{l3build} at the
-%   command line. The possible entries in the table are given in the table
-%   below.
+%   command line. Each possible \meta{entry} given below corresponds to
+%   |--|\meta{entry} given at the command line, except |names| that
+%   corresponds to \meta{name(s)} for |check|, |doc| and |save| targets.  
 %   \begin{center}
 %   \begin{tabular}{ll}
 %     \toprule
 %     Entry & Type \\
 %     \midrule
-%       \var{config}        & Table   \\
-%       \var{date}          & String  \\
-%       \var{dirty}         & Boolean \\
-%       \var{dry-run}       & Boolean \\
-%       \var{email}         & String  \\
-%       \var{engine}        & Table   \\
-%       \var{epoch}         & String  \\
+%       \var{config}        & table   \\
+%       \var{date}          & string  \\
+%       \var{dirty}         & boolean \\
+%       \var{dry-run}       & boolean \\
+%       \var{email}         & string  \\
+%       \var{engine}        & table   \\
+%       \var{epoch}         & string  \\
 %       \var{file}          & string  \\
-%       \var{first}         & Boolean \\
-%       \var{full}          & Boolean \\
-%       \var{halt-on-error} & Boolean \\
-%       \var{help}          & Boolean \\
+%       \var{first}         & boolean \\
+%       \var{full}          & boolean \\
+%       \var{halt-on-error} & boolean \\
+%       \var{help}          & boolean \\
 %       \var{message}       & string  \\
-%       \var{names}         & Table   \\
-%       \var{quiet}         & Boolean \\
-%       \var{rerun}         & Boolean \\
-%       \var{shuffle}       & Boolean \\
-%       \var{stdengine}     & Boolean \\
-%       \var{texmfhome}     & String  \\
+%       \var{names}         & table \\
+%       \var{quiet}         & boolean \\
+%       \var{rerun}         & boolean \\
+%       \var{shuffle}       & boolean \\
+%       \var{stdengine}     & boolean \\
+%       \var{texmfhome}     & string  \\
 %     \bottomrule
 %     \end{tabular}
 %   \end{center}
+%   The Lua tables mentionned here are in fact arrays of strings.
+%   From the |build.lua| file, one can modify the string and boolean values,
+%   add or remove entries in arrays. But it is not recommended to affect a
+%   whole new Lua table to |options| nor to its array entries.
 % \end{variable}
 %
 % \subsection{Utility functions}
@@ -1887,16 +1893,16 @@
 %
 % \subsection{Components of \texttt{l3build}}
 %
+% Next functions return $0$ on a successful completion, a non $0$ error code otherwise.
 % \begin{function}{call()}
 %   \begin{syntax}
 %     |call(|\meta{dirs}, \meta{target}, \oarg{options}|)|
 %   \end{syntax}
-%   Runs the \texttt{l3build} \meta{target} (a string) for each directory in the
-%   \meta{dirs} (a table). This will pass command line options for the parent
-%   script to the child processes. The \meta{options} table should take the
-%   same form as the global \meta{options}, described above. If it is
-%   absent then the global list is used. Note that any entry for the
-%   |target| in this table is ignored.
+%   Runs the command \texttt{l3build} \meta{target} \meta{arguments} in each directory of the
+%   \meta{dirs} array of strings. The \meta{arguments} are built from the optional table
+%   \meta{options} which is similar to the global |options| variable described above.
+%   When not provided the global variable is used instead.
+%   Note however that the |target| entry is ignored.
 % \end{function}
 %
 % \begin{function}{install_files()}
@@ -1904,7 +1910,7 @@
 %     |install_files(|\meta{target},\meta{full},\meta{dry-run}|)|
 %   \end{syntax}
 %   Installs the files from the module into the TDS root \meta{target}.
-%   If \meta{full} is \texttt{true}, all files are copied: if it is
+%   If \meta{full} is \texttt{true}, all files are copied, if it is
 %   \texttt{false}, the \texttt{doc} and \texttt{source} trees are skipped.
 %   If \meta{dry-run} is \texttt{true}, no files are copied, but instead the
 %   files which would be copied are reported.
@@ -1912,7 +1918,7 @@
 %
 % \subsection{Typesetting functions}
 %
-% All typesetting functions return $0$ on a successful completion.
+% Next functions return $0$ on a successful completion, a non $0$ error code otherwise.
 %
 % \begin{function}{biber()}
 %   \begin{syntax}
@@ -1976,7 +1982,8 @@
 %     the |names| as an argument; this allows checking of the |name| data
 %     without impact on the main |func|.
 % \end{itemize}
-% The functions |func|, |bundle_func| and |pre| must return 0 on success.
+% The functions |func|, |bundle_func| and |pre| must return 0 on success,
+% a non $0$ error code on failure.
 %
 % The list of options (switches) is controlled by the |option_list| table.
 % The name of each entry in the table is the \enquote{long} version of the

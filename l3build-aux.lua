@@ -102,7 +102,7 @@ end
 ---@param modules table List of modules.
 ---@param target string
 ---@param opts table
----@return number 0 on proper termination, a non 0 error code otherwise.
+---@return number 0 on successful completion, a non 0 error code otherwise.
 ---@see many places, including latex2e/build.lua
 ---@usage Public
 function call(modules, target, opts)
@@ -155,7 +155,7 @@ end
 ---Unpack the given dependencies.
 ---A dependency is the path of a directory relative to the main one.
 ---@param deps table regular array of dependencies.
----@return number 0 on proper termination, a non 0 error code otherwise.
+---@return number 0 on successful completion, a non 0 error code otherwise.
 ---@see stdmain, check, unpack, typesetting
 ---@usage Private?
 function dep_install(deps)
