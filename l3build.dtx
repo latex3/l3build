@@ -1664,12 +1664,13 @@
 % \begin{variable}{options}
 %   The |options| table holds the values passed to \pkg{l3build} at the
 %   command line. Each possible \meta{entry} given below corresponds to
-%   |--|\meta{entry} given at the command line, except |names| that
-%   corresponds to \meta{name(s)} for |check|, |doc| and |save| targets.  
+%   |--|\meta{entry} given at the command line, except the |target| entry
+%   which is self explanatory and the |names| entry which corresponds to \meta{name(s)}
+%   for |check|, |doc| and |save| targets.  
 %   \begin{center}
 %   \begin{tabular}{ll}
 %     \toprule
-%     Entry & Type \\
+%     Entry & Lua type \\
 %     \midrule
 %       \var{config}        & |table|   \\
 %       \var{date}          & |string|  \\
@@ -1689,6 +1690,7 @@
 %       \var{rerun}         & |boolean| \\
 %       \var{shuffle}       & |boolean| \\
 %       \var{stdengine}     & |boolean| \\
+%       \var{target}        & |string|  \\
 %       \var{texmfhome}     & |string|  \\
 %     \bottomrule
 %     \end{tabular}
