@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Global `typesetopts` no longer ignored for `luatex` and `lualatex` (issue \#351)
+
 ## [2024-05-27]
 
 ### Changed
@@ -14,7 +17,6 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Skip unknown engines correctly in `l3build save`
-- global `typesetopts` no longer ignored for `luatex` and `lualatex` (issue \#351)
 - Handling of environment settings in some cases (issue \#353)
 
 ## [2024-02-08]
