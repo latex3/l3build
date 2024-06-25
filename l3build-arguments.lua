@@ -45,6 +45,7 @@ option_list =
     date =
       {
         desc  = "Sets the date to insert into sources",
+        short = "d",
         type  = "string"
       },
     debug =
