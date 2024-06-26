@@ -62,7 +62,7 @@ local function update_file_tag(file,tagname,tagdate)
 end
 
 function tag(tagnames)
-  local tagdate = options["date"] or os_date("%Y-%m-%d")
+  local tagdate = options["date"] or os_date("%Y-%m-%d") -- in local TZ
   local tagname = nil
   if tagnames then
     tagname = tagnames[1]

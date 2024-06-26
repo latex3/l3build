@@ -22,18 +22,19 @@ for those people who are interested.
 
 --]]
 
-local concat = table.concat
-local open = io.open
-local osdate = os.date
-local pack = string.pack
+local concat  = table.concat
+local open    = io.open
+local os_date = os.date
+local os_time = os.time
+local pack    = string.pack
 local setmetatable = setmetatable
-local iotype = io.type
+local iotype  = io.type
 
 local compress = zlib.compress
 local crc32 = zlib.crc32
 
 local function encode_time(unix)
-  local t = osdate('*t', unix)
+  local t = os_date('!*t', unix)
   local date = t.day | (t.month << 5) | ((t.year-1980) << 9)
   local time = (t.sec//2) | (t.min << 5) | (t.hour << 11)
   return date, time
@@ -75,7 +76,7 @@ local meta = {__index = {
     if #compressed >= #content then
       compressed = nil
     end
-    local timestamp = os.time()
+    local timestamp = os_time()
     local date, time = encode_time(timestamp)
     local central_extra, local_extra = extra_timestamp(timestamp, nil, nil)
     z.f:write(pack("<c4I2I2I2I2I2I4I4I4I2I2",
