@@ -268,7 +268,7 @@ local function argparse()
           result[optname] = optarg
         else
           local opts = result[optname] or { }
-          for hit in gmatch(optarg, "([^,%s]+)") do
+          for hit in gmatch(optarg, "([^,]+)") do
             insert(opts, hit)
           end
           result[optname] = opts
