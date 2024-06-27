@@ -117,7 +117,7 @@ function  docinit_hook()
   local _,desc_start = find(readme,"Overview\n--------")
   local desc_end,_ = find(readme,"Issues")
 
-  local overview = readme:sub(desc_start + 2,desc_end - 2):gsub("[`_]","")
+  local overview = readme:sub(desc_start + 8,desc_end - 2):gsub("[_]",""):gsub("`",'"'):gsub("[*] ","\n * ")
   insert(man_t,overview)
 
   local cmd = "texlua ./" .. module .. ".lua --help"
