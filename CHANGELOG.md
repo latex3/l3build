@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Fixed
 - Global `typesetopts` no longer ignored for `luatex` and `lualatex` (issue \#351)
+- 'UT' timestamps in zip archives are now in UTC
 
 ## [2024-05-27]
 

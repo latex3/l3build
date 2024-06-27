@@ -50,7 +50,7 @@ function update_tag(file,content,tagname,tagdate)
   local iso = "%d%d%d%d%-%d%d%-%d%d"
   local url = "https://github.com/latex3/l3build/compare/"
   -- update copyright
-  local year = os.date("%Y")
+  local year = os.date("%Y") -- in local TZ
   local oldyear = math.tointeger(year - 1)
   if string.match(content,"%(C%)%s*" .. oldyear .. " The LaTeX Project") then
     content = string.gsub(content,
