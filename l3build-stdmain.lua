@@ -35,7 +35,7 @@ function listmodules()
     if entry ~= "." and entry ~= ".." then
       local attr = lfs.attributes(entry)
       assert(type(attr) == "table")
-      if attr.mode == "directory" then
+      if attr.mode == "directory" and fileexists(entry .."/" .."build.lua") then
         if not exclmodules[entry] then
           insert(modules, entry)
         end
