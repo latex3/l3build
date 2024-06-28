@@ -460,9 +460,19 @@
 % \end{buildcmd}
 %
 % \begin{buildcmd}{clean}
-% This command removes all temporary files used for package bundling and regression testing.
-% In the standard layout, these are all files within the directories defined by \var{localdir}, \var{testdir}, \var{typesetdir} and \var{unpackdir}, as well as all files defined in the \var{cleanfiles} variable in the same directory as the script.
-% The defaults are |.pdf| files from typesetting (|doc|) and |.zip| files from bundling (|ctan|).
+% This target is meant as preparation for other targets, for example |ctan|.
+% It removes the contents of \var{distribdir} and all temporary files used for package bundling and regression testing.
+% These are all files within the directories \var{unpackdir}, \var{testdir}, \var{typesetdir} and \var{localdir}.
+% In addition, all the files in \var{maindir} (the directory of |build.lua| in the standard layout),
+% \var{sourcefiledir} and \var{docfiledir} are removed when matched by \var{cleanfiles}
+% but not by \var{sourcefiles}.
+% In a standard way are removed |.log| and |.pdf| files from the |doc| target and
+% |.zip| files from the |ctan| target.
+%
+% When applied to a bundle, the |clean| target is first applied to each
+% embedded modules (listed in |modules|). 
+% In addition, all the files in the directory of |build.lua| are removed
+% when matched by \var{cleanfiles}, while ignoring \var{sourcefiles}. Finally |ctandir| and |tdsdir| are removed.
 % \end{buildcmd}
 %
 %
