@@ -28,17 +28,15 @@ local exit   = os.exit
 local insert = table.insert
 
 -- List all modules
-function listmodules()
+local function listmodules()
   local modules = { }
   local exclmodules = exclmodules or { }
-  for entry in lfs.dir(".") do
-    if entry ~= "." and entry ~= ".." then
-      local attr = lfs.attributes(entry)
-      assert(type(attr) == "table")
-      if attr.mode == "directory" then
-        if not exclmodules[entry] then
-          insert(modules, entry)
-        end
+  for entry in tree(".", "*/build.lua") do -- TODO: support "**/..."
+    local module = dirname(entry.cwd)
+    if #module > 2 then -- this is not the current directory
+      module = module:sub(3) -- remove the leading "./"
+      if not exclmodules[module] then
+        insert(modules, module)
       end
     end
   end

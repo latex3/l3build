@@ -10,6 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Fixed
 - Global `typesetopts` no longer ignored for `luatex` and `lualatex` (issue \#351)
 - Handling of spaces in options
+- Automatic module detection only finds modules (issue \#369)
 
 ## [2024-05-27]
 
