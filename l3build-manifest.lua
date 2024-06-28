@@ -33,6 +33,9 @@ for those people who are interested.
       `l3build-manifest-setup.lua`.
 --]]
 
+local ctanfiles
+local tdsfiles
+
 function manifest()
 
   -- build list of ctan files
@@ -55,7 +58,7 @@ function manifest()
 
   manifest_write(manifest_entries)
 
-  printline = "Manifest written to " .. manifestfile
+  local printline = "Manifest written to " .. manifestfile
   print((printline:gsub(".","*")))  print(printline)  print((printline:gsub(".","*")))
 
   return 0
