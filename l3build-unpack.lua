@@ -25,7 +25,7 @@ for those people who are interested.
 -- Unpack the package files using an 'isolated' system: this requires
 -- a copy of the 'basic' DocStrip program, which is used then removed
 function unpack(sources, sourcedirs)
-  local errorlevel = dep_install(unpackdeps)
+  local errorlevel = unpack_deps(unpackdeps)
   if errorlevel ~= 0 then
     return errorlevel
   end
@@ -42,6 +42,7 @@ function unpack(sources, sourcedirs)
   return 0
 end
 
+-- TODO: Hide bundleunpack from the global level
 -- Split off from the main unpack so it can be used on a bundle and not
 -- leave only one modules files
 function bundleunpack(sourcedirs, sources)
