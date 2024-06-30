@@ -149,7 +149,7 @@ end
 
 local function docinit()
   -- Set up
-  dep_install(typesetdeps)
+  unpack_deps(typesetdeps)
   unpack({sourcefiles, typesetsourcefiles}, {sourcefiledir, docfiledir})
   cleandir(typesetdir)
   for _,file in pairs(typesetfiles) do
