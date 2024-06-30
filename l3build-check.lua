@@ -65,7 +65,7 @@ function checkinit()
     cleandir(testdir)
     cleandir(resultdir)
   end
-  dep_install(checkdeps)
+  unpack_deps(checkdeps)
   -- Copy dependencies to the test directory itself: this makes the paths
   -- a lot easier to manage, and is important for dealing with the log and
   -- with file input/output tests

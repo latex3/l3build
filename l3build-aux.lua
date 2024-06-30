@@ -153,21 +153,39 @@ function call(modules, target, opts)
 end
 
 ---Unpack the given dependencies.
----A dependency is the path of a directory relative to the main one.
----@param deps table regular array of dependencies.
+---A dependency is the path of another l3build package
+---relative to the main one, or absolute?
+---@param deps table ordered array of dependencies.
 ---@return number 0 on a successful completion, a non 0 error code otherwise.
 ---@see stdmain, check, unpack, typesetting
 ---@usage Private?
-function dep_install(deps)
+--TODO: Remove this function from the global scope
+function unpack_deps(deps)
   local error_level
   for _, dep in ipairs(deps) do
-    print("Installing dependency: " .. dep)
+    print("Unpacking dependency: " .. dep)
     error_level = run(dep, "texlua " .. get_script_name() .. " unpack -q")
     if error_level ~= 0 then
       return error_level
     end
   end
   return 0
+end
+
+-- Just in case someone ever used this function.
+---@param deps table same as unpack_deps
+---@return number same as unpack_deps
+dep_install = function(deps)
+  local next_dep_install = dep_install
+  -- only on the first call
+  if options["debug"] or not options["quiet"] then
+    --TODO: defer this message to the end of the parent run
+    print("DEPRECATED: dep_install will be removed in forthcoming release.")
+    next_dep_install = unpack_deps
+  end
+  local error_level = unpack_deps(deps)
+  dep_install = next_dep_install
+  return error_level
 end
 
 -- Construct a localtexmf including any tdsdirs
