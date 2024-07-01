@@ -31,7 +31,6 @@ local currentdir       = lfs.currentdir
 local chdir            = lfs.chdir
 local lfs_dir          = lfs.dir
 
-local execute          = os.execute
 local exit             = os.exit
 local getenv           = os.getenv
 local remove           = os.remove
@@ -45,6 +44,8 @@ local sub              = string.sub
 local gsub             = string.gsub
 
 local insert           = table.insert
+
+local execute          = require"l3buildlib".execute
 
 -- Convert a file glob into a pattern for use by e.g. string.gub
 -- Based on https://github.com/davidm/lua-glob-pattern
@@ -236,12 +237,12 @@ function cp(glob, source, dest)
         errorlevel = execute(
           'xcopy /y /e /i "' .. unix_to_win(p.cwd) .. '" '
              .. unix_to_win(dest .. '/' .. escapepath(p.src)) .. ' > nul'
-        ) and 0 or 1
+        )
       else
         errorlevel = execute(
           'xcopy /y "' .. unix_to_win(p.cwd) .. '" '
              .. unix_to_win(dest .. '/') .. ' > nul'
-        ) and 0 or 1
+        )
       end
     else
       -- Ensure we get similar behavior on all platforms
@@ -251,7 +252,7 @@ function cp(glob, source, dest)
       end
       errorlevel = execute(
         "cp -RLf '" .. p.cwd .. "' " .. dest
-      ) and 0 or 1
+      )
     end
     if errorlevel ~=0 then
       return errorlevel
