@@ -69,11 +69,12 @@ function bundleunpack(sourcedirs, sources)
       return errorlevel
     end
   end
+  local popen = io.popen
   for _,i in ipairs(unpackfiles) do
     for _,p in ipairs(tree(unpackdir, i)) do
       local path, name = splitpath(p.src)
       local localdir = abspath(localdir)
-      local success = io.popen(
+      local success = assert(popen(
         "cd " .. unpackdir .. "/" .. path .. os_concat ..
         os_setenv .. " TEXINPUTS=." .. os_pathsep
           .. localdir .. (unpacksearch and os_pathsep or "") ..
@@ -84,7 +85,7 @@ function bundleunpack(sourcedirs, sources)
         unpackexe .. " " .. unpackopts .. " " .. name
           .. (options["quiet"] and (" > " .. os_null) or ""),
         "w"
-      ):write(string.rep("y\n", 300)):close()
+      ):write(string.rep("y\n", 300))):close()
       if not success then
         return 1
       end

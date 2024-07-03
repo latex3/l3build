@@ -335,7 +335,7 @@ end
 -- From the first match of a pattern in a file:
 manifest_extract_filedesc = function(filehandle)
 
-  local all_file = filehandle:read("*all")
+  local all_file = filehandle:read("a")
   local matchstr = "\\section{(.-)}"
 
   filedesc = string.match(all_file,matchstr)

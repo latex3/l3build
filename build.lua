@@ -103,8 +103,13 @@ function  docinit_hook()
   local insert = table.insert
   local open = io.open
 
-  local f = open("README.md","rb")
-  local readme = f:read("*all")
+  ---@type file*?
+  local f = assert(open("README.md","rb"))
+  ---@cast f file*
+  local readme = f:read("a")
+  f:close()
+  f = nil
+
   local date_start,date_end = find(readme,"%d%d%d%d%p%d%d%p%d%d")
 
   local man_t = {}
@@ -121,9 +126,10 @@ function  docinit_hook()
   insert(man_t,overview)
 
   local cmd = "texlua ./" .. module .. ".lua --help"
-  local f = assert(io.popen(cmd,"r"))
-  local help_text = assert(f:read("*a"))
+  f = assert(io.popen(cmd,"r"))
+  local help_text = assert(f:read("a"))
   f:close()
+  f = nil
 
   insert(man_t,(help_text:gsub("\nUsage.*names>]\n\n","")
   :gsub("Valid targets",".SH COMMANDS\nValid targets")

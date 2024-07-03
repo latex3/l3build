@@ -39,9 +39,12 @@ end
 local function update_file_tag(file,tagname,tagdate)
   local filename = basename(file)
   print("Tagging  ".. filename)
+  ---@type file*?
   local f = assert(open(file,"rb"))
-  local content = f:read("*all")
+  ---@cast f file*
+  local content = f:read("a")
   f:close()
+  f = nil
   -- Deal with Unix/Windows line endings
   content = gsub(content .. (match(content,"\n$") and "" or "\n"),
     "\r\n", "\n")
