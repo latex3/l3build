@@ -85,7 +85,7 @@ function ctan()
   options["engine"] = nil
   local function dirzip(dir, zipname)
     zipname = zipname .. ".zip"
-    local zip = newzip(dir .. '/' .. zipname)
+    local zip = assert(newzip(dir .. '/' .. zipname))
     local function tab_to_check(table)
       local patterns = {}
       for n,i in ipairs(table) do

@@ -132,7 +132,7 @@ local meta = {__index = {
 }}
 
 return function(filename)
-  local f, msg = open(filename, 'wb')
+  local f, msg = open(filename, 'wb') -- closed just above
   if not f then return f, msg end
   return setmetatable({
     f = f,

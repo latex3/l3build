@@ -153,6 +153,7 @@ manifest_build_init = function(entry)
 
 end
 
+local open = io.open
 
 manifest_build_file = function(entry,this_file)
 
@@ -173,7 +174,7 @@ manifest_build_file = function(entry,this_file)
 
     if not(entry.skipfiledescription) then
 
-      local ff = assert(io.open(entry.dir .. "/" .. this_file, "r"))
+      local ff = assert(open(entry.dir .. "/" .. this_file, "r"))
       this_descr  = manifest_extract_filedesc(ff,this_file)
       ff:close()
 
@@ -197,7 +198,7 @@ end
 
 manifest_write = function(manifest_entries)
 
-  local f = assert(io.open(manifestfile, "w"))
+  local f = assert(open(manifestfile, "w"))
   manifest_write_opening(f)
 
   for ii,vv in ipairs(manifest_entries) do

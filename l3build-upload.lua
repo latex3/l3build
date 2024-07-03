@@ -94,9 +94,9 @@ function upload(tagnames)
 
   -- Get data from command line if appropriate
   if options["file"] then
-    local f = open(options["file"],"r")
-    uploadconfig.announcement = assert(f:read('*a'))
-    close(f)
+    local f = assert(open(options["file"],"r"))
+    uploadconfig.announcement = assert(f:read('a'))
+    f:close()
   end
   uploadconfig.announcement = options["message"] or uploadconfig.announcement or file_contents(uploadconfig.announcement_file)
   uploadconfig.email = options["email"] or uploadconfig.email
@@ -139,10 +139,13 @@ function upload(tagnames)
 
 -- curl file version
   local curloptfile = uploadconfig.curlopt_file or (ctanzip .. ".curlopt")
-  local curlopt=open(curloptfile,"w")
+  ---@type file*?
+  local curlopt=assert(open(curloptfile,"w"))
+  ---@cast curlopt file*
   output(curlopt)
   write(ctan_post)
-  close(curlopt)
+  curlopt:close()
+  curlopt = nil
 
   ctan_post=curlexe .. " --config " .. curloptfile
 
@@ -376,12 +379,12 @@ end
 -- if filename is non nil and file readable return contents otherwise nil
 function file_contents (filename)
   if filename ~= nil then
-    local f= open(filename,"r")
+    local f= assert(open(filename,"r"))
     if f==nil then
       return nil
     else
-      local s = f:read("*all")
-      close(f)
+      local s = f:read("a")
+      f:close()
       return s
     end
   else
