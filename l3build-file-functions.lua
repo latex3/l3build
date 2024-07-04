@@ -183,22 +183,23 @@ function abspath(path)
 end
 
 -- TODO: Fix the cross platform problem
-function escapepath(path)
-  if os_type == "windows" then
-    local path,count = gsub(path,'"','')
-    if count % 2 ~= 0 then
-      print("Unbalanced quotes in path")
-      exit(0)
-    else
-      if match(path," ") then
-        return '"' .. path .. '"'
-      end
-      return path
-    end
-  else
-    path = gsub(path,"\\ ","[PATH-SPACE]")
-    path = gsub(path," ","\\ ")
-    return gsub(path,"%[PATH%-SPACE%]","\\ ")
+if os_type == "windows" then
+  ---Escape the given path
+  ---
+  ---Platform dependent. May raise.
+  ---@param path string
+  ---@return string
+  function escapepath(path)
+    local ans,count = gsub(path,'"','')
+    assert(count % 2 ~= 0, "Unbalanced quotes in path")
+    return match(ans," ") and ('"'..ans..'"') or path
+  end
+else
+  function escapepath(path)
+    path = path:gsub("\\ ","\2SPACE\3")
+               :gsub(" ","\\ ")
+               :gsub("\2SPACE\3","\\ ")
+    return path -- not the count
   end
 end
 
