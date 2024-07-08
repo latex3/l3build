@@ -1995,12 +1995,31 @@
 % \end{itemize}
 % The functions |func|, |bundle_func| and |pre| must return 0 on success.
 %
-% The list of options (switches) is controlled by the |option_list| table.
-% The name of each entry in the table is the \enquote{long} version of the
-% option. Each entry requires a |type|, one of |boolean|, |string| or
-% |table|. As for targets, each entry should have a |desc| to construct
-% the |help()|. It is also possible to provide a |short| name for the option:
-% this should be a single letter.
+% In order to add custom options, a preparation script file named
+% |build-pre.lua| is put near |build.lua|.
+% It contains
+% \texttt{declare_option(\meta{name},\meta{table})} instructions where
+% \meta{name} is the \enquote{long} version of the option.
+% The \meta{table} requires a |type| key with value
+% \begin{itemize}
+% \item |"boolean"| for a switch like |--dry-run|,
+% \item |"string"| for an option like |--message=|\meta{text} or
+% \item |"list"| for an option like
+% |--engine=|\meta{engine_1}|,|\meta{engine_2}|,|...
+% \end{itemize}
+% The value for optional key |short| is a one character long
+% string for the \enquote{short} version of the option.
+% The value for key |desc|, if any, is used to construct the |help()|.
+% After such instruction, we have
+% \texttt{option_list[\meta{name}]==\meta{table}}.
+%
+% The |declare_option| function is not available in |build.lua|, but
+% instruction \texttt{update_option(\meta{name},\meta{other table},^^A
+% \meta{provide})} allows to modify the initial option data in a consistent
+% manner. Entries in \meta{other table}
+% overwrite existing entries in \meta{table} except when the \meta{provide}
+% argument is truthy. However, changing the |type| of an option is not allowed.
+% 
 %
 % \subsection{Customising the manifest file}
 % \label{sec:manifest}

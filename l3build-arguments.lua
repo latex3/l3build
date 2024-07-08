@@ -22,18 +22,21 @@ for those people who are interested.
 
 --]]
 
-local exit             = os.exit
-local stderr           = io.stderr
+local exit    = os.exit
+local stderr  = io.stderr
 
-local find             = string.find
-local gmatch           = string.gmatch
-local match            = string.match
-local sub              = string.sub
+local string  = string
+local find    = string.find
+local gmatch  = string.gmatch
+local match   = string.match
+local sub     = string.sub
 
-local insert           = table.insert
+local table   = table
+local insert  = table.insert
 
 -- Parse command line options
 
+---@type {[string]: L3BOptionData}
 option_list =
   {
     config =
@@ -162,6 +165,64 @@ option_list =
         type = "boolean"
       }
   }
+
+local function validate(fname, name, t)
+  assert(type(name)=="string" and #name>1 and name[1] ~= "-" and not name:find("=", 1, true),
+    "Unexpected name in "..fname..": "..tostring(name)..'/'..type(name))
+  assert(type(t)=="table",
+    "Unexpected t in "..fname..": "..tostring(t)..'/'..type(t))
+  assert(t.short == nil or (type(t.short)=="string" and #t.short==1),
+    "Unexpected short value in "..fname..": "..tostring(t.short)..'/'..type(t.short))
+  assert(t.desc == nil or type(t.desc)=="string",
+    "Unexpected desc value in "..fname..": "..tostring(t.desc)..'/'..type(t.desc))
+end
+
+---Declare custom option
+---@param name string the long name of the option
+---@param t L3BOptionData the option data table as will be available from `option_list`
+function declare_option(name, t)
+  validate("declare_option", name, t)
+  assert(t.type=="boolean" or t.type=="string" or t.type=="table",
+    "Unexpected type value in declare_option: "..tostring(t.type)..'/'..type(t.type))
+  local tt = option_list[name]
+    assert(not tt, "Unexpected name in declare_option: "..name.." aleady used.")
+  option_list[name] = t -- not a copy
+end
+
+---Update custom option
+---@param name string the long name of the option, must have been used
+---@param t L3BOptionUpdate the option update data table
+---@param provide boolean?
+function update_option(name, t, provide)
+  local tt = option_list[name]
+  assert(tt, "Unexpected name in update_option: missing `declare_option("..name..", ...)`")
+  assert(t.type == nil or t.type==tt.type,
+  "Unexpected type change in declare_option: option "..name.." has type "..tt.type)
+  assert(tt, "Unexpected name in update_option: missing `declare_option("..name..", ...)`")
+  if provide then -- replace each field
+    for k,v in pairs(t) do
+      if tt[k] == nil then
+        tt[k] = v
+      end
+    end
+  else -- add only missing fields
+    for k,v in pairs(t) do
+      tt[k] = v
+    end
+  end
+end
+-- load `build-pre.lua` if any.
+-- actually this preparation file only concerns arguments.
+do
+  local f = loadfile("build-pre.lua", "t")
+  if f then
+    f()
+  end
+end
+
+function declare_option(name, t) -- undefine declare_option
+  error("`declare_option` is only available in `pre-build.lua`")
+end
 
 -- This is done as a function (rather than do ... end) as it allows early
 -- termination (break)

@@ -144,6 +144,18 @@ function  docinit_hook()
   return 0
 end
 
+assert(option_list.custom_option.type == "string")
+if options.custom_option then
+  print("custom_option: "..options.custom_option)
+end
+if options["target"] ~= "help" then
+  local cmd = "texlua ./" .. module .. ".lua --help"
+  local f = assert(io.popen(cmd,"r"))
+  local help_text = assert(f:read("*a"))
+  f:close()
+  assert(help_text:find("Custom option"),"No \"Custom option\" in the help")
+end
+
 if not release_date then
   dofile("./l3build.lua")
 end
