@@ -34,7 +34,7 @@ uploadconfig = {
   topic       = {"macro-supp", "package-devel"},
   ctanPath    = "/macros/latex/contrib/l3build",
   repository  = "https://github.com/latex3/l3build/",
-  bugtracker  = "https://github.com/latex3/l3build/issues",
+  bugs        = "https://github.com/latex3/l3build/issues",
   update      = true,
   description = [[
 The build system supports testing and building (La)TeX code, on

@@ -256,6 +256,13 @@ end
 
 function construct_ctan_post(uploadfile,debug)
 
+  -- handle renamed fields
+  -- - latest (version 1.1): https://ctan.org/help/submit
+  -- - deprecated: https://ctan.org/help/submit/1.0
+  if uploadconfig.bugs == nil then
+    uploadconfig.bugs = uploadconfig.bugtracker
+  end
+
   -- start building the curl command:
 -- commandline  ctan_post = curlexe .. " "
   ctan_post=""
@@ -266,7 +273,7 @@ function construct_ctan_post(uploadfile,debug)
   --         ----------------------------------------------------------------------------------------------------
   ctan_field("announcement", uploadconfig.announcement, 8192, "Announcement",                        true,  false )
   ctan_field("author",       uploadconfig.author,        128, "Author name",                         true,  false )
-  ctan_field("bugtracker",   uploadconfig.bugtracker,    255, "URL(s) of bug tracker",               false, true  )
+  ctan_field("bugs",         uploadconfig.bugs,          255, "URL(s) of bug tracker",               false, true  )
   ctan_field("ctanPath",     uploadconfig.ctanPath,      255, "CTAN path",                           true,  false )
   ctan_field("description",  uploadconfig.description,  4096, "Short description of package",        false, false )
   ctan_field("development",  uploadconfig.development,   255, "URL(s) of development channels",      false, true  )

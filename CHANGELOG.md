@@ -10,6 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Fixed
 - Global `typesetopts` no longer ignored for `luatex` and `lualatex` (issue \#351)
 - Handling of spaces in options
+- Rename deprecated `bugtracker` field in CTAN API to `bugs` (issue \#380)
 
 ## [2024-05-27]
 
