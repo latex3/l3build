@@ -74,6 +74,9 @@ function bundlectan()
   local errorlevel = install_files(tdsdir,true)
   if errorlevel ~=0 then return errorlevel end
   copyctan()
+  for _,file in pairs(textfiles) do
+    cp(file, textfiledir, pkgdir)
+  end
   return 0
 end
 
