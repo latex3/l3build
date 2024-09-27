@@ -67,9 +67,6 @@ function copyctan()
     copyfiles(tab,docfiledir)
   end
   copyfiles(sourcefiles,sourcefiledir)
-  for _,file in pairs(textfiles) do
-    cp(file, textfiledir, pkgdir)
-  end
 
 end
 
