@@ -7,7 +7,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2024-10-08]
+
 ### Fixed
+- Test for uncompleted conditionals in tests (may require `.tlg` update)
 - Global `typesetopts` no longer ignored for `luatex` and `lualatex` (issue \#351)
 - Handling of spaces in options
 
@@ -789,7 +792,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2024-05-27...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2024-10-08...HEAD
+[2024-10-08]: https://github.com/latex3/l3build/compare/2024-05-27...2024-10-08
 [2024-05-27]: https://github.com/latex3/l3build/compare/2024-02-08...2024-05-27
 [2024-02-08]: https://github.com/latex3/l3build/compare/2024-01-18...2024-02-08
 [2024-01-18]: https://github.com/latex3/l3build/compare/2024-01-09...2024-01-18
