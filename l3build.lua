@@ -131,6 +131,10 @@ if forcedocepoch then
     typesetopts = typesetopts .. " -utc"
   end
 end
+-- Allow for LaTeX "dev" release
+if options["dev"] and checkformat == "latex" then
+  checkformat = "latex-dev"
+end
 
 --
 -- Deal with multiple configs for tests

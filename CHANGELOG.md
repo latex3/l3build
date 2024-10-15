@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- `--dev` switch to run tests using development format
+
 ## [2024-10-08]
 
 ### Fixed

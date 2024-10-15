@@ -53,6 +53,11 @@ option_list =
         desc = "Runs target in debug mode",
         type = "boolean"
       },
+    dev =
+      {
+        desc = "Use the development LaTeX format",
+        type = "boolean"
+      },
     dirty =
       {
         desc = "Skips cleaning up the test area",
