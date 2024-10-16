@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2024-10-16]
+
 ### Added
 - `--dev` switch to run tests using development format
 
@@ -795,7 +797,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalise short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2024-10-08...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2024-10-16...HEAD
+[2024-10-16]: https://github.com/latex3/l3build/compare/2024-10-08...2024-10-16
 [2024-10-08]: https://github.com/latex3/l3build/compare/2024-05-27...2024-10-08
 [2024-05-27]: https://github.com/latex3/l3build/compare/2024-02-08...2024-05-27
 [2024-02-08]: https://github.com/latex3/l3build/compare/2024-01-18...2024-02-08
