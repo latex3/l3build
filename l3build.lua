@@ -132,8 +132,12 @@ if forcedocepoch then
   end
 end
 -- Allow for LaTeX "dev" release
-if options["dev"] and checkformat == "latex" then
-  checkformat = "latex-dev"
+if options["dev"] then
+  if checkformat == "latex" then
+    checkformat = "latex-dev"
+  elseif checkformat ~= "latex-dev" then
+    print("Ignoring --dev option with non-LaTeX format")
+  end
 end
 
 --
