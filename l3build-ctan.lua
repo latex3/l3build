@@ -148,7 +148,7 @@ function ctan()
       end
     end
     -- Rename README if necessary
-    if ctanreadme ~= "" and not match(lower(ctanreadme),"^readme$")
+    if ctanreadme ~= "" and not match(lower(ctanreadme),"^readme$") and
       not match(lower(ctanreadme),"^readme%.%w+") then
       local newfile = "README." .. match(ctanreadme,"%.(%w+)$")
       for _,dir in pairs({ctandir .. "/" .. ctanpkg,
