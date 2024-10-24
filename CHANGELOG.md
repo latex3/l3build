@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Skip README rename when this has no extension (issue \#388)
+
 ## [2024-10-16]
 
 ### Added
