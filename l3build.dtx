@@ -533,9 +533,10 @@
 %
 %
 % \begin{buildcmd}{doc}
-% Compiles documentation files in the \var{typesetdir} directory.
+% Compiles documentation files in the \var{docfiledir}, using \var{typesetdir}
+% as the working directory.
 % In the absence of one or more file names, all documentation is typeset;
-% a file list may be given at the command line for selective typesetting.
+% a file list may be specified in \var{typesetfiles} or given at the command line for selective typesetting.
 % If the compilation is successful the |.pdf| is moved back into the main directory.
 %
 % The documentation compilation is performed with the \var{typesetexe} binary (default \texttt{pdflatex}), with options \var{typesetopts}.
