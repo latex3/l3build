@@ -183,6 +183,9 @@ end
 -- Other required settings
 asciiengines = asciiengines or {"pdftex"}
 checkruns    = checkruns    or 1
+if forcecheckruns == nil then
+  forcecheckruns = false
+end
 ctanreadme   = ctanreadme   or "README.md"
 ctanzip      = ctanzip      or ctanpkg .. "-ctan"
 epoch        = epoch        or 1463734800
@@ -193,12 +196,16 @@ if flattentds == nil then
   flattentds = true
 end
 maxprintline = maxprintline or 9999
-packtdszip   = packtdszip   or false
+if packtdszip == nil then
+  packtdszip = false
+end
 -- support "ps2pdfopt" for backward compatibility, gh issue #275
 ps2pdfopts   = ps2pdfopts   or ps2pdfopt or ""
 typesetcmds  = typesetcmds  or ""
 typesetruns  = typesetruns  or 3
-recordstatus = recordstatus or false
+if recordstatus == nil then
+  recordstatus = false
+end
 
 -- Extensions for various file types: used to abstract out stuff a bit
 bakext = bakext or ".bak"
