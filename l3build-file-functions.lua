@@ -22,6 +22,8 @@ for those people who are interested.
 
 --]]
 
+local lfs = require("lfs")
+
 local print            = print
 
 local open             = io.open

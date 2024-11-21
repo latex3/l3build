@@ -22,6 +22,8 @@ for those people who are interested.
 
 --]]
 
+local lfs = require("lfs")
+
 local pairs    = pairs
 local print    = print
 local tostring = tostring
