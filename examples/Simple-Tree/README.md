@@ -10,6 +10,6 @@ This is left as an exercise to the energetic package writer studying these examp
 
 -----
 
-Copyright (C) 2014-2024 The LaTeX Project <br />
+Copyright (C) 2014-2025 The LaTeX Project <br />
 <https://latex-project.org/> <br />
 All rights reserved.
