@@ -8,7 +8,8 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 ### Changed
-- Initialize all boolean config variables.
+- Initialize all boolean config variables
+- Normalize `at lines ...` statements for overfull boxes
 
 ### Fixed
 - Skip README rename when this has no extension (issue \#388)
