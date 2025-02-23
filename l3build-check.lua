@@ -1,6 +1,6 @@
 --[[
 
-File l3build-check.lua Copyright (C) 2018-2025 The LaTeX Project
+File l3build-check.lua Copyright (C) 2018-2024 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -204,6 +204,8 @@ local function normalize_log(content,engine,errlevels)
     if match(line,"^%(%w+%)%s+%d+%.$") then
       line = gsub(line,"%((%w+)%)(%s+)%d+%.", "(%1)%2....")
     end
+    -- And for overfull boxes
+    line = gsub(line, "at lines %d*%-%-%d*","at lines ...")
     -- Tidy up to ^^ notation
     for i = 0, 31 do
       line = gsub(line, char(i), "^^" .. char(64 + i))
