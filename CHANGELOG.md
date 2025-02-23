@@ -11,7 +11,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Initialize all boolean config variables
-- Normalize `at lines ...` statements for overfull boxes (may require `.tlg` update)
+- Normalize `at lines ...` statements for overfull and underfull boxes
+  (may require `.tlg` update)
 
 ### Fixed
 - Skip README rename when this has no extension (issue \#388)

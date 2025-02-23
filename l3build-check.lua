@@ -204,7 +204,7 @@ local function normalize_log(content,engine,errlevels)
     if match(line,"^%(%w+%)%s+%d+%.$") then
       line = gsub(line,"%((%w+)%)(%s+)%d+%.", "(%1)%2....")
     end
-    -- And for overfull boxes
+    -- And for overfull and underfull boxes
     line = gsub(line, "at lines %d*%-%-%d*","at lines ...")
     -- Tidy up to ^^ notation
     for i = 0, 31 do
