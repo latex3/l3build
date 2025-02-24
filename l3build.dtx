@@ -919,6 +919,8 @@
 %     slightly different in \LuaTeX{} compared to other engines).
 %   \item Conversion of low chars ($0$ to $31$) to |^^| notation.
 % \end{itemize}
+% This involves making an additional \texttt{.tlg} file in the \var{testdir}
+% location, which is generated dynamically during the testing process.
 %
 % When making comparisons between 8-bit and Unicode engines it is useful to
 % format the top half of the 8-bit range such that it appears in the log as
@@ -2348,7 +2350,7 @@
 \IfFileExists{#1}%
   {\begingroup %
      \catcode`\^^M\active %
-     \edef^^M{^\string^M^^J}%
+     \def^^M{^^J}%
      \everyeof{\noexpand}%
      \obeyspaces %
      \@sanitize %
