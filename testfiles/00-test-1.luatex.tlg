@@ -4,12 +4,12 @@ Don't change this file in any respect.
 TEST 1: \afterassignment 
 ============================================================
 > hello.
-<argument> ...ef \y {world}}\foo } \x ={hello} \showthe \foo 
+<argument> ...d}}\foo } \x ={hello} \showthe \foo 
                                                   \show \y 
 l. ...}
 > \y=macro:
 ->world.
-<argument> ...rld}}\foo } \x ={hello} \showthe \foo \show \y 
+<argument> ... \x ={hello} \showthe \foo \show \y 
 l. ...}
 ============================================================
 ============================================================
