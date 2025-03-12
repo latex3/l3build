@@ -898,6 +898,10 @@ local function showsavecommands(failurelist)
   local savecmds = {}
   local checkcmd = "l3build check --show-saves"
   local prefix = "l3build save"
+  if options.dev and checkformat == "latex-dev" then
+    prefix = prefix .. " --dev"
+    checkcmd = checkcmd .. " --dev"
+  end
   if options.config and options.config[1] ~= 'build' then
     local config = " -c " .. options.config[1]
     prefix = prefix .. config
