@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Interaction between options `--dev` and `--show-saves`/`-S` (issue \#411)
+
 ## [2025-02-23]
 
 ### Changed

@@ -4,8 +4,6 @@ Don't change this file in any respect.
 TEST 1: \afterassignment 
 ============================================================
 > hello.
-<argument> ...d}}\foo } \x ={hello} \showthe \foo 
-                                                  \show \y 
 l. ...}
 > \y=macro:
 ->world.
