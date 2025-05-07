@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Missing `os_concat` required on Windows
+
 ## [2025-05-07]
 
 ### Added
