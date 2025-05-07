@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- `halferrorline` and `errorline` vars (issue \#258)
+
 ### Fixed
 - Interaction between options `--dev` and `--show-saves`/`-S` (issue \#411)
 

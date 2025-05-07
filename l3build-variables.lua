@@ -195,7 +195,9 @@ end
 if flattentds == nil then
   flattentds = true
 end
-maxprintline = maxprintline or 9999
+maxprintline  = maxprintline or 9999
+errorline     = errorline or 79
+halferrorline = halferrorline or 50
 if packtdszip == nil then
   packtdszip = false
 end
