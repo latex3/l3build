@@ -819,9 +819,10 @@ function runtest(name, engine, hide, ext, test_type, breakout)
     set_epoch_cmd(epoch, forcecheckepoch) ..
     -- Ensure lines are of a known length
     os_setenv .. " max_print_line=" .. maxprintline
-      .. os_setenv .. " error_line=" .. errorline
-      .. os_concat
-      .. os_setenv .. " half_error_line=" .. halferrorline
+      .. os_concat ..
+    os_setenv .. " error_line=" .. errorline
+      .. os_concat ..
+    os_setenv .. " half_error_line=" .. halferrorline
       .. os_concat
   for i = 1, checkruns do
     errlevels[i] = runcmd(
