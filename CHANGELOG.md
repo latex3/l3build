@@ -10,6 +10,9 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 - `halferrorline` and `errorline` vars (issue \#258)
 
+### Changed
+- Support `recordstatus` in a platform-neutral way (issue \#383)
+
 ### Fixed
 - Interaction between options `--dev` and `--show-saves`/`-S` (issue \#411)
 

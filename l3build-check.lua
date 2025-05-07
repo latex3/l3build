@@ -47,6 +47,7 @@ local utf8_char        = unicode.utf8.char
 local exit             = os.exit
 local execute          = os.execute
 local remove           = os.remove
+local os_type          = os.type
 
 -- randomise the random numbers
 math.randomseed( os.time() )
@@ -831,6 +832,10 @@ function runtest(name, engine, hide, ext, test_type, breakout)
         .. (hide and (" > " .. os_null) or ""),
       testdir
     )
+    -- Work around a LuaTeX issue on *nix OS
+    if os_type ~= "windows" then
+      errlevels[i] = (0xFF00 & errlevels[i]) >> 8
+    end
     -- On Windows, concatenating here will suppress any non-zero errorlevel
     -- from the main run, so we split into two parts.
     local tasks = runtest_tasks(jobname(lvtfile),i)
