@@ -2352,7 +2352,7 @@
 \IfFileExists{#1}%
   {\begingroup %
      \catcode`\^^M\active %
-     \edef^^M{^\string^M^^J}%
+     \edef^^M{[nl]^^J}%
      \everyeof{\noexpand}%
      \obeyspaces %
      \@sanitize %

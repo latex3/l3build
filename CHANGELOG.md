@@ -12,6 +12,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Support `recordstatus` in a platform-neutral way (issue \#383)
+- Use `[nl]` no `^^M` when marking linebreaks in `\SHOWFILE` (issue \#409):
+  may require `.tlg` rebuilds
 
 ### Fixed
 - Interaction between options `--dev` and `--show-saves`/`-S` (issue \#411)
