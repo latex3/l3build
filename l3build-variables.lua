@@ -85,6 +85,7 @@ docfiles           = docfiles           or { }
 dynamicfiles       = dynamicfiles       or { }
 excludefiles       = excludefiles       or {"*~","build.lua","config-*.lua"}
 exefiles           = exefiles           or { }
+exhibitfiles       = exhibitfiles       or { }
 installfiles       = installfiles       or {"*.sty","*.cls"}
 makeindexfiles     = makeindexfiles     or {"*.ist"}
 scriptfiles        = scriptfiles        or { }
