@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Support `exhibitfiles` to set files that need to be "exhibited" in the current workspace
+
 ## [2025-05-08]
 
 ### Fixed

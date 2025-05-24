@@ -64,7 +64,9 @@ function clean()
       end
     end
   end
-
+  for _,i in pairs(exhibitfiles) do
+    rm(currentdir, i)
+  end
   return 0
 end
 
