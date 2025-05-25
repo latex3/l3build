@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Apply US spellings
+
 ## [2025-05-08]
 
 ### Fixed
@@ -126,7 +129,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Document ConTeXt as supported `checkformat`
 
 ### Changed
-- Extend version string normalisation during checks
+- Extend version string normalization during checks
   (see issue \#96)
 
 - Extend excludefiles to cover `build.lua` (see \#286)
@@ -144,8 +147,8 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2023-09-05]
 
 ### Changed
-- Initialise the random seed with the current time so `--shuffle` produces different orders each run.
-- Normalise more `luaotfload` cache lines
+- Initialize the random seed with the current time so `--shuffle` produces different orders each run.
+- Normalize more `luaotfload` cache lines
 - Apply `-utc` switch for LuaTeX when using a fixed epoch value
 
 ## [2023-07-20]
@@ -216,7 +219,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Drop a redundant setup line for upTeX
-- Normalise more Lua stack trace data (may require `.tlg` rebuild)
+- Normalize more Lua stack trace data (may require `.tlg` rebuild)
 
 ### Fixed
 - Ensure `texmf.cnf` work correctly for `dvips`
@@ -237,7 +240,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2022-04-19]
 
 ### Changed
-- Normalise GhostScript version in PDF-based tests
+- Normalize GhostScript version in PDF-based tests
 - Sort list of names of difference files for failing tests.
 
 ## [2022-04-12]
@@ -348,7 +351,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2021-05-05]
 
 ### Changed
-- Normalise Lua function calls (issue \#127) - may require `.tlg` update
+- Normalize Lua function calls (issue \#127) - may require `.tlg` update
 - LuaTeX from TL'21 is no longer 'off by one' in log files - may require
   `.tlg` update
 
@@ -383,7 +386,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2020-03-13]
 
 ### Changed
-- Refinement of PDF test normalisation
+- Refinement of PDF test normalization
 
 ## [2020-03-12]
 
@@ -391,8 +394,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Option `ps2pdfopt`
 
 ### Changed
-- Normalise `/ID` lines in PDF comparisons
-- Normalise `%%` lines in PDF comparisons
+- Normalize `/ID` lines in PDF comparisons
+- Normalize `%%` lines in PDF comparisons
 
 ### Fixed
 - Enable `cleandir()` recursively
@@ -422,7 +425,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2020-02-03]
 
 ### Changed
-- Normalise out DVI header lines
+- Normalize out DVI header lines
 
 ### Fixed
 - Allow announcement field to be empty
@@ -452,9 +455,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 
-- Avoid normalisation of (u)pTeX data when this is standard engine
+- Avoid normalization of (u)pTeX data when this is standard engine
   (fixes #103)
-- Normalise Lua data references (#107)
+- Normalize Lua data references (#107)
 - Extend `runtest_task()` to pass run number
 - Allow `regression-test` to load when e-TeX is unavailable (fixes #105)
 
@@ -470,7 +473,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 
-- Normalise out file paths in all cases
+- Normalize out file paths in all cases
 
 ## [2019-09-30]
 
@@ -548,7 +551,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 
-- Back out change for normalisation of LuaTeX v1.10 stack information
+- Back out change for normalization of LuaTeX v1.10 stack information
   (timing issue: will reintroduce later)
 
 ### Fixed
@@ -563,7 +566,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 
-- Support for normalisation of LuaTeX v1.10 stack information
+- Support for normalization of LuaTeX v1.10 stack information
   (may require new `.tlg` files)
 
 ### Fixed
@@ -579,7 +582,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 
-- Moved LuaTeX-specific font cache normalisation
+- Moved LuaTeX-specific font cache normalization
 
 ## [2019-02-10]
 
@@ -677,8 +680,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 
-- Normalise date lines to contain "...-..-.." rather than removing
-  (including normalising version data in such lines): note that
+- Normalize date lines to contain "...-..-.." rather than removing
+  (including normalizing version data in such lines): note that
   `.tlg` file updates may be required after this change
 - Explicitly exclude `.fd` file lines
 
@@ -698,7 +701,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Run PDF-based tests for all engines
-- Tweaks to PDF-based normalisation: new `.tpf` files will be required
+- Tweaks to PDF-based normalization: new `.tpf` files will be required
 - The `--halt-on-error|-H` setting now applies to multiple configs
 
 ### Fixed
@@ -734,7 +737,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Variable `dynamicfiles` to be cleaned between each test run
 
 ### Changed
-- Normalise dates to placeholder "YYYY-MM-DD": may require `.tlg` updates
+- Normalize dates to placeholder "YYYY-MM-DD": may require `.tlg` updates
 
 ### Fixed
 - Include dot files in `tree()` (fixes #30)
@@ -774,7 +777,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 - `l3build` can now be run as a top-level script rather than using
   `texlua build.lua ...`
-- Normalisation of LuaTeX-derived `tlg` files, in preparation for
+- Normalization of LuaTeX-derived `tlg` files, in preparation for
   TeX Live 2018
 
 ### Deprecated
@@ -800,10 +803,10 @@ this project uses date-based 'snapshot' version identifiers.
 - Options `--first` and `--last`
 
 ## Changed
-- Normalisation for upcoming LuaTeX 1.07 release
+- Normalization for upcoming LuaTeX 1.07 release
 
 ### Fixed
-- Behaviour of check on Windows when using standard `fc` tool
+- Behavior of check on Windows when using standard `fc` tool
 
 ## [2018-01-10]
 
@@ -811,7 +814,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Target `manifest` for construction of file manifests automatically
 - Variable `auxfiles`
 - Option `--dry-run` for installation/cleaning
-- Option `--texmfhome`  to allow customisation of installation
+- Option `--texmfhome`  to allow customization of installation
 - Option `--shuffle` to run tests in a random order
 
 ### Changed
@@ -822,7 +825,7 @@ this project uses date-based 'snapshot' version identifiers.
 - Issue with `recordstatus`
 
 ### Removed
-- Rationalise short option names: removed `-d`, `-E`, `-r`
+- Rationalize short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
 [Unreleased]: https://github.com/latex3/l3build/compare/2025-05-08...HEAD

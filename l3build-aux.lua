@@ -44,7 +44,7 @@ local os_type = os.type
 ---@return number
 ---@see l3build.lua
 ---@usage private?
-function normalise_epoch(epoch)
+function normalize_epoch(epoch)
   assert(epoch, 'normalize_epoch argument must not be nil')
   -- If given as an ISO date, turn into an epoch number
   local y, m, d = match(epoch, "^(%d%d%d%d)-(%d%d)-(%d%d)$")

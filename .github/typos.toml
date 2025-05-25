@@ -13,6 +13,7 @@ extend-ignore-re = [
   "\\\\cs\\{openin\\}",
   "\\bGhost\\[sS\\]cript\\b",
 ]
+locale = "en-us"
 
 [default.extend-words]
 nd = "nd"

@@ -110,7 +110,7 @@ end
 
 manifest_build_init = function(entry)
 
-  -- currently these aren't customisable; I guess they could be?
+  -- currently these aren't customizable; I guess they could be?
   local manifest_group_defaults = {
     skipfiledescription  = false          ,
     rename               = false          ,
@@ -119,7 +119,7 @@ manifest_build_init = function(entry)
     flag                 = true           ,
   }
 
-  -- internal data added to each group in the table that needs to be initialised
+  -- internal data added to each group in the table that needs to be initialized
   local manifest_group_init = {
     N             = 0  , -- # matched files
     ND            = 0  , -- # descriptions
@@ -127,8 +127,8 @@ manifest_build_init = function(entry)
     excludes      = {} ,
     files_ordered = {} ,
     descr         = {} ,
-    Nchar_file    = 4  , -- TODO: generalise
-    Nchar_descr   = 11 , -- TODO: generalise
+    Nchar_file    = 4  , -- TODO: generalize
+    Nchar_descr   = 11 , -- TODO: generalize
   }
 
   -- copy default options to each group if necessary
@@ -246,7 +246,7 @@ manifest_write_group = function(f,entry)
 
 			if ii == 1 then
         -- header of table
-        -- TODO: generalise
+        -- TODO: generalize
 				local p = {}
 				for k,v in pairs(param) do p[k] = v end
 				p.count = -1

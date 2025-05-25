@@ -54,7 +54,7 @@ local match = string.match
 -- Mandatory fields are checked in Lua
 -- Maximum string lengths are checked.
 
--- Currently string values are not checked, eg licence names, or URL syntax.
+-- Currently string values are not checked, eg license names, or URL syntax.
 
 -- The input form could be used to construct a post body but
 -- luasec is not included in texlua. Instead an external program is used to post.
