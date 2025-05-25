@@ -49,7 +49,7 @@ local execute          = os.execute
 local remove           = os.remove
 local os_type          = os.type
 
--- randomise the random numbers
+-- randomize the random numbers
 math.randomseed( os.time() )
 
 --
@@ -195,7 +195,7 @@ local function normalize_log(content,engine,errlevels)
     line = gsub(line,
       "cm, mm, dd, cc, bp, H, Q, or sp;",
       "cm, mm, dd, cc, nd, nc, bp, or sp;")
-    -- Normalise a case where fixing a TeX bug changes the message text
+    -- Normalize a case where fixing a TeX bug changes the message text
     line = gsub(line, "\\csname\\endcsname ", "\\csname\\endcsname")
     -- Zap "on line <num>" and replace with "on line ..."
     -- Two similar cases, Lua patterns mean we need to do them separately
@@ -211,7 +211,7 @@ local function normalize_log(content,engine,errlevels)
     for i = 0, 31 do
       line = gsub(line, char(i), "^^" .. char(64 + i))
     end
-    -- Normalise register allocation to hard-coded numbers
+    -- Normalize register allocation to hard-coded numbers
     -- No regex, so use a pattern plus lookup approach
     local register_types = {
         attribute      = true,
@@ -769,7 +769,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
                     or tokens
     end
   end
-  -- Finalise format string
+  -- Finalize format string
   if format ~= "" then
     format = " --fmt=" .. format
   end

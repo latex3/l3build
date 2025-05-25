@@ -227,7 +227,7 @@ end
 
 manifest_sort_within_group = manifest_sort_within_group or function(files)
   --[[
-      -- no-op by default; make your own definition to customise. E.g.:
+      -- no-op by default; make your own definition to customize. E.g.:
       table.sort(files)
   --]]
   return files
@@ -309,7 +309,7 @@ function manifest_write_group_file_descr(filehandle,filename,descr,param)
         param.tdsfile     : (boolean) if file is in TDS dir
   --]]
 
-  -- filename+description: Github-flavoured Markdown table
+  -- filename+description: Github-flavored Markdown table
 
   filestr = string.format(" | %-"..param.filemaxchar.."s",filename)
   flagstr = param.flag and string.format(" | %s",param.flag) or  ""

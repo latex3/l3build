@@ -112,7 +112,7 @@ if options["epoch"] then
   forcecheckepoch = true
   forcedocepoch   = true
 end
-epoch = normalise_epoch(epoch)
+epoch = normalize_epoch(epoch)
 -- LuaTeX needs the `-utc` option
 if forcecheckepoch then
   if next(specialformats) and next(specialformats.latex)
