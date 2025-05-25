@@ -122,8 +122,8 @@ local meta = {__index = {
         'PK\5\6',
         0, -- This is disc 0
         0, -- central dictionary started on disc 0
-        #z.central, -- Central disctionary entries on this disc
-        #z.central, -- Central disctionary entries on all discs
+        #z.central, -- Central dictionary entries on this disc
+        #z.central, -- Central dictionary entries on all discs
         #central,
         offset,
         #comment), comment)
