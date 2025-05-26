@@ -89,7 +89,7 @@
 \luavarset{docfiles}          {\{ \}}{Files which are part of the documentation but should not be typeset}
 \luavarset{dynamicfiles}      {\{ \}}{Secondary files to cleared before each test is run}
 \luavarset{excludefiles}      {\{"*\string~","build.lua","config-*.lua"\}}{Files to ignore entirely (default for Emacs backup files)}
-\luavarset{exhibitfiles}      {\{ \}}{Files to ``exhibit'' in the current workspace}
+\luavarset{exhibitfiles}      {\{ \}}{Files to \enquote{exhibit} in the current workspace}
 \luavarset{installfiles}      {\{"*.sty","*.cls"\}}{Files to install to the \texttt{tex} area of the \texttt{texmf} tree}
 \luavarset{makeindexfiles}    {\{"*.ist"\}}{MakeIndex files to be included in a TDS-style zip}
 \luavarset{scriptfiles}       {\{ \}}{Files to install to the \texttt{scripts} area of the \texttt{texmf} tree}
@@ -625,7 +625,7 @@
 % If additional support files are required for the unpacking process, these can be enumerated in the \var{unpacksuppfiles} variable.
 % Dependencies for unpacking are defined with \var{unpackdeps}.
 % 
-% If users merged some text files (such as |*.md|) into some source files and the text files need to ``exhibit'' in the main directory (to preview on GitHub repository homepage, etc.), these can be enumerated in the \var{exhibitfiles} variable.
+% If users merged some text files (such as |*.md|) into some source files and the text files need to \enquote{exhibit} in the main directory (to preview on GitHub repository homepage, etc.), these can be enumerated in the \var{exhibitfiles} variable.
 % Then, these files will be copied from \var{unpackdir} to the main directory after unpacking.
 %
 % By default this process allows files to be accessed in all standard |texmf| trees; this can be disabled by setting \var{unpacksearch} to |false|.
@@ -2655,4 +2655,4 @@
 %
 % \end{implementation}
 %
-% \PrintIndex
+% ^^A \PrintIndex
