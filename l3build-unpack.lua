@@ -39,6 +39,9 @@ function unpack(sources, sourcedirs)
       return errorlevel
     end
   end
+  for _,i in ipairs(exhibitfiles) do
+    cp(i, unpackdir, currentdir)
+  end
   return 0
 end
 
