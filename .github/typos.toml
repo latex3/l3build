@@ -1,0 +1,20 @@
+# https://github.com/crate-ci/typos/blob/master/docs/reference.md
+
+[files]
+extend-exclude =[
+  "*.tlg",
+  "*.tpf",
+  "LICENSE",
+]
+
+[default]
+extend-ignore-re = [
+  "\\.ist\\b",
+  "\\\\cs\\{openin\\}",
+  "\\bGhost\\[sS\\]cript\\b",
+]
+locale = "en-us"
+
+[default.extend-words]
+nd = "nd"
+ND = "ND"

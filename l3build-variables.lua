@@ -72,7 +72,7 @@ end
 
 -- File types for various operations
 -- Use Unix-style globs
--- All of these may be set earlier, so a initialised conditionally
+-- All of these may be set earlier, so an initialized conditionally
 auxfiles           = auxfiles           or {"*.aux", "*.lof", "*.lot", "*.toc"}
 bibfiles           = bibfiles           or {"*.bib"}
 binaryfiles        = binaryfiles        or {"*.pdf", "*.zip"}

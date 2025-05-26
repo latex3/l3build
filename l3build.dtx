@@ -74,8 +74,8 @@
 \luavarset{typesetdir}{builddir .. "/doc"}    {Directory for building documentation}
 \luavarset{unpackdir} {builddir .. "/unpacked"}{Directory for unpacking sources}
 \luavarseparator
-\luavarset{ctandir}{distribdir .. "/ctan"}{Directory for organising files for CTAN}
-\luavarset{tdsdir} {distribdir .. "/tds"} {Directory for organised files into TDS structure}
+\luavarset{ctandir}{distribdir .. "/ctan"}{Directory for organizing files for CTAN}
+\luavarset{tdsdir} {distribdir .. "/tds"} {Directory for organized files into TDS structure}
 \luavarset{tdsroot}{"latex"}{Root directory of the TDS structure for the bundle/module to be installed into}
 \luavarseparator
 \luavarset{auxfiles}          {\{"*.aux", "*.lof", "*.lot", "*.toc"\}}{Secondary files to be saved as part of running tests}
@@ -369,7 +369,7 @@
 % \end{itemize}
 % These targets are described below.
 %
-% As well as these targets, the system recognises the options
+% As well as these targets, the system recognizes the options
 % \begin{itemize}
 % \item |--config| (|-c|) Configuration(s) to use for testing
 % \item |--date| (|-d|) Date to use when tagging data
@@ -529,7 +529,7 @@
 %
 % Files that should always be excluded from the archive are matched against the \var{excludefiles} variable; by default this is \luavar{excludefiles}, which match Emacs' autosave files.
 %
-% Binary files should be specified with the \var{binaryfiles} variable (default \luavar{binaryfiles}); these are added to the zip archive without normalising line endings (text files are automatically converted to Unix-style line endings).
+% Binary files should be specified with the \var{binaryfiles} variable (default \luavar{binaryfiles}); these are added to the zip archive without normalizing line endings (text files are automatically converted to Unix-style line endings).
 %
 % The intermediate build directories \var{ctandir} and \var{tdsdir} are used to construct the archive.
 % \end{buildcmd}
@@ -645,7 +645,7 @@
 %
 % An example of a standalone build script for a package that uses self-contained |.dtx| files is shown in Listing~\vref{lst:breqn}.
 % Here, the |module| only is defined, and since it doesn't use |.ins| files so the variable \var{unpackfiles} is redefined to run |tex| on the |.dtx| files instead to generate the necessary |.sty| files.
-% There are some PDFs in the repository that shouldn't be part of a CTAN submission, so they're explicitly excluded, and here unpacking is done `quietly' to minimise console output when building the package.
+% There are some PDFs in the repository that shouldn't be part of a CTAN submission, so they're explicitly excluded, and here unpacking is done `quietly' to minimize console output when building the package.
 %
 % \begin{floating-listing}[caption=The build configuration for the \pkg{breqn} package.,label=lst:breqn]
 %   -- Build configuration for breqn
@@ -861,7 +861,7 @@
 % \label{sec:norm}
 %
 % To allow test files to be used between different systems (\emph{e.g.}~when
-% multiple developers are involved in a project), the log files are normalised
+% multiple developers are involved in a project), the log files are normalized
 % before comparison during checking. This removes some system-dependent
 % data but also some variations due to different engines. This normalization
 % consists of two parts: removing (\enquote{ignoring}) some lines and modifying
@@ -906,7 +906,7 @@
 %     process
 % \end{itemize}
 %
-% \LuaTeX{} makes several additional changes to the log file. As normalising
+% \LuaTeX{} makes several additional changes to the log file. As normalizing
 % these may not be desirable in all cases, they are handled separately.
 % When creating \LuaTeX{}-specific test files (either with \LuaTeX{} as
 % the standard engine or saving a \LuaTeX{}-specific |.tlg| file) no further
@@ -969,7 +969,7 @@
 % Additional customizations to this driver can be included in a local |regression-test.cfg| file, which will be loaded automatically if found.
 %
 % The macros loaded by |regression-test.tex| set up the test system and provide a number of commands to aid the production of a structured test suite.
-% The basis of the test suite is to output material into the |.log| file, from which a normalised test output (|.tlg|) file is produced by the build command |save|.
+% The basis of the test suite is to output material into the |.log| file, from which a normalized test output (|.tlg|) file is produced by the build command |save|.
 % A number of commands are provided for this; they are all written in uppercase to help avoid possible conflicts with other package commands.
 %
 % \subsection{Metadata and structural commands}
@@ -1384,7 +1384,7 @@
 %     (or \texttt{\meta{module}}) directory inside \texttt{makeindex}
 % \end{itemize}
 %
-% For more complex set ups, this can be customised using the
+% For more complex set ups, this can be customized using the
 % \var{tdslocations} table. Each entry there should be a glob specifying the
 % TDS position of a file or files. Any files not specified in the table
 % will use the standard locations above. For example, to place some files
@@ -1479,7 +1479,7 @@
 % for an example of this). Note that this hook is intended for use files
 % \emph{not} listed in \var{typesetfiles} or \var{typesetdemofiles}.
 %
-% \begin{floating-listing}[caption={A customised PDF creation script.},label={lst:PDF}]
+% \begin{floating-listing}[caption={A customized PDF creation script.},label={lst:PDF}]
 %   #!/usr/bin/env texlua
 %
 %   -- Build script with custom PDF route
@@ -1540,7 +1540,7 @@
 % Note that the \texttt{upload} target will \emph{not} execute the
 % \texttt{ctan} target first.
 %
-% This upload facility assumes availablity of |curl| on your
+% This upload facility assumes availability of |curl| on your
 % system. In the case of Windows, the system curl will not be
 % available if you are using a 32 bit \TeX\ implementation. Curl
 % executables are available for a variety of operating systems from
@@ -1714,7 +1714,7 @@
 %     \bottomrule
 %     \end{tabular}
 %   \end{center}
-%   The Lua tables mentionned here are in fact arrays of strings.
+%   The Lua tables mentioned here are in fact arrays of strings.
 %   From the |build.lua| file, one can modify the string and boolean values,
 %   add or remove entries in arrays. But it is not recommended to affect a
 %   whole new Lua table to |options| nor to its array entries.
@@ -1726,7 +1726,7 @@
 % number of others are provided. File paths should be given in Unix style
 % (using |/| as a path separator). File operations take place relative to the
 % path from which \pkg{l3build} is called. File operation syntax is largely
-% modelled on Unix command line commands but reflect the need to work on
+% modeled on Unix command line commands but reflect the need to work on
 % Windows in a flexible way.
 %
 % \begin{function}{abspath()}
@@ -1986,7 +1986,7 @@
 %   when creating non-standard typesetting steps.
 % \end{function}
 %
-% \subsection{Customising the target and option lists}
+% \subsection{Customizing the target and option lists}
 %
 % The targets known to \pkg{l3build} are stored in the global table
 % |target_list|. Each entry should have at least a |func|, pointing to the
@@ -2012,16 +2012,16 @@
 % the |help()|. It is also possible to provide a |short| name for the option:
 % this should be a single letter.
 %
-% \subsection{Customising the manifest file}
+% \subsection{Customizing the manifest file}
 % \label{sec:manifest}
 %
 % The default setup for the manifest file creating with the \texttt{manifest}
 % target attempt to reflect the defaults for \pkg{l3build} itself.
 % The groups (and hence the files) displayed can be completely
-% customised by defining a new setup function which creates a Lua table with
+% customized by defining a new setup function which creates a Lua table with
 % the appropriate settings (Section~\vref{sec:manifest-groups}).
 %
-% The formatting within the manifest file can be customised by redefining a number
+% The formatting within the manifest file can be customized by redefining a number
 % of Lua functions. This includes
 % how the files are sorted within each group (Section~\vref{sec:manifest-sorting}),
 % the inclusion of one-line descriptions for each file (Section~\vref{sec:manifest-desc}),
