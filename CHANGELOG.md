@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- For tests created by unpack, exludetests was inverted.
+
 ### Changed
 - Apply US spellings
 

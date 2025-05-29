@@ -995,7 +995,7 @@ function check(names)
           for _,name in ipairs(filelist(unpackdir, glob .. ext)) do
             local exclude
             for i=1, num_exclude do
-              if not match(name, excludepatterns[i]) then
+              if match(name, excludepatterns[i]) then
                 exclude = true
                 break
               end
