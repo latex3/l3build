@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Apply US spellings
+- Support test file extensions with multiple dot separated components.
 
 ## [2025-05-08]
 

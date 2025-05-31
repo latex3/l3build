@@ -38,6 +38,7 @@ local str_format       = string.format
 local gmatch           = string.gmatch
 local gsub             = string.gsub
 local match            = string.match
+local sub              = string.sub
 
 local insert           = table.insert
 local sort             = table.sort
@@ -989,7 +990,7 @@ function check(names)
               end
             end
             if not exclude then
-              insert(names,jobname(name))
+              insert(names,sub(name, 1, -#ext-1))
             end
           end
           for _,name in ipairs(filelist(unpackdir, glob .. ext)) do
@@ -1004,7 +1005,7 @@ function check(names)
               if fileexists(testfiledir .. "/" .. name) then
                 return 1
               end
-              insert(names,jobname(name))
+              insert(names, sub(name, 1, -#ext-1))
             end
           end
         end
