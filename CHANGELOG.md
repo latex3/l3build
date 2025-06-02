@@ -8,11 +8,10 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 ### Fixed
-- For tests created by unpack, exludetests was inverted.
+- For tests created by `unpack`, `exludetests` was inverted
 
 ### Changed
-- Apply US spellings
-- Support test file extensions with multiple dot separated components.
+- Support test file extensions with multiple dot separated components
 
 ## [2025-05-08]
 
