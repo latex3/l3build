@@ -4,4 +4,5 @@
     Hello!
     \TYPE{Hello}
 \OMIT
+\TYPE{\NEWLINE OMIT} % for ConTeXt + LuaMetaTeX
 \stoptext
