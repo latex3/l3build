@@ -15,6 +15,7 @@ etex-pkg
 # Support for typesetting the docs
 #
 alphalph
+amsfonts
 amsmath
 booktabs
 ec
