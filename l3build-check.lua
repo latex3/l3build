@@ -131,6 +131,8 @@ local function normalize_log(content,engine,errlevels)
         return "","",true
       end
     end
+    -- Deal with ConTeXt MkLX 'helpful' info
+    line = gsub(line,"^just a message  > ","")
     -- Zap line numbers from \show, \showbox, \box_show and the like:
     -- do this before wrapping lines
     line = gsub(line, "^l%.%d+ ", "l. ...")
@@ -315,7 +317,8 @@ local function normalize_log(content,engine,errlevels)
     elseif line == "END-TEST-LOG" or
       match(line, "^Here is how much of .?.?.?TeX\'s memory you used:") then
       break
-    elseif line == "OMIT" then
+    -- The second possible here is to cover ConTeXt MkLX
+    elseif line == "OMIT" or line == "just a message  > OMIT" then
       skipping = true
     elseif match(line, "^%)?TIMO$") then
       skipping = false

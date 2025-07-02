@@ -12,6 +12,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Support test file extensions with multiple dot separated components
+- Support updated ConTeXt log formatting
 
 ## [2025-05-08]
 
