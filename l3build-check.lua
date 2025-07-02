@@ -320,7 +320,8 @@ local function normalize_log(content,engine,errlevels)
     -- The second possible here is to cover ConTeXt MkXL
     elseif line == "OMIT" or line == "just a message  > OMIT" then
       skipping = true
-    elseif match(line, "^%)?TIMO$") then
+    -- The second possible here is to cover ConTeXt MkXL
+    elseif match(line, "^%)?TIMO$") or line == "just a message  > TIMO" then
       skipping = false
     elseif not prestart and not skipping then
       line, lastline, drop_fd = normalize(line, lastline,drop_fd)
