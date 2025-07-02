@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Support use of `\OMIT` with updated ConTeXt
+
 ## [2025-07-02]
 
 ### Fixed
