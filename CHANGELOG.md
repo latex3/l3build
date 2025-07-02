@@ -8,7 +8,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 ### Fixed
-- Support use of `\OMIT` with updated ConTeXt
+- Support use of `\TIMO` with updated ConTeXt
 
 ## [2025-07-02]
 
