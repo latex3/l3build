@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2025-07-03]
+
 ### Fixed
 - Support use of `\TIMO` with updated ConTeXt
 
@@ -837,7 +839,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalize short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2025-07-02...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2025-07-03...HEAD
+[2025-07-03]: https://github.com/latex3/l3build/compare/2025-07-02...2025-07-03
 [2025-07-02]: https://github.com/latex3/l3build/compare/2025-05-08...2025-07-02
 [2025-05-08]: https://github.com/latex3/l3build/compare/2025-05-07...2025-05-08
 [2025-05-07]: https://github.com/latex3/l3build/compare/2025-02-23...2025-05-07
