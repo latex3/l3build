@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Extend normalization of `Lua function` lines
+
 ## [2025-07-03]
 
 ### Fixed

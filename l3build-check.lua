@@ -256,6 +256,7 @@ local function normalize_log(content,engine,errlevels)
     -- Deal with Lua function calls
     if match(line, "^Lua function") then
       line = gsub(line,"= %d+$","= ...")
+      line = gsub(line,"= %d+%)","= ...")
     end
     -- Remove the \special line that in DVI mode keeps PDFs comparable
     if match(line, "^%.*\\special%{pdf: docinfo << /Creator") or
