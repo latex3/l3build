@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Extend normalization of `Lua function` lines
+- Normalize `lucall` lines
 
 ## [2025-07-03]
 

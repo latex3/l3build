@@ -258,6 +258,9 @@ local function normalize_log(content,engine,errlevels)
       line = gsub(line,"= %d+$","= ...")
       line = gsub(line,"= %d+%)","= ...")
     end
+    if match(line, "luacall") then
+      line = gsub(line,"luacall %d+%.","luacall ....")
+    end
     -- Remove the \special line that in DVI mode keeps PDFs comparable
     if match(line, "^%.*\\special%{pdf: docinfo << /Creator") or
       match(line, "^%.*\\special%{ps: /setdistillerparams") or
