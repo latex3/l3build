@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2025-09-03]
+
 ### Fixed
 - Minor formatting issue in normalization
 
@@ -848,7 +850,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalize short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2025-09-02...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2025-09-03...HEAD
+[2025-09-03]: https://github.com/latex3/l3build/compare/2025-09-02...2025-09-03
 [2025-09-02]: https://github.com/latex3/l3build/compare/2025-07-03...2025-09-02
 [2025-07-03]: https://github.com/latex3/l3build/compare/2025-07-02...2025-07-03
 [2025-07-02]: https://github.com/latex3/l3build/compare/2025-05-08...2025-07-02
