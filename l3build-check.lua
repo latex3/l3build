@@ -256,7 +256,7 @@ local function normalize_log(content,engine,errlevels)
     -- Deal with Lua function calls
     if match(line, "^Lua function") then
       line = gsub(line,"= %d+$","= ...")
-      line = gsub(line,"= %d+%)","= ...")
+      line = gsub(line,"= %d+%)","= ...)")
     end
     if match(line, "luacall") then
       line = gsub(line,"luacall %d+%.","luacall ....")

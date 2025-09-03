@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Minor formatting issue in normalization
+
 ## [2025-09-02]
 
 ### Changed
