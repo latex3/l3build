@@ -10,8 +10,30 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 - Support `exhibitfiles` to set files that need to be "exhibited" in the current workspace
 
+## [2025-09-03]
+
+### Fixed
+- Minor formatting issue in normalization
+
+## [2025-09-02]
+
 ### Changed
-- Apply US spellings
+- Extend normalization of `Lua function` lines
+- Normalize `luacall` lines
+
+## [2025-07-03]
+
+### Fixed
+- Support use of `\TIMO` with updated ConTeXt
+
+## [2025-07-02]
+
+### Fixed
+- For tests created by `unpack`, `exludetests` was inverted
+
+### Changed
+- Support test file extensions with multiple dot separated components
+- Support updated ConTeXt log formatting
 
 ## [2025-05-08]
 
@@ -831,7 +853,11 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalize short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2025-05-08...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2025-09-03...HEAD
+[2025-09-03]: https://github.com/latex3/l3build/compare/2025-09-02...2025-09-03
+[2025-09-02]: https://github.com/latex3/l3build/compare/2025-07-03...2025-09-02
+[2025-07-03]: https://github.com/latex3/l3build/compare/2025-07-02...2025-07-03
+[2025-07-02]: https://github.com/latex3/l3build/compare/2025-05-08...2025-07-02
 [2025-05-08]: https://github.com/latex3/l3build/compare/2025-05-07...2025-05-08
 [2025-05-07]: https://github.com/latex3/l3build/compare/2025-02-23...2025-05-07
 [2025-02-23]: https://github.com/latex3/l3build/compare/2024-10-16...2025-02-23

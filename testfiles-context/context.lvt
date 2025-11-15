@@ -4,4 +4,9 @@
     Hello!
     \TYPE{Hello}
 \OMIT
+    \TYPE{Hidden}
+\TIMO
+    \TYPE{Shown}
+\OMIT
+    \TYPE{Hidden again}
 \stoptext

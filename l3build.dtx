@@ -172,7 +172,7 @@
 \luavarset{bakext}{".bak"}{Extension of backup files}
 \luavarset{dviext}{".dvi"}{Extension of DVI files}
 \luavarset{lvtext}{".lvt"}{Extension of log-based test files}
-\luavarset{tlgext}{".tlg"}{Extension of test file output}
+\luavarset{tlgext}{".tlg"}{Extension of log-based test output}
 \luavarset{tpfext}{".tpf"}{Extension of PDF-based test output}
 \luavarset{lveext}{".lve"}{Extension of auto-generating test file output}
 \luavarset{logext}{".log"}{Extension of checking output, before processing it into a \texttt{.tlg}}
@@ -254,7 +254,7 @@
 %    }^^A
 % }
 %
-% \date{Released 2025-05-08}
+% \date{Released 2025-09-03}
 %
 % \maketitle
 % \tableofcontents
@@ -379,7 +379,7 @@
 % \item |--dry-run| Runs the \texttt{install} target but does not copy
 %   any files: simply lists those that would be installed
 % \item |--email| Sets the email address for CTAN upload
-% \item |--engine| (|-e|) Sets the engine to use for testing
+% \item |--engine| (|-e|) Sets the engine(s) to use for testing
 % \item |--epoch| Sets the epoch for typesetting and testing
 % \item |--file| (|-F|) Takes the upload announcement from the given file
 % \item |--first| Name of the first test to run
@@ -457,8 +457,9 @@
 % \begin{buildcmd}{check \meta{name(s)}}
 % Checks only the test \texttt{\meta{name(s)}.lvt}.
 % All engines specified by \var{checkengines} are tested unless the command
-% line option |--engine| (or |-e|) has been given to limit
-% testing to a single engine. Normally testing is preceded by unpacking
+% line option |--engine| (or |-e|) has been given a comma-separated list to
+% limit testing to selected |checkengines|.
+% Normally testing is preceded by unpacking
 % source files and copying the result plus any additional support to the
 % test directory: this may be skipped using the |--rerun| (|-r|) option.
 % \end{buildcmd}
@@ -573,8 +574,13 @@
 % This command saves the output of the test to a |.tlg| file.
 % This file is then used in all subsequent checks against the \texttt{\meta{name}.lvt} test.
 %
-% If the |--engine| (or |-e|) is specified (one of |pdftex|, |xetex|, or |luatex|), the saved output is stored in \texttt{\meta{name}.\meta{engine}.tlg}. This is necessary if running the test through a different engine produces a different output.
-% A normalization process is performed when checking to avoid common differences such as register allocation; full details are listed in Section~\vref{sec:norm}.
+% If the |--engine| (or |-e|) is specified (one or more comma-separated engines
+% in |checkengines|), the saved output is stored in
+% \texttt{\meta{name}.\meta{engine}.tlg} for non-standard engines.
+% This is necessary if running the test through a different engine produces
+% a different output. A normalization process is performed when checking to
+% avoid common differences such as register allocation; full details are listed
+% in Section~\vref{sec:norm}.
 %
 % If the \var{recordstatus} variable is set \var{true}, additional information
 % will be added to the \texttt{.tlg} to record the \enquote{exit status} of the
@@ -749,9 +755,9 @@
 %
 % To allow selection of one or more configurations, and to allow saving of
 % |.tlg| files in non-standard configurations, the |--config| (|-c|) option may
-% be used. This works in the same way as |--engine|: it takes a comma list of
-% configurations to apply, overriding \var{checkconfigs}. For example, in the
-% directory containing |config-TU.lua|, you can use
+% be used. This works in the same way as |--engine|: it takes a comma-separated
+% list of configurations to apply, overriding \var{checkconfigs}. For example,
+% in the directory containing |config-TU.lua|, you can use
 % |l3build check -cconfig-TU <name(s)>| and |l3build save -cconfig-TU <name(s)>|
 % to check and save tests in |testfiles-TU| directory.
 %
@@ -1644,7 +1650,7 @@
 %  \texttt{development } &      & \YES & URL(s) of development channels         \\
 %  \texttt{home        } &      & \YES & URL(s) of home page                       \\
 %  \texttt{note        } &      &      & Internal note to CTAN                  \\
-%  \texttt{repository  } &      & \YES & URL(s) of source repositories          \\
+%  \texttt{repository  } &      &      & URL(s) of source repositories          \\
 %  \texttt{support     } &      & \YES & URL(s) of support channels             \\
 %  \texttt{topic       } &      & \YES & Topic(s)\footnote{See \url{https://ctan.org/topics/highscore}} \\
 %  \texttt{update      } &      &      & Boolean \texttt{true} for an update, \texttt{false} for a new package   \\

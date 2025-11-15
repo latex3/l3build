@@ -38,6 +38,7 @@ local str_format       = string.format
 local gmatch           = string.gmatch
 local gsub             = string.gsub
 local match            = string.match
+local sub              = string.sub
 
 local insert           = table.insert
 local sort             = table.sort
@@ -130,6 +131,8 @@ local function normalize_log(content,engine,errlevels)
         return "","",true
       end
     end
+    -- Deal with ConTeXt MkXL 'helpful' info
+    line = gsub(line,"^just a message  > ","")
     -- Zap line numbers from \show, \showbox, \box_show and the like:
     -- do this before wrapping lines
     line = gsub(line, "^l%.%d+ ", "l. ...")
@@ -253,6 +256,10 @@ local function normalize_log(content,engine,errlevels)
     -- Deal with Lua function calls
     if match(line, "^Lua function") then
       line = gsub(line,"= %d+$","= ...")
+      line = gsub(line,"= %d+%)","= ...)")
+    end
+    if match(line, "luacall") then
+      line = gsub(line,"luacall %d+%.","luacall ....")
     end
     -- Remove the \special line that in DVI mode keeps PDFs comparable
     if match(line, "^%.*\\special%{pdf: docinfo << /Creator") or
@@ -314,9 +321,11 @@ local function normalize_log(content,engine,errlevels)
     elseif line == "END-TEST-LOG" or
       match(line, "^Here is how much of .?.?.?TeX\'s memory you used:") then
       break
-    elseif line == "OMIT" then
+    -- The second possible here is to cover ConTeXt MkXL
+    elseif line == "OMIT" or line == "just a message  > OMIT" then
       skipping = true
-    elseif match(line, "^%)?TIMO$") then
+    -- The second possible here is to cover ConTeXt MkXL
+    elseif match(line, "^%)?TIMO$") or line == "just a message  > TIMO" then
       skipping = false
     elseif not prestart and not skipping then
       line, lastline, drop_fd = normalize(line, lastline,drop_fd)
@@ -989,13 +998,13 @@ function check(names)
               end
             end
             if not exclude then
-              insert(names,jobname(name))
+              insert(names,sub(name, 1, -#ext-1))
             end
           end
           for _,name in ipairs(filelist(unpackdir, glob .. ext)) do
             local exclude
             for i=1, num_exclude do
-              if not match(name, excludepatterns[i]) then
+              if match(name, excludepatterns[i]) then
                 exclude = true
                 break
               end
@@ -1004,7 +1013,7 @@ function check(names)
               if fileexists(testfiledir .. "/" .. name) then
                 return 1
               end
-              insert(names,jobname(name))
+              insert(names, sub(name, 1, -#ext-1))
             end
           end
         end
