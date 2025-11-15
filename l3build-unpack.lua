@@ -40,7 +40,7 @@ function unpack(sources, sourcedirs)
     end
   end
   for _,i in ipairs(exhibitfiles) do
-    cp(i, unpackdir, currentdir)
+    cp(i, unpackdir, maindir)
   end
   return 0
 end
