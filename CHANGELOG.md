@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Clarify doc for `tdslocations` and `tdsdirs`
+
 ## [2025-09-03]
 
 ### Fixed
