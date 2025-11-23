@@ -209,30 +209,30 @@ function install_files(target,full,dry_run)
   local errorlevel = unpack()
   if errorlevel ~= 0 then return errorlevel end
 
-    -- Creates a 'controlled' list of files
-    local function create_file_list(dir,include,exclude)
-      dir = dir or currentdir
-      include = include or { }
-      exclude = exclude or { }
-      insert(exclude,excludefiles)
-      local excludelist = { }
-      for _,glob_table in pairs(exclude) do
-        for _,glob in pairs(glob_table) do
-          for _,p in ipairs(tree(dir,glob)) do
-            excludelist[p.src] = true
-          end
-        end
-      end
-      local result = { }
-      for _,glob in pairs(include) do
+  -- Creates a 'controlled' list of files
+  local function create_file_list(dir,include,exclude)
+    dir = dir or currentdir
+    include = include or { }
+    exclude = exclude or { }
+    insert(exclude,excludefiles)
+    local excludelist = { }
+    for _,glob_table in pairs(exclude) do
+      for _,glob in pairs(glob_table) do
         for _,p in ipairs(tree(dir,glob)) do
-          if not excludelist[p.src] then
-            insert(result, p.src)
-          end
+          excludelist[p.src] = true
         end
       end
-      return result
     end
+    local result = { }
+    for _,glob in pairs(include) do
+      for _,p in ipairs(tree(dir,glob)) do
+        if not excludelist[p.src] then
+          insert(result, p.src)
+        end
+      end
+    end
+    return result
+  end
 
   local installlist = create_file_list(unpackdir,installfiles,{scriptfiles})
 
@@ -257,9 +257,9 @@ function install_files(target,full,dry_run)
     sourcelist = create_file_list(sourcefiledir,sourcefiles,
       {bstfiles,installfiles,makeindexfiles,scriptfiles})
 
-  if dry_run then
-    print("\nFor installation inside " .. target .. ":")
-  end
+    if dry_run then
+      print("\nFor installation inside " .. target .. ":")
+    end
 
     errorlevel = create_install_map(sourcefiledir,"source",{sourcelist})
       + create_install_map(docfiledir,"doc",
