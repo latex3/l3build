@@ -101,7 +101,7 @@ manifest_build_list = function(entry)
       end
     end
 
-	end
+  end
 
   return entry
 
@@ -237,23 +237,23 @@ manifest_write_group = function(f,entry)
 
       if entry.flag then
         param.flag = "    "
-	  		if tdsfiles[file] and not(ctanfiles[file]) then
-	  			param.flag = "†   "
-	  		elseif ctanfiles[file] then
-	  			param.flag = "‡   "
-	  		end
-			end
+        if tdsfiles[file] and not(ctanfiles[file]) then
+          param.flag = "†   "
+        elseif ctanfiles[file] then
+          param.flag = "‡   "
+        end
+      end
 
-			if ii == 1 then
+      if ii == 1 then
         -- header of table
         -- TODO: generalize
-				local p = {}
-				for k,v in pairs(param) do p[k] = v end
-				p.count = -1
-				p.flag = p.flag and "Flag"
-				manifest_write_group_file_descr(f,"File","Description",p)
-				p.flag = p.flag and "--- "
-				manifest_write_group_file_descr(f,"---","---",p)
+        local p = {}
+        for k,v in pairs(param) do p[k] = v end
+        p.count = -1
+        p.flag = p.flag and "Flag"
+        manifest_write_group_file_descr(f,"File","Description",p)
+        p.flag = p.flag and "--- "
+        manifest_write_group_file_descr(f,"---","---",p)
       end
 
       manifest_write_group_file_descr(f,file,descr,param)
@@ -264,19 +264,19 @@ manifest_write_group = function(f,entry)
     for ii,file in ipairs(entry.files_ordered) do
       local param = {
         dir         = entry.dir         ,
-      	count       = ii                ,
-      	filemaxchar = entry.Nchar_file  ,
+        count       = ii                ,
+        filemaxchar = entry.Nchar_file  ,
         ctanfile    = ctanfiles[file]   ,
         tdsfile     = tdsfiles[file]    ,
       }
       if entry.flag then
         param.flag = ""
-	  		if tdsfiles[file] and not(ctanfiles[file]) then
-	  			param.flag = "†"
-	  		elseif ctanfiles[file] then
-	  			param.flag = "‡"
-	  		end
-			end
+        if tdsfiles[file] and not(ctanfiles[file]) then
+          param.flag = "†"
+        elseif ctanfiles[file] then
+          param.flag = "‡"
+        end
+      end
       manifest_write_group_file(f,file,param)
     end
 
