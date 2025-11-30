@@ -10,6 +10,9 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 - Support `exhibitfiles` to set files that need to be "exhibited" in the current workspace
 
+### Changed
+- Clarify doc for `tdslocations` and `tdsdirs`
+
 ## [2025-09-03]
 
 ### Fixed
