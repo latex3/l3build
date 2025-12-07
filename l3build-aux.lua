@@ -52,12 +52,9 @@ function normalize_epoch(epoch)
   local y, m, d = match(epoch, "^(%d%d%d%d)-(%d%d)-(%d%d)$")
   if y then
     return os_time({
-        year = y, month = m, day   = d,
-        hour = 0, sec = u, isdst = nil
-      }) - os_time({
-        year = 1970, month = 1, day = 1,
-        hour = 0, sec = u, isdst = nil
-      })
+      year = y, month = m, day = d,
+      hour = 0, sec = u, isdst = nil
+    })
   elseif match(epoch, "^%d+$") then
     return tonumber(epoch)
   else
