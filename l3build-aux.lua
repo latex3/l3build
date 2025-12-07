@@ -32,6 +32,7 @@ local print = print
 
 local lookup = kpse.lookup
 
+local os_date = os.date
 local os_time = os.time
 local os_type = os.type
 
@@ -47,14 +48,15 @@ local os_type = os.type
 function normalize_epoch(epoch)
   assert(epoch, 'normalize_epoch argument must not be nil')
   -- If given as an ISO date, turn into an epoch number
+  local u = os_time(os_date('*t', os_time())) - os_time(os_date('!*t', os_time()))
   local y, m, d = match(epoch, "^(%d%d%d%d)-(%d%d)-(%d%d)$")
   if y then
     return os_time({
         year = y, month = m, day   = d,
-        hour = 0, sec = 0, isdst = nil
+        hour = 0, sec = u, isdst = nil
       }) - os_time({
         year = 1970, month = 1, day = 1,
-        hour = 0, sec = 0, isdst = nil
+        hour = 0, sec = u, isdst = nil
       })
   elseif match(epoch, "^%d+$") then
     return tonumber(epoch)
