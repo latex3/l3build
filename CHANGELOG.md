@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 - Clarify doc for `tdslocations` and `tdsdirs`
+- Clarify nature of ISO date format
 
 ## [2025-09-03]
 
