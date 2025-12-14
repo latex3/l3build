@@ -2403,7 +2403,10 @@
 %    \begin{macrocode}
 \gdef\SHOWPDFTAGS{%
   \BEGINTEST{Show PDF Tags}%
-  \TYPE{^^J^^J--INSERT-PDF-TAGS \jobname.pdf ^^J^^J}%
+  \TYPE{^^J^^J-------- \jobname.xml (start) ---------^^J%
+    --INSERT-PDF-TAGS \jobname.pdf ^^J%
+    -------- \jobname.xml (end) ---------^^J%
+    ^^J}%
   \ENDTEST
 }
 %    \end{macrocode}
