@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- `\SHOWPDFTAGS` inserts the `show-pdf-tags` XML tree into the log file.
+	
 ### Changed
 - Clarify doc for `tdslocations` and `tdsdirs`
 - Clarify nature of ISO date format
