@@ -1,0 +1,19 @@
+\DocumentMetadata{tagging=on}
+\documentclass{article}
+\input{regression-test}
+
+\begin{document}
+
+\START
+
+\section{Intro}
+
+text $x+y$
+
+\TEST{abc}
+
+\SHOWPDFTAGS
+
+\TEST{xyz}
+
+\end{document}
