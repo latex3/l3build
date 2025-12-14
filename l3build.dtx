@@ -2397,6 +2397,17 @@
   {\LONGTYPEOUT{^^J***^^Jregression-test.cfg in operation^^J***^^J}}{}
 %    \end{macrocode}
 %
+% \subsection{Showing PDF Tag Tree}
+%
+% \begin{macro}{\SHOWPDFTAGS}
+%    \begin{macrocode}
+\gdef\SHOWPDFTAGS{%
+  \BEGINTEST{Show PDF Tags}%
+  \TYPE{^^J^^J--INSERT-PDF-TAGS \jobname.pdf ^^J^^J}%
+  \ENDTEST
+}
+%    \end{macrocode}
+% \end{macro}
 % \subsection{Formatting the \texttt{.log} file}
 %
 % \begin{macro}{\gTESTint}
