@@ -1,0 +1,80 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: abc
+============================================================
+============================================================
+============================================================
+TEST 2: Show PDF Tags
+============================================================
+-------- 01-tagging.xml (start) ---------
+<PDF>
+ <StructTreeRoot>
+  <Document xmlns="http://iso.org/pdf2/ssn"
+     id="ID.002"
+    >
+   <Sect xmlns="http://iso.org/pdf2/ssn"
+      id="ID.005"
+     >
+    <section xmlns="https://www.latex-project.org/ns/dflt"
+       id="ID.006"
+       title="Intro"
+       rolemaps-to="H1"
+      >
+     <section-number xmlns="https://www.latex-project.org/ns/dflt"
+        id="ID.007"
+        rolemaps-to="Span"
+       >
+      <?MarkedContent page="1" ?>1
+     </section-number>
+     <?MarkedContent page="1" ?>Intro
+    </section>
+    <text-unit xmlns="https://www.latex-project.org/ns/dflt"
+       id="ID.008"
+       rolemaps-to="Part"
+      >
+     <text xmlns="https://www.latex-project.org/ns/dflt"
+        id="ID.009"
+        xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+        Layout:TextAlign="Justify"
+        rolemaps-to="P"
+       >
+      <?MarkedContent page="1" ?>text
+      <Formula xmlns="http://iso.org/pdf2/ssn"
+         id="ID.010"
+         title="math"
+         af="tag-AFfile1.tex"
+         xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+         Layout:Placement="Inline"
+        >
+        <AssociatedFile name="tag-AFfile1.tex" xmlns="">
+        $x+y$
+        </AssociatedFile>
+       <?MarkedContent page="1" ?>x +y
+      </Formula>
+      <?MarkedContent page="1" ?>
+     </text>
+    </text-unit>
+   </Sect>
+  </Document>
+ </StructTreeRoot>
+</PDF>
+-------- 01-tagging.xml (end) ---------
+============================================================
+============================================================
+TEST 3: xyz
+============================================================
+============================================================
+[1
+]<<latex-list-css.html>><<latex-align-css.html>> (01-tagging.aux)
+Package tagpdf Info: Finalizing the tagging structure:
+(tagpdf)             Writing out ~10 structure objects
+(tagpdf)             with ~7 'MC' leaf nodes.
+(tagpdf)             Be patient if there are lots of objects!
+Package tagpdf Info: writing ParentTree
+Package tagpdf Info: writing IDTree
+Package tagpdf Info: writing RoleMap
+Package tagpdf Info: writing ClassMap
+Package tagpdf Info: writing NameSpaces
+Package tagpdf Info: writing StructElems
+Package tagpdf Info: writing Root
