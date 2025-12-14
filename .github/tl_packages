@@ -36,3 +36,8 @@ pdftexcmds
 psnfss
 tools
 underscore
+#
+# tagging tests
+#
+show-pdf-tags
+latex-lab
