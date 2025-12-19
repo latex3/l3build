@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+- Update `\SHOWPDFTAGS` doc
+
 ## [2025-12-19]
 
 ### Added
