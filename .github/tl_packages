@@ -36,3 +36,12 @@ pdftexcmds
 psnfss
 tools
 underscore
+#
+# tagging tests
+#
+show-pdf-tags
+latex-lab
+pdfmanagement-testphase
+tagpdf
+ec
+cm-super

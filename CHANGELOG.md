@@ -11,7 +11,16 @@ this project uses date-based 'snapshot' version identifiers.
 - Support `exhibitfiles` to set files that need to be "exhibited" in the current workspace
 
 ### Changed
+- Update `\SHOWPDFTAGS` doc
+
+## [2025-12-19]
+
+### Added
+- `\SHOWPDFTAGS` inserts the `show-pdf-tags` XML tree into the log file.
+	
+### Changed
 - Clarify doc for `tdslocations` and `tdsdirs`
+- Clarify nature of ISO date format
 
 ## [2025-09-03]
 
@@ -856,7 +865,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalize short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2025-09-03...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2025-12-19...HEAD
+[2025-12-19]: https://github.com/latex3/l3build/compare/2025-09-03...2025-12-19
 [2025-09-03]: https://github.com/latex3/l3build/compare/2025-09-02...2025-09-03
 [2025-09-02]: https://github.com/latex3/l3build/compare/2025-07-03...2025-09-02
 [2025-07-03]: https://github.com/latex3/l3build/compare/2025-07-02...2025-07-03
