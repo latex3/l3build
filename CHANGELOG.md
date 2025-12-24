@@ -8,13 +8,14 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 ### Changed
+- Normalise line ends in show-pdf-tags xml
 - Update `\SHOWPDFTAGS` doc
 
 ## [2025-12-19]
 
 ### Added
 - `\SHOWPDFTAGS` inserts the `show-pdf-tags` XML tree into the log file.
-	
+
 ### Changed
 - Clarify doc for `tdslocations` and `tdsdirs`
 - Clarify nature of ISO date format
