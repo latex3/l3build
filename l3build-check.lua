@@ -318,7 +318,7 @@ local function normalize_log(content,engine,errlevels)
   for line in gmatch(content, "([^\n]*)\n") do
     if match(line,"^%-%-INSERT%-PDF%-TAGS %.*") then
        local xmlh=io.popen("show-pdf-tags --xml " .. testdir .. "/" .. line:gsub("%-%-INSERT%-PDF%-TAGS ",""),"r")
-       local xml = assert(xmlh:read('*a'))
+       local xml = gsub(assert(xmlh:read('*a')),"\r\n","\n")
        xmlh:close()
       new_content = new_content .. xml
     elseif line == "START-TEST-LOG" then
