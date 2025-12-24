@@ -7,6 +7,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2025-12-24]
+
 ### Changed
 - Normalize line ends in show-pdf-tags xml
 - Update `\SHOWPDFTAGS` doc
@@ -863,7 +865,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalize short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2025-12-19...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2025-12-24...HEAD
+[2025-12-24]: https://github.com/latex3/l3build/compare/2025-12-19...2025-12-24
 [2025-12-19]: https://github.com/latex3/l3build/compare/2025-09-03...2025-12-19
 [2025-09-03]: https://github.com/latex3/l3build/compare/2025-09-02...2025-09-03
 [2025-09-02]: https://github.com/latex3/l3build/compare/2025-07-03...2025-09-02
