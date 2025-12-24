@@ -8,7 +8,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 ### Changed
-- Normalise line ends in show-pdf-tags xml
+- Normalize line ends in show-pdf-tags xml
 - Update `\SHOWPDFTAGS` doc
 
 ## [2025-12-19]
