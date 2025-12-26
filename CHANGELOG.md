@@ -1,4 +1,5 @@
 # Changelog
+
 All notable changes to the `l3build` bundle since the start of 2018
 will be documented in this file.
 
@@ -10,79 +11,95 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2025-12-24]
 
 ### Changed
+
 - Normalize line ends in show-pdf-tags xml
 - Update `\SHOWPDFTAGS` doc
 
 ## [2025-12-19]
 
 ### Added
+
 - `\SHOWPDFTAGS` inserts the `show-pdf-tags` XML tree into the log file.
 
 ### Changed
+
 - Clarify doc for `tdslocations` and `tdsdirs`
 - Clarify nature of ISO date format
 
 ## [2025-09-03]
 
 ### Fixed
+
 - Minor formatting issue in normalization
 
 ## [2025-09-02]
 
 ### Changed
+
 - Extend normalization of `Lua function` lines
 - Normalize `luacall` lines
 
 ## [2025-07-03]
 
 ### Fixed
+
 - Support use of `\TIMO` with updated ConTeXt
 
 ## [2025-07-02]
 
 ### Fixed
+
 - For tests created by `unpack`, `exludetests` was inverted
 
 ### Changed
+
 - Support test file extensions with multiple dot separated components
 - Support updated ConTeXt log formatting
 
 ## [2025-05-08]
 
 ### Fixed
+
 - Missing `os_concat` required on Windows
 
 ## [2025-05-07]
 
 ### Added
+
 - `halferrorline` and `errorline` vars (issue \#258)
 
 ### Changed
+
 - Support `recordstatus` in a platform-neutral way (issue \#383)
 - Use `[nl]` no `^^M` when marking linebreaks in `\SHOWFILE` (issue \#409):
   may require `.tlg` rebuilds
 
 ### Fixed
+
 - Interaction between options `--dev` and `--show-saves`/`-S` (issue \#411)
 
 ## [2025-02-23]
 
 ### Changed
+
 - Initialize all boolean config variables
 - Normalize `at lines ...` statements for overfull and underfull boxes
   (may require `.tlg` update)
 
 ### Fixed
+
 - Skip README rename when this has no extension (issue \#388)
 
 ## [2024-10-16]
 
 ### Added
+
 - `--dev` switch to run tests using development format
 
 ## [2024-10-08]
 
 ### Fixed
+
 - Test for uncompleted conditionals in tests (may require `.tlg` update)
 - Global `typesetopts` no longer ignored for `luatex` and `lualatex` (issue \#351)
 - Handling of spaces in options
@@ -90,15 +107,18 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2024-05-27]
 
 ### Changed
+
 - Respect `--rerun` in `doc` target (issue \#112)
 
 ### Fixed
+
 - Skip unknown engines correctly in `l3build save`
 - Handling of environment settings in some cases (issue \#353)
 
 ## [2024-02-08]
 
 ### Changed
+
 - Extend normalization of line numbers to include those wrapped by LaTeX in
   text `on line ...`
 - Suppress `l3msg` message wrapping
@@ -106,15 +126,18 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2024-01-18]
 
 ### Added
+
 - Switch `-s|--stdengine` to run a set of tests only with the standard engine
   even where this varies between configs (issue \#343)
 
 ### Removed
+
 - Switch `--force|-f`
 
 ## [2024-01-09]
 
 ### Fixed
+
 - Type of return value of `runtest_tasks()` in doc
 - Print failures correctly when these occur in multiple configurations
   including the core (`build`) one
@@ -122,6 +145,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2024-01-04]
 
 ### Changed
+
 - Throw warnings on unknown doc name(s)
 - Always execute `runtest_tasks()` if set (issue \#327)
 - Print failures correctly when these occur in multiple configurations
@@ -129,6 +153,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2023-12-15]
 
 ### Fixed
+
 - Test for blank `runtest_tasks()` (issue \#327)
 
 ## [2023-12-13-2]
@@ -138,39 +163,48 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2023-12-13]
 
 ### Fixed
+
 - Syntax warning on Windows with some test setups
 
 ## [2023-12-12]
 
 ### Changed
+
 - Document default value of `ctanpkg` as a valid lua expression
 - Improve log for failed checks with no diff files
 - Document full syntaxes of `\SHOWFILE` and `\ASSERT(STR)`
 
 ### Fixed
+
 - Short-circuit `check --rerun` if `testdir` doesn't exist
 - Retain errorlevel on Windows during `check` target
 
 ## [2023-11-01]
 
 ### Changed
+
 - Drop duplicate backslashes in doc
 
 ### Fixed
+
 - Support non-ASCII filenames that fall within the system codepage on Windows
   (see \#122)
 
 ## [2023-09-13]
 
 ### Added
+
 - Document ConTeXt as supported `checkformat`
 
 ### Changed
+
 - Extend version string normalization during checks
   (see issue \#96)
 
 - Extend excludefiles to cover `build.lua` (see \#286)
+
 ### Fixed
+
 - Return passing errorlevel if BibTeX issues warnings
   (see \#260)
 - Respect `excludefiles` when doing (local) installation
@@ -178,12 +212,14 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2023-09-07]
 
 ### Changed
+
 - Refine `-utc` support
 - Apply `checkopts` in addition to engine-specific options
 
 ## [2023-09-05]
 
 ### Changed
+
 - Initialize the random seed with the current time so `--shuffle` produces different orders each run.
 - Normalize more `luaotfload` cache lines
 - Apply `-utc` switch for LuaTeX when using a fixed epoch value
@@ -195,6 +231,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2023-07-17]
 
 ### Changed
+
 - Improve stdout "Running l3build with target ..."
 - Quote configuration name used in stdout
 - Update one leftover outdated doc for `unpackexe`: defaults to `pdftex`
@@ -204,40 +241,48 @@ this project uses date-based 'snapshot' version identifiers.
 - Improve doc for default `stdengine`
 
 ### Fixed
+
 - Avoid setting `TEMXFCNF` for ConTeXt (issue \#232)
 
 ## [2023-03-27]
 
 ### Fixed
+
 - All LuaTeX `.tlg` files were wrongly considered not engine-specific.
   Introduced in #292 which tried to fix #291.
 
 ## [2023-03-22]
 
 ### Changed
+
 - Default value of `maxprintline` is now `9999`
   (may require `.tlg` updates: see docs)
 
 ### Fixed
+
 - Apply needed luatex-specific log normalization, even when `--rerun` is used
   (issue \#291)
 
 ## [2023-03-08]
 
 ### Changed
+
 - Generalize normalization of ghostscript version in PDF-based tests
 - Include UNIX timestamps in generated ZIP files
 - Normalize pdfTeX `.enc` file loading
 
 ### Fixed
+
 - Ensure when used, value of `ps2pdfopts` is surrounded by a space on both sides
 
 ## [2023-02-26]
 
 ### Changed
+
 - Run engine sanity check per config
 
 ### Fixed
+
 - Restore epoch settings for `dvitopdf()`
 - Use plural form of variable `ps2pdfopts` consistently in code and doc, and
   retain compatibility with singular form `ps2pdfopt` (issue \#275)
@@ -246,61 +291,74 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2023-02-20]
 
 ### Changed
+
 - Unify `testdir` by dropping possibly trailing `.lua` passed to `--config`
 
 ### Fixed
+
 - Ensure directories `testdir` and `resultdir` exist when `--dirty` is set
 - epoch settings with xetex
 
 ## [2023-02-16]
 
 ### Changed
+
 - Drop a redundant setup line for upTeX
 - Normalize more Lua stack trace data (may require `.tlg` rebuild)
 
 ### Fixed
+
 - Ensure `texmf.cnf` work correctly for `dvips`
 
 ## [2022-11-10]
 
 ### Changed
+
 - Suppress (new) LaTeX version data at end of `.log`
 
 ### Fixed
+
 - Allow for local override of `ctanupload` variable
 
 ## [2022-09-15]
 
 ### Fixed
+
 - Copying of nested directories
 
 ## [2022-04-19]
 
 ### Changed
+
 - Normalize GhostScript version in PDF-based tests
 - Sort list of names of difference files for failing tests.
 
 ## [2022-04-12]
 
 ### Added
+
 - Basic support for `make4ht`
 
 ### Changed
+
 - Support `bidi` version string in `\special` lines (closes \#226)
 
 ## [2022-03-15]
 
 ### Changed
+
 - When `\pdfmeta_set_regression_data:` is defined it is used
   to set metadata
 - Support multiple configurations in bundles
 
 ### Fixed
+
 - Correctly normalize luaotfload font cache path
 
 ## [2022-02-24]
 
 ### Fixed
+
 - Creation of subdirectories in TDS structures on Unix-like systems
 
 - use `form-string` rather than `form` for all curl fields to avoid
@@ -312,31 +370,37 @@ this project uses date-based 'snapshot' version identifiers.
   if `curl` failed.
 
 ### Changed
+
 - Documentation of how to validate an upload
 
 ## [2021-12-14]
 
 ### Fixed
+
 - Use correct name for `options` table in multi configuration management code
 
 ## [2021-12-09]
 
 ### Added
+
 - Support for pre-constructed TDS-style sources (variable `tdsdirs`)
 - Support for injection of tokens using `specialformats`
 
 ### Changed
+
 - If multiple configurations are present, let `l3build clean` run
   on all of them by default. (issue \#214)
 
 ## [2021-12-06]
 
 ### Fixed
+
 - Place PDF files inside `docfiledir` in all cases
 
 ## [2021-11-29]
 
 ### Changed
+
 - Documentation improvements
 - Use `checkengines[1]` as the default for `stdengine`
 - Add sanity check for `TEXMFHOME` value
@@ -344,6 +408,7 @@ this project uses date-based 'snapshot' version identifiers.
   does not need to be doubled in note and announcement texts.
 
 ### Fixed
+
 - Installation of files when using MiKTeX (see #125)
 - Incorrect line in `manifest` target (see #195)
 - Placement of PDF files in subdirectory locations (issue \#209)
@@ -356,9 +421,11 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2021-11-12]
 
 ### Changed
+
 - Documentation improvements
 
 ### Fixed
+
 - Allow config names ending with 'lua', as long as they don't end with '.lua'
 - All documentation files are build in a consistent environment with support
   files visible.
@@ -366,16 +433,19 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2021-08-28]
 
 ### Fixed
+
 - Creation of zip files on Windows
 - Only match filename and not full path for `exefiles`
 
 ## [2021-08-27]
 
 ### Added
+
 - Add the `--show-saves` flag for `l3build check` to generate a list of
   `l3build save` commands to regenerate all failing tests
 
 ### Changed
+
 - No longer call an external program to generate `zip` files and generate
   them directly instead. This disables the options `zipexe` and `zipopts`.
 - Copy TDS-style zip files to main dir
@@ -383,38 +453,45 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2021-05-06]
 
 ### Fixed
+
 - Issue when running PDF-based tests
 
 ## [2021-05-05]
 
 ### Changed
+
 - Normalize Lua function calls (issue \#127) - may require `.tlg` update
 - LuaTeX from TL'21 is no longer 'off by one' in log files - may require
   `.tlg` update
 
 ### Fixed
+
 - Installation now supports deeper directory levels (issue \#182)
 - The `texmfhome` directory is now created before use if required
 - Crash caused by yyyy-mm-dd epoch format
 
 ### Removed
+
 - Support for use as `texlua build.lua <target>`
 
 ## [2020-06-04]
 
 ### Added
+
 - Store 'raw' PDF files when testing using PDFs, to allow further checks
   with e.g. PDF validators
 
 ## [2020-03-25]
 
 ### Changed
+
 - Exclude `sourcefiles` entries from file clean-up
 - Adjust defaults for TeX Live 2020 LuaHBTeX usage
 
 ## [2020-03-16]
 
 ### Changed
+
 - Suppress PDF compression in DVI route
 - Suppress PDF ID data in DVI route
 - Default to `dvips` for (p)TeX
@@ -423,48 +500,59 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2020-03-13]
 
 ### Changed
+
 - Refinement of PDF test normalization
 
 ## [2020-03-12]
 
 ### Added
+
 - Option `ps2pdfopt`
 
 ### Changed
+
 - Normalize `/ID` lines in PDF comparisons
 - Normalize `%%` lines in PDF comparisons
 
 ### Fixed
+
 - Enable `cleandir()` recursively
 - Install files after *all* directory cleaning/creation
 
 ## [2020-02-21]
 
 ### Changed
+
 - Avoid temporary file when unpacking
 
 ### Deprecated
+
 - `os_yes`: use `io.popen(...,w)` instead
 
 ## [2020-02-17]
 
 ### Added
+
 - Variable `textfiledir`
 - Table `specialtypesetting` and support data
 
 ### Changed
+
 - Documentation improvements
 
 ### Fixed
+
 - When `checkruns` > 1 and `recordstatus=true`, testing code would crash
   (issue \#90)
 
 ## [2020-02-03]
 
 ### Changed
+
 - Normalize out DVI header lines
 
 ### Fixed
+
 - Allow announcement field to be empty
   (with a warning this suppresses the CTAN announcement)
 
@@ -725,29 +813,35 @@ this project uses date-based 'snapshot' version identifiers.
 ## [2018-08-07]
 
 ### Changed
+
 - Suppress file name info in PDF output for included images, etc.
 
 ### Fixed
+
 - Issue with creation of CTAN releases for bundles
 
 ## [2018-08-04]
 
 ### Added
+
 - `ctanzip` variable
 - `--full` option
 
 ### Changed
+
 - Run PDF-based tests for all engines
 - Tweaks to PDF-based normalization: new `.tpf` files will be required
 - The `--halt-on-error|-H` setting now applies to multiple configs
 
 ### Fixed
+
 - Testing using `.lve` files
 - Tagging with new approach to top-level targets
 
 ## [2018-08-02]
 
 ### Added
+
 - `CHANGELOG.md`
 - `--dirty` option
 - `includetests` and `excludetests` variables for controlling which tests
@@ -756,98 +850,119 @@ this project uses date-based 'snapshot' version identifiers.
   `main()`
 
 ### Changed
+
 - PDF-based testing now uses 'digested' PDF file for comparison,
   working from dedicated `.pvt` input files
 
 ### Removed
+
 - `--pdf|-p` command line switch
 
 ## [2018-05-10]
 
 ### Changed
+
 - Revert appearance of date lines in `.tlg` files:
   this is on balance problematic
 
 ## [2018-05-06]
 
 ### Added
+
 - Variable `dynamicfiles` to be cleaned between each test run
 
 ### Changed
+
 - Normalize dates to placeholder "YYYY-MM-DD": may require `.tlg` updates
 
 ### Fixed
+
 - Include dot files in `tree()` (fixes #30)
 
 ## [2018-03-26]
 
 ### Changed
+
 - Omit ISO date lines in `.tlg` files
 
 ## [2018-03-24]
 
 ### Changed
+
 - Allow 'short cut' of check runs
 - Support for upcoming LaTeX kernel release functions
 
 ## [2018-03-10]
 
 ### Changed
+
 - Add `#!` line for POSIX users
 - Set POSIX u+x on `l3build.lua`
 
 ### Fixed
+
 - Handling of script name with or without extension
 
 ## [2018-03-09]
 
 ### Fixed
+
 - Pass through script name correctly with new set up
 
 ## [2018-03-08]
 
 ### Added
+
 - Target `tag`, variable `tagfiles` and function `update_tag()`
 - Variables `scriptfiles` and `scriptmanfiles` to support installation
   of scripts
 
 ### Changed
+
 - `l3build` can now be run as a top-level script rather than using
   `texlua build.lua ...`
 - Normalization of LuaTeX-derived `tlg` files, in preparation for
   TeX Live 2018
 
 ### Deprecated
+
 - Use of wrapper `build.lua` script to call `l3build`: the new
   top-level script approach is preferred
 
 ### Removed
+
 - Target `setversion` and variable `versionfiles`
 
 ## [2018-02-20]
 
 ### Changed
+
 - Allow for `checkopts` adding code/files
 
 ### Fixed
+
 - Creation of 'structured' CTAN releases
 - Quote test names correctly
 
 ## [2018-01-27]
 
 ### Added
+
 - Target `uninstall`
 - Options `--first` and `--last`
 
 ## Changed
+
 - Normalization for upcoming LuaTeX 1.07 release
 
 ### Fixed
+
 - Behavior of check on Windows when using standard `fc` tool
 
 ## [2018-01-10]
 
 ## Added
+
 - Target `manifest` for construction of file manifests automatically
 - Variable `auxfiles`
 - Option `--dry-run` for installation/cleaning
@@ -855,13 +970,16 @@ this project uses date-based 'snapshot' version identifiers.
 - Option `--shuffle` to run tests in a random order
 
 ### Changed
+
 - Sort list of tests to avoid system-dependent ordering
 - Split `l3build` into multiple files for improved maintenance
 
 ### Fixed
+
 - Issue with `recordstatus`
 
 ### Removed
+
 - Rationalize short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
@@ -945,7 +1063,6 @@ this project uses date-based 'snapshot' version identifiers.
 [2018-11-08]: https://github.com/latex3/l3build/compare/2018-10-30...2018-11-08
 [2018-10-30]: https://github.com/latex3/l3build/compare/2018-10-25...2018-10-30
 [2018-10-25]: https://github.com/latex3/l3build/compare/2018-09-26...2018-10-25
-[2018-09-26]: https://github.com/latex3/l3build/compare/2018-09-23...2018-09-26
 [2018-09-23]: https://github.com/latex3/l3build/compare/2018-09-21...2018-09-23
 [2018-09-21]: https://github.com/latex3/l3build/compare/2018-08-07...2018-09-21
 [2018-08-07]: https://github.com/latex3/l3build/compare/2018-08-04...2018-08-07
