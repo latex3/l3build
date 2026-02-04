@@ -8,6 +8,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- Align `\SHOWPDFTAGS` markers (may require `.tlg` update)
+
 ## [2025-12-24]
 
 ### Changed
