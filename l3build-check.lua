@@ -547,9 +547,19 @@ local function normalize_lua_log(content,luatex)
   end
   local new_content = ""
   local lastline = ""
+  local nochange = false
   local dropping = false
   for line in gmatch(content, "([^\n]*)\n") do
-    line, lastline, dropping = normalize(line, lastline, dropping)
+    -- Skip LuaTeX-specific normalization for \SHOWPDFTAGS output
+    if line == "<PDF>" then
+      nochange = true
+      lastline = ""
+    elseif line == "</PDF>" then
+      nochange = false
+    end
+    if not nochange then
+      line, lastline, dropping = normalize(line, lastline, dropping)
+    end
     if not match(line, "^ *$") then
       new_content = new_content .. line .. os_newline
     end
