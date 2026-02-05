@@ -1,6 +1,6 @@
 --[[
 
-File l3build-arguments.lua Copyright (C) 2018-2025 The LaTeX Project
+File l3build-arguments.lua Copyright (C) 2018-2026 The LaTeX Project
 
 It may be distributed and/or modified under the conditions of the
 LaTeX Project Public License (LPPL), either version 1.3c of this
