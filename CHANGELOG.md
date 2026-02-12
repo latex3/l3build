@@ -8,6 +8,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Support `exhibitfiles` to set files that need to be "exhibited" in the current workspace
+
 ### Changed
 
 - Align `\SHOWPDFTAGS` markers (may require `.tlg` update)
