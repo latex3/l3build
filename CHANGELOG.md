@@ -8,10 +8,6 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
-### Fixed
-
-- Skip LuaTeX-specific log normalization for `\SHOWPDFTAGS` output (issue \#443)
-
 ### Added
 
 - Variable `xetexnopdf` (issue \#448)
@@ -19,6 +15,10 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 
 - Align `\SHOWPDFTAGS` markers (may require `.tlg` update)
+
+### Fixed
+
+- Skip LuaTeX-specific log normalization for `\SHOWPDFTAGS` output (issue \#443)
 
 ## [2025-12-24]
 
