@@ -208,6 +208,9 @@ typesetruns  = typesetruns  or 3
 if recordstatus == nil then
   recordstatus = false
 end
+if xetexnopdf == nil then
+  xetexnopdf = true
+end
 
 -- Extensions for various file types: used to abstract out stuff a bit
 bakext = bakext or ".bak"
