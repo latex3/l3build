@@ -252,4 +252,7 @@ tdsdirs = tdsdirs or {}
 -- Upload settings
 curlexe  = curlexe  or "curl"
 uploadconfig = uploadconfig or {}
-ctanupload   = ctanupload   or "ask"
+-- if "--dry-run" is used, ctanupload is set false in l3build-upload.lua
+if ctanupload == nil then
+  ctanupload = "ask"
+end
