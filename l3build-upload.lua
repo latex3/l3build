@@ -139,29 +139,13 @@ function upload(tagnames)
   ctan_post = construct_ctan_post(uploadfile,options["debug"])
 
 
--- curl file version
-  local curloptfile = uploadconfig.curlopt_file or (ctanzip .. ".curlopt")
-  ---@type file*?
-  local curlopt=assert(open(curloptfile,"w"))
-  ---@cast curlopt file*
-  output(curlopt)
-  write(ctan_post)
-  curlopt:close()
-  curlopt = nil
-
-  ctan_post=curlexe .. " --config " .. curloptfile
-
-
 if options["debug"] then
-    ctan_post = ctan_post ..  ' https://httpbin.org/post'
     fp_return = shell(ctan_post)
     print('\n\nCURL COMMAND:')
     print(ctan_post)
     print("\n\nHTTP RESPONSE:")
     print(fp_return)
     return 1
-else
-    ctan_post = ctan_post ..  ' https://ctan.org/submit/'
 end
 
   -- call post command to validate the upload at CTAN's validate URL
@@ -286,6 +270,24 @@ function construct_ctan_post(uploadfile,debug)
   ctan_field("version",      uploadconfig.version,        32, "Package version",                     true,  false )
 
   ctan_post = ctan_post .. '\nform="file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
+
+-- curl file version
+  local curloptfile = uploadconfig.curlopt_file or (ctanzip .. ".curlopt")
+  ---@type file*?
+  local curlopt=assert(open(curloptfile,"w"))
+  ---@cast curlopt file*
+  output(curlopt)
+  write(ctan_post)
+  curlopt:close()
+  curlopt = nil
+
+  ctan_post=curlexe .. " --config " .. curloptfile
+
+  if debug then
+    ctan_post = ctan_post ..  ' https://httpbin.org/post'
+  else
+    ctan_post = ctan_post ..  ' https://ctan.org/submit/'
+  end
 
   return ctan_post
 
