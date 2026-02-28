@@ -122,6 +122,12 @@ local function normalize_log(content,engine,errlevels)
     end
     return false
   end
+  -- version/date patterns
+  local versionpatterns = versionpatterns or {}
+  -- Semantic version-like ones
+  table.insert(versionpatterns, "v%d+%.%d+%.%d+[%d%a.+%-]*")
+  -- Classical LaTeX version strings
+  table.insert(versionpatterns, "v%d+%.?%d?%d?%w?")
     -- Substitutions to remove some non-useful changes
   local function normalize(line,lastline,drop_fd)
     if drop_fd then
@@ -174,11 +180,10 @@ local function normalize_log(content,engine,errlevels)
     end
     -- Deal with dates
     if match(line, "[^<]%d%d%d%d[/%-]%d%d[/%-]%d%d") then
-        line = gsub(line,"%d%d%d%d[/%-]%d%d[/%-]%d%d","....-..-..")
-        -- Semantic version-like ones
-        line = gsub(line,"v%d+%.%d+%.%d+[%d%a.+%-]*","v...")
-        -- Classical LaTeX version strings
-        line = gsub(line,"v%d+%.?%d?%d?%w?","v...")
+      line = gsub(line,"%d%d%d%d[/%-]%d%d[/%-]%d%d","....-..-..")
+      for _,vpattern in ipairs(versionpatterns) do
+        line = gsub(line,vpattern,"v...")
+      end
     end
     -- Deal with leading spaces for file and page number lines
     line = gsub(line,"^ *%[(%d)","[%1")
