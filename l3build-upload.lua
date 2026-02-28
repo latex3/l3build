@@ -73,7 +73,7 @@ local curl_debug = curl_debug or false -- to disable posting
 if options["dry-run"] then
   ctanupload = false
 end
--- if ctanupload is nil, it is set to "ask" in l3build-variables.lua
+-- ctanupload is never nil, as l3build-variables.lua initializes it to "ask"
 -- if ctanupload is false, only validation is attempted
 -- if ctanupload is true, the ctan upload URL will be used after validation
 -- if ctanupload is anything else, the user will be prompted whether to upload.
