@@ -123,11 +123,11 @@ local function normalize_log(content,engine,errlevels)
     return false
   end
   -- version/date patterns
-  local versionpatterns = versionpatterns or {}
+  local checkpatterns = checkpatterns or {}
   -- Semantic version-like ones
-  table.insert(versionpatterns, "v%d+%.%d+%.%d+[%d%a.+%-]*")
+  table.insert(checkpatterns, "v%d+%.%d+%.%d+[%d%a.+%-]*")
   -- Classical LaTeX version strings
-  table.insert(versionpatterns, "v%d+%.?%d?%d?%w?")
+  table.insert(checkpatterns, "v%d+%.?%d?%d?%w?")
     -- Substitutions to remove some non-useful changes
   local function normalize(line,lastline,drop_fd)
     if drop_fd then
@@ -181,7 +181,7 @@ local function normalize_log(content,engine,errlevels)
     -- Deal with dates
     if match(line, "[^<]%d%d%d%d[/%-]%d%d[/%-]%d%d") then
       line = gsub(line,"%d%d%d%d[/%-]%d%d[/%-]%d%d","....-..-..")
-      for _,vpattern in ipairs(versionpatterns) do
+      for _,vpattern in ipairs(checkpatterns) do
         line = gsub(line,vpattern,"v...")
       end
     end
