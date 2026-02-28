@@ -11,6 +11,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 
 - Variable `xetexnopdf` (issue \#448)
+- Variable `checkpatterns` (issue \#449)
 
 ### Changed
 
