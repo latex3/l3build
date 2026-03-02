@@ -19,6 +19,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Fixed
 
 - Skip LuaTeX-specific log normalization for `\SHOWPDFTAGS` output (issue \#443)
+- Respect `--dry-run` for `upload` target (issue \#264)
 
 ## [2025-12-24]
 

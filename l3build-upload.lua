@@ -73,9 +73,10 @@ local curl_debug = curl_debug or false -- to disable posting
 if options["dry-run"] then
   ctanupload = false
 end
--- if ctanupload is nil or false, only validation is attempted
--- if ctanupload is true the ctan upload URL will be used after validation
--- if upload is anything else, the user will be prompted whether to upload.
+-- ctanupload is never nil, as l3build-variables.lua initializes it to "ask"
+-- if ctanupload is false, only validation is attempted
+-- if ctanupload is true, the ctan upload URL will be used after validation
+-- if ctanupload is anything else, the user will be prompted whether to upload.
 -- For now, this is undocumented. I think I would prefer to keep it always set to ask for the time being.
 
 local ctan_post -- this is private to the module
@@ -191,7 +192,7 @@ end
 
   -- if upload requested and validation succeeded repost to the upload URL
   if (exit_status==0 or exit_status==nil) then
-    if (ctanupload ~=nil and ctanupload ~=false and ctanupload ~= true) then
+    if (ctanupload ~=false and ctanupload ~= true) then
       if (match(fp_return,"WARNING")) then
         print("Warnings from CTAN package validation:" .. fp_return:gsub("%[","\n["):gsub("%]%]","]\n]"))
       else
