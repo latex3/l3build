@@ -1365,7 +1365,7 @@
 %     generated = ".log",
 %     rewrite = function(source, normalized, engine, errorcode)
 %       -- In this example we just copy the logfile without any normalization
-%       os.execute(string.format("cp %s %s", source, normalized)
+%       os.execute(ren(testdir,source,normalized))
 %     end,
 %   },
 % }
