@@ -1364,8 +1364,8 @@
 %     reference = ".mytlg",
 %     generated = ".log",
 %     rewrite = function(source, normalized, engine, errorcode)
-%       -- In this example we just copy the logfile without any normalization
-%       os.execute(ren(testdir,source,normalized))
+%       -- In this example we just rename the logfile without any normalization
+%       ren(testdir,source,normalized)
 %     end,
 %   },
 % }
