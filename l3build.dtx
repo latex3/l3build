@@ -160,7 +160,7 @@
 \luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting}
 \luavarset{typesetruns}{3}            {Number of cycles of typesetting to carry out}
 \luavarset{recordstatus}{false}       {Switch to include error level from test runs in \texttt{.tlg} files}
-\luavarset{xetexnopdf}{true}          {No PDF output with \texttt{xetex} engine, for log-based tests}
+\luavarset{xetexnopdf}{true}          {Disable generation of PDF using \texttt{xetex} engine, for log-based tests}
 \luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file}
 \luavarseparator
 \luavarset{tdslocations}{\{ \}}{List of non-standard file installations}
@@ -254,7 +254,7 @@
 %    }^^A
 % }
 %
-% \date{Released 2026-03-01}
+% \date{Released 2026-03-13}
 %
 % \maketitle
 % \tableofcontents
@@ -1364,8 +1364,8 @@
 %     reference = ".mytlg",
 %     generated = ".log",
 %     rewrite = function(source, normalized, engine, errorcode)
-%       -- In this example we just copy the logfile without any normalization
-%       os.execute(string.format("cp %s %s", source, normalized)
+%       -- In this example we just rename the logfile without any normalization
+%       ren(testdir,source,normalized)
 %     end,
 %   },
 % }

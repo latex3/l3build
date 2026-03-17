@@ -798,8 +798,8 @@ function runtest(name, engine, hide, ext, test_type, breakout)
     format = " --fmt=" .. format
   end
   -- Special casing for XeTeX engine
-  if match(engine, "xetex") and test_type.generated ~= pdfext and
-      xetexnopdf then
+  if xetexnopdf and 
+      match(engine, "xetex") and test_type.generated ~= pdfext then
     checkopts = checkopts .. " -no-pdf"
   end
   -- Special casing for ConTeXt
