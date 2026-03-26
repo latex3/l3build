@@ -261,10 +261,6 @@ local function normalize_log(content,engine,errlevels)
     if match(line, "luacall") then
       line = gsub(line,"luacall %d+%.","luacall ....")
     end
-    -- and data refs.
-    if match(line, "lua data reference") then
-      line = gsub(line,"lua data reference %d+%.","lua data reference ....")
-    end
     -- Remove the \special line that in DVI mode keeps PDFs comparable
     if match(line, "^%.*\\special%{pdf: docinfo << /Creator") or
       match(line, "^%.*\\special%{ps: /setdistillerparams") or
@@ -305,6 +301,9 @@ local function normalize_log(content,engine,errlevels)
     -- Remove lua data reference ids
     line = gsub(line, "<lua data reference [0-9]+>",
                       "<lua data reference ...>")
+    -- Remove lua function reference ids
+    line = gsub(line, "<function reference [0-9]+>",
+                      "<function reference ...>")
     -- Unicode engines display chars in the upper half of the 8-bit range:
     -- tidy up to match pdfTeX if an ASCII engine is in use
     if next(asciiengines) then

@@ -12,7 +12,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Changed
 
-- Normalize `lua data reference` lines (may require `.tlg` update)
+- Normalize `function reference` lines (may require `.tlg` update)
 
 ## [2026-03-13]
 
