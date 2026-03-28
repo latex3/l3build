@@ -8,6 +8,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+- Expand default value of `binaryfiles`
+
 ## [2026-03-26]
 
 ### Changed
