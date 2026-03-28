@@ -75,7 +75,7 @@ end
 -- All of these may be set earlier, so an initialized conditionally
 auxfiles           = auxfiles           or {"*.aux", "*.lof", "*.lot", "*.toc"}
 bibfiles           = bibfiles           or {"*.bib"}
-binaryfiles        = binaryfiles        or {"*.pdf", "*.zip", "*.vf", "*.tfm", "*.pfb", "*.pfm", "*.ttf", "*.otf"}
+binaryfiles        = binaryfiles        or {"*.otf", "*.pdf", "*.pfb", "*.pfm", "*.tfm", "*.ttf", "*.vf", "*.zip"}
 bstfiles           = bstfiles           or {"*.bst"}
 checkfiles         = checkfiles         or { }
 checksuppfiles     = checksuppfiles     or { }

@@ -8,7 +8,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
-- Expand default value of `binaryfiles` [see](https://tug.org/pipermail/tex-live/2026-March/052339.html)
+- Expand default value of `binaryfiles`
 
 ## [2026-03-26]
 
