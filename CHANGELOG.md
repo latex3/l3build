@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 ## [Unreleased]
 
 - Expand default value of `binaryfiles`
+- Variable `checkpatterns` (issue \#449)
 
 ## [2026-03-26]
 
@@ -21,7 +22,6 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 
 - Variable `xetexnopdf` (issue \#448)
-- Variable `checkpatterns` (issue \#449)
 
 ### Changed
 
