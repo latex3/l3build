@@ -8,8 +8,17 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
-- Expand default value of `binaryfiles`
+### Added
+
 - Variable `checkpatterns` (issue \#449)
+
+### Changed
+
+- Expand default value of `binaryfiles`
+
+### Fixed
+
+- Respect `--dry-run` for `upload` target (issue \#264)
 
 ## [2026-03-26]
 
@@ -30,7 +39,6 @@ this project uses date-based 'snapshot' version identifiers.
 ### Fixed
 
 - Skip LuaTeX-specific log normalization for `\SHOWPDFTAGS` output (issue \#443)
-- Respect `--dry-run` for `upload` target (issue \#264)
 
 ## [2025-12-24]
 
