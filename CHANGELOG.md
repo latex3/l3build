@@ -8,8 +8,18 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- Variable `checkpatterns` (issue \#449)
+
+### Changed
+
 - Expand default value of `binaryfiles`
 - Variable `checkpatterns` (issue \#449)
+
+### Fixed
+
+- Respect `--dry-run` for `upload` target (issue \#264)
 
 ## [2026-03-26]
 
