@@ -10,12 +10,11 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 
-- Variable `checkpatterns` (issue \#449)
+- Variable `versionpatterns` (issue \#449)
 
 ### Changed
 
 - Expand default value of `binaryfiles`
-- Variable `checkpatterns` (issue \#449)
 
 ### Fixed
 

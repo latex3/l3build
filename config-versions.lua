@@ -1,3 +1,3 @@
 testfiledir  = "testfiles-versions"
-checkpatterns = { "v%d+[%.%d]* %d+" }
+versionpatterns = { "v%d+[%.%d]* %d+" }
 checkfiles = { "mypackage.sty" }
