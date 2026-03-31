@@ -146,6 +146,7 @@ excludetests = excludetests or { }
 
 -- Configs for testing
 checkconfigs = checkconfigs or {"build"}
+versionpatterns = versionpatterns or {}
 
 -- Enable access to trees outside of the repo
 -- As these may be set false, a more elaborate test than normal is needed
