@@ -242,9 +242,14 @@ local function normalize_log(content,engine,errlevels)
         write          = true,
         XeTeXcharclass = true
       }
-    if register_types[match(line, "^\\[^%]]+=\\([a-z]+)%d+$")] then
+    -- Use %a not a-z so mixed-case types (e.g. \XeTeXcharclass) also match
+    if register_types[match(line, "^\\[^%]]+=\\([%a]+)%d+$")] then
       line = gsub(line, "%d+$", "...")
     end
+    -- LuaTeX Lua-only attribute allocation
+    line = gsub(line, "^(Lua%-only attribute %S+ = )%d+$", "%1...")
+    -- LuaTeX whatsit node lines: both numbers (id and value) vary
+    line = gsub(line, "^(%.*\\whatsit)%d+=%d+$", "%1...=...")
     -- Also deal with showing boxes
     if match(line, "^> \\box%d+=$") or match(line, "^> \\box%d+=(void)$") then
       line = gsub(line, "%d+=", "...=")
