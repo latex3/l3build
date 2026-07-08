@@ -1,0 +1,32 @@
+\input regression-test.tex\relax
+
+\documentclass{minimal}
+
+\begin{document}
+
+\START
+
+\TEST{\OMIT...\TIMO block}{
+  \TYPE{normal}
+
+  \OMIT
+  \TYPE{omitted}
+  \TIMO
+
+  \TYPE{restored}
+}
+
+\TEST{Unmatched \TIMO}{
+  \TYPE{normal}
+
+  \TIMO % unmatched \TIMO is ignored
+  \TYPE{after unmatched \string\TIMO}
+
+  \OMIT
+  \TYPE{omitted}
+  \TIMO
+
+  \TYPE{restored}
+}
+
+\end{document}

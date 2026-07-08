@@ -8,6 +8,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Ensure unmatched `\TIMO` is ignored
+
 ## [2026-07-03]
 
 ### Fixed

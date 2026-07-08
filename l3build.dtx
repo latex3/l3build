@@ -2369,8 +2369,10 @@
 \def\TIMO{%
   \ifnum\gOMITint=0 \else
     \LONGTYPEOUT{TIMO}%
+    \ifnum\gOMITint>0 %
+      \global\advance\gOMITint-1 %
+    \fi
   \fi
-  \global\advance\gOMITint-1 %
 }
 %    \end{macrocode}
 % \end{macro}
