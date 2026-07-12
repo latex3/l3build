@@ -8,6 +8,11 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+
+- Ensure first-time CTAN upload re-validates as a new package instead of
+  running the curl config as a shell script (issue \#468)
+
 ## [2026-07-10]
 
 ### Fixed

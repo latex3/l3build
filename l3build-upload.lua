@@ -137,21 +137,7 @@ function upload(tagnames)
     end
   end
 
-  ctan_post = construct_ctan_post(uploadfile,options["debug"])
-
-
--- curl file version
-  local curloptfile = uploadconfig.curlopt_file or (ctanzip .. ".curlopt")
-  ---@type file*?
-  local curlopt=assert(open(curloptfile,"w"))
-  ---@cast curlopt file*
-  output(curlopt)
-  write(ctan_post)
-  curlopt:close()
-  curlopt = nil
-
-  ctan_post=curlexe .. " --config " .. curloptfile
-
+  ctan_post = construct_ctan_command(uploadfile,options["debug"])
 
 if options["debug"] then
     ctan_post = ctan_post ..  ' https://httpbin.org/post'
@@ -182,7 +168,7 @@ end
     if match(fp_return,"non%-existent%spackage") then
       print("Package not found on CTAN; re-validating as new package:")
       uploadconfig.update = false
-      ctan_post = construct_ctan_post(uploadfile)
+      ctan_post = construct_ctan_command(uploadfile) ..  ' https://ctan.org/submit/'
       fp_return = shell(ctan_post .. "validate")
     end
   end
@@ -255,6 +241,19 @@ function shell(s)
   else
     error("\nError from shell command:\n" .. s .. "\n" .. t .. "\n")
   end
+end
+
+function construct_ctan_command(uploadfile,debug)
+  -- write the curl config file and return the curl command that reads it
+  local ctan_config = construct_ctan_post(uploadfile,debug)
+  local curloptfile = uploadconfig.curlopt_file or (ctanzip .. ".curlopt")
+  ---@type file*?
+  local curlopt=assert(open(curloptfile,"w"))
+  ---@cast curlopt file*
+  output(curlopt)
+  write(ctan_config)
+  curlopt:close()
+  return curlexe .. " --config " .. curloptfile
 end
 
 function construct_ctan_post(uploadfile,debug)
