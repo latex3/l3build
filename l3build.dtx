@@ -159,6 +159,7 @@
 \luavarset{ps2pdfopts}  {""}          {Options for \texttt{ps2pdf}}
 \luavarset{typesetcmds} {""}          {Instructions to be passed to \TeX{} when doing typesetting}
 \luavarset{typesetruns}{3}            {Number of cycles of typesetting to carry out}
+\luavarset{typesetwarnings}{false}    {Switch to fail typesetting when the log reports overfull/underfull boxes}
 \luavarset{recordstatus}{false}       {Switch to include error level from test runs in \texttt{.tlg} files}
 \luavarset{xetexnopdf}{true}          {Disable generation of PDF using \texttt{xetex} engine, for log-based tests}
 \luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file}
@@ -555,6 +556,8 @@
 % files to unpack \emph{only} for typesetting.)
 %
 % If \var{typesetsearch} is \code{true} (default), standard \texttt{texmf} search trees are used in the typesetting compilation. If set to false, \emph{all} necessary files for compilation must be included in the |build/local| sandbox.
+%
+% If \var{typesetwarnings} is set to \code{true} (it is \code{false} by default), the |.log| of each typeset file is searched for overfull and underfull box warnings once compilation has finished, and typesetting is reported as failed if any are present. These boxes are announced by the \TeX{} engine itself rather than by a macro, so they cannot be promoted to errors at the \TeX{} level (other than under \LuaTeX{}, using the \texttt{hpack\_quality} and \texttt{vpack\_quality} callbacks): the builder is therefore the only place able to catch them for \pdfTeX{} and \XeTeX{}. The check reads the standard \LaTeX{} log format and so has no effect when typesetting with \texttt{context}, whose log uses different wording.
 %
 % \end{buildcmd}
 %

@@ -8,6 +8,11 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- Variable `typesetwarnings` to fail typesetting on overfull/underfull
+  boxes reported in the log (issue \#470)
+
 ### Fixed
 
 - Ensure first-time CTAN upload re-validates as a new package instead of
