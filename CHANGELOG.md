@@ -13,6 +13,12 @@ this project uses date-based 'snapshot' version identifiers.
 - Variable `typesetwarnings` to fail typesetting on overfull/underfull
   boxes reported in the log (issue \#470)
 
+## [2026-07-20]
+
+### Changed
+
+- Revise method for printing LaTeX version information in raw `.log`
+
 ### Fixed
 
 - Ensure first-time CTAN upload re-validates as a new package instead of
@@ -1042,7 +1048,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalize short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2026-07-10...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2026-07-20...HEAD
+[2026-07-20]: https://github.com/latex3/l3build/compare/2026-07-10...2026-07-20
 [2026-07-10]: https://github.com/latex3/l3build/compare/2026-07-03...2026-07-10
 [2026-07-03]: https://github.com/latex3/l3build/compare/2026-07-02...2026-07-03
 [2026-07-02]: https://github.com/latex3/l3build/compare/2026-03-26...2026-07-02
