@@ -206,6 +206,9 @@ end
 ps2pdfopts   = ps2pdfopts   or ps2pdfopt or ""
 typesetcmds  = typesetcmds  or ""
 typesetruns  = typesetruns  or 3
+if typesetwarnings == nil then
+  typesetwarnings = false
+end
 if recordstatus == nil then
   recordstatus = false
 end

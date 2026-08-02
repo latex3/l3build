@@ -10,6 +10,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 
+- Variable `typesetwarnings` to fail typesetting on overfull/underfull
+  boxes reported in the log (issue \#470)
 - Introduce the `\BEGINBOXTEST`/`\ENDBOXTEST` to avoid boilerplate for box tests
 
 ## [2026-07-20]

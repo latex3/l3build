@@ -31,7 +31,9 @@ local pairs  = pairs
 local print  = print
 
 local gsub  = string.gsub
+local match = string.match
 
+local open    = io.open
 local os_type = os.type
 
 function dvitopdf(name, dir, engine, hide)
@@ -103,6 +105,29 @@ function tex(file,dir,cmd)
     dir,{"TEXINPUTS","LUAINPUTS"})
 end
 
+-- Scan the typeset log for overfull/underfull boxes: these are reported
+-- by the engine itself and cannot be trapped at the TeX level (except by
+-- the LuaTeX callbacks), so the builder is the only place to catch them
+local function checkbadboxes(file,dir)
+  local logfile = open(dir .. "/" .. jobname(file) .. ".log","r")
+  if not logfile then
+    return 0
+  end
+  local boxes = 0
+  for line in logfile:lines() do
+    if match(line,"^Overfull ") or match(line,"^Underfull ") then
+      print(line)
+      boxes = boxes + 1
+    end
+  end
+  logfile:close()
+  if boxes > 0 then
+    print(" ! " .. boxes .. " bad box(es) found in the typeset log")
+    return 1
+  end
+  return 0
+end
+
 local function typesetpdf(file,dir)
   dir = dir or "."
   local name = jobname(file)
@@ -117,6 +142,9 @@ local function typesetpdf(file,dir)
   if errorlevel ~= 0 then
     print(" ! Compilation failed")
     return errorlevel
+  end
+  if typesetwarnings then
+    return checkbadboxes(file,dir)
   end
   return 0
 end
