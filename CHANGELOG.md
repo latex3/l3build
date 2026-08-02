@@ -8,6 +8,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- Introduce the `\BEGINBOXTEST`/`\ENDBOXTEST` to avoid boilerplate for box tests
+
 ## [2026-07-20]
 
 ### Changed

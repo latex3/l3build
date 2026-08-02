@@ -32,6 +32,10 @@
   \end{verbatim}
 \ENDTEST
 
+\BEGINBOXTEST{Box test}
+  \verb|#$%&|
+\ENDBOXTEST
+
 \begingroup
   \catcode`Q=4 %
   \gdef\ODD{Q}%
