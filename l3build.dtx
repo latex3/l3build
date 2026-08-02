@@ -1017,6 +1017,14 @@
 % \cs{BEGINTEST}\marg{title} \dots \cs{ENDTEST} is an environment form of
 % \cs{TEST}, allowing verbatim material, \emph{etc.} to appear.
 % \item
+% \cs{BEGINBOXTEST}\marg{title} \dots \cs{ENDBOXTEST} is a wrapper around
+% \cs{BEGINTEST}\marg{title} \dots \cs{ENDTEST} that typesets the content in an
+% |\hbox| with the name \cs{TESTBOX} and prints the box contents to the log file
+% using \cs{SHOWBOX}.
+% \item
+% \cs{SHOWBOX}\marg{box} is a wrapper around the |\showbox| with local
+% adjustment of parameters to print the full \marg{box} details to the log.
+% \item
 % \cs{SHOWFILE}\marg{filename} (\eTeX{} only) shows the content of
 % \meta{filename}.
 % \item
@@ -1091,6 +1099,26 @@
 % \end{Verbatim}
 % The output from this test is shown in Figure~\vref{fig:box-log} (right side).
 % There is marginal difference (mostly related to font selection and different logging settings in \LaTeX) between the plain and \pkg{expl3} versions.
+%
+% As an alternative to avoid repeating the box setup all the time there is the
+% \cs{BEGINBOXTEST}\marg{title} \dots \cs{ENDBOXTEST} environment which is a
+% wrapper around \cs{BEGINTEST}\marg{title} \dots \cs{ENDTEST} that encloses its
+% content in an |\hbox| with the name \cs{TESTBOX} and prints that into the log
+% using |\showbox|.
+% \begin{Verbatim}[frame=single,fontsize=\small]
+% \input{regression-test.tex}
+% \documentclass{article}
+% \START
+% \BEGINBOXTEST{hello world}
+% hello~ \emph{world}~ $a=b+c$
+% \ENDBOXTEST
+% \END
+% \end{Verbatim}
+% This is equivalent to the example above with the small difference that
+% \cs{ENDBOXTEST} uses \cs{SHOWBOX} which locally resets the box printing
+% parameter to override any local settings which could truncate long PDF specials
+% otherwise.  Also the presence of the |TEST| environment will print labels and
+% separators around the log output.
 %
 % When examples are not self-contained enough to be typeset into boxes, it is possible to ask \TeX{} to output the entire contents of a page.
 % Insert \cs{showoutput} for \LaTeX{} or set \cs{tracingoutput} positive for plain \TeX{}; ensure that the test ends with \cs{newpage} or equivalent because \TeX{} waits until the entire page is finished before outputting it.
@@ -2447,7 +2475,11 @@
 %     \NO,
 %     \NEWLINE,
 %     \ASSERT,
-%     \ASSERTSTR
+%     \ASSERTSTR,
+%     \TESTBOX,
+%     \BEGINBOXTEST,
+%     \ENDBOXTEST,
+%     \SHOWBOX
 %   }
 %   We are not starved for space in the log file output, so let's make it as
 %   verbose as is useful when reading the |.diff|'s.
@@ -2529,6 +2561,28 @@
     \TYPE{FEATURE UNAVAILABLE}%
   }
 \fi
+\csname newbox\endcsname\TESTBOX% newbox is \outer in plain
+\csname protected\endcsname\long\def\BEGINBOXTEST#1{%
+  \BEGINTEST{#1}%
+    \setbox\TESTBOX=\hbox\bgroup
+      \ignorespaces
+}
+\csname protected\endcsname\long\def\ENDBOXTEST{%
+      \ifhmode\unskip\fi
+    \egroup
+    \SHOWBOX{\TESTBOX}%
+  \ENDTEST
+}
+\csname protected\endcsname\long\def\SHOWBOX#1{%
+  \begingroup
+    \long\def\use##1{##1}%
+    \showboxbreadth=\maxdimen
+    \showboxdepth=\maxdimen
+    \tracingonline=0 %
+    \errorcontextlines=-1 %
+    \showbox\use{#1}%
+  \endgroup
+}
 %    \end{macrocode}
 % \end{macro}
 %
