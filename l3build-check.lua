@@ -321,6 +321,7 @@ local function normalize_log(content,engine,errlevels)
         line = gsub(line, utf8_char(i), "^^" .. str_format("%02x", i))
       end
     end
+    line = normalize_log_hook(line)
     return line, lastline
   end
   local lastline = ""
@@ -534,6 +535,7 @@ local function normalize_lua_log(content,luatex)
         return line, ""
       end
     end
+    line = normalize_log_hook(line)
     -- Wrap some cases that can be picked out
     -- In some places LuaTeX does use max_print_line, then we
     -- get into issues with different wrapping approaches
@@ -579,6 +581,8 @@ local function normalize_lua_log(content,luatex)
   end
   return new_content
 end
+
+function normalize_log_hook(line) return line end
 
 local function normalize_pdf(content)
   local new_content = ""
