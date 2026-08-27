@@ -67,6 +67,11 @@ build_require("tagging")
 build_require("upload")
 build_require("stdmain")
 
+-- Look for some configuration details
+if fileexists("build.lua") then
+  dofile("build.lua")
+end
+
 -- This has to come after stdmain(),
 -- and that has to come after the functions are defined
 if options["target"] == "help" then
@@ -78,9 +83,7 @@ elseif options["target"] == "version" then
 end
 
 -- Look for some configuration details
-if fileexists("build.lua") then
-  dofile("build.lua")
-else
+if not fileexists("build.lua") then
   print("Error: Cannot find configuration build.lua")
   exit(1)
 end

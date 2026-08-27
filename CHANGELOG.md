@@ -8,6 +8,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- Print info on custom targets in `help()` (issue \#475)
+
 ## [2026-08-02]
 
 ### Added
