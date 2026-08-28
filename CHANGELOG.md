@@ -11,6 +11,8 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 
 - Print info on custom targets in `help()` (issue \#475)
+- Avoid `(guessed encoding ...)` stderr for `(u)ptex` engines (see PR
+  latex3/latex3\#1953)
 
 ## [2026-08-02]
 

@@ -126,9 +126,9 @@ specialformats.latex = specialformats.latex or { }
 specialformats.latex.etex = specialformats.latex.etex or
   {format = "latex"}
 specialformats.latex.ptex = specialformats.latex.ptex or
-   {binary = "euptex", options = "-kanji-internal=euc"}
+  {binary = "euptex", options = "-kanji-internal=euc -no-guess-input-enc"}
 specialformats.latex.uptex = specialformats.latex.uptex or
-  {binary = "euptex"}
+  {binary = "euptex", options = "-no-guess-input-enc"}
 if not string.find(status.banner,"2019") then
   specialformats.latex.luatex = specialformats.latex.luatex or
     {binary = "luahbtex",format = "lualatex"}
