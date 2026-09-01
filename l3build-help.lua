@@ -38,7 +38,15 @@ function version()
   )
 end
 
-function help()
+local function scriptname()
+  local scriptname = "l3build"
+  if not (match(arg[0], "l3build%.lua$") or match(arg[0],"l3build$")) then
+    scriptname = arg[0]
+  end
+  return scriptname
+end
+
+local function help_overview()
   local function setup_list(list)
     local longest = 0
     for k,_ in pairs(list) do
@@ -55,22 +63,26 @@ function help()
     return longest,t
   end
 
-  local scriptname = "l3build"
-  if not (match(arg[0], "l3build%.lua$") or match(arg[0],"l3build$")) then
-    scriptname = arg[0]
-  end
-  print("\nUsage: " .. scriptname .. " <target> [<options>] [<names>]")
+  print("\nUsage: " .. scriptname() .. " <target> [<options>] [<names>]")
   print("")
   print("Valid targets are:")
   local longest,t = setup_list(target_list)
+  local extra_help = false
   for _,k in ipairs(t) do
     local target = target_list[k]
     local filler = rep(" ", longest - k:len() + 1)
     if target["desc"] then
-      print("   " .. k .. filler .. target["desc"])
+      print("   " .. k .. filler .. target["desc"] .. (target["help"] and "*" or ""))
+    end
+    if target["help"] then
+        extra_help = true
     end
   end
   print("")
+  if extra_help then
+    print('* Extra help available via "' .. scriptname() .. ' <target> --help"' )
+    print("")
+  end
   print("Valid options are:")
   longest,t = setup_list(option_list)
   for _,k in ipairs(t) do
@@ -90,4 +102,27 @@ function help()
   print("Repository  : https://github.com/latex3/l3build")
   print("Bug tracker : https://github.com/latex3/l3build/issues")
   print(copyright)
+end
+
+local function help_target(target)
+  if target_list[target] then
+    print("\nUsage: " .. scriptname() .. " " .. target .. " [<options>] [<names>]")
+    print("")
+    if target_list[target].help then
+      print(target_list[target].help)
+    else
+      print("See texdoc l3build for more information.")
+    end
+    print()
+  else
+    help_overview()
+  end
+end
+
+function help(target)
+  if target then
+    help_target(target)
+  else
+    help_overview()
+  end
 end

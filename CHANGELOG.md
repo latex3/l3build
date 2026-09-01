@@ -8,6 +8,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- Support for custom help information for targets (issue \#475)
+
 ### Changed
 
 - Print info on custom targets in `help()` (issue \#475)

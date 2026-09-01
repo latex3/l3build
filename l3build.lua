@@ -82,6 +82,11 @@ elseif options["target"] == "version" then
   exit(0)
 end
 
+if options["help"] and options["target"] then
+  help(options["target"])
+  exit(0)
+end
+
 -- Look for some configuration details
 if not fileexists("build.lua") then
   print("Error: Cannot find configuration build.lua")
