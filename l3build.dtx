@@ -2407,7 +2407,7 @@
 \begingroup       % within the scope of this groups each line needs to end in % !
 \catcode`\^^M\active %
 \gdef\SHOWFILE#1{%
-     \typeout{-------- #1 (start) ---------}%
+     \TYPE{-------- #1 (start) ---------}%
 \IfFileExists{#1}%
   {\begingroup %
      \catcode`\^^M\active %
@@ -2415,10 +2415,10 @@
      \everyeof{\noexpand}%
      \obeyspaces %
      \@sanitize %
-     \message{\@@input #1 }%
+     \TYPE{^^J\@@input #1 }%
    \endgroup }%
-  {\message{Not found}}%
-     \typeout{-------- #1 (end) -----------}%
+  {\TYPE{Not found}}%
+     \TYPE{-------- #1 (end) -----------}%
 }%
 \endgroup
 \begingroup\expandafter\expandafter\expandafter\endgroup

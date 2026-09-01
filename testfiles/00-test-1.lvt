@@ -47,4 +47,16 @@
   \ASSERTSTR{Q}{\ODD}%
 }
 
+\OMIT
+\begin{filecontents}[noheader]{\jobname.txt}
+line 1
+line 2
+\end{filecontents}
+\TIMO
+
+\TEST{\SHOWFILE}{
+  \SHOWFILE{\jobname.txt}
+  \SHOWFILE{\jobname.notfound}
+}
+
 \end{document}
