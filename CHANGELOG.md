@@ -8,6 +8,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+## [2026-09-01]
+
 ### Added
 
 - Support for custom help information for targets (issue \#475)
@@ -1063,7 +1065,8 @@ this project uses date-based 'snapshot' version identifiers.
 - Rationalize short option names: removed `-d`, `-E`, `-r`
 - Target `cmdcheck`: specific to LaTeX kernel work
 
-[Unreleased]: https://github.com/latex3/l3build/compare/2026-08-02...HEAD
+[Unreleased]: https://github.com/latex3/l3build/compare/2026-09-01...HEAD
+[2026-09-01]: https://github.com/latex3/l3build/compare/2026-08-02...2026-09-01
 [2026-08-02]: https://github.com/latex3/l3build/compare/2026-07-20...2026-08-02
 [2026-07-20]: https://github.com/latex3/l3build/compare/2026-07-10...2026-07-20
 [2026-07-10]: https://github.com/latex3/l3build/compare/2026-07-03...2026-07-10
