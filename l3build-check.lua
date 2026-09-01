@@ -316,7 +316,7 @@ local function normalize_log(content,engine,errlevels)
                       "<function reference ...>")
     -- Tidy up luaotfload function references
     if match(line, "^%s*luaoftload")  then
-      line = gsub(line, "%(function: 0x[a-f0-9]+%), "(function: 0x...))`
+      line = gsub(line, "%(function: 0x[a-f0-9]+%)", "(function: 0x...))")
     end
     -- Unicode engines display chars in the upper half of the 8-bit range:
     -- tidy up to match pdfTeX if an ASCII engine is in use
