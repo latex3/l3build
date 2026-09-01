@@ -11,6 +11,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 
 - Support for custom help information for targets (issue \#475)
+- `normalize_log_hook()`
 
 ### Changed
 

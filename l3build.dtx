@@ -1407,6 +1407,14 @@
 % test_order = {"mylvt", "log", "pdf"}
 % \end{verbatim}
 %
+% \subsection{Additional normalization}
+%
+% To allow additional normalization of |.log| files, the function
+% |normalize_log_hook()| is available. This receives the text of the line of
+% the |.log| (\emph{after} standard normalization) and should return the line
+% after any additional modification. This applies in both general and
+% \LuaTeX{}-specific normalization.
+%
 % \section{Release-focussed features}
 %
 % \subsection{Installation structure}
