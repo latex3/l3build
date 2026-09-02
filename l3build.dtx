@@ -958,6 +958,11 @@
 % we provide a mechanism to run with older setting to allow this process to
 % take place smoothly.
 %
+% \subsubsection{Release NEXT_RELEASE_DATE}
+%
+% The first line of file content shown by \cs{SHOWFILE} now starts from a
+% newline.
+%
 % \subsubsection{Release 2024-02-08}
 %
 % Wrapping of messages by \pkg{l3msg} is now suppressed, aligning with the
@@ -1338,9 +1343,9 @@
 %     \addtocounter{numbers}{2}
 %     \stepcounter{numbers}
 %     \TIMO
-%     \typeout{\arabic{numbers}}
+%     \TYPE{\arabic{numbers}}
 %   %</test>
-%   %<expect>  \typeout{5}
+%   %<expect>  \TYPE{5}
 %   }
 %   \END
 % \end{floating-listing}
@@ -2407,7 +2412,7 @@
 \begingroup       % within the scope of this groups each line needs to end in % !
 \catcode`\^^M\active %
 \gdef\SHOWFILE#1{%
-     \typeout{-------- #1 (start) ---------}%
+     \TYPE{-------- #1 (start) ---------}%
 \IfFileExists{#1}%
   {\begingroup %
      \catcode`\^^M\active %
@@ -2415,10 +2420,10 @@
      \everyeof{\noexpand}%
      \obeyspaces %
      \@sanitize %
-     \message{\@@input #1 }%
+     \TYPE{^^J\@@input #1 }%
    \endgroup }%
-  {\message{Not found}}%
-     \typeout{-------- #1 (end) -----------}%
+  {\TYPE{Not found}}%
+     \TYPE{-------- #1 (end) -----------}%
 }%
 \endgroup
 \begingroup\expandafter\expandafter\expandafter\endgroup

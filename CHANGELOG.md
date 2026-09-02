@@ -8,6 +8,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- `\SHOWFILE` now logs the first line of file content on new line (issue \#430)
+
 ## [2026-09-01]
 
 ### Added

@@ -67,9 +67,10 @@ function update_tag(file,content,tagname,tagdate)
       '%.TH l3build 1 "' .. iso .. '"\n',
       '.TH l3build 1 "' .. tagname .. '"\n')
   elseif string.match(file, "%.dtx$") then
-    return string.gsub(content,
+    content = string.gsub(content,
       "\n%% \\date{Released " .. iso .. "}\n",
       "\n%% \\date{Released " .. tagname .. "}\n")
+    return string.gsub(content, "NEXT_RELEASE_DATE", tagname)
   elseif string.match(file, "%.md$") then
     if string.match(file,"CHANGELOG.md") then
       local previous = string.match(content,"compare/(" .. iso .. ")%.%.%.HEAD")
