@@ -98,7 +98,7 @@ function update_tag(file,content,tagname,tagdate)
 end
 
 function tag_hook(tagname)
-  os.execute('git commit -a -m "Step release tag"')
+  return os.execute('git commit -a -m "Step release tag"')
 end
 
 -- Auto-generate a .1 file from the help
