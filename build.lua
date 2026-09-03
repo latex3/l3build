@@ -70,6 +70,9 @@ function update_tag(file,content,tagname,tagdate)
     content = string.gsub(content,
       "\n%% \\date{Released " .. iso .. "}\n",
       "\n%% \\date{Released " .. tagname .. "}\n")
+    content = string.gsub(content,
+      "\n\\def\\REGRESSIONTESTVERSION{" .. iso .. "}\n",
+      "\n\\def\\REGRESSIONTESTVERSION{" .. tagname .. "}\n")
     return string.gsub(content, "NEXT_RELEASE_DATE", tagname)
   elseif string.match(file, "%.md$") then
     if string.match(file,"CHANGELOG.md") then
