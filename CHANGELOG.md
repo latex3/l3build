@@ -10,7 +10,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 
-- `\REGRESSIONTESTVERSION`, version of `l3build` (issue \#456)
+- `\REGRESSIONTESTFILEDATE`, version of `l3build` (issue \#456)
 
 ### Changed
 
