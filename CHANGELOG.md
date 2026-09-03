@@ -8,6 +8,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+
+- `\REGRESSIONTESTFILEDATE`, version of `l3build` (issue \#456)
+
 ### Changed
 
 - `\SHOWFILE` now logs the first line of file content on new line (issue \#430)
