@@ -2291,7 +2291,8 @@
 %   it defines |\unprotect| which should be a reasonable marker (and is
 %   needed as some catcodes are otherwise wrong).
 %    \begin{macrocode}
-\ifx\unprotect\@undefined
+\begingroup\expandafter\expandafter\expandafter\endgroup
+  \expandafter\ifx\csname unprotect\endcsname\relax
   \expandafter\edef\csname reset\string @catcodes\endcsname{%
     \catcode`\noexpand\@=\the\catcode`\@\relax
   }%
@@ -2650,7 +2651,6 @@
 \begingroup\expandafter\expandafter\expandafter\endgroup
 \expandafter\ifx\csname protected\endcsname\relax
   \reset@catcodes
-  \let\protected\@undefined
   \expandafter\endinput
 \fi
 %    \end{macrocode}
