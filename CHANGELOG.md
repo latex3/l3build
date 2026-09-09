@@ -15,6 +15,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 
 - `\SHOWFILE` now logs the first line of file content on new line (issue \#430)
+- Obey `\START` and `\OMIT` for `\SHOWPDFTAGS`
 
 ## [2026-09-01]
 
