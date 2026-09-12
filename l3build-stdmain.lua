@@ -74,7 +74,7 @@ target_list =
       {
         bundle_target = true,
         desc = "Runs all automated tests",
-        func = check,help="FOO"
+        func = check
       },
     clean =
       {
