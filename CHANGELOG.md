@@ -8,6 +8,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Changed
+
+- Support globs in `specialtypesetting`
+
 ## [2026-09-09]
 
 ### Added

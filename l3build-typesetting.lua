@@ -134,9 +134,12 @@ local function typesetpdf(file,dir)
   print("Typesetting " .. name)
   local fn = typeset
   local cmd = typesetexe .. " " .. typesetopts
-  if specialtypesetting and specialtypesetting[file] then
-    fn = specialtypesetting[file].func or fn
-    cmd = specialtypesetting[file].cmd or cmd
+  for glob,v in pairs(specialtypesetting) do
+    if match(file,glob_to_pattern(glob)) then
+      fn = v.func or fn
+      cmd = v.cmd or cmd
+      break
+    end
   end
   local errorlevel = fn(file,dir,cmd)
   if errorlevel ~= 0 then
