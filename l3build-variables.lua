@@ -215,6 +215,7 @@ end
 if xetexnopdf == nil then
   xetexnopdf = true
 end
+concurrency = concurrency or 4
 
 -- Extensions for various file types: used to abstract out stuff a bit
 bakext = bakext or ".bak"

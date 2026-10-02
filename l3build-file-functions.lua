@@ -426,6 +426,12 @@ function rmdir(dir)
   end
 end
 
+local async_execute = require'l3build-async'.execute
+-- Run a command in a given directory
+function async_run(dir, cmd)
+  return async_execute("cd " .. dir .. os_concat .. cmd)
+end
+
 -- Run a command in a given directory
 function run(dir, cmd)
   return execute("cd " .. dir .. os_concat .. cmd)

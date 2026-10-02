@@ -24,9 +24,6 @@ for those people who are interested.
 
 -- Local access to functions
 local open             = io.open
-local close            = io.close
-local write            = io.write
-local output           = io.output
 
 local rnd              = math.random
 
@@ -49,6 +46,8 @@ local exit             = os.exit
 local execute          = os.execute
 local remove           = os.remove
 local os_type          = os.type
+
+local async            = require'l3build-async'
 
 -- randomize the random numbers
 math.randomseed( os.time() )
@@ -98,12 +97,11 @@ function checkinit_hook() return 0 end
 local function rewrite(source,result,processor,...)
   local file = assert(open(source,"rb"))
   local content = gsub(file:read("a") .. "\n","\r\n","\n")
-  close(file)
+  file:close()
   local new_content = processor(content,...)
   local newfile = assert(open(result,"w"))
-  output(newfile)
-  write(new_content)
-  close(newfile)
+  newfile:write(new_content)
+  newfile:close()
 end
 
 -- Convert the raw log file into one for comparison/storage: keeps only
@@ -871,7 +869,7 @@ function runtest(name, engine, hide, ext, test_type, breakout)
     os_setenv .. " half_error_line=" .. halferrorline
       .. os_concat
   for i = 1, checkruns do
-    errlevels[i] = runcmd(
+    errlevels[i] = async_runcmd(
       preamble ..
       binary .. format
         .. " " .. asciiopt .. " " .. checkopts
@@ -879,15 +877,11 @@ function runtest(name, engine, hide, ext, test_type, breakout)
         .. (hide and (" > " .. os_null) or ""),
       testdir
     )
-    -- Work around a LuaTeX issue on *nix OS
-    if os_type ~= "windows" then
-      errlevels[i] = (0xFF00 & errlevels[i]) >> 8
-    end
     -- On Windows, concatenating here will suppress any non-zero errorlevel
     -- from the main run, so we split into two parts.
     local tasks = runtest_tasks(jobname(lvtfile),i)
     if tasks ~= "" then
-      local errorlevel = runcmd(preamble .. tasks,testdir)
+      local errorlevel = async_runcmd(preamble .. tasks,testdir)
       if errorlevel ~= 0 then errlevels[i] = errorlevel end
     end
     -- Break the loop if the result is stable
@@ -1092,21 +1086,34 @@ function check(names)
     end
     -- Actually run the tests
     print("Running checks on")
+    local executor = async.new(concurrency)
     local failurelist = {}
+    local fail_early
     for i, name in ipairs(names) do
-      print("  " .. name .. " (" ..  i .. "/" .. #names ..")")
-      local errlevel, failedengines = runcheck(name, hide)
-      -- Return value must be 1 not errlevel
-      if errlevel ~= 0 then
-        failurelist[name] = failedengines
-        if options["halt-on-error"] then
-          return 1
-        else
-          errorlevel = 1
-          -- visually show that something has failed
-          print("          --> failed\n")
-        end
+      if fail_early then
+        executor:run()
+        return fail_early
       end
+      executor:spawn(function()
+        print("  " .. name .. " (" ..  i .. "/" .. #names ..")")
+        local errlevel, failedengines = runcheck(name, hide)
+        -- Return value must be 1 not errlevel
+        if errlevel ~= 0 then
+          failurelist[name] = failedengines
+          if options["halt-on-error"] then
+            fail_early = 1
+            return
+          else
+            errorlevel = 1
+            -- visually show that something has failed
+            print("          --> failed\n")
+          end
+        end
+      end)
+    end
+    executor:run()
+    if fail_early then
+      return fail_early
     end
     if errorlevel ~= 0 then
       checkdiff() -- this leaves "config" parameter of "checkdiff()" nil
@@ -1190,32 +1197,39 @@ function save(names)
     print("Arguments are required for the save command")
     return 1
   end
+  local errcode = 0
+  local executor = async.new(concurrency)
   for _,name in pairs(names) do
-    local test_filename, kind = testexists(name)
-    if not test_filename then
-      print('Test "' .. name .. '" not found')
-      return 1
-    end
-    local test_type = test_types[kind]
-    if test_type.expectation and locate({unpackdir, testfiledir}, {name .. test_type.expectation}) then
-      print("Saved " .. test_type.test .. " file would override a "
-        .. test_type.expectation .. " file of the same name")
-      return 1
-    end
-    for _,engine in pairs(engines) do
-      local testengine = engine == stdengine and "" or ("." .. engine)
-      local out_file = name .. testengine .. test_type.reference
-      local gen_file = name .. "." .. engine .. test_type.generated
-      print("Creating and copying " .. out_file)
-      runtest(name, engine, false, test_type.test, test_type)
-      ren(testdir, gen_file, out_file)
-      cp(out_file, testdir, testfiledir)
-      if fileexists(unpackdir .. "/" .. test_type.reference) then
-        print("Saved " .. test_type.reference
-          .. " file overrides unpacked version of the same name")
-        return 1
+    executor:spawn(function()
+      local test_filename, kind = testexists(name)
+      if not test_filename then
+        print('Test "' .. name .. '" not found')
+        errcode = 1
+        return
       end
-    end
+      local test_type = test_types[kind]
+      if test_type.expectation and locate({unpackdir, testfiledir}, {name .. test_type.expectation}) then
+        print("Saved " .. test_type.test .. " file would override a "
+          .. test_type.expectation .. " file of the same name")
+        errcode = 1
+        return
+      end
+      for _,engine in pairs(engines) do
+        local testengine = engine == stdengine and "" or ("." .. engine)
+        local out_file = name .. testengine .. test_type.reference
+        local gen_file = name .. "." .. engine .. test_type.generated
+        print("Creating and copying " .. out_file)
+        runtest(name, engine, false, test_type.test, test_type)
+        ren(testdir, gen_file, out_file)
+        cp(out_file, testdir, testfiledir)
+        if fileexists(unpackdir .. "/" .. test_type.reference) then
+          print("Saved " .. test_type.reference
+            .. " file overrides unpacked version of the same name")
+          errcode = 1
+          return
+        end
+      end
+    end)
   end
-  return 0
+  return errcode
 end
