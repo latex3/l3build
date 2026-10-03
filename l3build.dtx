@@ -163,6 +163,7 @@
 \luavarset{recordstatus}{false}       {Switch to include error level from test runs in \texttt{.tlg} files}
 \luavarset{xetexnopdf}{true}          {Disable generation of PDF using \texttt{xetex} engine, for log-based tests}
 \luavarset{manifestfile}        {"MANIFEST.md"} {Filename to use for the manifest file}
+\luavarset{concurrency}{4}            {Number of concurrent tests to run if \texttt{l3build\_async\_native} is installed.}
 \luavarseparator
 \luavarset{tdslocations}{\{ \}}{List of non-standard file installations}
 \luavarset{tdsdirs}{\{ \}}{Map for ready-to-use source locations}
@@ -454,6 +455,14 @@
 % \var{supportdir}. No subdivison of \var{texmfdir} is attempted, thus it
 % should not contain multiple files with the same name. The \var{texmfdir}
 % is made available both to checking and typesetting.
+%
+% By default the tests are executed in sequence. To improve performance,
+% \pkg{l3build\_async\_native} can be installed to allow parallel execution.
+% If this module is detected multiple tests are executed concurrently.
+% The variable \var{concurrency} can be used to set an upper limit how many tasks can run at once.
+% Even with concurrency enabled, compilation steps for the same test are
+% always executed sequentially.
+% For instructions on installing \pkg{l3build\_async\_native} visit \url{https://sr.ht/~zauguin/l3build_async_native/}.
 % \end{buildcmd}
 %
 %
@@ -2045,6 +2054,14 @@
 %   setting up all of the environmental variables specified to
 %   point to the |local| and |working| directories. This function is useful
 %   when creating non-standard typesetting steps.
+% \end{function}
+%
+% \begin{function}{async_runcmd()}
+%   \begin{syntax}
+%     |async_runcmd(|\meta{cmd},\meta{dir},|{|\meta{envvars}|})|
+%   \end{syntax}
+%   A variant of |runcmd| which can be used during tests (e.g. in |runtest_tasks|)
+%   to allow the command to run in parallel with other commands.
 % \end{function}
 %
 % \subsection{Customizing the target and option lists}

@@ -184,7 +184,7 @@ function localtexmf()
 end
 
 -- Run a command after setting up the environmental variables
-function runcmd(cmd,dir,vars)
+local function generic_runcmd(run) return function(cmd,dir,vars)
   dir = dir or "."
   dir = abspath(dir)
   vars = vars or {}
@@ -206,4 +206,6 @@ function runcmd(cmd,dir,vars)
   end
   return run(dir,set_epoch_cmd(epoch, forcedocepoch)
     .. (env and (env .. os_concat) or "") .. cmd)
-end
+end end
+runcmd = generic_runcmd(run)
+async_runcmd = generic_runcmd(async_run)
