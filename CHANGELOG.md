@@ -16,6 +16,10 @@ this project uses date-based 'snapshot' version identifiers.
 
 - Support globs in `specialtypesetting`
 
+### Removed
+
+- Variable `bakext` which was unused since 2018-03-06
+
 ## [2026-09-09]
 
 ### Added
