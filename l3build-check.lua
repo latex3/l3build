@@ -1231,5 +1231,6 @@ function save(names)
       end
     end)
   end
+  executor:run()
   return errcode
 end
