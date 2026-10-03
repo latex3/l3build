@@ -2008,7 +2008,18 @@
 %
 % \subsection{Typesetting functions}
 %
-% All typesetting functions return $0$ on a successful completion.
+% All typesetting functions return $0$ on a successful completion. All of the
+% functions here use |runcmd()| as a wrapper around the task for setup.
+%
+% \begin{function}{runcmd()}
+%   \begin{syntax}
+%     |runcmd(|\meta{cmd},\meta{dir},|{|\meta{envvars}|})|
+%   \end{syntax}
+%   A generic function which runs the \meta{cmd} in the \meta{dir}, first
+%   setting up all of the environmental variables specified to
+%   point to the |local| and |working| directories. This function is useful
+%   when creating non-standard typesetting steps.
+% \end{function}
 %
 % \begin{function}{biber()}
 %   \begin{syntax}
@@ -2043,16 +2054,6 @@
 %   \end{syntax}
 %   Runs \meta{cmd} (by default \luavar{typesetexe} \luavar{typesetopts}) on the
 %   \meta{file} inside the \meta{dir}.
-% \end{function}
-%
-% \begin{function}{runcmd()}
-%   \begin{syntax}
-%     |runcmd(|\meta{cmd},\meta{dir},|{|\meta{envvars}|})|
-%   \end{syntax}
-%   A generic function which runs the \meta{cmd} in the \meta{dir}, first
-%   setting up all of the environmental variables specified to
-%   point to the |local| and |working| directories. This function is useful
-%   when creating non-standard typesetting steps.
 % \end{function}
 %
 % \begin{function}{async_runcmd()}
