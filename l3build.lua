@@ -42,6 +42,43 @@ local print            = print
 local exit             = os.exit
 local open             = io.open
 
+-- This needs to come before any of the kpathsea lookups, otherwise there's a
+-- 200ms delay.
+if arg[1] == "internal-execute" then
+  -- Parse the arguments.
+  local decoded = mime.decode("base64")(arg[2])
+  local chunk = load(decoded)
+  if not chunk then
+    error("Failed to parse the argument.")
+  end
+  local working_directory, command, extend_environment = chunk()
+
+  -- Switch to the working directory.
+  lfs.chdir(working_directory)
+
+  -- Initialize the environment.
+  local env = {}
+  for k, v in pairs(os.env) do
+    env[k] = v
+  end
+  for k, v in pairs(extend_environment or {}) do
+    if v == false then
+      env[k] = nil
+    else
+      env[k] = v
+    end
+  end
+
+  -- Execute the command.
+  local exit_code, error_message = os.spawn(command, env)
+  if error_message then
+    exit_code = 1
+  end
+
+  -- Pass the exit code back to the parent process.
+  os.exit(exit_code, true)
+end
+
 -- l3build setup and functions
 kpse.set_program_name("kpsewhich")
 build_kpse_path = match(lookup("l3build.lua"),"(.*[/])")

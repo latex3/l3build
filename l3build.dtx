@@ -1930,6 +1930,30 @@
 %   When called on Windows, returns a string comprising the \meta{path} with
 %   |/| characters replaced by |\|. In other cases returns the path unchanged.
 % \end{function}
+
+% \begin{function}{execute()}
+%   \begin{syntax}
+%     |execute(|\meta{dir}, \meta{cmd}, \oarg{env}|)|
+%   \end{syntax}
+%   Executes the \meta{cmd}, which must be passed as an array-like table of
+%   strings, each of which is a single command-line argument. Note that this
+%   command is \emph{not} executed in a shell, so pipes, quotes, and redirection
+%   will not work. However, this means that you do not need to quote whitespace
+%   or escape special characters.
+%
+%   \meta{dir} is the working directory for the command. \meta{env} is an
+%   optional list of environment variables that will be set when running the
+%   \meta{cmd}, in addition to the values already set in the current
+%   environment. If \meta{env} is set, it must be a dictionary-like table; the
+%   keys must be strings that represent an environment variable name, and they
+%   values must be strings that represent an environment variable value, or
+%   |false| to unset the variable.
+%
+%   The first return value is the exit code of the command, with the
+%   conventional meaning that |0| indicates success and any other value
+%   indicates failure. The second return value is a string containing the
+%   captured output of \meta{cmd}.
+% \end{function}
 %
 % \subsection{System-dependent strings}
 %
