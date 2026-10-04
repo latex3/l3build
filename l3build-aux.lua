@@ -280,4 +280,46 @@ local function generic_runcmd(run) return function(cmd,dir,vars)
     .. (env and (env .. os_concat) or "") .. cmd)
 end end
 runcmd = generic_runcmd(run)
-async_runcmd = generic_runcmd(async_run)
+
+
+---Adds the special TeX paths to the environment variables.
+---@param env table<string, string|false> (Modified in-place)
+---@param dir string
+---@param vars string[]
+---@return table<string, string|false> env
+---@usage private?
+function add_tex_env_vars(env, dir, vars)
+  dir = abspath(dir)
+
+  if checkformat ~= "context" then
+    env["TEXMFCNF"] = "." .. os_pathsep
+  end
+
+  local envpaths = "." .. localtexmf() .. os_pathsep
+    .. abspath(localdir) .. os_pathsep
+    .. dir .. (typesetsearch and os_pathsep or "")
+
+  for _,var in pairs(vars) do
+    env[var] = envpaths
+  end
+
+  if forcecheckepoch then
+    env["SOURCE_DATE_EPOCH"] = tostring(epoch)
+    env["SOURCE_DATE_EPOCH_TEX_PRIMITIVES"] = "1"
+    env["FORCE_SOURCE_DATE"] = "1"
+  end
+
+  return env
+end
+
+---Converts from the old string-based arguments to the new table-based arguments.
+---@param array string[] (Modified in-place)
+---@param string string 
+---@return string[] array
+---@usage private?
+function append_option_string_to_array(array, string)
+  for opt in string:gmatch("%S+") do
+    array[#array + 1] = opt
+  end
+  return array
+end
