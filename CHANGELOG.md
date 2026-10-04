@@ -15,6 +15,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Changed
 
 - Support globs in `specialtypesetting`
+- Fix destpath when typesetting to remove leading dot only (issue \#462)
 
 ### Removed
 
