@@ -97,13 +97,22 @@ function makeindex(name,dir,inext,outext,logext,style)
   return 0
 end
 
-function tex(file,dir,cmd)
+local function tex(file,dir,cmd)
   dir = dir or "."
   cmd = cmd or typesetexe .. " " .. typesetopts
   return runcmd(cmd .. " \"" .. typesetcmds
     .. "\\input " .. file .. "\"",
     dir,{"TEXINPUTS","LUAINPUTS"})
 end
+
+-- Loading `lualibs` requires that `tex` is either falsy or has a `get` method.
+_G.tex = setmetatable({
+  -- This is the fallback function copied verbatim from the `lualibs` source.
+  get = function() return 65536*10*100 end
+}, {
+  -- Make sure that `tex` is callable to not break any `l3build` code.
+  __call = tex
+})
 
 -- Scan the typeset log for overfull/underfull boxes: these are reported
 -- by the engine itself and cannot be trapped at the TeX level (except by

@@ -11,6 +11,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 
 - Support parallel test execution if compiled support module is installed.
+- Support loading `lualibs` inside `build.lua` (issue \#492)
 
 ### Changed
 
