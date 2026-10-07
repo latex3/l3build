@@ -37,21 +37,34 @@ local open    = io.open
 local os_type = os.type
 
 function dvitopdf(name, dir, engine, hide)
-  runcmd(
-    set_epoch_cmd(epoch, forcecheckepoch) ..
-    "dvips " .. name .. dviext
-      .. (hide and (" > " .. os_null) or "")
-      .. os_concat ..
-    "ps2pdf " .. ps2pdfopts .. " " .. name .. psext
-      .. (hide and (" > " .. os_null) or ""),
-    dir
-  )
+  local env = add_tex_env_vars({}, dir, {})
+  
+  local cmd = {
+      "dvips",
+      name .. dviext,
+  }
+  local errorlevel, output = execute(dir, cmd, env)
+  if not hide then print(output) end
+  if errorlevel ~= 0 then return errorlevel end
+
+  cmd = {"ps2pdf"}
+  append_option_string_to_array(cmd, ps2pdfopts)
+  cmd[#cmd + 1] = name .. psext
+  errorlevel, output = execute(dir, cmd, env)
+
+  if not hide then print(output) end
+  return errorlevel
 end
 
 function biber(name,dir)
   if fileexists(dir .. "/" .. name .. ".bcf") then
-    return
-      runcmd(biberexe .. " " .. biberopts .. " " .. name,dir,{"BIBINPUTS"})
+    local env = add_tex_env_vars({}, dir, {"BIBINPUTS"})
+    local cmd = {biberexe}
+    append_option_string_to_array(cmd, biberopts)
+    cmd[#cmd + 1] = name
+    local errorlevel, output = execute(dir, cmd, env)
+    print(output)
+    return errorlevel
   end
   return 0
 end
@@ -59,25 +72,29 @@ end
 function bibtex(name,dir)
   dir = dir or "."
   if fileexists(dir .. "/" .. name .. ".aux") then
-    -- LaTeX always generates an .aux file, so there is a need to
-    -- look inside it for a \citation line
-    local grep
-    if os_type == "windows" then
-      grep = "\\\\"
-    else
-      grep = "\\\\\\\\"
+    local f = open(dir .. "/" .. name .. ".aux","r")
+    if not f then return 0 end
+    local auxdata = f:read("a")
+    f:close()
+
+    if (
+      not auxdata:match([[\\citation{]]) and
+      not auxdata:match([[\\bibdata{]])
+    ) then
+      return 0
     end
-    if run(dir,
-        os_grepexe .. " \"^" .. grep .. "citation{\" " .. name .. ".aux > "
-          .. os_null
-      ) + run(dir,
-        os_grepexe .. " \"^" .. grep .. "bibdata{\" " .. name .. ".aux > "
-          .. os_null
-      ) == 0 then
-      local errorlevel = runcmd(bibtexexe .. " " .. bibtexopts .. " " .. name,
-        dir,{"BIBINPUTS","BSTINPUTS"})
-      -- BibTeX(8) signals warnings with errorlevel 1
-      if errorlevel > 1 then return errorlevel else return 0 end
+
+    local env = add_tex_env_vars({}, dir, {"BIBINPUTS", "BSTINPUTS"})
+    local cmd = {bibtexexe}
+    append_option_string_to_array(cmd, bibtexopts)
+    cmd[#cmd + 1] = name
+    local errorlevel, output = execute(dir, cmd, env)
+
+    print(output)
+    if errorlevel > 1 then
+      return errorlevel
+    else
+      return 0
     end
   end
   return 0
@@ -86,23 +103,38 @@ end
 function makeindex(name,dir,inext,outext,logext,style)
   dir = dir or "."
   if fileexists(dir .. "/" .. name .. inext) then
-    if style == "" then style = nil end
-    return runcmd(makeindexexe .. " " .. makeindexopts
-      .. " -o " .. name .. outext
-      .. (style and (" -s " .. style) or "")
-      .. " -t " .. name .. logext .. " "  .. name .. inext,
-      dir,
-      {"INDEXSTYLE"})
+    local env = add_tex_env_vars({}, dir, {"INDEXSTYLE"})
+    local cmd = {makeindexexe}
+    append_option_string_to_array(cmd, makeindexopts)
+    cmd[#cmd + 1] = "-o"
+    cmd[#cmd + 1] = name .. outext
+    if style and style ~= "" then
+      cmd[#cmd + 1] = "-s"
+      cmd[#cmd + 1] = style
+    end
+    cmd[#cmd + 1] = "-t"
+    cmd[#cmd + 1] = name .. logext
+    cmd[#cmd + 1] = name .. inext
+
+    local errorlevel, output = execute(dir, cmd, env)
+    print(output)
+    return errorlevel
   end
   return 0
 end
 
-function tex(file,dir,cmd)
+function tex(file,dir,exe)
   dir = dir or "."
-  cmd = cmd or typesetexe .. " " .. typesetopts
-  return runcmd(cmd .. " \"" .. typesetcmds
-    .. "\\input " .. file .. "\"",
-    dir,{"TEXINPUTS","LUAINPUTS"})
+
+  local env = add_tex_env_vars({}, dir, {"TEXINPUTS", "LUAINPUTS"})
+  local cmd = append_option_string_to_array({}, exe or typesetexe)
+  append_option_string_to_array(cmd, typesetopts)
+  cmd[#cmd + 1] = ([[%s\input{%s}]]):format(typesetcmds, file)
+
+  local errorlevel, output = execute(dir, cmd, env)
+  print(table.unpack(cmd))
+  print(output)
+  return errorlevel
 end
 
 -- Scan the typeset log for overfull/underfull boxes: these are reported
@@ -154,21 +186,26 @@ end
 
 function typeset(file,dir,exe)
   dir = dir or "."
-  local errorlevel = tex(file,dir,exe)
-  if errorlevel ~= 0 then
-    return errorlevel
-  end
   local name = jobname(file)
-  errorlevel = biber(name,dir) + bibtex(name,dir)
-  if errorlevel ~= 0 then
-    return errorlevel
-  end
+  
+  local errorlevel = tex(file,dir,exe)
+  if errorlevel ~= 0 then print("tex failed") return errorlevel end
+
+  errorlevel = biber(name,dir)
+  if errorlevel ~= 0 then print("biber failed") return errorlevel end
+
+  errorlevel = bibtex(name,dir)
+  if errorlevel ~= 0 then print("bibtex failed") return errorlevel end
+
   for i = 2,typesetruns do
-    errorlevel =
-      makeindex(name,dir,".glo",".gls",".glg",glossarystyle) +
-      makeindex(name,dir,".idx",".ind",".ilg",indexstyle)    +
-      tex(file,dir,exe)
-    if errorlevel ~= 0 then break end
+    errorlevel = makeindex(name,dir,".glo",".gls",".glg",glossarystyle)
+    if errorlevel ~= 0 then print("glossaries failed") break end
+
+    errorlevel = makeindex(name,dir,".idx",".ind",".ilg",indexstyle)
+    if errorlevel ~= 0 then print("indexing failed") break end
+
+    errorlevel = tex(file,dir,exe)
+    if errorlevel ~= 0 then print("tex failed") break end
   end
   return errorlevel
 end

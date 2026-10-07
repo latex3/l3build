@@ -33,7 +33,6 @@ local currentdir       = lfs.currentdir
 local chdir            = lfs.chdir
 local lfs_dir          = lfs.dir
 
-local execute          = os.execute
 local exit             = os.exit
 local getenv           = os.getenv
 local remove           = os.remove
@@ -233,30 +232,27 @@ function cp(glob, source, dest)
   for _,p in ipairs(tree(source, glob)) do
     -- p_src is a path relative to `source` whereas
     -- p_cwd is the counterpart relative to the current working directory
-    if os_type == "windows" then
-      if direxists(p.cwd) then
-        errorlevel = execute(
-          'xcopy /y /e /i "' .. unix_to_win(p.cwd) .. '" '
-             .. unix_to_win(dest .. '/' .. escapepath(p.src)) .. ' > nul'
-        ) and 0 or 1
-      else
-        errorlevel = execute(
-          'xcopy /y "' .. unix_to_win(p.cwd) .. '" '
-             .. unix_to_win(dest .. '/') .. ' > nul'
-        ) and 0 or 1
-      end
-    else
-      -- Ensure we get similar behavior on all platforms
-      if not direxists(dirname(dest)) then
-        errorlevel = mkdir(dirname(dest))
-        if errorlevel ~=0 then return errorlevel end
-      end
-      errorlevel = execute(
-        "cp -RLf '" .. p.cwd .. "' " .. dest
-      ) and 0 or 1
+    
+    -- Ensure we get similar behavior on all platforms
+    if not direxists(dirname(dest)) then
+      errorlevel = mkdir(dirname(dest))
+      if errorlevel ~=0 then return errorlevel end
     end
-    if errorlevel ~=0 then
-      return errorlevel
+
+    if direxists(source .. "/" .. p.src) then
+      errorlevel = mkdir(dirname(dest .. "/" .. p.src))
+      if errorlevel ~=0 then return errorlevel end
+      errorlevel = cp("*", source .. "/" .. p.src, dest .. "/" .. p.src)
+      if errorlevel ~=0 then return errorlevel end
+    else
+      local f_in = open(source .. "/" .. p.src, "rb")
+      if not f_in then return 1 end
+      local f_out = open(dest .. "/" .. p.src, "wb")
+      if not f_out then f_in:close() return 1 end
+
+      f_out:write(f_in:read("a"))
+      f_in:close()
+      f_out:close()
     end
   end
   return 0
@@ -374,35 +370,22 @@ function remove_duplicates(a)
 end
 
 function mkdir(dir)
-  dir = escapepath(dir)
-  if os_type == "windows" then
-    -- Windows (with the extensions) will automatically make directory trees
-    -- but issues a warning if the dir already exists: avoid by including a test
-    dir = unix_to_win(dir)
-    return execute(
-      "if not exist "  .. dir .. "\\nul " .. "mkdir " .. dir
-    )
-  else
-    return execute("mkdir -p " .. dir)
-  end
+  lfs.mkdirp(dir)
+  return direxists(dir) and 0 or 1
 end
 
 -- Rename
 function ren(dir, source, dest)
   dir = dir .. "/"
-  if os_type == "windows" then
-    source = gsub(source, "^%.+/", "")
-    dest = gsub(dest, "^%.+/", "")
-    return execute("ren " .. unix_to_win(dir) .. source .. " " .. dest)
-  else
-    return execute("mv " .. dir .. source .. " " .. dir .. dest)
-  end
+  return os.rename(dir .. source, dir .. dest) and 0 or 1
 end
 
 -- Remove file(s) based on a glob
 function rm(source, glob)
   for _,p in ipairs(tree(source, glob)) do
-    rmfile(source,p.src)
+    if p.src ~= "." then
+      rmfile(source,p.src)
+    end
   end
   -- os.remove doesn't give a sensible errorlevel
   return 0
@@ -417,24 +400,26 @@ end
 
 -- Remove a directory tree
 function rmdir(dir)
-  -- First, make sure it exists to avoid any errors
-  mkdir(dir)
-  if os_type == "windows" then
-    return execute("rmdir /s /q " .. unix_to_win(dir))
-  else
-    return execute("rm -r " .. dir)
+  for entry in lfs_dir(dir) do
+    if entry == "." or entry == ".." then goto continue end
+
+    local path = dir .. "/" .. entry
+    if direxists(path) then
+      rmdir(path)
+    else
+      remove(path)
+    end
+
+    ::continue::
   end
-end
 
-local async_execute = require'l3build-async'.execute
--- Run a command in a given directory
-function async_run(dir, cmd)
-  return async_execute("cd " .. dir .. os_concat .. cmd)
+  remove(dir)
 end
 
 -- Run a command in a given directory
+---@deprecated
 function run(dir, cmd)
-  return execute("cd " .. dir .. os_concat .. cmd)
+  return os.execute("cd " .. dir .. os_concat .. cmd)
 end
 
 -- Split a path into file and directory component

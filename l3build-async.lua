@@ -39,19 +39,10 @@ for those people who are interested.
 -- end)
 -- executor.run() -- Run coroutines until all spawned routines have finished.
 
+--[[ TODO
 local native_loaded, native_impl = pcall(require, 'l3build_async_native')
 if native_loaded then return native_impl end
-
-local os_type = os.type
-local execute = os.execute
-
--- Work around a LuaTeX issue on *nix OS
-if os_type ~= "windows" then
-  local original_execute = execute
-  function execute(...)
-    return (0xFF00 & original_execute(...)) >> 8
-  end
-end
+--]]
 
 local dummy_executor = {}
 function dummy_executor.spawn(_dummy, f)
@@ -61,5 +52,4 @@ function dummy_executor.run() end
 
 return {
   new = function(concurrency) return dummy_executor end,
-  execute = execute,
 }

@@ -98,7 +98,10 @@ function update_tag(file,content,tagname,tagdate)
 end
 
 function tag_hook(tagname)
-  return os.execute('git commit -a -m "Step release tag"')
+  return execute(
+    ".",
+    {"git", "commit", "-a", "-m", "Step release tag"}
+  )
 end
 
 -- Auto-generate a .1 file from the help
@@ -129,11 +132,14 @@ function  docinit_hook()
   local overview = readme:sub(desc_start + 8,desc_end - 2):gsub("[_]",""):gsub("`",'"'):gsub("[*] ","\n * ")
   insert(man_t,overview)
 
-  local cmd = "texlua ./" .. module .. ".lua --help"
-  f = assert(io.popen(cmd,"r"))
-  local help_text = assert(f:read("a"))
-  f:close()
-  f = nil
+  local errorlevel, help_text = execute(
+  ".",
+  {
+    "texlua",
+    "./" .. module .. ".lua",
+    "--help"
+  })
+  assert(errorlevel == 0)
 
   insert(man_t,(help_text:gsub("\nUsage.*names>]\n\n","")
   :gsub("Valid targets",".SH COMMANDS\nValid targets")
