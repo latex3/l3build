@@ -57,26 +57,12 @@ if arg[1] == "internal-execute" then
   lfs.chdir(working_directory)
 
   -- Initialize the environment.
-  local env = {}
-  for k, v in pairs(os.env) do
-    env[k] = v
-  end
   for k, v in pairs(extend_environment or {}) do
-    if v == false then
-      env[k] = nil
-    else
-      env[k] = v
-    end
+    os.setenv(k, v or nil)
   end
 
   -- Execute the command.
-  local exit_code, error_message = os.spawn(command, env)
-  if error_message then
-    exit_code = 1
-  end
-
-  -- Pass the exit code back to the parent process.
-  os.exit(exit_code, true)
+ return assert(os.exec(command, env))
 end
 
 -- l3build setup and functions
