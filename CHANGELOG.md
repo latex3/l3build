@@ -11,6 +11,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 
 - Support parallel test execution if compiled support module is installed.
+- `\TESTTITLE` added to format a test title without starting a group.
 
 ### Changed
 
