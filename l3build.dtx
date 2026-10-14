@@ -2613,12 +2613,6 @@
     \fi
   \endgroup
 }
-\begingroup\expandafter\expandafter\expandafter\endgroup
-\expandafter\ifx\csname detokenize\endcsname\relax
-  \long\def\ASSERTSTR#1#2{%
-    \TYPE{FEATURE UNAVAILABLE}%
-  }
-\fi
 \csname newbox\endcsname\TESTBOX% newbox is \outer in plain
 \csname protected\endcsname\long\def\BEGINBOXTEST#1{%
   \BEGINTEST{#1}%
