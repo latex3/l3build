@@ -39,6 +39,78 @@ local os_type = os.type
 -- Auxiliary functions which are used by more than one main function
 --
 
+---Executes the provided command. Note that this command is *not* executed in a
+---shell, so pipes, quotes, and redirection will not work. However, this means
+---that you do not need to quote whitespace or escape special characters.
+---
+---@param working_directory string
+---The working directory in which to execute all commands.
+---
+---@param command string[]
+---The command to execute.
+---
+---@param extend_environment table<string, string|false>?
+---Additional environment variables to set for the command, or `false` to unset
+---an environment variable.
+---
+---@return integer exit_code
+---The exit code of the command otherwise.
+---
+---@return string output
+---The output from the command.
+---
+---@usage Public
+function execute(working_directory, command, extend_environment)
+  -- Serialize the arguments.
+  if type(working_directory) ~= "string" then
+    error("``working_directory'' must be a string")
+  end
+
+  local cmd_encoded = {}
+  for i, arg in ipairs(command) do
+    if type(arg) ~= "string" then
+      error("``command'' must be a list of strings")
+    end
+    cmd_encoded[i] = ("%q"):format(arg)
+  end
+
+  local env_encoded = {}
+  for k, v in pairs(extend_environment or {}) do
+    if type(v) ~= "string" and v ~= false then
+      error("``extend_environment'' must be a table of strings or false")
+    end
+    env_encoded[#env_encoded + 1] = ("[%q]=%q"):format(k, v)
+  end
+
+  -- Serialize the arguments
+  local chunk = ("return %q, {%s}, {%s}"):format(
+    working_directory,
+    table.concat(cmd_encoded, ","),
+    table.concat(env_encoded, ",")
+  )
+  local encoded = mime.b64(chunk)
+
+  -- Get the current executable path.
+  local executable = arg[-1] or "texlua"
+  local script = arg[0] or "l3build.lua"
+
+  -- Execute the command in a separate process.
+  local process, err = io.popen(
+    ("%s %s internal-execute %s"):format(
+      executable,
+      script,
+      encoded
+    ),
+    "r"
+  )
+  if err then
+    return 1, err
+  end
+  local output = process:read("a")
+  local _, _, exit_code = process:close()
+  return exit_code, output
+end
+
 ---Convert the given `epoch` to a number.
 ---@param epoch string
 ---@return number
@@ -208,4 +280,46 @@ local function generic_runcmd(run) return function(cmd,dir,vars)
     .. (env and (env .. os_concat) or "") .. cmd)
 end end
 runcmd = generic_runcmd(run)
-async_runcmd = generic_runcmd(async_run)
+
+
+---Adds the special TeX paths to the environment variables.
+---@param env table<string, string|false> (Modified in-place)
+---@param dir string
+---@param vars string[]
+---@return table<string, string|false> env
+---@usage private?
+function add_tex_env_vars(env, dir, vars)
+  dir = abspath(dir)
+
+  if checkformat ~= "context" then
+    env["TEXMFCNF"] = "." .. os_pathsep
+  end
+
+  local envpaths = "." .. localtexmf() .. os_pathsep
+    .. abspath(localdir) .. os_pathsep
+    .. dir .. (typesetsearch and os_pathsep or "")
+
+  for _,var in pairs(vars) do
+    env[var] = envpaths
+  end
+
+  if forcecheckepoch then
+    env["SOURCE_DATE_EPOCH"] = tostring(epoch)
+    env["SOURCE_DATE_EPOCH_TEX_PRIMITIVES"] = "1"
+    env["FORCE_SOURCE_DATE"] = "1"
+  end
+
+  return env
+end
+
+---Converts from the old string-based arguments to the new table-based arguments.
+---@param array string[] (Modified in-place)
+---@param string string 
+---@return string[] array
+---@usage private?
+function append_option_string_to_array(array, string)
+  for opt in string:gmatch("%S+") do
+    array[#array + 1] = opt
+  end
+  return array
+end
