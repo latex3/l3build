@@ -32,7 +32,6 @@ local close = io.close
 local flush = io.flush
 local open  = io.open
 local output = io.output
-local popen = io.popen
 local read  = io.read
 local write = io.write
 
@@ -81,9 +80,175 @@ end
 
 local ctan_post -- this is private to the module
 
--- TODO: next is a public global method,
--- but following functions are semantically local
--- despite they are declared globally.
+local function trim_space(s)
+  return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
+
+
+local function shell(t)
+  local errorlevel, output = execute(
+    ".",
+    t
+  )
+  if errorlevel == 0 then
+    return output
+  else
+    error("\nError from shell command:\n" .. table.concat(t, " ") .. "\n" .. output .. "\n")
+  end
+end
+
+-- function for interactive multiline fields
+local function input_multi_line_field (name)
+  print("Enter " .. name .. "  three <return> or ctrl-D to stop")
+
+  local field=""
+
+  local answer_line
+  local return_count=0
+  repeat
+    write("> ")
+    flush()
+    answer_line=read()
+    if answer_line=="" then
+      return_count=return_count+1
+    else
+      for i=1,return_count,1 do
+        field = field .. "\n"
+      end
+      return_count=0
+      if answer_line~=nil then
+        field = field .. "\n" .. answer_line
+      end
+    end
+  until (return_count==3 or answer_line==nil or answer_line=='\004')
+  return field
+end
+
+local function input_single_line_field(name)
+  print("Enter " .. name )
+
+  local field=""
+
+  write("> ")
+  flush()
+  field=read()
+  return field
+end
+
+local function ctan_single_field(fname,fvalue,max,desc,mandatory)
+  local fvalueprint = fvalue
+  if fvalue == nil then fvalueprint = '??' end
+  print('ctan-upload | ' .. fname .. ': ' ..tostring(fvalueprint))
+  if ((fvalue==nil and mandatory) or (fvalue == 'ask')) then
+    if (max < 256) then
+      fvalue=input_single_line_field(fname)
+      else
+        fvalue=input_multi_line_field(fname)
+    end
+  end
+  if (fvalue==nil or type(fvalue)~="table") then
+    local vs=trim_space(tostring(fvalue))
+    if (mandatory==true and (fvalue == nil or vs=="")) then
+      if (fname=="announcement") then
+        print("Empty announcement: No ctan announcement will be made")
+      else
+        error("The field " .. fname .. " must contain " .. desc)
+      end
+    end
+    if (fvalue ~=nil and len(vs) > 0) then
+      if (max > 0 and len(vs) > max) then
+        error("The field " .. fname .. " is longer than " .. max)
+      end
+      vs = vs:gsub('\\','\\\\')
+      vs = vs:gsub('"','\\"')
+      vs = vs:gsub('`','\\`')
+      vs = vs:gsub('\n','\\n')
+-- for strings on commandline version      ctan_post=ctan_post .. ' --form "' .. fname .. "=" .. vs .. '"'
+      ctan_post=ctan_post .. '\nform-string="' .. fname .. '=' .. vs .. '"'
+    end
+  else
+    error("The value of the field '" .. fname .."' must be a scalar not a table")
+  end
+end
+
+local function ctan_field(fname,fvalue,max,desc,mandatory,multi)
+  if (type(fvalue)=="table" and multi==true) then
+    for i, v in pairs(fvalue) do
+      ctan_single_field(fname,v,max,desc,mandatory and i==1)
+    end
+  else
+    ctan_single_field(fname,fvalue,max,desc,mandatory)
+  end
+end
+
+local function construct_ctan_post(uploadfile,debug)
+
+  -- start building the curl command:
+-- commandline  ctan_post = curlexe .. " "
+  ctan_post=""
+
+  -- build up the curl command field-by-field:
+
+  --         field                                   max  desc                                 mandatory  multi
+  --         ----------------------------------------------------------------------------------------------------
+  ctan_field("announcement", uploadconfig.announcement, 8192, "Announcement",                        true,  false )
+  ctan_field("author",       uploadconfig.author,        128, "Author name",                         true,  false )
+  ctan_field("bugtracker",   uploadconfig.bugtracker,    255, "URL(s) of bug tracker",               false, true  )
+  ctan_field("ctanPath",     uploadconfig.ctanPath,      255, "CTAN path",                           true,  false )
+  ctan_field("description",  uploadconfig.description,  4096, "Short description of package",        false, false )
+  ctan_field("development",  uploadconfig.development,   255, "URL(s) of development channels",      false, true  )
+  ctan_field("email",        uploadconfig.email,         255, "Email of uploader",                   true,  false )
+  ctan_field("home",         uploadconfig.home,          255, "URL(s) of home page",                 false, true  )
+  ctan_field("license",      uploadconfig.license,      2048, "Package license(s)",                  true,  true  )
+  ctan_field("note",         uploadconfig.note,         4096, "Internal note to ctan",               false, false )
+  ctan_field("pkg",          uploadconfig.pkg,            32, "Package name",                        true,  false )
+  ctan_field("repository",   uploadconfig.repository,    255, "URL(s) of source repositories",       false, true  )
+  ctan_field("summary",      uploadconfig.summary,       128, "One-line summary of package",         true,  false )
+  ctan_field("support",      uploadconfig.support,       255, "URL(s) of support channels",          false, true  )
+  ctan_field("topic",        uploadconfig.topic,        1024, "Topic(s)",                            false, true  )
+  ctan_field("update",       uploadconfig.update,          8, "Boolean: true=update, false=new pkg", false, false )
+  ctan_field("uploader",     uploadconfig.uploader,      255, "Name of uploader",                    true,  false )
+  ctan_field("version",      uploadconfig.version,        32, "Package version",                     true,  false )
+
+  ctan_post = ctan_post .. '\nform="file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
+
+  return ctan_post
+
+end
+
+local function construct_ctan_command(uploadfile,debug)
+  -- write the curl config file and return the curl command that reads it
+  local ctan_config = construct_ctan_post(uploadfile,debug)
+  local curloptfile = uploadconfig.curlopt_file or (ctanzip .. ".curlopt")
+  ---@type file*?
+  local curlopt=assert(open(curloptfile,"w"))
+  ---@cast curlopt file*
+  output(curlopt)
+  write(ctan_config)
+  curlopt:close()
+  return {
+    curlexe,
+    "--config",
+    curloptfile,
+    "<url-goes-here>",
+  }
+end
+
+-- if filename is non nil and file readable return contents otherwise nil
+local function file_contents (filename)
+  if filename ~= nil then
+    local f= assert(open(filename,"r"))
+    if f==nil then
+      return nil
+    else
+      local s = f:read("a")
+      f:close()
+      return s
+    end
+  else
+    return nil
+  end
+end
 
 function upload(tagnames)
 
@@ -138,27 +303,26 @@ function upload(tagnames)
   end
 
   ctan_post = construct_ctan_command(uploadfile,options["debug"])
+  local fp_return=""
 
 if options["debug"] then
-    ctan_post = ctan_post ..  ' https://httpbin.org/post'
+    ctan_post[#ctan_post] = 'https://httpbin.org/post'
     fp_return = shell(ctan_post)
     print('\n\nCURL COMMAND:')
     print(ctan_post)
     print("\n\nHTTP RESPONSE:")
     print(fp_return)
     return 1
-else
-    ctan_post = ctan_post ..  ' https://ctan.org/submit/'
 end
 
   -- call post command to validate the upload at CTAN's validate URL
   local exit_status=0
-  local fp_return=""
 
   -- use popen not execute so get the return body local exit_status=os.execute(ctan_post .. "validate")
   if (curl_debug==false) then
     print("Contacting CTAN for validation:")
-    fp_return = shell(ctan_post .. "validate")
+    ctan_post[#ctan_post] = 'https://ctan.org/submit/validate'
+    fp_return = shell(ctan_post)
   else
     fp_return="WARNING: curl_debug==true: posting disabled"
     print(ctan_post)
@@ -168,8 +332,9 @@ end
     if match(fp_return,"non%-existent%spackage") then
       print("Package not found on CTAN; re-validating as new package:")
       uploadconfig.update = false
-      ctan_post = construct_ctan_command(uploadfile) ..  ' https://ctan.org/submit/'
-      fp_return = shell(ctan_post .. "validate")
+      ctan_post = construct_ctan_command(uploadfile)
+      ctan_post[#ctan_post] = 'https://ctan.org/submit/validate'
+      fp_return = shell(ctan_post)
     end
   end
   if (match(fp_return,"ERROR")) then
@@ -205,7 +370,8 @@ end
       end
     end
     if (ctanupload==true) then
-      fp_return = shell(ctan_post .. "upload")
+      ctan_post[#ctan_post] = 'https://ctan.org/submit/upload'
+      fp_return = shell(ctan_post)
 --     this is just html, could save to a file
 --     or echo a cleaned up version
       print('Response from CTAN:')
@@ -224,172 +390,4 @@ end
     error("Warnings from CTAN package validation:\n" .. fp_return)
   end
   return exit_status
-end
-
-
-function trim_space(s)
-  return (s:gsub("^%s*(.-)%s*$", "%1"))
-end
-
-
-function shell(s)
-  local h = assert(popen(s, 'r'))
-  local t = assert(h:read('*a'))
-  local success = h:close()
-  if (success) then
-    return t
-  else
-    error("\nError from shell command:\n" .. s .. "\n" .. t .. "\n")
-  end
-end
-
-function construct_ctan_command(uploadfile,debug)
-  -- write the curl config file and return the curl command that reads it
-  local ctan_config = construct_ctan_post(uploadfile,debug)
-  local curloptfile = uploadconfig.curlopt_file or (ctanzip .. ".curlopt")
-  ---@type file*?
-  local curlopt=assert(open(curloptfile,"w"))
-  ---@cast curlopt file*
-  output(curlopt)
-  write(ctan_config)
-  curlopt:close()
-  return curlexe .. " --config " .. curloptfile
-end
-
-function construct_ctan_post(uploadfile,debug)
-
-  -- start building the curl command:
--- commandline  ctan_post = curlexe .. " "
-  ctan_post=""
-
-  -- build up the curl command field-by-field:
-
-  --         field                                   max  desc                                 mandatory  multi
-  --         ----------------------------------------------------------------------------------------------------
-  ctan_field("announcement", uploadconfig.announcement, 8192, "Announcement",                        true,  false )
-  ctan_field("author",       uploadconfig.author,        128, "Author name",                         true,  false )
-  ctan_field("bugtracker",   uploadconfig.bugtracker,    255, "URL(s) of bug tracker",               false, true  )
-  ctan_field("ctanPath",     uploadconfig.ctanPath,      255, "CTAN path",                           true,  false )
-  ctan_field("description",  uploadconfig.description,  4096, "Short description of package",        false, false )
-  ctan_field("development",  uploadconfig.development,   255, "URL(s) of development channels",      false, true  )
-  ctan_field("email",        uploadconfig.email,         255, "Email of uploader",                   true,  false )
-  ctan_field("home",         uploadconfig.home,          255, "URL(s) of home page",                 false, true  )
-  ctan_field("license",      uploadconfig.license,      2048, "Package license(s)",                  true,  true  )
-  ctan_field("note",         uploadconfig.note,         4096, "Internal note to ctan",               false, false )
-  ctan_field("pkg",          uploadconfig.pkg,            32, "Package name",                        true,  false )
-  ctan_field("repository",   uploadconfig.repository,    255, "URL(s) of source repositories",       false, true  )
-  ctan_field("summary",      uploadconfig.summary,       128, "One-line summary of package",         true,  false )
-  ctan_field("support",      uploadconfig.support,       255, "URL(s) of support channels",          false, true  )
-  ctan_field("topic",        uploadconfig.topic,        1024, "Topic(s)",                            false, true  )
-  ctan_field("update",       uploadconfig.update,          8, "Boolean: true=update, false=new pkg", false, false )
-  ctan_field("uploader",     uploadconfig.uploader,      255, "Name of uploader",                    true,  false )
-  ctan_field("version",      uploadconfig.version,        32, "Package version",                     true,  false )
-
-  ctan_post = ctan_post .. '\nform="file=@' .. tostring(uploadfile) .. ';filename=' .. tostring(uploadfile) .. '"'
-
-  return ctan_post
-
-end
-
-function ctan_field(fname,fvalue,max,desc,mandatory,multi)
-  if (type(fvalue)=="table" and multi==true) then
-    for i, v in pairs(fvalue) do
-      ctan_single_field(fname,v,max,desc,mandatory and i==1)
-    end
-  else
-    ctan_single_field(fname,fvalue,max,desc,mandatory)
-  end
-end
-
-
-function ctan_single_field(fname,fvalue,max,desc,mandatory)
-  local fvalueprint = fvalue
-  if fvalue == nil then fvalueprint = '??' end
-  print('ctan-upload | ' .. fname .. ': ' ..tostring(fvalueprint))
-  if ((fvalue==nil and mandatory) or (fvalue == 'ask')) then
-    if (max < 256) then
-      fvalue=input_single_line_field(fname)
-      else
-        fvalue=input_multi_line_field(fname)
-    end
-  end
-  if (fvalue==nil or type(fvalue)~="table") then
-    local vs=trim_space(tostring(fvalue))
-    if (mandatory==true and (fvalue == nil or vs=="")) then
-      if (fname=="announcement") then
-        print("Empty announcement: No ctan announcement will be made")
-      else
-        error("The field " .. fname .. " must contain " .. desc)
-      end
-    end
-    if (fvalue ~=nil and len(vs) > 0) then
-      if (max > 0 and len(vs) > max) then
-        error("The field " .. fname .. " is longer than " .. max)
-      end
-      vs = vs:gsub('\\','\\\\')
-      vs = vs:gsub('"','\\"')
-      vs = vs:gsub('`','\\`')
-      vs = vs:gsub('\n','\\n')
--- for strings on commandline version      ctan_post=ctan_post .. ' --form "' .. fname .. "=" .. vs .. '"'
-      ctan_post=ctan_post .. '\nform-string="' .. fname .. '=' .. vs .. '"'
-    end
-  else
-    error("The value of the field '" .. fname .."' must be a scalar not a table")
-  end
-end
-
-
--- function for interactive multiline fields
-function input_multi_line_field (name)
-  print("Enter " .. name .. "  three <return> or ctrl-D to stop")
-
-  local field=""
-
-  local answer_line
-  local return_count=0
-  repeat
-    write("> ")
-    flush()
-    answer_line=read()
-    if answer_line=="" then
-      return_count=return_count+1
-    else
-      for i=1,return_count,1 do
-        field = field .. "\n"
-      end
-      return_count=0
-      if answer_line~=nil then
-        field = field .. "\n" .. answer_line
-      end
-    end
-  until (return_count==3 or answer_line==nil or answer_line=='\004')
-  return field
-end
-
-function input_single_line_field(name)
-  print("Enter " .. name )
-
-  local field=""
-
-  write("> ")
-  flush()
-  field=read()
-  return field
-end
-
-
--- if filename is non nil and file readable return contents otherwise nil
-function file_contents (filename)
-  if filename ~= nil then
-    local f= assert(open(filename,"r"))
-    if f==nil then
-      return nil
-    else
-      local s = f:read("a")
-      f:close()
-      return s
-    end
-  else
-    return nil
-  end
 end

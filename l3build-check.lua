@@ -43,7 +43,6 @@ local sort             = table.sort
 local utf8_char        = unicode.utf8.char
 
 local exit             = os.exit
-local execute          = os.execute
 local remove           = os.remove
 local os_type          = os.type
 
@@ -88,7 +87,9 @@ function checkinit()
   for _,i in ipairs(checksuppfiles) do
     cp(i, supportdir, testdir)
   end
-  execute(os_ascii .. ">" .. testdir .. "/ascii.tcx")
+  local f = io.open(testdir .. "/ascii.tcx", "w")
+  f:write("\n")
+  f:close()
   return checkinit_hook()
 end
 
@@ -333,9 +334,15 @@ local function normalize_log(content,engine,errlevels)
   local skipping = false
   for line in gmatch(content, "([^\n]*)\n") do
     if not prestart and not skipping and match(line,"^%-%-INSERT%-PDF%-TAGS %.*") then
-       local xmlh=io.popen("show-pdf-tags --xml " .. testdir .. "/" .. line:gsub("%-%-INSERT%-PDF%-TAGS ",""),"r")
-       local xml = gsub(assert(xmlh:read('*a')),"\r\n","\n")
-       xmlh:close()
+      local errorlevel, xml = execute(
+        ".",
+        {
+          "show-pdf-tags",
+          "--xml",
+          testdir .. "/" .. line:gsub("%-%-INSERT%-PDF%-TAGS ",""):gsub("%s+$", "")
+        }
+      )
+      assert(errorlevel == 0, "Error running show-pdf-tags")
       new_content = new_content .. xml
     elseif line == "START-TEST-LOG" then
       prestart = false
@@ -745,17 +752,25 @@ function base_compare(test_type,name,engine,cleanup)
   if compare then
     return compare(difffile, reffile, genfile, cleanup, name, engine)
   end
-  local errorlevel = execute(os_diffexe .. " "
-    .. normalize_path(reffile .. " " .. genfile .. " > " .. difffile))
-  if errorlevel == 0 or cleanup then
-    remove(difffile)
+
+  local cmd = append_option_string_to_array({}, os_diffexe)
+  cmd[#cmd + 1] = normalize_path(reffile)
+  cmd[#cmd + 1] = normalize_path(genfile)
+  local errorlevel, output = execute(".", cmd)
+  
+  remove(difffile)
+  if errorlevel ~= 0 and not cleanup then
+    local f = io.open(difffile, "w")
+    f:write(output)
+    f:close()
   end
   return errorlevel
 end
 
 function compare_tlg(difffile, tlgfile, logfile, cleanup, name, engine)
-  local errorlevel
+  local errorlevel, output
   local testname = name .. "." .. engine
+  local cmd = append_option_string_to_array({}, os_diffexe)
   -- Do additional log formatting if the engine is LuaTeX, there is no
   -- engine-specific .tlg file and the default engine is not LuaTeX
   local has_engine_specific_tlg =
@@ -772,18 +787,24 @@ function compare_tlg(difffile, tlgfile, logfile, cleanup, name, engine)
     local luatlgfile = testdir .. "/" .. testname .. tlgext
     rewrite(tlgfile,luatlgfile,normalize_lua_log)
     rewrite(logfile,lualogfile,normalize_lua_log,true)
-    errorlevel = execute(os_diffexe .. " "
-      .. normalize_path(luatlgfile .. " " .. lualogfile .. " > " .. difffile))
+
+    cmd[#cmd + 1] = normalize_path(luatlgfile)
+    cmd[#cmd + 1] = normalize_path(lualogfile)
+    errorlevel, output = execute(".", cmd)
     if cleanup then
       remove(lualogfile)
       remove(luatlgfile)
     end
   else
-    errorlevel = execute(os_diffexe .. " "
-      .. normalize_path(tlgfile .. " " .. logfile .. " > " .. difffile))
+    cmd[#cmd + 1] = normalize_path(tlgfile)
+    cmd[#cmd + 1] = normalize_path(logfile)
+    errorlevel, output = execute(".", cmd)
   end
-  if errorlevel == 0 or cleanup then
-    remove(difffile)
+  remove(difffile)
+  if errorlevel ~= 0 and not cleanup then
+    local f = io.open(difffile, "w")
+    f:write(output)
+    f:close()
   end
   return errorlevel
 end
@@ -791,14 +812,18 @@ end
 -- Run one of the test files: doesn't check the result so suitable for
 -- both creating and verifying
 function runtest(name, engine, hide, ext, test_type, breakout)
+  local flags, body, environment = {}, {}, {}
+
   local lvtfile = name .. (ext or lvtext)
   cp(lvtfile, fileexists(testfiledir .. "/" .. lvtfile)
     and testfiledir or unpackdir, testdir)
-  local checkopts = checkopts
-  local tokens = ""
+
+  append_option_string_to_array(flags, checkopts)
+
   engine = engine or stdengine
   local binary = engine
   local format = gsub(engine,"tex$",checkformat)
+
   -- Special binary/format combos
   local special_check = specialformats[checkformat]
   if special_check and next(special_check) then
@@ -806,40 +831,41 @@ function runtest(name, engine, hide, ext, test_type, breakout)
     if engine_info then
       binary    = engine_info.binary  or binary
       format    = engine_info.format  or format
-      checkopts = (engine_info.options
-        and (checkopts .. " " ..  engine_info.options)) or checkopts
-      tokens    = engine_info.tokens and (' "' .. engine_info.tokens .. '" ')
-                    or tokens
+      if engine_info.options then
+        for _,opt in ipairs(engine_info.options) do
+          flags[#flags + 1] = opt
+        end
+      end
+      if engine_info.tokens then
+        body[#body + 1] = engine_info.tokens
+      end
     end
   end
-  -- Finalize format string
-  if format ~= "" then
-    format = " --fmt=" .. format
+
+  if (
+    xetexnopdf and
+    match(engine, "xetex") and
+    test_type.generated ~= pdfext
+  ) then
+    flags[#flags + 1] = "-no-pdf"
   end
-  -- Special casing for XeTeX engine
-  if xetexnopdf and 
-      match(engine, "xetex") and test_type.generated ~= pdfext then
-    checkopts = checkopts .. " -no-pdf"
+
+  if checkformat == "context" or match(binary,"make4ht") then
+    body = { lvtfile }
+    flags = {}
+  else
+    flags[#flags + 1] = "-jobname=" .. name
+    flags[#flags + 1] = "--fmt=" .. format
+    body[#body + 1] = ([[\input{%s}]]):format(lvtfile)
   end
-  -- Special casing for ConTeXt
-  local function setup(file)
-    return " -jobname=" .. name .. tokens .. ' "\\input ' .. file .. '" '
-  end
-  if  checkformat == "context" then
-    function setup(file) return tokens .. ' "' .. file .. '" '  end
-  end
-  if match(binary,"make4ht") then
-    function setup(file) return tokens .. ' "' .. file .. '" '  end
-    format = ""
-    checkopts = ""
-  end
+
   local basename = testdir .. "/" .. name
   local gen_file = basename .. test_type.generated
   local new_file = basename .. "." .. engine .. test_type.generated
-  local asciiopt = ""
   for _,i in ipairs(asciiengines) do
     if binary == i then
-      asciiopt = "-translate-file ./ascii.tcx "
+      flags[#flags + 1] = "-translate-file"
+      flags[#flags + 1] = "./ascii.tcx"
       break
     end
   end
@@ -849,39 +875,42 @@ function runtest(name, engine, hide, ext, test_type, breakout)
   end
   -- Ensure there is no stray .log file
   rmfile(testdir,name .. logext)
+
+  add_tex_env_vars(environment, testdir, {})
+  environment.TEXINPUTS = "." .. localtexmf() .. (checksearch and os_pathsep or "")
+  environment.LUAINPUTS = "." .. localtexmf() .. (checksearch and os_pathsep or "")
+  environment.max_print_line = tostring(maxprintline)
+  environment.error_line = tostring(errorline)
+  environment.half_error_line = tostring(halferrorline)
+  
   local errlevels = {}
-  local preamble =
-    -- No use of localdir here as the files get copied to testdir:
-    -- avoids any paths in the logs
-    os_setenv .. " TEXINPUTS=." .. localtexmf()
-      .. (checksearch and os_pathsep or "")
-      .. os_concat ..
-    os_setenv .. " LUAINPUTS=." .. localtexmf()
-      .. (checksearch and os_pathsep or "")
-      .. os_concat ..
-    -- ensure epoch settings
-    set_epoch_cmd(epoch, forcecheckepoch) ..
-    -- Ensure lines are of a known length
-    os_setenv .. " max_print_line=" .. maxprintline
-      .. os_concat ..
-    os_setenv .. " error_line=" .. errorline
-      .. os_concat ..
-    os_setenv .. " half_error_line=" .. halferrorline
-      .. os_concat
+  local cmd = flags
+  table.insert(cmd, 1, binary)
+  table.insert(cmd, table.concat(body, "\n"))
   for i = 1, checkruns do
-    errlevels[i] = async_runcmd(
-      preamble ..
-      binary .. format
-        .. " " .. asciiopt .. " " .. checkopts
-        .. setup(lvtfile)
-        .. (hide and (" > " .. os_null) or ""),
-      testdir
+    local errorlevel, output = execute(
+      testdir,
+      cmd,
+      environment
     )
+    errlevels[i] = errorlevel
+    if --[[not hide]] false then -- TODO doesn't seem to work?
+      print(output)
+    end
+
     -- On Windows, concatenating here will suppress any non-zero errorlevel
     -- from the main run, so we split into two parts.
     local tasks = runtest_tasks(jobname(lvtfile),i)
     if tasks ~= "" then
-      local errorlevel = async_runcmd(preamble .. tasks,testdir)
+      -- For backwards compatibility reasons, we need to fall back to the old
+      -- string-based environment setting.
+      local env_list = {}
+      for k, v in pairs(environment) do
+        env_list[#env_list + 1] = ("%s %s=%s%s"):format(
+          os_setenv, k, v, os_concat
+        )
+      end
+      local errorlevel = runcmd(table.concat(env_list) .. tasks,testdir)
       if errorlevel ~= 0 then errlevels[i] = errorlevel end
     end
     -- Break the loop if the result is stable
