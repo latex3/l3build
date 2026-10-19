@@ -2557,6 +2557,15 @@
 }
 \begingroup\expandafter\expandafter\expandafter\endgroup
 \expandafter\ifx\csname detokenize\endcsname\relax
+  \long\def\TESTTITLE#1{%
+    \global\advance\gTESTint by 1 %
+    \SEPARATOR
+    \begingroup
+      \toks0={#1}%
+      \LONGTYPEOUT{TEST \the\gTESTint: \the\toks0 }%
+    \endgroup
+    \SEPARATOR
+  }
   \long\def\BEGINTEST#1{%
     \global\advance\gTESTint by 1 %
     \SEPARATOR
