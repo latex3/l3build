@@ -10,10 +10,16 @@
 
 text $x+y$
 
-\TEST{abc}
+\TEST{DEFAULT}
 
 \SHOWPDFTAGS
 
-\TEST{xyz}
+\TEST{--map}
+
+\SHOWPDFTAGSWITHOPTIONS{--map}
+
+\TEST{--xmp --hideid}
+
+\SHOWPDFTAGSWITHOPTIONS{--xmp --hideid}
 
 \end{document}
