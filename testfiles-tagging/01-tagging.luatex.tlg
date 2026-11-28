@@ -1,7 +1,7 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
 ============================================================
-TEST 1: abc
+TEST 1: DEFAULT
 ============================================================
 ============================================================
 ============================================================
@@ -13,27 +13,29 @@ TEST 2: Show PDF Tags
   <Document xmlns="http://iso.org/pdf2/ssn"
      id="ID.002"
     >
-   <Sect xmlns="http://iso.org/pdf2/ssn"
+   <section xmlns="https://www.latex-project.org/ns/dflt"
       id="ID.006"
+      rolemaps-to="Sect"
      >
-    <section xmlns="https://www.latex-project.org/ns/dflt"
+    <section-heading xmlns="https://www.latex-project.org/ns/dflt"
        id="ID.007"
        title="Intro"
        rolemaps-to="H1"
       >
-     <section-number xmlns="https://www.latex-project.org/ns/dflt"
+     <heading-number xmlns="https://www.latex-project.org/ns/dflt"
         id="ID.008"
-        rolemaps-to="Span"
+        rolemaps-to="Lbl"
        >
-      <?MarkedContent page="1" ?>1 
-     </section-number>
+      <?MarkedContent page="1" ?>1
+     </heading-number>
+     <?MarkedContent page="1" ?>  
      <?MarkedContent page="1" ?>Intro
-    </section>
-    <text-unit xmlns="https://www.latex-project.org/ns/dflt"
+    </section-heading>
+    <semantic-para xmlns="https://www.latex-project.org/ns/dflt"
        id="ID.009"
        rolemaps-to="Part"
       >
-     <text xmlns="https://www.latex-project.org/ns/dflt"
+     <text-block xmlns="https://www.latex-project.org/ns/dflt"
         id="ID.010"
         xmlns:Layout="http://iso.org/pdf/ssn/Layout"
         Layout:TextAlign="Justify"
@@ -52,8 +54,75 @@ TEST 2: Show PDF Tags
         </AssociatedFile>
        <?MarkedContent page="1" ?>x+y
       </Formula>
-     </text>
-    </text-unit>
+     </text-block>
+    </semantic-para>
+   </section>
+  </Document>
+ </StructTreeRoot>
+</PDF>
+-------- 01-tagging.xml (end) -----------
+============================================================
+============================================================
+TEST 3: --map
+============================================================
+============================================================
+============================================================
+TEST 4: Show PDF Tags
+============================================================
+-------- 01-tagging.xml (start) ---------
+<PDF version="2.0">
+ <StructTreeRoot>
+  <Document xmlns="http://iso.org/pdf2/ssn"
+     id="ID.002"
+    >
+   <Sect xmlns="http://iso.org/pdf2/ssn"
+      id="ID.006"
+      xmlns:orig-ns="https://www.latex-project.org/ns/dflt"
+      rolemapped-from="orig-ns:section"
+     >
+    <H1 xmlns="http://iso.org/pdf2/ssn"
+       id="ID.007"
+       title="Intro"
+       xmlns:orig-ns="https://www.latex-project.org/ns/dflt"
+       rolemapped-from="orig-ns:section-heading"
+      >
+     <Lbl xmlns="http://iso.org/pdf2/ssn"
+        id="ID.008"
+        xmlns:orig-ns="https://www.latex-project.org/ns/dflt"
+        rolemapped-from="orig-ns:heading-number"
+       >
+      <?MarkedContent page="1" ?>1
+     </Lbl>
+     <?MarkedContent page="1" ?>  
+     <?MarkedContent page="1" ?>Intro
+    </H1>
+    <Part xmlns="http://iso.org/pdf2/ssn"
+       id="ID.009"
+       xmlns:orig-ns="https://www.latex-project.org/ns/dflt"
+       rolemapped-from="orig-ns:semantic-para"
+      >
+     <P xmlns="http://iso.org/pdf2/ssn"
+        id="ID.010"
+        xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+        Layout:TextAlign="Justify"
+        xmlns:orig-ns="https://www.latex-project.org/ns/dflt"
+        rolemapped-from="orig-ns:text-block"
+       >
+      <?MarkedContent page="1" ?>text 
+      <Formula xmlns="http://iso.org/pdf2/ssn"
+         id="ID.011"
+         title="math"
+         af="tag-AFfile1.tex"
+         xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+         Layout:Placement="Inline"
+        >
+        <AssociatedFile name="tag-AFfile1.tex" relationship="Source" media-type="application/x-tex" xmlns="">
+        $x+y$
+        </AssociatedFile>
+       <?MarkedContent page="1" ?>x+y
+      </Formula>
+     </P>
+    </Part>
    </Sect>
   </Document>
  </StructTreeRoot>
@@ -61,14 +130,302 @@ TEST 2: Show PDF Tags
 -------- 01-tagging.xml (end) -----------
 ============================================================
 ============================================================
-TEST 3: xyz
+TEST 5: --xmp --hideid
 ============================================================
+============================================================
+============================================================
+TEST 6: Show PDF Tags
+============================================================
+-------- 01-tagging.xml (start) ---------
+<PDF version="2.0">
+ <StructTreeRoot>
+  <Document xmlns="http://iso.org/pdf2/ssn"
+    >
+   <section xmlns="https://www.latex-project.org/ns/dflt"
+      rolemaps-to="Sect"
+     >
+    <section-heading xmlns="https://www.latex-project.org/ns/dflt"
+       title="Intro"
+       rolemaps-to="H1"
+      >
+     <heading-number xmlns="https://www.latex-project.org/ns/dflt"
+        rolemaps-to="Lbl"
+       >
+      <?MarkedContent page="1" ?>1
+     </heading-number>
+     <?MarkedContent page="1" ?>  
+     <?MarkedContent page="1" ?>Intro
+    </section-heading>
+    <semantic-para xmlns="https://www.latex-project.org/ns/dflt"
+       rolemaps-to="Part"
+      >
+     <text-block xmlns="https://www.latex-project.org/ns/dflt"
+        xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+        Layout:TextAlign="Justify"
+        rolemaps-to="P"
+       >
+      <?MarkedContent page="1" ?>text 
+      <Formula xmlns="http://iso.org/pdf2/ssn"
+         title="math"
+         af="tag-AFfile1.tex"
+         xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+         Layout:Placement="Inline"
+        >
+        <AssociatedFile name="tag-AFfile1.tex" relationship="Source" media-type="application/x-tex" xmlns="">
+        $x+y$
+        </AssociatedFile>
+       <?MarkedContent page="1" ?>x+y
+      </Formula>
+     </text-block>
+    </semantic-para>
+   </section>
+  </Document>
+ </StructTreeRoot>
+ <XMP>
+  <?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+  <x:xmpmeta xmlns:x="adobe:ns:meta/">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about=""
+      xmlns:pdf="http://ns.adobe.com/pdf/1.3/"
+      xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/"
+      xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+      xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/"
+      xmlns:stEvt="http://ns.adobe.com/xap/1.0/sType/ResourceEvent#"
+      xmlns:pdfaid="http://www.aiim.org/pdfa/ns/id/"
+      xmlns:pdfuaid="http://www.aiim.org/pdfua/ns/id/"
+      xmlns:pdfx="http://ns.adobe.com/pdfx/1.3/"
+      xmlns:prism="http://prismstandard.org/namespaces/basic/3.0/"
+      xmlns:stFnt="http://ns.adobe.com/xap/1.0/sType/Font#"
+      xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/"
+      xmlns:pdfaExtension="http://www.aiim.org/pdfa/ns/extension/"
+      xmlns:pdfaSchema="http://www.aiim.org/pdfa/ns/schema#"
+      xmlns:pdfaProperty="http://www.aiim.org/pdfa/ns/property#"
+      xmlns:pdfaType="http://www.aiim.org/pdfa/ns/type#"
+      xmlns:pdfaField="http://www.aiim.org/pdfa/ns/field#"
+      xmlns:tdm="http://www.w3.org/ns/tdmrep/">
+     <pdfaExtension:schemas>
+      <rdf:Bag>
+       <rdf:li rdf:parseType="Resource">
+        <pdfaSchema:schema>XMP Media Management Schema</pdfaSchema:schema>
+        <pdfaSchema:prefix>xmpMM</pdfaSchema:prefix>
+        <pdfaSchema:namespaceURI>http://ns.adobe.com/xap/1.0/mm/</pdfaSchema:namespaceURI>
+        <pdfaSchema:property>
+         <rdf:Seq>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>OriginalDocumentID</pdfaProperty:name>
+           <pdfaProperty:valueType>URI</pdfaProperty:valueType>
+           <pdfaProperty:category>internal</pdfaProperty:category>
+           <pdfaProperty:description>The common identifier for all versions and renditions of a document.</pdfaProperty:description>
+          </rdf:li>
+         </rdf:Seq>
+        </pdfaSchema:property>
+       </rdf:li>
+       <rdf:li rdf:parseType="Resource">
+        <pdfaSchema:schema>PDF/A Identification Schema</pdfaSchema:schema>
+        <pdfaSchema:prefix>pdfaid</pdfaSchema:prefix>
+        <pdfaSchema:namespaceURI>http://www.aiim.org/pdfa/ns/id/</pdfaSchema:namespaceURI>
+        <pdfaSchema:property>
+         <rdf:Seq>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>year</pdfaProperty:name>
+           <pdfaProperty:valueType>Integer</pdfaProperty:valueType>
+           <pdfaProperty:category>internal</pdfaProperty:category>
+           <pdfaProperty:description>Year of standard</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>rev</pdfaProperty:name>
+           <pdfaProperty:valueType>Integer</pdfaProperty:valueType>
+           <pdfaProperty:category>internal</pdfaProperty:category>
+           <pdfaProperty:description>Revision year of standard</pdfaProperty:description>
+          </rdf:li>
+         </rdf:Seq>
+        </pdfaSchema:property>
+       </rdf:li>
+       <rdf:li rdf:parseType="Resource">
+        <pdfaSchema:schema>PDF/UA Universal Accessibility Schema</pdfaSchema:schema>
+        <pdfaSchema:prefix>pdfuaid</pdfaSchema:prefix>
+        <pdfaSchema:namespaceURI>http://www.aiim.org/pdfua/ns/id/</pdfaSchema:namespaceURI>
+        <pdfaSchema:property>
+         <rdf:Seq>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>part</pdfaProperty:name>
+           <pdfaProperty:valueType>Integer</pdfaProperty:valueType>
+           <pdfaProperty:category>internal</pdfaProperty:category>
+           <pdfaProperty:description>Part of ISO 14289 standard</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>rev</pdfaProperty:name>
+           <pdfaProperty:valueType>Integer</pdfaProperty:valueType>
+           <pdfaProperty:category>internal</pdfaProperty:category>
+           <pdfaProperty:description>Revision of ISO 14289 standard</pdfaProperty:description>
+          </rdf:li>
+         </rdf:Seq>
+        </pdfaSchema:property>
+       </rdf:li>
+       <rdf:li rdf:parseType="Resource">
+        <pdfaSchema:schema>PRISM Basic Metadata</pdfaSchema:schema>
+        <pdfaSchema:prefix>prism</pdfaSchema:prefix>
+        <pdfaSchema:namespaceURI>http://prismstandard.org/namespaces/basic/3.0/</pdfaSchema:namespaceURI>
+        <pdfaSchema:property>
+         <rdf:Seq>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>complianceProfile</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>internal</pdfaProperty:category>
+           <pdfaProperty:description>PRISM specification compliance profile to which this document adheres</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>publicationName</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>Publication name</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>aggregationType</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>Publication type</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>bookEdition</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>Edition of the book in which the document was published</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>volume</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>Publication volume number</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>number</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>Publication issue number within a volume</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>pageRange</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>Page range for the document within the print version of its publication</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>issn</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>ISSN for the printed publication in which the document was published</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>eIssn</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>ISSN for the electronic publication in which the document was published</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>isbn</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>ISBN for the publication in which the document was published</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>doi</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>Digital Object Identifier for the document</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>url</pdfaProperty:name>
+           <pdfaProperty:valueType>URL</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>URL at which the document can be found</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>byteCount</pdfaProperty:name>
+           <pdfaProperty:valueType>Integer</pdfaProperty:valueType>
+           <pdfaProperty:category>internal</pdfaProperty:category>
+           <pdfaProperty:description>Approximate file size in octets</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>pageCount</pdfaProperty:name>
+           <pdfaProperty:valueType>Integer</pdfaProperty:valueType>
+           <pdfaProperty:category>internal</pdfaProperty:category>
+           <pdfaProperty:description>Number of pages in the print version of the document</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>subtitle</pdfaProperty:name>
+           <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+           <pdfaProperty:category>external</pdfaProperty:category>
+           <pdfaProperty:description>Document's subtitle</pdfaProperty:description>
+          </rdf:li>
+         </rdf:Seq>
+        </pdfaSchema:property>
+       </rdf:li>
+       <rdf:li rdf:parseType="Resource">
+        <pdfaSchema:schema>TDMRep</pdfaSchema:schema>
+        <pdfaSchema:prefix>tdm</pdfaSchema:prefix>
+        <pdfaSchema:namespaceURI>http://www.w3.org/ns/tdmrep/</pdfaSchema:namespaceURI>
+        <pdfaSchema:property>
+         <rdf:Seq>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>reservation</pdfaProperty:name>
+           <pdfaProperty:valueType>Closed Choice of Integer</pdfaProperty:valueType>
+           <pdfaProperty:category>internal</pdfaProperty:category>
+           <pdfaProperty:description>TDM rights are reserved (1) or not reserved (0)</pdfaProperty:description>
+          </rdf:li>
+          <rdf:li rdf:parseType="Resource">
+           <pdfaProperty:name>policy</pdfaProperty:name>
+           <pdfaProperty:valueType>URI</pdfaProperty:valueType>
+           <pdfaProperty:category>internal</pdfaProperty:category>
+           <pdfaProperty:description>URL pointing to a TDM Policy set by the rightsholder</pdfaProperty:description>
+          </rdf:li>
+         </rdf:Seq>
+        </pdfaSchema:property>
+       </rdf:li>
+      </rdf:Bag>
+     </pdfaExtension:schemas>
+     <pdf:Producer>luahbtex-NN.NN.NN</pdf:Producer>
+     <pdf:PDFVersion>2.0</pdf:PDFVersion>
+     <dc:type>
+      <rdf:Bag>
+       <rdf:li>Text</rdf:li>
+      </rdf:Bag>
+     </dc:type>
+     <dc:language>
+      <rdf:Bag>
+       <rdf:li>en</rdf:li>
+      </rdf:Bag>
+     </dc:language>
+     <dc:date>
+      <rdf:Seq>
+       <rdf:li>2016-05-20T09:00:00Z</rdf:li>
+      </rdf:Seq>
+     </dc:date>
+     <dc:format>application/pdf</dc:format>
+     <dc:source>01-tagging.tex</dc:source>
+     <xmp:CreatorTool>LaTeX</xmp:CreatorTool>
+     <xmp:CreateDate>2016-05-20T09:00:00Z</xmp:CreateDate>
+     <xmp:ModifyDate>2016-05-20T09:00:00Z</xmp:ModifyDate>
+     <xmp:MetadataDate>2016-05-20T09:00:00Z</xmp:MetadataDate>
+     <xmpMM:DocumentID>uuid:dcd75fcf-971e-4ab8-8113-b0fd840a180a</xmpMM:DocumentID>
+     <xmpMM:InstanceID>uuid:0a57c455-157a-4141-8c19-6237d832fc80</xmpMM:InstanceID>
+     <prism:complianceProfile>three</prism:complianceProfile>
+     <prism:pageCount>1</prism:pageCount>
+    </rdf:Description>
+   </rdf:RDF>
+  </x:xmpmeta>
+  <?xpacket end="w"?>
+ </XMP>
+</PDF>
+-------- 01-tagging.xml (end) -----------
 ============================================================
 [1
 ]<<latex-list-css.html>><<latex-align-css.html>> (01-tagging.aux)
 Package tagpdf Info: Finalizing the tagging structure:
 (tagpdf)             Writing out ~11 structure objects
-(tagpdf)             with ~7 'MC' leaf nodes.
+(tagpdf)             with ~8 'MC' leaf nodes.
 (tagpdf)             Be patient if there are lots of objects!
 Package tagpdf Info: writing ParentTree
 Package tagpdf Info: writing IDTree

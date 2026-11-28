@@ -333,7 +333,7 @@ local function normalize_log(content,engine,errlevels)
   local skipping = false
   for line in gmatch(content, "([^\n]*)\n") do
     if not prestart and not skipping and match(line,"^%-%-INSERT%-PDF%-TAGS %.*") then
-       local xmlh=io.popen("show-pdf-tags --xml " .. testdir .. "/" .. line:gsub("%-%-INSERT%-PDF%-TAGS ",""),"r")
+       local xmlh=io.popen(line:gsub("%-%-INSERT%-PDF%-TAGS(.-)%|","show-pdf-tags --xml %1 " .. testdir .. "/"),"r")
        local xml = gsub(assert(xmlh:read('*a')),"\r\n","\n")
        xmlh:close()
       new_content = new_content .. xml
