@@ -11,7 +11,7 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 
 - `\SHOWPDFTAGSWITHOPTIONS` allows options such as `-hideid`, `--xmp` and `--map`
-   to be passed to `show-pdf-tags` to customise the XML display of the Structure Tree.
+   to be passed to `show-pdf-tags` to customize the XML display of the Structure Tree.
 
 ## [2026-10-19]
 
